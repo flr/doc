@@ -1,0 +1,246 @@
+---
+title: Modelling stock-recruitment relationships with the FLSR class
+author: Laurie Kell, ICCAT and Iago Mosqueira, EC JRC G03
+date: 04 September 2015
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    keep_md: true
+rights:  Creative Commons Share Alike 4.0
+---
+
+
+```{r setup}
+library(FLCore)
+```
+
+We have the result of an stock assesment (using VPA) in ple4
+
+```{r setup}
+data(ple4)
+```
+
+and now want to fit an stock-recruitment relationship
+
+```{r setup}
+rec(ple4)
+
+ssb(ple4)
+```
+
+We can convert and FLStock into an FLSR
+
+```{r setup}
+p4sr <- as.FLSR(ple4)
+
+summary(p4sr)
+```
+
+As recruitts are of age=1, the lag between ssb and rec is also 1
+
+```{r setup}
+rec(p4sr)
+
+ssb(p4sr)
+```
+
+```{r setup}
+plot(ssb(p4sr), rec(p4sr))
+```
+
+To fit a model, we need to select a functional form
+
+```{r setup}
+model(p4sr) <- ricker()
+```
+
+so p4sr is all set up
+
+model formula
+```{r setup}
+model(p4sr)
+```
+
+log-likelihood function
+```{r setup}
+logl(p4sr)
+```
+
+initial values function
+```{r setup}
+initial(p4sr)
+```
+
+and ouputs: params
+```{r setup}
+params(p4sr)
+```
+
+Fitting thorugh MLE
+
+```{r setup}
+p4sr <- fmle(p4sr)
+```
+
+gives us some results, not too good
+
+```{r setup}
+summary(p4sr)
+```
+
+```{r setup}
+plot(p4sr)
+```
+
+default method is Nelder-Mead
+
+```{r setup}
+p4sr <- fmle(p4sr, method='L-BFGS-B')
+```
+
+
+The nhser dataset is perfect for FLSR
+
+```{r setup}
+data(nsher)
+```
+
+```{r setup}
+plot(ssb(nsher), rec(nsher))
+```
+
+
+There are also other SR models to choose from
+```{r setup}
+bevholt()
+
+shepherd()
+
+cushing()
+
+geomean()
+
+segreg()
+
+rickerSV()
+
+bevholtSV()
+
+shepherdSV()
+
+bevholtAR1()
+```
+
+Let's try ricker
+
+```{r setup}
+model(nsher) <- 'ricker'
+
+nhri <- fmle(nsher)
+```
+
+and then bevholt
+
+```{r setup}
+model(nsher) <- 'bevholt'
+
+nhbh <- fmle(nsher)
+```
+
+and compare the fits
+
+```{r setup}
+plot(nhri)
+
+plot(nhbh)
+```
+
+... using AIC
+
+```{r setup}
+AIC(nhri)
+
+AIC(nhbh)
+```
+
+
+or Schwarz's Bayesian Information Criterion
+
+```{r setup}
+BIC(nhri)
+
+BIC(nhbh)
+
+```
+
+Predict recruitments using predict()
+
+```{r setup}
+predict(nhri, ssb=FLQuant(seq(185, 500, length=10)))
+```
+
+
+Profile the likelihood to check the fit
+
+```{r setup}
+profile(nhri)
+
+profile(p4sr)
+```
+
+
+Fix some parameters, e.g. steepness
+
+```{r setup}
+model(p4sr) <- bevholtSV
+
+p4sr <- fmle(p4sr, fixed = list(s = 0.8))
+```
+
+```{r setup}
+plot(p4sr)
+```
+
+```{r setup}
+params(p4sr)
+```
+
+
+Other outputs include the covariance matrix
+```{r setup}
+vcov(nhri)
+```
+
+from which we can derive a correlation matrix
+```{r setup}
+cov2cor(vcov(nhri)[,,1])
+```
+
+
+Bootstrapping
+
+```{r setup}
+niter <- 10
+
+model(p4sr) <- bevholt
+
+p4sr <- fmle(p4sr)
+
+res.boot <- sample(c(residuals(p4sr)), niter * dims(p4sr)$year, replace=T)
+
+p4sb <- propagate(p4sr, niter)
+
+rec(p4sb) <- rec(p4sb) * exp(res.boot)
+
+p4sb <- fmle(p4sb)
+
+params(p4sb)
+```
+
+```{r setup}
+plot(rec(p4sb))
+
+plot(fitted(p4sb))
+
+```
