@@ -1,0 +1,56 @@
+---
+title: TITLE
+author: NAME (INSTITUTION) <email@place.country>
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Vignette Title}
+  \usepackage[utf8]{inputenc}
+tags:
+abstract:
+license: Creative Commons CC-BY SA
+---
+ 
+
+```{r, ini, echo=FALSE, results='hide', message=FALSE}
+library(rmarkdown)
+options(width=50)
+set.seed(1423)
+```
+
+```{r, pkgs, echo=FALSE, message=FALSE}
+library(FLCore)
+```
+
+
+```{r}
+```
+
+
+
+# References
+
+https://creativecommons.org/licenses/by-sa/4.0
+
+# More information
+
+* You can submit bug reports, questions or suggestions on this tutorial at <https://github.com/flr/doc/issues>.
+* Or send a pull request to <https://github.com/flr/doc/>
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flr-project.org>.
+
+## Software Versions
+
+* `r version$version.string`
+* FLCore: `r packageVersion('FLCore')`
+* **Compiled**: `r date()`
+* **Git Hash**: `r system("git log --pretty=format:'%h' -n 1", intern=TRUE)`
+
+## Author information
+
+**Iago MOSQUEIRA**. European Commission Joint Research Centre (JRC), Institute for the Protection and Security of the Citizen (IPSC), Maritime Affairs Unit, Via E. Fermi 2749, 21027 Ispra VA, Italy.
