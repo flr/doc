@@ -2,37 +2,49 @@
 title: TITLE
 author: NAME (INSTITUTION) <email@place.country>
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-output:
-  html_document:
-    toc: true
-    toc_float:
-      collapsed: false
-      smooth_scroll: true
-vignette: >
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{Vignette Title}
-  \usepackage[utf8]{inputenc}
+output: github_document
 tags:
-abstract:
 license: Creative Commons CC-BY SA
 ---
  
-
 ```{r, ini, echo=FALSE, results='hide', message=FALSE}
-library(rmarkdown)
+# This chunk set the document environment, so it is hidden
+library(knitr)
+opts_chunk$set(fig.align='center',
+  message=FALSE, warning=FALSE, echo=TRUE, cache=FALSE)
 options(width=50)
 set.seed(1423)
 ```
 
-```{r, pkgs, echo=FALSE, message=FALSE}
+Lorem ipsum dolor sit amet, debitis dissentiunt mel at, porro nemore sea no, eos an albucius definiebas. Vis minim graece aliquam ne, nam in prompta discere appareat. Ad qui enim assentior, ei dicam quando accusata eam, ea cum delenit nusquam. Mei ei noster eripuit pertinacia, no nec simul delicatissimi, nec eu deleniti accusata. Tibique necessitatibus cu qui, semper suscipiantur eam id, ne nam platonem qualisque.
+
+### Required packages
+
+To follow this tutorial you should have installed the following packages:
+
+- CRAN: [ggplot2](https://cran.r-project.org/web/packages/ggplot2/index.html)
+- FLR: [FLCore](http://www.flr-project.org/FLCore/), [ggplotFL](http://www.flr-project.org/ggplotFL/)
+
+You can do so as follows,
+
+```r
+install.packages(c("ggplot2"))
+install.packages(c("ggplotFL"), repos="http://flr-project.org/R")
+```
+
+
+
+```{r, pkgs, message=FALSE}
+# This chunk loads all necessary packages, trims pkg messages
 library(FLCore)
+library(ggplotFL)
 ```
 
 
-```{r}
+```{r figA}
+# This is an example chunk for a figure
+plot(FLQuant(rnorm(200), dim=c(10,20)))
 ```
-
-
 
 # References
 
@@ -48,9 +60,11 @@ https://creativecommons.org/licenses/by-sa/4.0
 
 * `r version$version.string`
 * FLCore: `r packageVersion('FLCore')`
+* ggplotFL: `r packageVersion('ggplotFL')`
+* ggplot2: `r packageVersion('ggplot2')`
 * **Compiled**: `r date()`
 * **Git Hash**: `r system("git log --pretty=format:'%h' -n 1", intern=TRUE)`
 
 ## Author information
 
-**Iago MOSQUEIRA**. European Commission Joint Research Centre (JRC), Institute for the Protection and Security of the Citizen (IPSC), Maritime Affairs Unit, Via E. Fermi 2749, 21027 Ispra VA, Italy.
+**Iago MOSQUEIRA**. European Commission Joint Research Centre (JRC), Institute for the Protection and Security of the Citizen (IPSC), Maritime Affairs Unit, Via E. Fermi 2749, 21027 Ispra VA, Italy. <https://ec.europa.eu/jrc/>
