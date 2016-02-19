@@ -14,7 +14,9 @@ library(rmarkdown)
 render("TUTORIALNAME.Rmd")
 ```
 
-or use the included Makefile.
+use the included Makefile, or `source("make.R")`.
+
+For a new tutorials, please copy Template_Rmd and give it a suitable name, substituting spaces with `_`. Name the `Rmd` file inside with the same name, for consistency.
 
 ## Writing style
 
