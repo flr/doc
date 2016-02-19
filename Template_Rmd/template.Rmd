@@ -48,7 +48,6 @@ plot(FLQuant(rnorm(200), dim=c(10,20)))
 
 # References
 
-https://creativecommons.org/licenses/by-sa/4.0
 
 # More information
 
@@ -64,6 +63,10 @@ https://creativecommons.org/licenses/by-sa/4.0
 * ggplot2: `r packageVersion('ggplot2')`
 * **Compiled**: `r date()`
 * **Git Hash**: `r system("git log --pretty=format:'%h' -n 1", intern=TRUE)`
+
+## License
+
+This document is licensed under the [Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0) license.
 
 ## Author information
 
