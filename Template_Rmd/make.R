@@ -9,13 +9,13 @@
 library(knitr)
 library(rmarkdown)
 
-DOC  <- 'Modelling_stock_recruitment_with_FLSR.Rmd'
+DOC <- list.files(pattern="*.Rmd")[1]
 
 # html
-rmarkdown::render(DOC, output_format='html_document')
+rmarkdown::render(DOC, output_format="github_document")
 
 # pdf
-rmarkdown::render(DOC, output_format='pdf_document')
+rmarkdown::render(DOC, output_format="tufte::tufte_handout")
 
 # R
 knitr::purl(DOC)

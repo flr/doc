@@ -1,6 +1,6 @@
 
 SOURCES := $(wildcard *.Rmd)
-TARGETS = $(patsubst %.Rmd,%.html,$(SOURCES)) $(patsubst %.Rmd,%.R,$(SOURCES))
+TARGETS = $(SOURCES:%.Rmd=%.html) $(SOURCES:%.Rmd=%.R)
 
 .PHONY: all clean
 
