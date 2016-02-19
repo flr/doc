@@ -1,8 +1,8 @@
 ---
 title: TITLE
-author: NAME (INSTITUTION) <email _AT_ place.country>
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-output: github_document
+output:
+  github_document
 tags:
 license: Creative Commons CC-BY SA
 ---
@@ -18,7 +18,7 @@ set.seed(1423)
 
 Lorem ipsum dolor sit amet, debitis dissentiunt mel at, porro nemore sea no, eos an albucius definiebas. Vis minim graece aliquam ne, nam in prompta discere appareat. Ad qui enim assentior, ei dicam quando accusata eam, ea cum delenit nusquam. Mei ei noster eripuit pertinacia, no nec simul delicatissimi, nec eu deleniti accusata. Tibique necessitatibus cu qui, semper suscipiantur eam id, ne nam platonem qualisque.
 
-### Required packages
+## Required packages
 
 To follow this tutorial you should have installed the following packages:
 
@@ -45,7 +45,7 @@ Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium dolor
 
 ```{r figA}
 # This is an example chunk for a figure
-plot(FLQuant(rnorm(200), dim=c(10,20)))
+plot(FLQuant(rnorm(200), dim=c(2,20)))
 ```
 
 ## SubSECTION

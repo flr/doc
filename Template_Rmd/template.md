@@ -1,11 +1,11 @@
 TITLE
 ================
-NAME (INSTITUTION) <email@place.country>
 19 February, 2016
 
 Lorem ipsum dolor sit amet, debitis dissentiunt mel at, porro nemore sea no, eos an albucius definiebas. Vis minim graece aliquam ne, nam in prompta discere appareat. Ad qui enim assentior, ei dicam quando accusata eam, ea cum delenit nusquam. Mei ei noster eripuit pertinacia, no nec simul delicatissimi, nec eu deleniti accusata. Tibique necessitatibus cu qui, semper suscipiantur eam id, ne nam platonem qualisque.
 
-### Required packages
+Required packages
+-----------------
 
 To follow this tutorial you should have installed the following packages:
 
@@ -25,12 +25,20 @@ library(FLCore)
 library(ggplotFL)
 ```
 
+SECTION
+=======
+
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+
 ``` r
 # This is an example chunk for a figure
-plot(FLQuant(rnorm(200), dim=c(10,20)))
+plot(FLQuant(rnorm(200), dim=c(2,20)))
 ```
 
 <img src="template_files/figure-markdown_github/figA-1.png" title="" alt="" style="display: block; margin: auto;" />
+
+SubSECTION
+----------
 
 References
 ==========
@@ -49,8 +57,8 @@ Software Versions
 -   FLCore: 2.5.20160107
 -   ggplotFL: 2.5.20160119
 -   ggplot2: 2.0.0
--   **Compiled**: Fri Feb 19 10:35:12 2016
--   **Git Hash**: 3f30534
+-   **Compiled**: Fri Feb 19 14:46:29 2016
+-   **Git Hash**: 1374f9e
 
 License
 -------
