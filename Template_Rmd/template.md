@@ -5,8 +5,7 @@ NAME (INSTITUTION) <email@place.country>
 
 Lorem ipsum dolor sit amet, debitis dissentiunt mel at, porro nemore sea no, eos an albucius definiebas. Vis minim graece aliquam ne, nam in prompta discere appareat. Ad qui enim assentior, ei dicam quando accusata eam, ea cum delenit nusquam. Mei ei noster eripuit pertinacia, no nec simul delicatissimi, nec eu deleniti accusata. Tibique necessitatibus cu qui, semper suscipiantur eam id, ne nam platonem qualisque.
 
-Required packages
------------------
+### Required packages
 
 To follow this tutorial you should have installed the following packages:
 
@@ -21,6 +20,12 @@ install.packages(c("ggplotFL"), repos="http://flr-project.org/R")
 ```
 
 ``` r
+# This chunk loads all necessary packages, trims pkg messages
+library(FLCore)
+library(ggplotFL)
+```
+
+``` r
 # This is an example chunk for a figure
 plot(FLQuant(rnorm(200), dim=c(10,20)))
 ```
@@ -29,8 +34,6 @@ plot(FLQuant(rnorm(200), dim=c(10,20)))
 
 References
 ==========
-
-<https://creativecommons.org/licenses/by-sa/4.0>
 
 More information
 ================
@@ -44,8 +47,15 @@ Software Versions
 
 -   R version 3.2.3 (2015-12-10)
 -   FLCore: 2.5.20160107
--   **Compiled**: Fri Feb 19 10:20:38 2016
--   **Git Hash**: 61d8c24
+-   ggplotFL: 2.5.20160119
+-   ggplot2: 2.0.0
+-   **Compiled**: Fri Feb 19 10:35:12 2016
+-   **Git Hash**: 3f30534
+
+License
+-------
+
+This document is licensed under the [Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0) license.
 
 Author information
 ------------------
