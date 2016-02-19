@@ -24,7 +24,7 @@ Mention of other R and FLR packages should include a link to the FLR website, as
 
   [FLCore](http://www.flr-project.org/FLCore/)
 
-Mention of FLR methoda and classes should use a link to the relevant html version of the help page, as in
+Mention of FLR methods and classes should use a link to the relevant html version of the help page, as in
 
   [bubbles](http://www.flr-project.org/FLCore/bubbles.html)
 
@@ -34,18 +34,18 @@ A possible general structure would be as follows:
 
 - Introduction, what the tutorial will cover, mention relevant fisheries concepts the user should be familiar with if necessary.
 
-- Requirements, a lis of the required FLR packages, for example
+- Requirements, a list of the required FLR packages, for example
 
-The main body of the tutorial should consist oif combinations of these three types of sections:
+The main body of the tutorial should consist of combinations of these three types of sections:
 
-- Concept, explains a functionality, e.g. The Ricker stock-recruit model in FLCore
-- Task, steps to carry out some task, e.g. How to load a CSV file into an FLQuant
-- Example - show a complete nalaysis using example data, e.g. Running FLXSA on ple4 and ple4.indices
+- Concept - explains a functionality, e.g. The Ricker stock-recruit model in FLCore
+- Task - steps to carry out some task, e.g. How to load a CSV file into an FLQuant
+- Example - show a complete analysis using example data, and include useful plots, e.g. Running FLXSA on ple4 and ple4.indices
 
 The final section will contain:
 
 - References, with url links if possible.
-- More information, as in the template file. Please update author information and list all relecvant packages so that the version used is reported.
+- More information, as in the template file. Please update author information and list all relevant packages so that the version used is reported.
 
 ## Formatting conventions
 
