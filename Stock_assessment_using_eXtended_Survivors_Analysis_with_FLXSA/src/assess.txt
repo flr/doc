@@ -1,0 +1,258 @@
+===== Stock Assessment =====
+
+To perform a VPA based stock assessment requires catch-at-age data and auxillary information typically information on trends in population size e.g. based on abundance indices obtained from surveys and standardised CPUE series.
+
+The catch-at-age data in VPA are used to calculate numbers-at-age down a cohort from the oldest to the youngest age. This requires a starting estimate obtained from the abundance index.
+
+The various stock assessment packages use the same interface;  catch-at-age and the biological parameters are held in a ''FLStock'' object and the indices of abundance in ''FLIndex'' or ''FLIndices''. This makes it is easy to choose and run alternative methods. 
+
+==== Exploring the Data ====
+
+Before performing an assessment it can be important to explore the data.
+
+<code R>
+#load the packages
+library(FLXSA)
+library(FLEDA)
+
+data(ple4)
+data(ple4.indices)
+
+summary(ple4)
+summary(ple4.indices)
+summary(ple4.indices)[[1]]
+
+## inspect sum of products
+discards(ple4)/computeDiscards(ple4)
+landings(ple4)/computeLandings(ple4)
+catch(ple4)   /computeCatch(   ple4)
+
+## update
+discards(ple4)<-computeDiscards(ple4)
+landings(ple4)<-computeLandings(ple4)
+catch(ple4)   <-computeCatch(   ple4, slot='all')
+
+## inspect sum of products
+catch(ple4)/computeCatch(ple4)
+
+plot(ple4)
+
+## Use xyplot for more flexibility
+xyplot(data~year|qname,groups=age,data=(FLQuants(m=m(ple4),mat=mat(ple4),wt=stock.wt(ple4),catch.n=catch.n(ple4))),scale="free",type="l")
+
+## look for year-classes
+bubbles(age ~ year | unit, spay(catch.n(ple4)), main="test",bub.scale = 3.5)
+
+## look for trends in weights
+xyplot(data~year|unit, data=catch.wt(ple4), groups=age, type="l", lty=1, col=1)
+
+#log transformed catch at age data plotted by cohort
+plot(trim(FLCohort(log(catch.n(ple4))), cohort=1980:2000, age=1:10))
+
+# log catch ratios
+stk.logcr <- logcc(catch.n(ple4))
+
+xyplot(data~age|unit, data=trim(stk.logcr, cohort=1980:1999, age=1:12), groups=cohort,
+          main          =list(label="Log catch ratio for North Sea Plaice", cex=1),
+          ylab          =list(label="log ratio", cex=0.8),
+          xlab          =list(cex=0.8),
+          par.strip.text=list(cex=0.8),
+          scales        =list(cex=0.7),
+          type="l", col=1)
+
+
+# Tuning index plotting
+plot(ple4.indices[[1]])
+
+idx.logcr<-logcc(index(ple4.indices[[1]]))
+
+xyplot(data~age|unit, data=idx.logcr, groups=cohort,
+          main          =list(label="Log catch ratio for North Sea Plaice", cex=1),
+          ylab          =list(label="log ratio", cex=0.8),
+          xlab          =list(cex=0.8),
+          par.strip.text=list(cex=0.8),
+          scales        =list(cex=0.7),
+          type="l", col=1)
+
+</code>
+
+==== Assessment methods ====
+
+It is possible to build and develop assessment methods using the tools provided in the FLAssess package. However, a number of assessment methods have also been included in FLR that have been written in other lanugages (C++ or Fortran), and a number of other assessment methods are currently in development.
+
+=== Running the Assessment ===
+
+Running an assessment requires passing the stock and index objects to the assessment method.  Here we use XSA found in the FLXSA package.
+
+<code R>
+library(FLXSA)
+
+# get rid of estimates of numbers and fishing mortality in the test object
+stock.n(ple4)[]<-NA
+harvest(ple4)[]<-NA
+
+ple4  <- setPlusGroup(ple4, plusgroup=10)
+## run assessment using the default FLXSA.control settings
+ple4Res<-FLXSA(ple4,ple4.indices,FLXSA.control())
+
+# look at residuals
+# default plot
+plot(ple4Res@index.res[[1]])
+
+# customised using xyplot
+xyplot(data~year|age,data=ple4Res@index.res[[1]],
+  panel=function(x, y){
+	panel.xyplot(x, y, pch=19,col="blue")
+	panel.loess(x, y, lty=4,col="red")
+  },xlab="year",ylab="Residuals", scale="free")
+
+
+## Rerun the assessment and update the stock object using the '+' method
+ple4<-ple4+FLXSA(ple4,ple4.indices,FLXSA.control())
+
+## plot the estimated ssb and average F
+plot(ssb(ple4), type="l")
+plot(fbar(ple4), type="l")
+</code>
+
+==== Retrospective Bias ====
+
+Often when performing a stock assessment using virtual population analysis (VPA) a retrospective pattern will be seen. While looking for such patterns is a commonly done in stock assessment working groups, determining what causes such patterns is not so easy. They can be caused by changes in population characteristics that are assumed to be stable over time, such as selectivity, catchability, or natural mortality. But they may also be caused by conflicting signals coming in from commercial or survey indices. Such a bias can be important in affecting the performance of a harvest control rule (HCR) if it is also a function of trends in the data and if the stock assessment attempts to correct it.
+
+As well as conducting a stock assessment FLR can be used to perform retrospective analyses
+
+<code R>
+library(FLXSA)
+
+## Performing a stock assessment
+data(ple4.indices)
+
+ple4<-ple4+FLXSA(ple4,ple4.indices,FLXSA.control())
+
+## performing a retrospective analysis can be done by using ''tapply'' and specifying the range of years.
+
+retro.years <- 1991:2001
+ple4.retro  <-tapply(retro.years,1:length(retro.years),function(x)
+    return(window(ple4,end=x)+FLXSA(window(ple4,end=x),ple4.indices)))
+
+## This returns a list of FLStock objects, each of different year range containing the XSA results.
+## It is possible to make the list into an FLStocks object and then plot it
+
+ple4.retro <- FLStocks(ple4.retro)
+plot(ple4.retro)
+
+# Or to look at ssb or fbar in detail
+xyplot(data~year,groups=qname,data=lapply(ple4.retro,ssb), type="l")
+xyplot(data~year,groups=qname,data=lapply(ple4.retro,fbar), type="l")
+
+</code>
+
+
+The above example allows you to compare the resultant estimates of ssb, harvest etc. You may also want to look at the diagnostics of each individual XSA run. The example below runs a retrospective analysis as below and compares the index residuals for the first tuning fleet for all years.
+
+<code>
+
+ple4.retro <- tapply(1991:2001, 1:length(1991:2001), 
+                     function(x)return(FLXSA(window(ple4,end=x),ple4.indices)))
+
+xsa.res <- FLQuants(lapply(lapply(ple4.retro, slot, "index.res"),el,1))
+
+xyplot(data~year|age, groups=qname, data=xsa.res, type="l", scales=list(relation="free"))
+
+</code>
+
+
+
+XSA to reduce retrospective patterns employs shrinkage, i.e. the estimate of fishing mortality in the most recent year includes a weighting equal to the recent average fishing mortality. However, changing fishing mortality is the whole point of a HCR and this can lead to bias in the performance.
+
+To illustrate this effect, FLXSA was run with both low shrinkage (fse=0.75) and high shrinkage (fse=0.25), where fse is the assume standard error in F used to determine the inverse variance weighting.
+
+<code R>
+## performing a retrospective analysis with high shrinkage
+ple4.retro  <-FLStocks(tapply(retro.years,1:length(retro.years),function(x)
+    return(window(ple4,end=x)+FLXSA(window(ple4,end=x),ple4.indices,FLXSA.control(fse=0.25)))))
+xyplot(data~year,groups=qname,data=lapply(ple4.retro,fbar), type="l")
+</code>
+
+<code R>
+## performing a retrospective analysis with low shrinkage
+ple4.retro  <-FLStocks(tapply(retro.years,1:length(retro.years),function(x)
+    return(window(ple4,end=x)+FLXSA(window(ple4,end=x),ple4.indices,FLXSA.control(fse=0.75)))))
+xyplot(data~year,groups=qname,data=lapply(retro.ple4,fbar), type="l")
+</code>
+
+If the bias is produced by a trend in selectivity, catchability, or natural mortality then assuming a trend of the opposite sign will also act to reduce the retrospective pattern.
+
+<code R>
+indices<-ple4.indices
+
+## function to apply a linearly increasing trend to an FLQuant
+retro.adjust<-function(x,obj)
+   {
+   if (x>0)
+      res  <-1-(sort(cumsum(rep(x, dims(obj)$year)),d=T)-x)
+   else
+      res  <-sort(1-(sort(cumsum(rep(x, dims(obj)$year)),d=T)-x),d=T)
+
+   return(obj*FLQuant(rep(res,each=dims(obj)$age),dimnames=dimnames(obj)))
+   }
+
+
+## apply a 5% increase in catcahability to indices
+indices[[1]]@index<-retro.adjust(-0.05,ple4.indices[[1]]@index)
+indices[[2]]@index<-retro.adjust(-0.05,ple4.indices[[2]]@index)
+
+ple4.retro  <-FLStocks(tapply(retro.years,1:length(retro.years),function(x)
+    return(window(ple4,end=x)+FLXSA(window(ple4,end=x),indices))))
+
+xyplot(data~year,groups=qname,data=lapply(ple4.retro,fbar), type="l")
+</code>
+
+However, in practice distinguishing between potential causes of bias will be difficult. Therefore alternative scenarios should be run to test that the management advice is robust to what we don't know.
+
+And you might want to look at different outputs, in ICCAT the plusgroup wt-at-age is important for example. We can either write methods for all of these or make sure that for somebody who is familiar with the data and methods can quickly pose and test hypotheses. For example, the North Sea blackbird example wanted by Niels is
+
+<code R>
+fek<-function(x,stk,indices){
+    trimIndx<-function(x,i) return(window(x,end=range(x,"maxyear")-i))
+    stk+FLXSA(window(stk,end=range(stk,"maxyear")-x),lapply(indices,trimIndx,x))}
+
+ass<-tapply(1:3,1:3,fek,ple4,ple4.indices)
+</code>
+
+==== Bootstrap of XSA ====
+
+Perform a bootstrap of XSA by resampling from residuals.
+
+<code R>
+library(FLXSA)
+
+##load data from disk
+data(ple4)
+data(ple4.indices)
+
+##this contains FLStock and FLIndices objects, perform an assessment with the default control settings
+ple4.xsa<-FLXSA(ple4,ple4.indices)
+
+##sample with replacement by randomly selecting years, this way correlations between ages are preserved.
+mc.yrs   <-sample(dims(ple4.indices[[1]])$minyear:dims(ple4.indices[[1]])$maxyear,dims(ple4.indices[[1]])$year*100,TRUE)
+
+## then create an FLQuant for the residuals with the right dimensions
+dmns     <-dimnames(ple4.indices[[1]]@index)
+dmns$iter<-1:100
+dev.index<-FLQuant(c(ple4.xsa@index.res[[1]][,ac(mc.yrs)]),dimnames=dmns)
+
+## bootstrap the index
+ple4.indices[[1]]@index<-ple4.xsa@index.hat[[1]]*exp(dev.index)
+
+## rerun the assessment 100 times and put results in stock
+bootres <- FLXSA(ple4,ple4.indices,diag.flag=F)
+ple4 <- transform(ple4, stock.n= bootres@stock.n, harvest=bootres@harvest)
+
+#plot bootstrap results wrt SSB timeseries
+plot(ssb(ple4))
+
+##plot the results wrt SR curve
+mf<-model.frame(FLQuants(ssb=ssb(ple4),rec=stock.n(ple4)[1,]))
+xyplot(rec~ssb,groups=year,data=mf,pch=19,xlab="SSB",ylab="Recruits")
+</code>

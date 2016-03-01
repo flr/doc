@@ -1,0 +1,184 @@
+====== Assessment using tuned VPA (XSA) ======
+
+Many ICES stocks are assessed using tuned VPA methods and by far the most common is XSA (e**X**tended **S**urvivors **A**nalysis). The second most common tuned VPA method is ICA (Patterson and Melvin, 1996) and this is also included in the FLR suite of assessment methods. In this example we will see how to run these type of assessments in FLR using the **FLAssess** package, running diagnostic analyses and transferring the assessment estimates into the **FLStock** objects that can be then used to estimate S-R relationships (later) and biological reference points.
+
+===== FLAssess =====
+
+The core package for running stock assessments in FLR is the **FLCore**-dependent **FLAssess** package.
+To look at the structure of the **FLAssess** class use the helpfiles:
+
+<code R>
+help("FLAssess-class")
+</code>
+
+All of the generic stock assessment methods in FLR use **FLAssess** as the main dependent package after **FLCore**.
+
+===== Getting the assessment data prepared =====
+
+For this example we will use the North Sea plaice (ICES area IV) assessment data (catch-at-age, life-history, survey abundance indices). These data sets are already included in the **FLCore** example data sets so let's load in the relevant libraries and then the key data:
+
+<code R>
+# load the packages
+
+library(FLXSA)
+library(FLEDA)
+
+# the data ple4 (FLStock) and ple4.indices (FLIndices)
+ 
+data(ple4)
+data(ple4.indices)
+
+## remove the -11 standard ICES NA markers
+
+for(i in 1:length(ple4.indices))
+   index(ple4.indices[[i]]) <- apply(index(ple4.indices[[i]]),1:6,function(x){x <- ifelse(x==-11,NA,x)})
+
+# summarise
+ 
+summary(ple4)
+summary(ple4.indices)
+summary(ple4.indices[[1]])
+</code>
+
+So we should always perform even the most basic of exploratory data analyses given the tuning and other data. Recall the tutorial with the [[tutorials:eda|FLEDA]] package so use this and ''lattice()'' package to explore the information in the data.
+
+===== Performing the assessment =====
+
+So, once we have explored the data and are happy with it we then move to preparing the **control object**. In terms of VPA analyses such as XSA, ICA and ADAPT, they all run using the same call structure and require three input objects:
+
+  - Stock object with catch-at-age, maturity, weight etc.\\
+  - Indices of abundance for estimating the stock numbers and fishing mortality-at-age
+  - Control object specific to the assessment method defining all the relevant running information (tolerance, penalties etc.)
+
+We have already looked in depth at the catch, abundance and life-history information so let's take a little time to explore the XSA control object:
+
+<code R>
+# slots in the XSA control object
+
+slotNames(FLXSA.control())
+</code>
+
+These variables all influence (to varying degrees) how XSA will estimate the survivors and the eventual estimates of numbers and fishing mortality-at-age. Here are the settings as used by the ICES WG:
+
+<code R>
+# set the controls
+xsa.control  <- FLXSA.control(tol = 1e-09, maxit = 30,  min.nse = 0.3,  fse  = 2.0,
+                              rage = -1,   qage  = 6,   shk.n   = TRUE, shk.f = TRUE,
+                              shk.yrs = 5, shk.ages= 2, window  = 100,  tsrange = 99,
+                              tspower = 0)  
+</code>
+
+Now we have everything prepared we call the XSA assessment algorithm:
+
+<code R>
+# call FLXSA
+
+ple4.xsa <- FLXSA(ple4,ple4.indices,xsa.control)
+</code>
+
+So now we have an **FLXSA** object ''ple4.xsa'' (which is a derived class from **FLAssess**) so to look at the various slots in the **FLXSA** class just use ''summary(ple4.xsa)''. If one wanted to use **FLICA** for example instead of **FLXSA** one would simply change the names and use the ''FLICA()'' and ''FLICA.control()'' methods.
+
+===== Assessment diagnostics and updating =====
+
+We are obviously interested in looking at how we managed to fit the two input survey sets, amongst other things. There is a generic diagnostics method ''diagnostics()'' which gives detailed information in table form on the survivors, shrinkage weights and so on but visual tools are a more instant option for looking at the fits to the data. An obvious plot would be to look for residual patterns in the fitted indices of abundance:
+
+<code R>
+# transfer the names to the relevant survey residuals
+
+names(ple4.xsa@index.res)<- lapply(ple4.indices,'name')
+
+# use bubble plots to look at residual trends-at-age
+
+plot(bubbles(age~year|qname, data=mcf(ple4.xsa@index.res)))
+</code>
+
+Let's look at the survivor estimates by cohort for each tuning index from 1996 onwards:
+
+<code R>
+src <- levels(as.factor(ple4.xsa@diagnostics[!ple4.xsa@diagnostics$source=="fshk","source"]))
+ 
+plot(barchart(exp(nhat)~as.factor(age)|as.factor(yrcls),
+         data=ple4.xsa@diagnostics[!ple4.xsa@diagnostics$source=="fshk" & ple4.xsa@diagnostics$yrcls >1995,],
+         groups=as.factor(source), 
+         col=c("white","grey"), 
+         xlab="Age",ylab="Nhat",
+         key=list(space="top",rectangles=list(col=c("white","grey50"),cex=0.6),
+         text=list(src,cex=0.6))))
+</code>
+
+It's now helpful to summarise the assessment information back into and **FLStock** object to then look at key information such as recruitment, SSB and mean //F//. This is done via the ''+'' operator which is overloaded to act as an update function of an input **FLStock** object that has been used in conjunction with tuning indices and an assessment method:
+
+<code R>
+# update the ple4 object with the assessment results
+
+ple4 <- ple4+ple4.xsa
+</code>
+
+We may then proceed to derive the SSB, mean //F// and recruitment trends:
+
+<code R>
+# SSB
+
+ple4.ssb <- ssb(ple4)
+
+# Fbar (ages 2:6)
+
+ple4.fbar26 <- quantMeans(trim(harvest(ple4),age=2:6))
+
+# Recruitment
+
+ple4.rec <- stock.n(ple4)[1,]
+</code>
+
+One final useful diagnostic, especially for tuned VPA methods, is to perform a retrospective analysis, and see how the assessment estimates change with the progressive removal of data (back to 1995 in this case):
+
+<code R>
+# run the assessment on the full data set
+
+ple4 <- ple4+FLXSA(ple4,ple4.indices,FLXSA.control())
+ 
+# performing a retrospective analysis can be done by using ''tapply'' and specifying the range of years.
+ 
+retro.years <- 1995:2001
+ple4.retro  <-tapply(retro.years,1:length(retro.years),function(x)
+return(window(ple4,end=x)+FLXSA(window(ple4,end=x),ple4.indices)))
+</code> 
+
+Now to look for potential retrospective trends we turn the ''ple4.retro'' list into an **FLStocks** object and then use ''xyplot()'' as always:
+
+<code R>
+# coerce into FLStocks object
+
+ple4.retro <- FLStocks(ple4.retro)
+
+# full retrospective summary plot
+
+plot(ple4.retro)
+
+# SPECIFIC RETROSPECTIVE PATTERNS
+
+# SSB
+
+ylab <- 'SSB'
+xlab <- 'Year'
+mainttl <- 'SSB retrospective'
+xyplot(data~year,groups=qname,data=lapply(ple4.retro,ssb),xlab=xlab,ylab=ylab,main=mainttl,type="l")
+
+# FBAR
+
+ylab <- expression(bar(F))
+xlab <- 'Year'
+mainttl <- 'mean F retrospective'
+xyplot(data~year,groups=qname,data=lapply(ple4.retro,fbar),xlab=xlab,ylab=ylab,main=mainttl,type="l")
+
+# RECRUITS
+
+ple4.retro.rec <- list()
+for(i in 1:length(ple4.retro))
+   ple4.retro.rec[[i]] <- stock.n(ple4.retro[[i]])[1,]
+ple4.retro.rec <- FLQuants(mcf(ple4.retro.rec))
+ylab <- 'Recruits'
+xlab <- 'Year'
+mainttl <- 'Recruitment retrospective'
+xyplot(data~year,groups=qname,data=ple4.retro.rec,xlab=xlab,ylab=ylab,main=mainttl,type="l")
+</code>
