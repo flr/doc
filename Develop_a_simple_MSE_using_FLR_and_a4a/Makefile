@@ -1,6 +1,6 @@
 
 SOURCES := $(wildcard *.Rmd)
-TARGETS = $(SOURCES:%.Rmd=%.html) $(SOURCES:%.Rmd=%.R)
+TARGETS = $(SOURCES:%.Rmd=%.html) $(SOURCES:%.Rmd=%.R) $(SOURCES:%.Rmd=%.pdf)
 
 .PHONY: all clean
 
