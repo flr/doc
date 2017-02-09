@@ -8,7 +8,7 @@ Please find below the list of documents being currently developed. If you find a
 
 - A quick introduction to FLR [IM]
 - Loading your data into FLR [YV]
-- An overview of the FLCore classes [IM]
+- [An overview of the FLCore classes](An_overview_of_the_FLCore_classes/template.html) [IM]
 
 # VISUALIZATION
 
