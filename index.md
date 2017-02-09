@@ -1,3 +1,6 @@
+---
+title: FLR Project Documentation
+---
 
 The FLR Project is currently editing and rewriting its tutorial documents.
 
