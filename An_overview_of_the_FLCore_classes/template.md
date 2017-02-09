@@ -57,8 +57,8 @@ Software Versions
 -   FLCore: 2.6.0.20170130
 -   ggplotFL: 2.5.9.9000
 -   ggplot2: 2.2.1
--   **Compiled**: Thu Feb 9 16:34:04 2017
--   **Git Hash**: 486ef5e
+-   **Compiled**: Thu Feb 9 17:26:09 2017
+-   **Git Hash**: 94f01de
 
 License
 -------
