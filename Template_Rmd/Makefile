@@ -15,6 +15,7 @@ main: $(TARGETS)
 %.html: %.Rmd
 	@echo "$< -> $@"
 	@R -e "rmarkdown::render('$<')"
+# render('template.Rmd', 'knitrBootstrap::bootstrap_document')
 
 %.pdf: %.Rmd
 	@echo "$< -> $@"
