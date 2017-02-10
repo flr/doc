@@ -4,7 +4,7 @@ date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   github_document
 tags:
-license: Creative Commons Attribution-ShareAlike 4.0 International Public License
+license: Creative Commons CC-BY SA
 ---
  
 ```{r, ini, echo=FALSE, results='hide', message=FALSE}
@@ -14,7 +14,6 @@ opts_chunk$set(fig.align='center',
   message=FALSE, warning=FALSE, echo=TRUE, cache=FALSE)
 options(width=50)
 set.seed(1423)
-library(FLCore)
 ```
 
 Lorem ipsum dolor sit amet, debitis dissentiunt mel at, porro nemore sea no, eos an albucius definiebas. Vis minim graece aliquam ne, nam in prompta discere appareat. Ad qui enim assentior, ei dicam quando accusata eam, ea cum delenit nusquam. Mei ei noster eripuit pertinacia, no nec simul delicatissimi, nec eu deleniti accusata. Tibique necessitatibus cu qui, semper suscipiantur eam id, ne nam platonem qualisque.
@@ -28,12 +27,12 @@ To follow this tutorial you should have installed the following packages:
 
 You can do so as follows,
 
-```r
+```{r, eval=FALSE}
 install.packages(c("ggplot2"))
 install.packages(c("ggplotFL"), repos="http://flr-project.org/R")
 ```
 
-```{r, pkgs, message=FALSE}
+```{r, pkgs}
 # This chunk loads all necessary packages, trims pkg messages
 library(FLCore)
 library(ggplotFL)

@@ -27,12 +27,12 @@ To follow this tutorial you should have installed the following packages:
 
 You can do so as follows,
 
-```r
+```{r, eval=FALSE}
 install.packages(c("ggplot2"))
 install.packages(c("ggplotFL"), repos="http://flr-project.org/R")
 ```
 
-```{r, pkgs, message=FALSE}
+```{r, pkgs}
 # This chunk loads all necessary packages, trims pkg messages
 library(FLCore)
 library(ggplotFL)
@@ -66,7 +66,6 @@ plot(FLQuant(rnorm(200), dim=c(2,20)))
 * ggplotFL: `r packageVersion('ggplotFL')`
 * ggplot2: `r packageVersion('ggplot2')`
 * **Compiled**: `r date()`
-* **Git Hash**: `r system("git log --pretty=format:'%h' -n 1", intern=TRUE)`
 
 ## License
 
