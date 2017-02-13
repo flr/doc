@@ -15,7 +15,7 @@
 library(FLCore)
 
 # Checking the working directory
-getwd()
+#getwd()
 
 # Setting the working directory
 #setwd("directory name")
@@ -135,7 +135,7 @@ catch.n <- read.table("Data/catch_numbers.csv", sep=',')
 catch.n <- read.table("Data/catch_numbers.csv", header=TRUE, sep=',')
 # Specify which column has the row names 
 catch.n <- read.table("Data/catch_numbers.csv", header=TRUE, sep=',', row.names=1)
-# The column names are ugly (with the Xs) but that is OK for now
+ The column names are ugly (with the Xs) but that is OK for now
 # Can use read.csv() instead - same as read.table() but different default options
 catch.n <- read.csv("Data/catch_numbers.csv",row=1)
 
