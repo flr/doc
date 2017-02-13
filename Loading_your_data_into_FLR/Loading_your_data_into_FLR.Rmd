@@ -1,5 +1,5 @@
 ---
-title: TITLE
+title: Reading data into FLR 
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   github_document
@@ -16,7 +16,7 @@ options(width=50)
 set.seed(1423)
 ```
 
-Lorem ipsum dolor sit amet, debitis dissentiunt mel at, porro nemore sea no, eos an albucius definiebas. Vis minim graece aliquam ne, nam in prompta discere appareat. Ad qui enim assentior, ei dicam quando accusata eam, ea cum delenit nusquam. Mei ei noster eripuit pertinacia, no nec simul delicatissimi, nec eu deleniti accusata. Tibique necessitatibus cu qui, semper suscipiantur eam id, ne nam platonem qualisque.
+This tutorial details methods for reading data and generating the FLStock() object class.
 
 ## Required packages
 
