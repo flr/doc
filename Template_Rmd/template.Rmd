@@ -2,7 +2,8 @@
 title: TITLE
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-  github_document
+  github_document:
+  mathjax: TRUE
 tags:
 license: Creative Commons Attribution-ShareAlike 4.0 International Public License
 ---

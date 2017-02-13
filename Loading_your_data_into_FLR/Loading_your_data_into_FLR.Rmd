@@ -47,6 +47,43 @@ PD
 
 ## SubSECTION : Reading files (csv, dat, ...) - YV
 
+Fisheries data are generally stored in different format (cvs, excel, SAS...). R provides tools to read and import data from simple text files to more advanced SAS files or databases.
+https://www.datacamp.com/community/tutorials/importing-data-r-part-two#gs.kNzBd5k is a nice tutorial to quickly import data into R.
+
+Your data are stored in a folder in your computer or a server. You have to tell R what is the path to the data.
+You can check the working directory already active in your R session using the command getwd(). 
+To set the working directory use setwd("directory name"). Case is important, use // or \ for separating folders and directories in Windows.
+
+
+This tutorial will give some exemples but regardless the format, the different steps are:
+- Finding the right function to import data into R
+- Reshaping the data as a matix 
+- creating an FLQuant objetc
+
+### importing CSV files
+
+There is many ways of reading csv files. 
+read.table with 'header', 'sep', 'dec' and 'row.names' options will allow you reading all .csv and .txt files
+
+The 
+
+``` {r }
+# Read this in using read.table() with default options
+
+catch.n <- read.csv("src/Data/catch_numbers.csv",row=1)
+
+# We have read in the data as a data.frame
+class(catch.n)
+# There is an FLQuant contructor that uses a data.frame, but here our data.frame is not set up the right way
+# Instead we can convert the object to a matrix
+catch.n.matrix <- as.matrix(catch.n)
+catch.n.matrix
+# We need to specify the dimnames
+catch.n.flq <- FLQuant(catch.n.matrix, dimnames=list(age=1:7, year = 1957:2011))
+catch.n.flq
+
+```
+
 ## Reading common fisheries data formats 
 
 FLCore contains functions for reading in fish stock data in common pre-defined formats. To read a single variable (e.g. numbers-at-age, maturity-at-age) from the **Lowestoft VPA** format you use the `readVPA` function. The following example reads the catch numbers-at-age for herring:
@@ -75,7 +112,6 @@ In addition, this object only contains the input data for the stock assessment, 
 ```{r, Add values}
 her@stock.n <- readVPAFile(file.path('src','Data','her-irlw',"n.txt"))
 ```
-
 
 ## SUbsection : Reshaping data as a matrix - YV
 
