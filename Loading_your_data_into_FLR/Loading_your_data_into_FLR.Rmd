@@ -21,7 +21,7 @@ This tutorial details methods for reading various formats of data into R for gen
 ## Required packages
 
 
-Youen !!!
+
 
 To follow this tutorial you should have installed the following packages:
 
@@ -58,29 +58,51 @@ To set the working directory use setwd("directory name"). Case is important, use
 This tutorial will give some exemples but regardless the format, the different steps are:
 - Finding the right function to import data into R
 - Reshaping the data as a matix 
-- creating an FLQuant objetc
+- creating an FLQuant object
 
-### importing CSV files
+### importing files into R (exemple of csv file)
 
 There is many ways of reading csv files. 
-read.table with 'header', 'sep', 'dec' and 'row.names' options will allow you reading all .csv and .txt files
+`read.table` with 'header', 'sep', 'dec' and 'row.names' options will allow you reading all .csv and .txt files
 
-The 
+The `read.csv` or `read.csv2` function are very useful to read csv files. 
 
 ``` {r }
-# Read this in using read.table() with default options
-
 catch.n <- read.csv("src/Data/catch_numbers.csv",row=1)
+```
 
-# We have read in the data as a data.frame
+We have read in the data as a data.frame
+
+``` {r }
 class(catch.n)
-# There is an FLQuant contructor that uses a data.frame, but here our data.frame is not set up the right way
-# Instead we can convert the object to a matrix
+```
+
+The data are now in your R environment, before creating a **FLQuant** object, you need to make sure it is consistant with the type of object and formating that is needed to run the `FLQuant()` function. To get information on the structure and format needed type ?FLQuant in your R Console.
+
+
+## SUbsection : Reshaping data as a matrix - YV
+
+FLQuant accept 'vector', 'array' or 'matrix'. 
+We can convert the object catch.n to a matrix
+
+``` {r }
 catch.n.matrix <- as.matrix(catch.n)
-catch.n.matrix
-# We need to specify the dimnames
+catch.n.matrix[,1:8]
+```
+
+A `FLQuant` object is made of six dimensions. The name of the first dimension can be altered by the user from its default, quant. This could typically be age or length for data related to natural populations. The only name not accepted is 'cohort', as data structured along cohort should be stored using the `FLCohort` class instead. Other dimensions are always names as follows: year, for the calendar year of the datapoint; unit, for any kind of division of the population, e.g. by sex; season, for any temporal strata shorter than year; area, for any kind of spatial stratification; and iter, for replicates obtained through bootstrap, simulation or Bayesian analysis.
+
+When importing catch number for exemple, the input object needs to be formated as such: age or length in the first dimension and years in the seconde dimension. If the object is not formatted in the right way, you can use the `reshape()` function.
+
+
+## Subection :  Making an FLQuant object - PD
+
+
+
+We need to specify the dimnames
+``` {r }
 catch.n.flq <- FLQuant(catch.n.matrix, dimnames=list(age=1:7, year = 1957:2011))
-catch.n.flq
+catch.n.flq[,1:8]
 
 ```
 ## SUbsection : Reshaping data as a matrix - YV
