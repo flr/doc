@@ -16,12 +16,13 @@ options(width=50)
 set.seed(1423)
 ```
 
+PD 
 This tutorial details methods for reading data and generating the FLStock() object class.
 
 ## Required packages
 
 
-test Youen !!!
+Youen !!!
 
 To follow this tutorial you should have installed the following packages:
 
@@ -43,7 +44,7 @@ library(ggplotFL)
 
 # SECTION
 
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+PD
 
 
 ```{r figA}
@@ -51,7 +52,15 @@ Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium dolor
 plot(FLQuant(rnorm(200), dim=c(2,20)))
 ```
 
-## SubSECTION
+## SubSECTION : Reading files (csv, dat, ...) - YV
+
+## Subsection : Reading fisheries data formats (VPA etc..) - PD
+
+## SUbsection : Reshaping data as a matrix - YV
+
+## Subection :  Making an FLQuant object - PD
+
+## Subsection : Description, units, ranges etc.. - PD
 
 # References
 
