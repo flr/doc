@@ -16,22 +16,19 @@ options(width=50)
 set.seed(1423)
 ```
 
-This tutorial details methods for reading various formats of data into R for generating the FLStock() object class.
+This tutorial details methods for reading various formats of data into R for generating the `FLStock` object class.
 
 ## Required packages
 
-
-
-
 To follow this tutorial you should have installed the following packages:
 
-- CRAN: [ggplot2](https://cran.r-project.org/web/packages/ggplot2/index.html)
-- FLR: [FLCore](http://www.flr-project.org/FLCore/), [ggplotFL](http://www.flr-project.org/ggplotFL/)
+- CRAN: [ggplot2](https://cran.r-project.org/web/packages/ggplot2/index.html); [ggthemes](https://cran.r-project.org/web/packages/ggthemes/index.html)
+- FLR: [FLCore](http://www.flr-project.org/FLCore/); [ggplotFL](http://www.flr-project.org/ggplotFL/)
 
 You can do so as follows,
 
 ```{r, eval=FALSE}
-install.packages(c("ggplot2"))
+install.packages(c("ggplot2", 'ggthemes'))
 install.packages(c("ggplotFL"), repos="http://flr-project.org/R")
 ```
 
@@ -39,13 +36,14 @@ install.packages(c("ggplotFL"), repos="http://flr-project.org/R")
 # This chunk loads all necessary packages, trims pkg messages
 library(FLCore)
 library(ggplotFL)
+library(ggthemes)
 ```
 
-# SECTION
+# FLStock objects 
 
-PD
+This section covers methods for reading in the data required to construct `FLStock` objects.
 
-## SubSECTION : Reading files (csv, dat, ...) - YV
+## Reading files (csv, dat, ...)
 
 Fisheries data are generally stored in different format (cvs, excel, SAS...). R provides tools to read and import data from simple text files to more advanced SAS files or databases.
 https://www.datacamp.com/community/tutorials/importing-data-r-part-two#gs.kNzBd5k is a nice tutorial to quickly import data into R.
@@ -60,7 +58,7 @@ This tutorial will give some exemples but regardless the format, the different s
 - Reshaping the data as a matix 
 - creating an FLQuant object
 
-### importing files into R (exemple of csv file)
+### Importing files into R (exemple of csv file)
 
 There is many ways of reading csv files. 
 `read.table` with 'header', 'sep', 'dec' and 'row.names' options will allow you reading all .csv and .txt files
@@ -77,10 +75,10 @@ We have read in the data as a data.frame
 class(catch.n)
 ```
 
-The data are now in your R environment, before creating a **FLQuant** object, you need to make sure it is consistant with the type of object and formating that is needed to run the `FLQuant()` function. To get information on the structure and format needed type ?FLQuant in your R Console.
+The data are now in your R environment, before creating a **FLQuant** object, you need to make sure it is consistant with the type of object and formatting that is needed to run the `FLQuant()` function. To get information on the structure and format needed type ?FLQuant in your R Console.
 
 
-## SUbsection : Reshaping data as a matrix - YV
+## Reshaping data as a matrix 
 
 FLQuant accept 'vector', 'array' or 'matrix'. 
 We can convert the object catch.n to a matrix
@@ -90,14 +88,12 @@ catch.n.matrix <- as.matrix(catch.n)
 catch.n.matrix[,1:8]
 ```
 
-A `FLQuant` object is made of six dimensions. The name of the first dimension can be altered by the user from its default, quant. This could typically be age or length for data related to natural populations. The only name not accepted is 'cohort', as data structured along cohort should be stored using the `FLCohort` class instead. Other dimensions are always names as follows: year, for the calendar year of the datapoint; unit, for any kind of division of the population, e.g. by sex; season, for any temporal strata shorter than year; area, for any kind of spatial stratification; and iter, for replicates obtained through bootstrap, simulation or Bayesian analysis.
+A `FLQuant` object is made of six dimensions. The name of the first dimension can be altered by the user from its default, quant. This could typically be age or length for data related to natural populations. The only name not accepted is 'cohort', as data structured along cohort should be stored using the `FLCohort` class instead. Other dimensions are always names as follows: year, for the calendar year of the data point; unit, for any kind of division of the population, e.g. by sex; season, for any temporal strata shorter than year; area, for any kind of spatial stratification; and iter, for replicates obtained through bootstrap, simulation or Bayesian analysis.
 
-When importing catch number for exemple, the input object needs to be formated as such: age or length in the first dimension and years in the seconde dimension. If the object is not formatted in the right way, you can use the `reshape()` function.
-
-
-## Subection :  Making an FLQuant object - PD
+When importing catch number for example, the input object needs to be formatted as such: age or length in the first dimension and years in the second dimension. If the object is not formatted in the right way, you can use the `reshape()` function.
 
 
+## Making an FLQuant object 
 
 We need to specify the dimnames
 ``` {r }
@@ -108,17 +104,19 @@ catch.n.flq[,1:8]
 
 ## Reading common fisheries data formats 
 
-FLCore contains functions for reading in fish stock data in common pre-defined formats. To read a single variable (e.g. numbers-at-age, maturity-at-age) from the **Lowestoft VPA** format you use the `readVPA` function. The following example reads the catch numbers-at-age for herring:
+FLCore contains functions for reading in fish stock data in commonly used formats. To read a single variable (e.g. numbers-at-age, maturity-at-age) from the **Lowestoft VPA** format you use the `readVPA` function. The following example reads the catch numbers-at-age for herring:
 
 ```{r, readVPA}
+# Read from a VPA text file
 catch.n <- readVPAFile(file.path('src','Data','her-irlw',"canum.txt"))
 class(catch.n)
 ```
-This can be repeated for each of the data files. 
+This can be repeated for each of the data files. In addition, functions are available for Multifan-CL format  `readMFCL` and ADMB `readADMB`.
 
 Alternatively, if you have the full information for a stock in the **Lowestoft VPA**, **Adapt**, **CSA** or **ICA** format you can read in together using the `readFLStock` function. Here, you point the function to the index file, with all other files in the same directory:
 
 ```{r, readFLStock}
+# Read a collection of VPA files, pointing to the Index file:
 her <- readFLStock(file.path('src','Data','her-irlw','index.txt'))
 class(her)
 ```
@@ -127,17 +125,75 @@ Which we can see correctly formats the data as an `FLStock` object.
 ```{r, readFLStock2}
 summary(her)
 ```
-Note that the units for the slots have not been set. We will deal with this in the section below.
+Note: the units for the slots have not been set. We will deal with this in the next section.
 
 In addition, this object only contains the input data for the stock assessment, not any estimated values (e.g. harvest rates, stock abundances). You can add these to the object as follows:
 
-```{r, Add values}
+```{r, AddMissingAssessmentData}
 her@stock.n <- readVPAFile(file.path('src','Data','her-irlw',"n.txt"))
+print(her@stock.n[,ac(2005:2011)]) # only print 2005:2011
+
+her@harvest <- readVPAFile(file.path('src','Data','her-irlw',"f.txt"))
+
+```
+Now we have a fully filled `FLStock` object. But let's check the data are consistent.
+
+```{r, CheckConsistency}
+# The sum of products (SOP)
+apply(her@landings.n * her@landings.wt, 2, sum)[,ac(2005:2011)]
+# and the value read in from the VPA file
+her@landings[,ac(2005:2011)]
+
+## They are not the same!!  We correct the landings to be the same as the SOP - there is a handy function for this purpose
+her@landings <- computeLandings(her)
+
+# In addition, there is no discard information
+her@discards.wt[,ac(2005:2011)]
+her@discards.n[,ac(2005:2011)]
+# Set up the discards and catches
+her@discards.wt   <- her@landings.wt
+her@discards.n[]  <- 0
+her@discards      <- computeDiscards(her)
+her@catch         <- her@landings
+her@catch.wt      <- her@landings.wt
+her@catch.n       <- her@landings.n
+
+```
+Functions are available to `computeLandings`, `computeDiscards`, `computeCatch` and `computeStock`. These functions take the argument `slot = 'catch'`, `slot = 'wt'` and `slot = 'n'` to compute the total weight, individual weight and numbers respectively, in addition to `slot = 'all'`. 
+
+## Description, units, ranges etc..
+
+Before we are finished, we want to ensure the units and range references are correct. This is important as the derived calculations require the correct scaling.
+
+First, let's ensure an appropriate name and description are assigned:
+
+```{r, Descriptions}
+summary(her)
+
+#name and descriptions
+her@name # ok
+her@desc # ok
+
+# Set the Fbar range for the stock 
+her@range[c('minfbar','maxfbar')] # ok, but can be filled with c(min,max)
+
+# set the plus group
+her@range['plusgroup']  <- 7 # final year is a plusgroup
+
+## Units
+units(her@catch)    <- units(her@discards)    <- units(her@landings)    <- units(her@stock)    <- 'tonnes'
+units(her@catch.n)  <- units(her@discards.n)  <- units(her@landings.n)  <- units(her@stock.n)  <- 'tonnes'
+units(her@catch.wt) <- units(her@discards.wt) <- units(her@landings.wt) <- units(her@stock.wt) <- 'tonnes'
+units(her@harvest) <- 'f'
+
+```
+This should now have the correct units defined:
+
+```{r, Plot}
+summary(her)
+plot(her) + theme_tufte() # using ggthemes - available on CRAN
 ```
 
-
-
-## Subsection : Description, units, ranges etc.. - PD
 
 # References
 
