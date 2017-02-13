@@ -1,20 +1,13 @@
 ---
 title: Reading data into FLR 
-date: "`r format(Sys.time(), '%d %B, %Y')`"
+date: "13 February, 2017"
 output:
   github_document
 tags:
 license: Creative Commons CC-BY SA
 ---
  
-```{r, ini, echo=FALSE, results='hide', message=FALSE}
-# This chunk set the document environment, so it is hidden
-library(knitr)
-opts_chunk$set(fig.align='center',
-  message=FALSE, warning=FALSE, echo=TRUE, cache=FALSE)
-options(width=50)
-set.seed(1423)
-```
+
 
 This tutorial details methods for reading various formats of data into R for generating the FLStock() object class.
 
@@ -30,12 +23,14 @@ To follow this tutorial you should have installed the following packages:
 
 You can do so as follows,
 
-```{r, eval=FALSE}
+
+```r
 install.packages(c("ggplot2"))
 install.packages(c("ggplotFL"), repos="http://flr-project.org/R")
 ```
 
-```{r, pkgs}
+
+```r
 # This chunk loads all necessary packages, trims pkg messages
 library(FLCore)
 library(ggplotFL)
@@ -47,71 +42,83 @@ PD
 
 ## SubSECTION : Reading files (csv, dat, ...) - YV
 
-Fisheries data are generally stored in different format (cvs, excel, SAS...). R provides tools to read and import data from simple text files to more advanced SAS files or databases.
-https://www.datacamp.com/community/tutorials/importing-data-r-part-two#gs.kNzBd5k is a nice tutorial to quickly import data into R.
-
-Your data are stored in a folder in your computer or a server. You have to tell R what is the path to the data.
-You can check the working directory already active in your R session using the command getwd(). 
-To set the working directory use setwd("directory name"). Case is important, use // or \ for separating folders and directories in Windows.
-
-
-This tutorial will give some exemples but regardless the format, the different steps are:
-- Finding the right function to import data into R
-- Reshaping the data as a matix 
-- creating an FLQuant objetc
-
-### importing CSV files
-
-There is many ways of reading csv files. 
-read.table with 'header', 'sep', 'dec' and 'row.names' options will allow you reading all .csv and .txt files
-
-The 
-
-``` {r }
-# Read this in using read.table() with default options
-
-catch.n <- read.csv("src/Data/catch_numbers.csv",row=1)
-
-# We have read in the data as a data.frame
-class(catch.n)
-# There is an FLQuant contructor that uses a data.frame, but here our data.frame is not set up the right way
-# Instead we can convert the object to a matrix
-catch.n.matrix <- as.matrix(catch.n)
-catch.n.matrix
-# We need to specify the dimnames
-catch.n.flq <- FLQuant(catch.n.matrix, dimnames=list(age=1:7, year = 1957:2011))
-catch.n.flq
-
-```
-
 ## Reading common fisheries data formats 
 
 FLCore contains functions for reading in fish stock data in common pre-defined formats. To read a single variable (e.g. numbers-at-age, maturity-at-age) from the **Lowestoft VPA** format you use the `readVPA` function. The following example reads the catch numbers-at-age for herring:
 
-```{r, readVPA}
+
+```r
 catch.n <- readVPAFile(file.path('src','Data','her-irlw',"canum.txt"))
 class(catch.n)
+```
+
+```
+## [1] "FLQuant"
+## attr(,"package")
+## [1] "FLCore"
 ```
 This can be repeated for each of the data files. 
 
 Alternatively, if you have the full information for a stock in the **Lowestoft VPA**, **Adapt**, **CSA** or **ICA** format you can read in together using the `readFLStock` function. Here, you point the function to the index file, with all other files in the same directory:
 
-```{r, readFLStock}
+
+```r
 her <- readFLStock(file.path('src','Data','her-irlw','index.txt'))
 class(her)
 ```
+
+```
+## [1] "FLStock"
+## attr(,"package")
+## [1] "FLCore"
+```
 Which we can see correctly formats the data as an `FLStock` object.
 
-```{r, readFLStock2}
+
+```r
 summary(her)
 ```
-Note that the units for the slots have not been set. We will deal with this in the section below.
 
-In addition, this object only contains the input data for the stock assessment, not any estimated values (e.g. harvest rates, stock abundances). You can add these to the object as follows:
+```
+## An object of class "FLStock"
+## 
+## Name: Herring VIa(S) VIIbc  
+## Description: Imported from a VPA file. ( src/Data/her-irl [...] 
+## Quant: age 
+## Dims:  age 	year	unit	season	area	iter
+## 	7	55	1	1	1	1	
+## 
+## Range:  min	max	pgroup	minyear	maxyear	minfbar	maxfbar 
+## 	1	7	NA	1957	2011	1	7	
+## 
+## catch         : [ 1 55 1 1 1 1 ], units =  NA 
+## catch.n       : [ 7 55 1 1 1 1 ], units =  NA 
+## catch.wt      : [ 7 55 1 1 1 1 ], units =  NA 
+## discards      : [ 1 55 1 1 1 1 ], units =  NA 
+## discards.n    : [ 7 55 1 1 1 1 ], units =  NA 
+## discards.wt   : [ 7 55 1 1 1 1 ], units =  NA 
+## landings      : [ 1 55 1 1 1 1 ], units =  NA 
+## landings.n    : [ 7 55 1 1 1 1 ], units =  NA 
+## landings.wt   : [ 7 55 1 1 1 1 ], units =  NA 
+## stock         : [ 1 55 1 1 1 1 ], units =  NA 
+## stock.n       : [ 7 55 1 1 1 1 ], units =  NA 
+## stock.wt      : [ 7 55 1 1 1 1 ], units =  NA 
+## m             : [ 7 55 1 1 1 1 ], units =  NA 
+## mat           : [ 7 55 1 1 1 1 ], units =  NA 
+## harvest       : [ 7 55 1 1 1 1 ], units =  f 
+## harvest.spwn  : [ 7 55 1 1 1 1 ], units =  NA 
+## m.spwn        : [ 7 55 1 1 1 1 ], units =  NA
+```
 
-```{r, Add values}
+However, this object only contains the input data for the stock assessment, not any estimated values (e.g. harvest rates, stock abundances). You can add these to the object as follows:
+
+
+```r
 her@stock.n <- readVPAFile(file.path('src','Data','her-irlw',"n.txt"))
 ```
+Note that the units for the harvest slot have not been set. We will deal with this in the section below.
+
+
 
 ## SUbsection : Reshaping data as a matrix - YV
 
@@ -130,11 +137,11 @@ her@stock.n <- readVPAFile(file.path('src','Data','her-irlw',"n.txt"))
 
 ## Software Versions
 
-* `r version$version.string`
-* FLCore: `r packageVersion('FLCore')`
-* ggplotFL: `r packageVersion('ggplotFL')`
-* ggplot2: `r packageVersion('ggplot2')`
-* **Compiled**: `r date()`
+* R version 3.3.1 (2016-06-21)
+* FLCore: 2.6.0.20170130
+* ggplotFL: 2.5.9.9000
+* ggplot2: 2.1.0
+* **Compiled**: Mon Feb 13 15:25:11 2017
 
 ## License
 
