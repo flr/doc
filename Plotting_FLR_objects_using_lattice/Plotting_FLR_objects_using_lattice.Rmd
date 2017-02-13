@@ -1,5 +1,5 @@
 ---
-title: TITLE
+title: PLOTTING FLR OBJECTS USING LATTICE
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   github_document
@@ -16,39 +16,167 @@ options(width=50)
 set.seed(1423)
 ```
 
-Lorem ipsum dolor sit amet, debitis dissentiunt mel at, porro nemore sea no, eos an albucius definiebas. Vis minim graece aliquam ne, nam in prompta discere appareat. Ad qui enim assentior, ei dicam quando accusata eam, ea cum delenit nusquam. Mei ei noster eripuit pertinacia, no nec simul delicatissimi, nec eu deleniti accusata. Tibique necessitatibus cu qui, semper suscipiantur eam id, ne nam platonem qualisque.
+The lattice package (Sarkar, 2008) improves on base R graphics by providing better defaults and the ability to easily display multivariate relationships. In particular, the package supports the creation of trellis graphs - graphs that display a variable or the relationship between variables, conditioned on one or more other variables. Lattice methods (e.g. xyplot(), bwplot(), dotplot()) are available for FLR classes in FLCore, and the standard plots (plot()) in FLR are lattice-based.
 
 ## Required packages
 
 To follow this tutorial you should have installed the following packages:
 
-- CRAN: [ggplot2](https://cran.r-project.org/web/packages/ggplot2/index.html)
-- FLR: [FLCore](http://www.flr-project.org/FLCore/), [ggplotFL](http://www.flr-project.org/ggplotFL/)
+- CRAN: [lattice](https://cran.r-project.org/web/packages/lattice/index.html)
+- FLR: [FLCore](http://www.flr-project.org/FLCore/)
 
 You can do so as follows,
 
 ```{r, eval=FALSE}
-install.packages(c("ggplot2"))
-install.packages(c("ggplotFL"), repos="http://flr-project.org/R")
+install.packages(c("lattice"))
+install.packages(c("FLCore"), repos="http://flr-project.org/R")
 ```
 
 ```{r, pkgs}
 # This chunk loads all necessary packages, trims pkg messages
 library(FLCore)
-library(ggplotFL)
+library(lattice)
 ```
 
-# SECTION
+# GRAPH TYPES AVAILABLE
 
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+In case of *plot* the name of the object could be used, e.g. *plot(ple4)*
+
+The typical formula for lattice plots is:
+
+*graph_type(formula, data=FLQuant)*
+
+where options could be selected from 
+
+Graph Type | Description        | Formula
+-----------|------------------- |---------
+barchart   | bar chart          | x~A or A~x
+bwplot     | boxplot            | x~A or A~x
+dotplot    | dotplot            | ~x|A
+histogram  | histogram          | ~x
+xyplot     | scatterplot        | y~x|A
+wireframe  | 3D wireframe graph | z~y*x
 
 
-```{r figA}
-# This is an example chunk for a figure
-plot(FLQuant(rnorm(200), dim=c(2,20)))
+# STANDARD LATTICE BASED FLR PLOTS
+
+The standard plot() function in FLR returns lattice-based plots.
+
+```{r fig1}
+## Import your data from FLR
+#place in the North Sea
+data(ple4)
+data(nsher)
+
+# And the standard plots in FLR are lattice-based
+# plot for FLQuant
+plot(catch.n(ple4))
 ```
 
-## SubSECTION
+
+```{r fig2}
+# Plot FLStock
+plot(ple4)
+```
+
+```{r fig3}
+# Plot FLSR
+plot(nsher)
+```
+
+# PLOTTING FLR OBJECTS USING LATTICE
+
+
+```{r fig4}
+# The conversion to data.frame requires columns names for dims and 'data'. 
+#The following names of FL object are used
+head(as.data.frame(catch(ple4)))
+```
+
+
+## XYPLOTS for FLR
+
+```{r fig5}
+xyplot(data~year, data=catch(ple4), type='b', pch=19)
+
+```
+
+
+```{r fig6}
+# values in FLQuant turn into a 'data' column to use in formulas
+xyplot(data~year, groups=age, data=catch.n(ple4), type='l', ylab='Catch (t)')
+
+```
+
+```{r fig7}
+# values in FLQuant turn into a 'data' column to use in formulas
+xyplot(data~year|age, data=catch.n(ple4), type='l', ylab='Catch (t)')
+
+```
+
+```{r fig8}
+# Methods are also available for FLQuants, with elements names' variable 'qname'
+xyplot(data~year|qname, data=FLQuants(SSB=ssb(ple4), Yield=catch(ple4)))
+```
+
+```{r fig9}
+# Methods are also available for FLQuants, with elements names' variable 'qname'
+xyplot(data~year|qname, data=FLQuants(SSB=ssb(ple4), Yield=catch(ple4)))
+```
+
+
+## BWPLOTS
+
+```{r fig10}
+# bwplot
+bwplot(data~year, rlnorm(200, fbar(ple4), 0.15))
+
+```
+
+## DOTPLOTS
+
+```{r fig11}
+
+dotplot(data~year, groups=age, harvest(ple4))
+
+```
+
+## HISTOGRAM
+
+```{r fig12}
+histogram(~data|year, catch.n(ple4))
+
+```
+
+## HISTOGRAM
+
+```{r fig13}
+histogram(~data|year, catch.n(ple4))
+
+```
+
+
+
+## WIREFRAME
+
+```{r fig14}
+wireframe(data~age*year, data=harvest(ple4),zlab="F")
+```
+
+
+# FLR specific plots BUBBLES
+
+```{r fig15}
+# Our own bubbles method
+bubbles(age~year, data=catch.n(ple4), bub.scale=5)
+
+```
+
+```{r fig16}
+# Select age classes for the analysis
+bubbles(age~year, data=catch.n(ple4)[5:10,], bub.scale=10)
+
+```
 
 # References
 

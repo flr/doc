@@ -13,7 +13,6 @@ license: Creative Commons CC-BY SA
 library(knitr)
 opts_chunk$set(fig.align='center',
   message=FALSE, warning=FALSE, echo=TRUE, cache=FALSE)
-options(width=50)
 set.seed(1423)
 ```
 
