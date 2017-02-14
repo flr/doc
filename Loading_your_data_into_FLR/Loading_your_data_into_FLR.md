@@ -376,7 +376,7 @@ her@desc # ok
 ```
 
 ```
-## [1] "Imported from a VPA file. ( src/Data/her-irlw/index.txt ).  Tue Feb 14 11:16:11 2017"
+## [1] "Imported from a VPA file. ( src/Data/her-irlw/index.txt ).  Tue Feb 14 16:02:57 2017"
 ```
 
 ```r
@@ -445,27 +445,49 @@ plot(her) + theme_bw() # using the simple bw theme
 
 # FLIndices
 
-Youen text here
+Two solutions can be used to read abundance indices into FLR. 
+
+## Reading from common fisheries data formats 
+
+If your data are formatted in a **Lowestoft VPA** format then FLCore contains functions for reading in indices. To read an abundance index, you use the `readFLIndices` function. The following example reads the index from `ple4` example:
 
 
+```r
+indices <- readFLIndices('src/Data/ple4_ISIS.txt')
+```
+
+Using this function, `slot indices@names` is already filled by BTS-ISIS, and the information `slot indices@range` too.
+
+## Reading from flat files 
+
+If your data are not formatted in a **Lowestoft VPA** format, then you and read them using `read.table` for example.
 
 
+```r
+indices <- read.table('src/Data/ple4Index1.txt')
+```
+which needs to be transformed in FLQuant
+
+```r
+indices <- FLQuant(as.matrix(indices), dimnames=list(age=1:8, year = 1985:2008))
+```
+And in FLIndex
+
+```r
+indices <- FLIndex(indices)
+```
+And then in FLIndices
+
+```r
+indices <- FLIndices(indices)
+```
+
+`slot indices@range` needs to be filled in with the end and start date of the tuning series
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```r
+indices[[1]]@range[c('startf', 'endf')] <- c(0.66,0.75)
+```
 
 # FLFleets
 
@@ -677,7 +699,7 @@ None
 
 * You can submit bug reports, questions or suggestions on this tutorial at <https://github.com/flr/doc/issues>.
 * Or send a pull request to <https://github.com/flr/doc/>
-* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flr-project.org>.
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR web-page, <http://flr-project.org>.
 
 ## Software Versions
 
@@ -685,7 +707,7 @@ None
 * FLCore: 2.6.0.20170130
 * ggplotFL: 2.5.9.9000
 * ggplot2: 2.1.0
-* **Compiled**: Tue Feb 14 11:16:12 2017
+* **Compiled**: Tue Feb 14 16:02:59 2017
 
 ## License
 
@@ -694,3 +716,5 @@ This document is licensed under the [Creative Commons Attribution-ShareAlike 4.0
 ## Author information
 
 **Iago MOSQUEIRA**. European Commission Joint Research Centre (JRC), Institute for the Protection and Security of the Citizen (IPSC), Maritime Affairs Unit, Via E. Fermi 2749, 21027 Ispra VA, Italy. <https://ec.europa.eu/jrc/>
+
+

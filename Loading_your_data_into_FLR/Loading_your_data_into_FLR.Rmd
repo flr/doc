@@ -55,7 +55,7 @@ This tutorial will give some examples but regardless the format, the different s
 - Reshaping the data as a matrix 
 - creating an FLQuant object
 
-### Importing files into R (exemple of csv file)
+### Importing files into R (example of csv file)
 
 There is many ways of reading csv files. 
 `read.table` with 'header', 'sep', 'dec' and 'row.names' options will allow you reading all .csv and .txt files
