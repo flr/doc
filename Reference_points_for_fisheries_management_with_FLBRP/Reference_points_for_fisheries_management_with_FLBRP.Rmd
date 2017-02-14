@@ -114,7 +114,9 @@ brp4Ri <- FLBRP(ple4, sr=ple4SR)
 
 ```
 
-The process for calculating biological and economic reference points using the `FLBRP` class can now proceed. A first call to `brp()` will calculate the default reference points and return an object of class `FLBRP` where the results have been added to the `refpts` slot
+The process for calculating biological and economic reference points using the `FLBRP` class can now proceed. A first call to `brp()` will calculate the default reference points and return an object of class `FLBRP` where the results have been added to the `refpts` slot. 
+
+The default reference points include the [virgin](#virgin) stock, the [$MSY$](#msy) levels, the [crash](#crash) exploitation, the approximation of MSY [$F_{0.1}$](#f01), [$F_{max}$](#fmax) and [$SPR_{3O}$] (#spr30).
 
 
 ```{r} 
@@ -139,7 +141,7 @@ plot(brp4Ri,obs=T)
 
 # Economic reference points
 
-We can add economic data to the `FLBRP` object in order to calculate MEY. To do this, three variables are needed, price (at age) in keuro/ton of fish, variable costs in keuro per unit of fishing mortality *F* and fixed costs in keuro per unit of fishing mortality *F*. 
+We can add economic data to the `FLBRP` object in order to calculate the maximum economic yield [MEY](#mey). To do this, three variables are needed, price (at age) in keuro/ton of fish, variable costs in keuro per unit of fishing mortality *F* and fixed costs in keuro per unit of fishing mortality *F*. 
 In this example, costs linked to the catch of plaice only are made up (because plaice is caught in mixed fisheries).
 
 ```{r}
@@ -169,6 +171,35 @@ and plotted
 ```{r}
 plot(brp4Eco)
 ```
+
+On this figure we see that $F_{MEY}$ is lower than $F_{MSY}$, meaning that the economic reference point is more sustainable than *MSY*. In rare cases when the price of smaller fish is higher than the price of older fish, $F_{MEY}$ can be higher than $F_{MSY}$.
+
+
+# Glossary
+
+## $Crash$ {#crash} 
+$F_{Crash}$ is the level of F that will drive the stock to extinction.
+
+## $F_{0.1}$ {#f01}
+$F_{0.1}$ is a proxy for $F_{MSY}$ and is the fishing mortality that corresponds to a point on the yield per recruit curve where the slope is 10\% of that at the origin.
+
+## $F_{Max}$ {#fmax}
+$F_{Max}$ is F returning the maximum yield per recruit. 
+
+## $MEY$ and $F_{MEY}$ {#mey} 
+$MEY$ represents the maximum economic yield, $F_{MEY}$ corresponds to the level of exploitation that provides the maximum profit. Profit is obtained as the difference between the revenue (yield multiplied by prices) and the costs (cost per unit of F multiplied by the level of exploitation).
+
+## $MSY$ and $F_{MSY}$ {#msy} 
+$MSY$ represents the maximum sustainable yield, $F_{MSY}$ corresponds to the level of exploitation that provides the maximum yield, derived from a spawner and yield curves combined with a stock recruitment relationship.
+
+## $SPR_O$ {#spr0}
+$SPR_O$ is the spawner per recruit at virgin biomass. 
+
+## $SPR_{3O}$ {#spr30}
+$SPR_{30}$ corresponds to the point on the curve where SPR is 30\% of $SPR_0$. In these cases the biomass, ssb and yield values are derived by multiplying the per recruit values by the average recruitment.
+
+## $virgin$ {#virgin}
+$virgin$ represents the virgin biomass without exploitation.
 
 # More information
 
