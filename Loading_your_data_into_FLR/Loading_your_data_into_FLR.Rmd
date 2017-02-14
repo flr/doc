@@ -218,11 +218,14 @@ indices <- FLQuant(as.matrix(indices), dimnames=list(age=1:8, year = 1985:2008))
 ```
 And in FLIndex
 ```{r }
-indices <- FLIndex(indices)
+indices <- FLIndex(index = indices)
 ```
 And then in FLIndices
 ```{r }
 indices <- FLIndices(indices)
+
+plot(indices[[1]])
+
 ```
 
 `slot indices@range` needs to be filled in with the end and start date of the tuning series

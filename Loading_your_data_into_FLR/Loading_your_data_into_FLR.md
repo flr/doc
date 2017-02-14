@@ -50,7 +50,7 @@ This tutorial will give some examples but regardless the format, the different s
 - Reshaping the data as a matrix 
 - creating an FLQuant object
 
-### Importing files into R (exemple of csv file)
+### Importing files into R (example of csv file)
 
 There is many ways of reading csv files. 
 `read.table` with 'header', 'sep', 'dec' and 'row.names' options will allow you reading all .csv and .txt files
@@ -376,7 +376,7 @@ her@desc # ok
 ```
 
 ```
-## [1] "Imported from a VPA file. ( src/Data/her-irlw/index.txt ).  Tue Feb 14 16:02:57 2017"
+## [1] "Imported from a VPA file. ( src/Data/her-irlw/index.txt ).  Tue Feb 14 16:20:57 2017"
 ```
 
 ```r
@@ -474,13 +474,17 @@ indices <- FLQuant(as.matrix(indices), dimnames=list(age=1:8, year = 1985:2008))
 And in FLIndex
 
 ```r
-indices <- FLIndex(indices)
+indices <- FLIndex(index = indices)
 ```
 And then in FLIndices
 
 ```r
 indices <- FLIndices(indices)
+
+plot(indices[[1]])
 ```
+
+<img src="figure/unnamed-chunk-10-1.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" style="display: block; margin: auto;" />
 
 `slot indices@range` needs to be filled in with the end and start date of the tuning series
 
@@ -707,7 +711,7 @@ None
 * FLCore: 2.6.0.20170130
 * ggplotFL: 2.5.9.9000
 * ggplot2: 2.1.0
-* **Compiled**: Tue Feb 14 16:02:59 2017
+* **Compiled**: Tue Feb 14 16:21:00 2017
 
 ## License
 
