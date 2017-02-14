@@ -16,7 +16,7 @@ options(width=50)
 set.seed(1423)
 ```
 
-The __FLSR__ is a [S4](https://stat.ethz.ch/R-manual/R-devel/library/methods/html/Classes_Details.html) class for Stock-Recruitment (SR) models, an extension of __FLModel__ , part of the __FLCore__ package.  Commonly used or custom-tailored SR models can be fitted directly on __FLStock__ objects and provide estimates of uncertainty. __FLSR__ class objects can be then used to visualize the fitted models as well as for making future projections. 
+The __FLSR__ is a [S4](https://stat.ethz.ch/R-manual/R-devel/library/methods/html/Classes_Details.html) class for Stock-Recruitment (SR) models, an extension of __FLModel__ , part of the __FLCore__ package.  Commonly used or custom-tailored SR models can be fitted directly on __FLStock__ objects and provide estimates of uncertainty. __FLSR__ class objects can be then used to visualize the fitted models, in calculations of biological reference points using __FLBPR__ or when performing stock projections. 
 
 ## Required packages
 
@@ -230,7 +230,7 @@ plot(p4sr)
 params(p4sr)
 ```
 
-Finally, custom SR models can be implemented. To define a new model requires the specification of it´s i) functional form, ii) likelihood iii) bounds and iv) starting values. For example below the user can fit the Deriso-Schnute model.
+Custom SR models can be implemented. To define a new model requires the specification of it´s i) functional form, ii) likelihood iii) bounds and iv) starting values. For example, the user can fit the Deriso-Schnute model below.
 
 ```{r, SR_custom}
 # Fit a custom SR model (Deriso Schnute)
@@ -260,6 +260,77 @@ model(nsher)<-dersch()
 nsher_dersch<-fmle(nsher,fixed=list(c=-1))
 plot(nsher_dersch)
 ```
+
+A SR model with AR1 autocorrelation can be also be fitted. 
+```{r, SR_custom_AR1}
+# Fit a custom SR AR1 model
+rickerAR1 <- function()
+  {
+  ## log likelihood, assuming normal log.
+  logl <- function(a, b, rho, rec, ssb)
+      loglAR1(log(rec), log(a*ssb*exp(-b*ssb)), rho=rho)
+
+  ## initial parameter values
+  initial <- structure(function(rec, ssb) {
+		# The function to provide initial values
+    res  <-coefficients(lm(c(log(rec/ssb))~c(ssb)))
+    return(FLPar(a=max(exp(res[1])), b=-max(res[2]), rho=0))
+	},
+  # lower and upper limits for optim()
+	lower=rep(-Inf, 3),
+	upper=rep( Inf, 3)
+	)
+
+  ## model to be fitted
+	model  <- rec~a*ssb*exp(-b*ssb)
+
+	return(list(logl=logl, model=model, initial=initial))}
+
+#### Fit
+model(nsher)<-rickerAR1()
+nsherAR1 <-fmle(nsher)
+
+plot(nsherAR1)
+```
+
+Finally, a SR model where covariates (e.g. NAO index), can be used to model environmental effects on the stock recruitment relationship.
+```{r, SR_custom_covars}
+# Fit a custom SR model with covariates
+nao     <-read.table("http://www.cdc.noaa.gov/data/correlation/nao.data", skip=1, nrow=62, na.strings="-99.90")
+dnms    <-list(quant="nao", year=1948:2009, unit="unique", season=1:12, area="unique")
+nao     <-FLQuant(unlist(nao[,-1]), dimnames=dnms, units="nao")
+
+# include NAO as covar (note that it must be a FLQuants with a single component
+# called “covar” that matches the year span of the data) and adjust the model.
+
+nsherCovA <- nsher
+nsherCovA <- transform(nsherCovA,ssb=ssb/1000,rec=rec/1000)
+
+#### Modified so temperature affects larval survival
+rickerCovA <- function(){
+  logl <- function(a, b, c, rec, ssb, covar){
+              loglAR1(log(rec), log(a*(1+c*covar[[1]])*ssb*exp(-b*ssb)))}
+
+  initial <- structure(function(rec, ssb, covar) {
+		# The function to provide initial values
+    res  <-coefficients(lm(c(log(rec/ssb))~c(ssb)))
+    return(FLPar(a=max(exp(res[1])), b=-max(res[2]), c=0.0))},
+
+  # lower and upper limits for optim()
+	lower=rep(-Inf, 3),
+	upper=rep( Inf, 3))
+
+	model  <- rec~a*(1+c*covar[[1]])*ssb*exp(-b*ssb)
+
+	return(list(logl=logl, model=model, initial=initial))}
+
+
+model(nsherCovA)<-rickerCovA()
+covar(nsherCovA)<-FLQuants(covar=seasonMeans(trim(nao, year=dimnames(ssb(nsherCovA))$year)))
+nsherCovA       <-fmle(nsherCovA,fixed=list(c=0))
+plot(nsherCovA)
+```
+
 
 # References
 Beverton, R.J.H. and Holt, S.J. (1957) On the dynamics of exploited fish populations. MAFF Fish. Invest., Ser: II 19, 533. ISBN: 1930665946
@@ -292,5 +363,3 @@ This document is licensed under the [Creative Commons Attribution-ShareAlike 4.0
 ## Author information
 
 **Nikolaos NIKOLIOUDAKIS**. Institute of Marine Research (IMR), Pelagic Fish Group, Nordnesgaten 33, P.O. Box 1870, 5817 Bergen, Norway. <http://www.imr.no/>
-
-**OTHER AUTHORS of previous Rmd used in courses?**
