@@ -9,7 +9,7 @@ license: Creative Commons CC-BY SA
  
 
 
-This tutorial details methods for reading various formats of data into R for generating the `FLStock` object class.
+This tutorial details methods for reading various formats of data into R for generating the `FLStock`, `FLIndex` and `FLFleet` object classes.
 
 ## Required packages
 
@@ -33,11 +33,11 @@ library(FLCore); library(FLFleet)
 library(ggplotFL)
 ```
 
-# FLStock objects 
+## FLStock objects 
 
 This section covers methods for reading in the data required to construct `FLStock` objects.
 
-## Reading files (csv, dat, ...)
+### Reading files (csv, dat, ...)
 
 Fisheries data are generally stored in different format (cvs, excel, SAS...). R provides tools to read and import data from simple text files to more advanced SAS files or databases. [Datacamp](https://www.datacamp.com/community/tutorials/importing-data-r-part-two#gs.kNzBd5k) is a nice tutorial to quickly import data into R.
 
@@ -76,7 +76,7 @@ class(catch.n)
 The data are now in your R environment, before creating a **FLQuant** object, you need to make sure it is consistent with the type of object and formatting that is needed to run the `FLQuant()` function. To get information on the structure and format needed type ?FLQuant in your R Console.
 
 
-## Reshaping data as a matrix 
+### Reshaping data as a matrix 
 
 FLQuant accept 'vector', 'array' or 'matrix'. 
 We can convert the object catch.n to a matrix
@@ -103,7 +103,7 @@ A `FLQuant` object is made of six dimensions. The name of the first dimension ca
 When importing catch number for example, the input object needs to be formatted as such: age or length in the first dimension and years in the second dimension. If the object is not formatted in the right way, you can use the `reshape()` function from the package [reshape2](https://cran.r-project.org/web/packages/reshape2/index.html).
 
 
-## Making an FLQuant object 
+### Making an FLQuant object 
 
 We need to specify the dimnames
 
@@ -129,7 +129,7 @@ catch.n.flq[,1:7]
 ## units:  NA
 ```
 
-## Reading common fisheries data formats 
+### Reading common fisheries data formats 
 
 FLCore contains functions for reading in fish stock data in commonly used formats. To read a single variable (e.g. numbers-at-age, maturity-at-age) from the **Lowestoft VPA** format you use the `readVPA` function. The following example reads the catch numbers-at-age for herring:
 
@@ -320,7 +320,7 @@ her@catch.n       <- her@landings.n
 ```
 Functions are available to `computeLandings`, `computeDiscards`, `computeCatch` and `computeStock`. These functions take the argument `slot = 'catch'`, `slot = 'wt'` and `slot = 'n'` to compute the total weight, individual weight and numbers respectively, in addition to `slot = 'all'`. 
 
-## Description, units, ranges etc..
+### Adding a description, units, ranges etc..
 
 Before we are finished, we want to ensure the units and range references are correct. This is important as the derived calculations require the correct scaling.
 
@@ -376,7 +376,7 @@ her@desc # ok
 ```
 
 ```
-## [1] "Imported from a VPA file. ( src/Data/her-irlw/index.txt ).  Tue Feb 14 16:20:57 2017"
+## [1] "Imported from a VPA file. ( src/Data/her-irlw/index.txt ).  Tue Feb 14 16:29:26 2017"
 ```
 
 ```r
@@ -443,11 +443,11 @@ plot(her) + theme_bw() # using the simple bw theme
 
 <img src="figure/Plot-1.png" title="plot of chunk Plot" alt="plot of chunk Plot" style="display: block; margin: auto;" />
 
-# FLIndices
+## FLIndex objects
 
 Two solutions can be used to read abundance indices into FLR. 
 
-## Reading from common fisheries data formats 
+### Reading from common fisheries data formats 
 
 If your data are formatted in a **Lowestoft VPA** format then FLCore contains functions for reading in indices. To read an abundance index, you use the `readFLIndices` function. The following example reads the index from `ple4` example:
 
@@ -458,7 +458,7 @@ indices <- readFLIndices('src/Data/ple4_ISIS.txt')
 
 Using this function, `slot indices@names` is already filled by BTS-ISIS, and the information `slot indices@range` too.
 
-## Reading from flat files 
+### Reading from flat files 
 
 If your data are not formatted in a **Lowestoft VPA** format, then you and read them using `read.table` for example.
 
@@ -493,7 +493,7 @@ plot(indices[[1]])
 indices[[1]]@range[c('startf', 'endf')] <- c(0.66,0.75)
 ```
 
-# FLFleets
+## FLFleet objects
 
 Reading data on fleets into an `FLFleet` object is complicated by the multi-layer structure of the object. The object is defined so that:
 
@@ -590,22 +590,6 @@ summary(FLCatch())
 Due to the different levels, units and dimensions of the variables and the potentially high number of combinations of fleets, métier and stocks in a mixed fishery - getting the full data into an FLFleets object can be an onerous task.
 
 A way of simplifying the generation of the fleet object is to ensure all the data are in a csv file with the following structure:
-
-
-```r
-kable(data.frame(Fleet = c('Fleet1', 'Fleet2'),
-		 Metier = c('Metier1', 'Metier1'),
-		 Stock = c('Stock1', 'Stock2'),
-		 type = c('landings.n', 'landings.wt'),
-		 age = c(1,1),
-		 year = c(2011,2011),
-		 unit = c(1,1),
-		 season = c('all', 'all'),
-		 area = c('unique', 'unique'),
-		 iter = c(1,1),
-		 data = c(254,0.3)))
-```
-
 
 
 |Fleet  |Metier  |Stock  |type        | age| year| unit|season |area   | iter|  data|
@@ -711,7 +695,7 @@ None
 * FLCore: 2.6.0.20170130
 * ggplotFL: 2.5.9.9000
 * ggplot2: 2.1.0
-* **Compiled**: Tue Feb 14 16:21:00 2017
+* **Compiled**: Tue Feb 14 16:29:29 2017
 
 ## License
 
