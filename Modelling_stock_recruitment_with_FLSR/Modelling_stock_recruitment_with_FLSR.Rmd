@@ -16,7 +16,7 @@ options(width=50)
 set.seed(1423)
 ```
 
-The __FLSR__ is a [S4](https://stat.ethz.ch/R-manual/R-devel/library/methods/html/Classes_Details.html) class for Stock-Recruitment (SR) models inside the __FLCore__ package.  Commonly used or custom-tailored SR models can be fitted directly on __FLStock__ objects. __FLSR__ class objects can be then used to visualize the fitted models as well as for making future projections. 
+The __FLSR__ is a [S4](https://stat.ethz.ch/R-manual/R-devel/library/methods/html/Classes_Details.html) class for Stock-Recruitment (SR) models, an extension of __FLModel__ , part of the __FLCore__ package.  Commonly used or custom-tailored SR models can be fitted directly on __FLStock__ objects and provide estimates of uncertainty. __FLSR__ class objects can be then used to visualize the fitted models as well as for making future projections. 
 
 ## Required packages
 
@@ -29,6 +29,7 @@ You can do so as follows,
 
 ```{r, eval=FALSE}
 install.packages(c("ggplot2"))
+install.packages(c("FLCore"), repos="http://flr-project.org/R")
 install.packages(c("ggplotFL"), repos="http://flr-project.org/R")
 ```
 
@@ -59,7 +60,8 @@ Given that recruitment and spawning stock biomass (SSB) are provided as an outpu
 
 ```{r figB}
 # This chunk plots the SSB-Recruits graph
-plot(ssb(ple4), rec(ple4))
+#plot(FLQuants(ple4, "ssb", "rec"))
+ggplot(aes(ssb,rec), data=model.frame(FLQuants(ple4, "ssb", "rec")))+geom_point()+geom_smooth()
 ```
 
 ## Working with FLSR objects
@@ -92,7 +94,7 @@ ssb(p4sr)[,1]
 rec(p4sr)[,1]
 ```
 
-The default recruitment age in FLSR is age=1. However, the user can change this by triming the FLStock object while converting it into an __FLSR__ object:
+The default recruitment age in FLSR is age=1. However, the user can change this by triming the __FLStock__ object while converting it into an __FLSR__ object:
 
 ```{r, set_rec_age1}
 # This chunk shows how to set a different recruitment age than the default, 
@@ -113,7 +115,7 @@ rec(p4sr2)[,1]
 
 To fit a SR model a series of commonly-used stock-recruitment models are already available,
 including the corresponding likelihood functions and calculation of initial
-values. See SRModels for more details and the exact formulation implemented for each of them. Each method is defined as a function returning a list with one or more elements as follows:
+values. See [SRModels](https://github.com/flr/FLCore/blob/master/R/SRmodels.R) for more details and the exact formulation implemented for each of them. Each method is defined as a function returning a list with one or more elements as follows:
 
 * modelFormula for the model, using the slot names (rec and ssb) to refer to the usual inputs.
 
@@ -217,7 +219,7 @@ profile(nsher_bh)
 profile(nsher_cs)
 ```
 
-Finally, SR model parameters can be fixed. In this case, _steepness_ is fixed to a value of 0.8. Details on the model parameterization can be found in  [SRmodels](https://github.com/flr/FLCore/blob/master/R/SRmodels.R).
+SR model parameters can also be fixed. In this case, _steepness_ is fixed to a value of 0.8. Details on the model parameterization can be found in  [SRmodels](https://github.com/flr/FLCore/blob/master/R/SRmodels.R).
 
 ```{r, figE}
 # Fit a bevholtSV model with fixed steepness at 0.8
@@ -228,6 +230,36 @@ plot(p4sr)
 params(p4sr)
 ```
 
+Finally, custom SR models can be implemented. To define a new model requires the specification of it´s i) functional form, ii) likelihood iii) bounds and iv) starting values. For example below the user can fit the Deriso-Schnute model.
+
+```{r, SR_custom}
+# Fit a custom SR model (Deriso Schnute)
+
+dersch<-function(){
+  logl <- function(a,b,c,rec,ssb) {
+          res<-loglAR1(log(rec), log(a*ssb*(1-b*c*ssb)^(1/c)))
+          return(res)
+          }
+
+  ## initial parameter values
+  initial <- structure(function(rec, ssb){
+     slopeAt0 <- max(quantile(c(rec)/c(ssb), 0.9, na.rm = TRUE))
+     maxRec   <- max(quantile(c(rec), 0.75, na.rm = TRUE))
+
+     ## Bevholt by default c=-1
+     return(FLPar(a=slopeAt0, b=1/maxRec, c=-1))},
+
+  lower=rep(-Inf, 3),
+	upper=rep( Inf, 3))
+
+  model  <- rec~a*ssb*(1-b*c*ssb)^(1/c)
+
+  return(list(logl = logl, model = model, initial = initial))}
+
+model(nsher)<-dersch()
+nsher_dersch<-fmle(nsher,fixed=list(c=-1))
+plot(nsher_dersch)
+```
 
 # References
 Beverton, R.J.H. and Holt, S.J. (1957) On the dynamics of exploited fish populations. MAFF Fish. Invest., Ser: II 19, 533. ISBN: 1930665946
@@ -237,7 +269,6 @@ Needle, C.L. Recruitment models: diagnosis and prognosis. Reviews in Fish Biolog
 Ricker, W.E. (1954) Stock and recruitment. J. Fish. Res. Bd Can. 11, 559-623. DOI: https://doi.org/10.1139/f54-039
 
 Shepherd, J.G. (1982) A versatile new stock-recruitment relationship for fisheries and the construction of sustainable yield curves. J. Cons. Int. Explor. Mer 40, 67-75. DOI: https://doi.org/10.1093/icesjms/40.1.7
-
 
 
 # More information

@@ -357,7 +357,7 @@ her@catch.n       &lt;- her@landings.n</code></pre>
 her@name # ok</code></pre>
 <pre><code>## [1] &quot;Herring VIa(S) VIIbc &quot;</code></pre>
 <pre class="r"><code>her@desc # ok</code></pre>
-<pre><code>## [1] &quot;Imported from a VPA file. ( src/Data/her-irlw/index.txt ).  Tue Feb 14 11:16:13 2017&quot;</code></pre>
+<pre><code>## [1] &quot;Imported from a VPA file. ( src/Data/her-irlw/index.txt ).  Tue Feb 14 16:03:01 2017&quot;</code></pre>
 <pre class="r"><code># Set the Fbar range for the stock 
 her@range[c('minfbar','maxfbar')] # ok, but can be filled with c(min,max)</code></pre>
 <pre><code>## minfbar maxfbar 
@@ -406,7 +406,26 @@ units(her@harvest) &lt;- 'f'</code></pre>
 </div>
 <div id="flindices" class="section level1">
 <h1>FLIndices</h1>
-<p>Youen text here</p>
+<p>Two solutions can be used to read abundance indices into FLR.</p>
+<div id="reading-from-common-fisheries-data-formats" class="section level2">
+<h2>Reading from common fisheries data formats</h2>
+<p>If your data are formatted in a <strong>Lowestoft VPA</strong> format then FLCore contains functions for reading in indices. To read an abundance index, you use the <code>readFLIndices</code> function. The following example reads the index from <code>ple4</code> example:</p>
+<pre class="r"><code>indices &lt;- readFLIndices('src/Data/ple4_ISIS.txt')</code></pre>
+<p>Using this function, <code>slot indices@names</code> is already filled by BTS-ISIS, and the information <code>slot indices@range</code> too.</p>
+</div>
+<div id="reading-from-flat-files" class="section level2">
+<h2>Reading from flat files</h2>
+<p>If your data are not formatted in a <strong>Lowestoft VPA</strong> format, then you and read them using <code>read.table</code> for example.</p>
+<pre class="r"><code>indices &lt;- read.table('src/Data/ple4Index1.txt')</code></pre>
+<p>which needs to be transformed in FLQuant</p>
+<pre class="r"><code>indices &lt;- FLQuant(as.matrix(indices), dimnames=list(age=1:8, year = 1985:2008))</code></pre>
+<p>And in FLIndex</p>
+<pre class="r"><code>indices &lt;- FLIndex(indices)</code></pre>
+<p>And then in FLIndices</p>
+<pre class="r"><code>indices &lt;- FLIndices(indices)</code></pre>
+<p><code>slot indices@range</code> needs to be filled in with the end and start date of the tuning series</p>
+<pre class="r"><code>indices[[1]]@range[c('startf', 'endf')] &lt;- c(0.66,0.75)</code></pre>
+</div>
 </div>
 <div id="flfleets" class="section level1">
 <h1>FLFleets</h1>
@@ -641,7 +660,7 @@ names(fleets) &lt;- fl.nam</code></pre>
 <ul>
 <li>You can submit bug reports, questions or suggestions on this tutorial at <a href="https://github.com/flr/doc/issues" class="uri">https://github.com/flr/doc/issues</a>.</li>
 <li>Or send a pull request to <a href="https://github.com/flr/doc/" class="uri">https://github.com/flr/doc/</a></li>
-<li>For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <a href="http://flr-project.org" class="uri">http://flr-project.org</a>.</li>
+<li>For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR web-page, <a href="http://flr-project.org" class="uri">http://flr-project.org</a>.</li>
 </ul>
 <div id="software-versions" class="section level2">
 <h2>Software Versions</h2>
@@ -650,7 +669,7 @@ names(fleets) &lt;- fl.nam</code></pre>
 <li>FLCore: 2.6.0.20170130</li>
 <li>ggplotFL: 2.5.9.9000</li>
 <li>ggplot2: 2.1.0</li>
-<li><strong>Compiled</strong>: Tue Feb 14 11:16:15 2017</li>
+<li><strong>Compiled</strong>: Tue Feb 14 16:03:03 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">
