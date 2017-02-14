@@ -256,7 +256,6 @@ dersch<-function(){
 
   return(list(logl = logl, model = model, initial = initial))}
 
-
 model(nsher)<-dersch()
 nsher_dersch<-fmle(nsher,fixed=list(c=-1))
 plot(nsher_dersch)
