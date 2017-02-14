@@ -67,7 +67,7 @@ library(ggplotFL)
 
 # Example
 
-This example session intends to demonstrate the main features of the **FLBRP** package, and the **FLBRP** class and its methods. First of all, the package needs to be loaded
+This example session intends to demonstrate the main features of the **FLBRP** package, and the `FLBRP` class and its methods. First of all, the package needs to be loaded
 
 
 ```{r }
