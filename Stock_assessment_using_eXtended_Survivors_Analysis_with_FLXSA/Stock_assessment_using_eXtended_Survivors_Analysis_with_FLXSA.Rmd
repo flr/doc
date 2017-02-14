@@ -24,15 +24,11 @@ To follow this tutorial you should have installed the following packages:
 
 * FLR: [FLCore](http://www.flr-project.org/FLCore/), [FLAssess](http://www.flr-project.org/FLAssess/),
        [FLXSA](http://www.flr-project.org/FLXSA/), [ggplotFL](http://www.flr-project.org/ggplotFL/)
-
+* CRAN: [reshape]
 You can do so as follows,
 
 ```{r echo=TRUE, eval=FALSE}
-install.packages(c("ggplot2"))
-install.packages(c("FLCore"), repos="http://flr-project.org/R")
-install.packages(c("FLAssess"), repos="http://flr-project.org/R")
-install.packages(c("FLXSA"), repos="http://flr-project.org/R")
-install.packages(c("ggplotFL"), repos="http://flr-project.org/R")
+install.packages(c("FLCore", "FLAssess", "FLXSA"), repos="http://flr-project.org/R")
 ```
 
 ```{r echo=TRUE, eval=TRUE}
