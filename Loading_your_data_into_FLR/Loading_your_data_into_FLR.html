@@ -126,13 +126,13 @@ $(document).ready(function () {
 <p>To follow this tutorial you should have installed the following packages:</p>
 <ul>
 <li>CRAN: <a href="https://cran.r-project.org/web/packages/ggplot2/index.html">ggplot2</a></li>
-<li>FLR: <a href="http://www.flr-project.org/FLCore/">FLCore</a>; <a href="http://www.flr-project.org/ggplotFL/">ggplotFL</a></li>
+<li>FLR: <a href="http://www.flr-project.org/FLCore/">FLCore</a>; <a href="http://www.flr-project.org/FLFleet/">FLFleet</a>; <a href="http://www.flr-project.org/ggplotFL/">ggplotFL</a></li>
 </ul>
 <p>You can do so as follows,</p>
 <pre class="r"><code>install.packages(c(&quot;ggplot2&quot;))
 install.packages(c(&quot;ggplotFL&quot;), repos=&quot;http://flr-project.org/R&quot;)</code></pre>
 <pre class="r"><code># This chunk loads all necessary packages, trims pkg messages
-library(FLCore)
+library(FLCore); library(FLFleet)
 library(ggplotFL)</code></pre>
 </div>
 <div id="flstock-objects" class="section level1">
@@ -357,7 +357,7 @@ her@catch.n       &lt;- her@landings.n</code></pre>
 her@name # ok</code></pre>
 <pre><code>## [1] &quot;Herring VIa(S) VIIbc &quot;</code></pre>
 <pre class="r"><code>her@desc # ok</code></pre>
-<pre><code>## [1] &quot;Imported from a VPA file. ( src/Data/her-irlw/index.txt ).  Tue Feb 14 09:40:21 2017&quot;</code></pre>
+<pre><code>## [1] &quot;Imported from a VPA file. ( src/Data/her-irlw/index.txt ).  Tue Feb 14 11:16:13 2017&quot;</code></pre>
 <pre class="r"><code># Set the Fbar range for the stock 
 her@range[c('minfbar','maxfbar')] # ok, but can be filled with c(min,max)</code></pre>
 <pre><code>## minfbar maxfbar 
@@ -367,8 +367,8 @@ her@range['plusgroup']  &lt;- 7 # final year is a plusgroup
 
 ## Units
 units(her@catch)    &lt;- units(her@discards)    &lt;- units(her@landings)    &lt;- units(her@stock)    &lt;- 'tonnes'
-units(her@catch.n)  &lt;- units(her@discards.n)  &lt;- units(her@landings.n)  &lt;- units(her@stock.n)  &lt;- 'tonnes'
-units(her@catch.wt) &lt;- units(her@discards.wt) &lt;- units(her@landings.wt) &lt;- units(her@stock.wt) &lt;- 'tonnes'
+units(her@catch.n)  &lt;- units(her@discards.n)  &lt;- units(her@landings.n)  &lt;- units(her@stock.n)  &lt;- '1000'
+units(her@catch.wt) &lt;- units(her@discards.wt) &lt;- units(her@landings.wt) &lt;- units(her@stock.wt) &lt;- 'kg'
 units(her@harvest) &lt;- 'f'</code></pre>
 <p>This should now have the correct units defined:</p>
 <pre class="r"><code>summary(her)</code></pre>
@@ -384,17 +384,17 @@ units(her@harvest) &lt;- 'f'</code></pre>
 ##  1   7   7   1957    2011    1   7   
 ## 
 ## catch         : [ 1 55 1 1 1 1 ], units =  tonnes 
-## catch.n       : [ 7 55 1 1 1 1 ], units =  tonnes 
-## catch.wt      : [ 7 55 1 1 1 1 ], units =  tonnes 
+## catch.n       : [ 7 55 1 1 1 1 ], units =  1000 
+## catch.wt      : [ 7 55 1 1 1 1 ], units =  kg 
 ## discards      : [ 1 55 1 1 1 1 ], units =  tonnes 
-## discards.n    : [ 7 55 1 1 1 1 ], units =  tonnes 
-## discards.wt   : [ 7 55 1 1 1 1 ], units =  tonnes 
+## discards.n    : [ 7 55 1 1 1 1 ], units =  1000 
+## discards.wt   : [ 7 55 1 1 1 1 ], units =  kg 
 ## landings      : [ 1 55 1 1 1 1 ], units =  tonnes 
-## landings.n    : [ 7 55 1 1 1 1 ], units =  tonnes 
-## landings.wt   : [ 7 55 1 1 1 1 ], units =  tonnes 
+## landings.n    : [ 7 55 1 1 1 1 ], units =  1000 
+## landings.wt   : [ 7 55 1 1 1 1 ], units =  kg 
 ## stock         : [ 1 55 1 1 1 1 ], units =  tonnes 
-## stock.n       : [ 7 55 1 1 1 1 ], units =  tonnes 
-## stock.wt      : [ 7 55 1 1 1 1 ], units =  tonnes 
+## stock.n       : [ 7 55 1 1 1 1 ], units =  1000 
+## stock.wt      : [ 7 55 1 1 1 1 ], units =  kg 
 ## m             : [ 7 55 1 1 1 1 ], units =  NA 
 ## mat           : [ 7 55 1 1 1 1 ], units =  NA 
 ## harvest       : [ 7 55 1 1 1 1 ], units =  f 
@@ -410,7 +410,227 @@ units(her@harvest) &lt;- 'f'</code></pre>
 </div>
 <div id="flfleets" class="section level1">
 <h1>FLFleets</h1>
-<p>Paul text here</p>
+<p>Reading data on fleets into an <code>FLFleet</code> object is complicated by the multi-layer structure of the object. The object is defined so that:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Level</th>
+<th align="left">Class</th>
+<th align="left">Contains</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">FLFleet</td>
+<td align="left">variables relating to vessel level activity</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left">FLMetier(s)</td>
+<td align="left">variables relating to fishing level activity</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="left">FLCatch(es)</td>
+<td align="left">variables relating to stock catches</td>
+</tr>
+</tbody>
+</table>
+<p>Here are the slots for each level:</p>
+<pre class="r"><code># FLFleet level
+summary(FLFleet())</code></pre>
+<pre><code>## An object of class &quot;FLFleet&quot;
+## 
+## Name:  
+## Description:  
+## Quant: quant 
+## Dims:  quant     year    unit    season  area    iter
+##  quant   1   1   1   1   1   
+## 
+## Range:  min  max minyear maxyear 
+##  NA  NA  1   1   
+## 
+## effort        : [ 1 1 1 1 1 1 ], units =  NA 
+## fcost         : [ 1 1 1 1 1 1 ], units =  NA 
+## capacity      : [ 1 1 1 1 1 1 ], units =  NA 
+## crewshare     : [ 1 1 1 1 1 1 ], units =  NA 
+## 
+## Metiers:</code></pre>
+<pre class="r"><code># FLMetier level
+summary(FLMetier())</code></pre>
+<pre><code>## An object of class &quot;FLMetier&quot;
+## 
+## Name:  
+## Description:  
+## Gear :  NA 
+## Quant: quant 
+## Dims:  quant     year    unit    season  area    iter
+##  quant   1   1   1   1   1   
+## 
+## Range:  min  max minyear maxyear 
+##  NA  NA  1   1   
+## 
+## effshare      : [ 1 1 1 1 1 1 ], units =  NA 
+## vcost         : [ 1 1 1 1 1 1 ], units =  NA 
+## 
+## Catches:  
+##   1 : [ 1 1 1 1 1 1 ]</code></pre>
+<pre class="r"><code># FLCatch level
+summary(FLCatch())</code></pre>
+<pre><code>## An object of class &quot;FLCatch&quot;
+## 
+## Name: NA 
+## Description:  
+## Quant: quant 
+## Dims:  quant     year    unit    season  area    iter
+##  quant   1   1   1   1   1   
+## 
+## Range:  min  max pgroup  minyear maxyear 
+##  NA  NA  NA  1   1   
+## 
+## landings      : [ 1 1 1 1 1 1 ], units =  NA 
+## landings.n    : [ 1 1 1 1 1 1 ], units =  NA 
+## landings.wt   : [ 1 1 1 1 1 1 ], units =  NA 
+## landings.sel  : [ 1 1 1 1 1 1 ], units =  NA 
+## discards      : [ 1 1 1 1 1 1 ], units =  NA 
+## discards.n    : [ 1 1 1 1 1 1 ], units =  NA 
+## discards.wt   : [ 1 1 1 1 1 1 ], units =  NA 
+## discards.sel  : [ 1 1 1 1 1 1 ], units =  NA 
+## catch.q       : [ 1 1 1 1 1 1 ], units =  NA 
+## price         : [ 1 1 1 1 1 1 ], units =  NA</code></pre>
+<p>Due to the different levels, units and dimensions of the variables and the potentially high number of combinations of fleets, métier and stocks in a mixed fishery - getting the full data into an FLFleets object can be an onerous task.</p>
+<p>A way of simplifying the generation of the fleet object is to ensure all the data are in a csv file with the following structure:</p>
+<pre class="r"><code>kable(data.frame(Fleet = c('Fleet1', 'Fleet2'),
+         Metier = c('Metier1', 'Metier1'),
+         Stock = c('Stock1', 'Stock2'),
+         type = c('landings.n', 'landings.wt'),
+         age = c(1,1),
+         year = c(2011,2011),
+         unit = c(1,1),
+         season = c('all', 'all'),
+         area = c('unique', 'unique'),
+         iter = c(1,1),
+         data = c(254,0.3)))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Fleet</th>
+<th align="left">Metier</th>
+<th align="left">Stock</th>
+<th align="left">type</th>
+<th align="right">age</th>
+<th align="right">year</th>
+<th align="right">unit</th>
+<th align="left">season</th>
+<th align="left">area</th>
+<th align="right">iter</th>
+<th align="right">data</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Fleet1</td>
+<td align="left">Metier1</td>
+<td align="left">Stock1</td>
+<td align="left">landings.n</td>
+<td align="right">1</td>
+<td align="right">2011</td>
+<td align="right">1</td>
+<td align="left">all</td>
+<td align="left">unique</td>
+<td align="right">1</td>
+<td align="right">254.0</td>
+</tr>
+<tr class="even">
+<td align="left">Fleet2</td>
+<td align="left">Metier1</td>
+<td align="left">Stock2</td>
+<td align="left">landings.wt</td>
+<td align="right">1</td>
+<td align="right">2011</td>
+<td align="right">1</td>
+<td align="left">all</td>
+<td align="left">unique</td>
+<td align="right">1</td>
+<td align="right">0.3</td>
+</tr>
+</tbody>
+</table>
+<p>To generate the required structure, you can then read in the file and generate the object using an <code>lapply</code> function:</p>
+<pre class="r"><code># Example of generating fleets
+fl.nam &lt;- unique(data$Fleet) # each of the fleets
+
+yr.range &lt;- 2005:2011 # year range of the data - must be same, even if filled with NAs or 0s
+
+# empty FLQuant for filling with right dimensions
+fq  &lt;- FLQuant(dimnames = list(year = yr.range), quant = 'age')
+
+### Fleet level slots ###
+fleets &lt;- FLFleet(lapply(fl.nam, function(Fl) {
+
+# blank quants with the same dims
+eff &lt;- cap &lt;- crw &lt;- cos.fl &lt;- fq
+
+# fleet effort
+eff[,ac(yr.range)] &lt;- data$data[data$Fleet == Fl &amp; data$type == 'effort']
+units(eff) &lt;- '000 kw days'
+
+## Repeat for each fleet level variables (not shown) ##
+
+### Metier level slots ###
+met.nam  &lt;- unique(data$Metier[data$Fleet == Fl]) # metiers for fleet
+met.nam  &lt;- met.nam[!is.na(met.nam)] # exclude the fleet level data
+
+metiers  &lt;- FLMetiers(lapply(met.nam, function(met) {
+
+# blank quants
+effmet &lt;- cos.met &lt;- fq
+
+# effort share for metier
+effmet[,ac(yr.range)] &lt;- data$data[data$Fleet == Fl &amp; data$Metier &amp; data$type == 'effshare']
+units(effmet)  &lt;- NA
+
+## Repeat for each metier level variables (not shown) ##
+
+
+sp.nam &lt;- unique(data$stock[data$Fleet == Fl &amp; data$Metier == met]) # stocks caught by metier
+sp.nam &lt;- sp.nam[!is.na(sp.nam)] # exclude fleet and metier level data
+
+catch &lt;- FLCatches(lapply(sp.nam, function(S){
+print(S)
+
+# Quant dims may be specific per stock
+la.age &lt;- FLQuant(dimnames = list(age = 1:7, year = yr.range, quant = 'age'))
+la.age[,ac(yr.range)] &lt;- data$data[data$Fleet == Fl &amp; data$Metier == met &amp; data$Stock == S &amp; data$type == 'landings.n']
+units(la.age) &lt;- '1000'
+
+## Repeat for all stock level variables (not shown) ##
+
+# Build F
+res &lt;- FLCatch(range = yr.range, name = S, landings.n = la.age,...)
+
+## Compute any missing slots, e.g.
+res@landings &lt;- computeLandings(res)
+
+return(res) # return filled FLCatch
+
+})) # End of FLCatches
+
+# Fill an FLMetier with all the stock catches
+m &lt;- FLMetier(catches = catch, name = met)
+m@effshare  &lt;- effmet
+m@vcost &lt;- vcost
+
+         })) # end of FLMetiers
+
+fl &lt;- FLFleet(metiers = metiers, name = Fl, effort = ef,...) # fill with all variables
+return(fl)
+
+         }))
+
+names(fleets) &lt;- fl.nam</code></pre>
+<p>You should now have a multilevel object with <code>FLFleets</code>, <code>FLMetiers</code> and <code>FLCatches</code>.</p>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
@@ -430,7 +650,7 @@ units(her@harvest) &lt;- 'f'</code></pre>
 <li>FLCore: 2.6.0.20170130</li>
 <li>ggplotFL: 2.5.9.9000</li>
 <li>ggplot2: 2.1.0</li>
-<li><strong>Compiled</strong>: Tue Feb 14 09:40:22 2017</li>
+<li><strong>Compiled</strong>: Tue Feb 14 11:16:15 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">
