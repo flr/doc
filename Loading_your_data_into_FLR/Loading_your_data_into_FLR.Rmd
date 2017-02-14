@@ -197,7 +197,7 @@ Two solutions can be used to read abundance indices into FLR.
 
 ## Reading from common fisheries data formats 
 
-If your data are formated in a **Lowestoft VPA** format then FLCore contains functions for reading in indices. To read an abundance index, you use the `readFLIndices` function. The following example reads the index from `ple4` exemple:
+If your data are formatted in a **Lowestoft VPA** format then FLCore contains functions for reading in indices. To read an abundance index, you use the `readFLIndices` function. The following example reads the index from `ple4` example:
 
 ```{r }
 indices <- readFLIndices('src/Data/ple4_ISIS.txt')
@@ -207,7 +207,7 @@ Using this function, `slot indices@names` is already filled by `r indices@names`
 
 ## Reading from flat files 
 
-If your data are not formated in a **Lowestoft VPA** format, then you and read them using `read.table` for exemple.
+If your data are not formatted in a **Lowestoft VPA** format, then you and read them using `read.table` for example.
 
 ```{r }
 indices <- read.table('src/Data/ple4Index1.txt')
@@ -225,14 +225,11 @@ And then in FLIndices
 indices <- FLIndices(indices)
 ```
 
-`slot indices@range` needs to be filled in with the end and start date of the tunning series
+`slot indices@range` needs to be filled in with the end and start date of the tuning series
 
 ```{r }
 indices[[1]]@range[c('startf', 'endf')] <- c(0.66,0.75)
 ```
-
-
-
 
 # FLFleets
 
@@ -366,7 +363,7 @@ None
 
 * You can submit bug reports, questions or suggestions on this tutorial at <https://github.com/flr/doc/issues>.
 * Or send a pull request to <https://github.com/flr/doc/>
-* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flr-project.org>.
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR web-page, <http://flr-project.org>.
 
 ## Software Versions
 
