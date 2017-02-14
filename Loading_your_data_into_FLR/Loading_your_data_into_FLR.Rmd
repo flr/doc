@@ -23,7 +23,7 @@ This tutorial details methods for reading various formats of data into R for gen
 To follow this tutorial you should have installed the following packages:
 
 - CRAN: [ggplot2](https://cran.r-project.org/web/packages/ggplot2/index.html)
-- FLR: [FLCore](http://www.flr-project.org/FLCore/); [ggplotFL](http://www.flr-project.org/ggplotFL/)
+- FLR: [FLCore](http://www.flr-project.org/FLCore/); [FLFleet](http://www.flr-project.org/FLFleet/); [ggplotFL](http://www.flr-project.org/ggplotFL/)
 
 You can do so as follows,
 
@@ -34,7 +34,7 @@ install.packages(c("ggplotFL"), repos="http://flr-project.org/R")
 
 ```{r, pkgs}
 # This chunk loads all necessary packages, trims pkg messages
-library(FLCore)
+library(FLCore); library(FLFleet)
 library(ggplotFL)
 ```
 
@@ -179,8 +179,8 @@ her@range['plusgroup']  <- 7 # final year is a plusgroup
 
 ## Units
 units(her@catch)    <- units(her@discards)    <- units(her@landings)    <- units(her@stock)    <- 'tonnes'
-units(her@catch.n)  <- units(her@discards.n)  <- units(her@landings.n)  <- units(her@stock.n)  <- 'tonnes'
-units(her@catch.wt) <- units(her@discards.wt) <- units(her@landings.wt) <- units(her@stock.wt) <- 'tonnes'
+units(her@catch.n)  <- units(her@discards.n)  <- units(her@landings.n)  <- units(her@stock.n)  <- '1000'
+units(her@catch.wt) <- units(her@discards.wt) <- units(her@landings.wt) <- units(her@stock.wt) <- 'kg'
 units(her@harvest) <- 'f'
 
 ```
@@ -236,29 +236,126 @@ indices[[1]]@range[c('startf', 'endf')] <- c(0.66,0.75)
 
 # FLFleets
 
-Paul text here
+Reading data on fleets into an `FLFleet` object is complicated by the multi-layer structure of the object. The object is defined so that:
+
+```{r, level table, echo = F}
+kable(data.frame(Level = c(1,2,3),
+		 Class = c('FLFleet','FLMetier(s)','FLCatch(es)'),
+		 Contains = c('variables relating to vessel level activity',
+			     'variables relating to fishing level activity',
+			     'variables relating to stock catches')))
+```
+
+Here are the slots for each level:
 
 
+```{r, FLFleet slots}
+# FLFleet level
+summary(FLFleet())
+# FLMetier level
+summary(FLMetier())
+# FLCatch level
+summary(FLCatch())
+```
+
+Due to the different levels, units and dimensions of the variables and the potentially high number of combinations of fleets, métier and stocks in a mixed fishery - getting the full data into an FLFleets object can be an onerous task.
+
+A way of simplifying the generation of the fleet object is to ensure all the data are in a csv file with the following structure:
+
+```{r, Fleetdata}
+kable(data.frame(Fleet = c('Fleet1', 'Fleet2'),
+		 Metier = c('Metier1', 'Metier1'),
+		 Stock = c('Stock1', 'Stock2'),
+		 type = c('landings.n', 'landings.wt'),
+		 age = c(1,1),
+		 year = c(2011,2011),
+		 unit = c(1,1),
+		 season = c('all', 'all'),
+		 area = c('unique', 'unique'),
+		 iter = c(1,1),
+		 data = c(254,0.3)))
+```
 
 
+To generate the required structure, you can then read in the file and generate the object using an `lapply` function:
+
+```{r, Generating FLFleets, eval = F}
+# Example of generating fleets
+fl.nam <- unique(data$Fleet) # each of the fleets
+
+yr.range <- 2005:2011 # year range of the data - must be same, even if filled with NAs or 0s
+
+# empty FLQuant for filling with right dimensions
+fq  <- FLQuant(dimnames = list(year = yr.range), quant = 'age')
+
+### Fleet level slots ###
+fleets <- FLFleet(lapply(fl.nam, function(Fl) {
+
+# blank quants with the same dims
+eff <- cap <- crw <- cos.fl <- fq
+
+# fleet effort
+eff[,ac(yr.range)] <- data$data[data$Fleet == Fl & data$type == 'effort']
+units(eff) <- '000 kw days'
+
+## Repeat for each fleet level variables (not shown) ##
+
+### Metier level slots ###
+met.nam  <- unique(data$Metier[data$Fleet == Fl]) # metiers for fleet
+met.nam  <- met.nam[!is.na(met.nam)] # exclude the fleet level data
+
+metiers  <- FLMetiers(lapply(met.nam, function(met) {
+
+# blank quants
+effmet <- cos.met <- fq
+
+# effort share for metier
+effmet[,ac(yr.range)] <- data$data[data$Fleet == Fl & data$Metier & data$type == 'effshare']
+units(effmet)  <- NA
+
+## Repeat for each metier level variables (not shown) ##
 
 
+sp.nam <- unique(data$stock[data$Fleet == Fl & data$Metier == met]) # stocks caught by metier
+sp.nam <- sp.nam[!is.na(sp.nam)] # exclude fleet and metier level data
 
+catch <- FLCatches(lapply(sp.nam, function(S){
+print(S)
 
+# Quant dims may be specific per stock
+la.age <- FLQuant(dimnames = list(age = 1:7, year = yr.range, quant = 'age'))
+la.age[,ac(yr.range)] <- data$data[data$Fleet == Fl & data$Metier == met & data$Stock == S & data$type == 'landings.n']
+units(la.age) <- '1000'
 
+## Repeat for all stock level variables (not shown) ##
 
+# Build F
+res <- FLCatch(range = yr.range, name = S, landings.n = la.age,...)
 
+## Compute any missing slots, e.g.
+res@landings <- computeLandings(res)
 
+return(res) # return filled FLCatch
 
+})) # End of FLCatches
 
+# Fill an FLMetier with all the stock catches
+m <- FLMetier(catches = catch, name = met)
+m@effshare  <- effmet
+m@vcost <- vcost
 
+		 })) # end of FLMetiers
 
+fl <- FLFleet(metiers = metiers, name = Fl, effort = ef,...) # fill with all variables
+return(fl)
 
+		 }))
 
+names(fleets) <- fl.nam
 
+```
 
-
-
+You should now have a multilevel object with `FLFleets`, `FLMetiers` and `FLCatches`.
 
 
 # References
