@@ -43,25 +43,24 @@ The typical formula for lattice plots is:
 
 **graph_type(formula, data=FLQuant)**
 
-where *graph_type* is selected from the list below. formula specifies the variable(s) to display and any conditioning variables. For example  ~x|A means display numeric variable x for each level of factor A. y~x | A means display the relationship between numeric variables y and x separately for every combination of factor A levels. ~x means display numeric variable x alone. 
+where *graph_type* is selected from the list below. Formula specifies the variable(s) to display and any conditioning variables. For example  ~data|A means display numeric variable for each level of factor A. data~A means display the relationship between numeric variables for factor A levels. ~x means display numeric variable x alone. 
 
 The following lattice graph options could be used for FLR objects: 
 
 Graph Type | Description        | Formula
 -----------|------------------- |---------
-barchart   | bar chart          | xCA or A~x
-bwplot     | boxplot            | x~A or A~x
-dotplot    | dotplot            | ~x|A
-histogram  | histogram          | ~x
-xyplot     | scatterplot        | y~x|A
-wireframe  | 3D wireframe graph | z~y*x
-bubbles    | bubble plot        | A~y
+bwplot     | boxplot            | data~A
+dotplot    | dotplot            | data~A
+histogram  | histogram          | ~data|A
+xyplot     | scatterplot        | data~A
+wireframe  | 3D wireframe graph | data~A*B
+bubbles    | bubble plot        | A~B
 
 In case of lattice based *plot* simply the name of the object could be used, e.g. *plot(ple4)*
 
 # STANDARD LATTICE BASED FLR PLOTS
 
-The standard plot() function in FLR returns lattice-based plots.
+The standard plot() function in FLR returns lattice-based plots for FLR objects.
 
 ```{r fig1}
 ## Import your data from FLR
@@ -151,12 +150,6 @@ histogram(~data|year, catch.n(ple4))
 
 ```
 
-## HISTOGRAM
-
-```{r fig13}
-histogram(~data|year, catch.n(ple4))
-
-```
 
 
 
@@ -169,21 +162,23 @@ wireframe(data~age*year, data=harvest(ple4),zlab="F")
 
 # FLR specific plots BUBBLES
 
+The bubble plots are created specially for FLR and are used to analise data by age classes. 
+
 ```{r fig15}
-# Our own bubbles method
 bubbles(age~year, data=catch.n(ple4), bub.scale=5)
 
 ```
+One could also specify parts of the object of interest, e.g. select age classes between 5 and 10 as following:
 
 ```{r fig16}
-# Select age classes for the analysis
 bubbles(age~year, data=catch.n(ple4)[5:10,], bub.scale=10)
 
 ```
 
 # References
 
-[Quick Lattice Graphs](http://statmethods.net/advgraphs/trellis.html)
+[Quick Lattice Graphs](http://statmethods.net/advgraphs/trellis.html)  
+[A quick introduction to FLR](http://doc.flr-project.org/A_quick_introduction_to_FLR.html)
 
 # More information
 
@@ -195,8 +190,7 @@ bubbles(age~year, data=catch.n(ple4)[5:10,], bub.scale=10)
 
 * `r version$version.string`
 * FLCore: `r packageVersion('FLCore')`
-* ggplotFL: `r packageVersion('ggplotFL')`
-* ggplot2: `r packageVersion('ggplot2')`
+* lattice: `r packageVersion('lattice')`
 * **Compiled**: `r date()`
 
 ## License

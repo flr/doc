@@ -5,6 +5,7 @@ output:
   github_document
 tags:
 license: Creative Commons Attribution-ShareAlike 4.0 International Public License
+bibliography: bibliography.bib
 ---
  
 ```{r, ini, echo=FALSE, results='hide', message=FALSE}
@@ -16,13 +17,13 @@ options(width=50)
 set.seed(1423)
 ```
 
-Reference points are important elements of fisheries management and the supporting scientific advisory frameworks. The World Summit on Sustainable Development (WSSD; COFI, 2003) committed signatories to maintain or restore stocks to levels that can produce the maximum sustainable yield (MSY) by 2015. In addition, the precautionary approach (FAO, 1996) requires the use of limit and target reference points to constrain harvesting within safe biological limits so that the major sources of uncertainty are incorporated. 
+Reference points are important elements of fisheries management and the supporting scientific advisory frameworks. The World Summit on Sustainable Development [@wssd2002] committed signatories to maintain or restore stocks to levels that can produce the maximum sustainable yield (MSY) by 2015. In addition, the precautionary approach [@fao1996] requires the use of limit and target reference points to constrain harvesting within safe biological limits so that the major sources of uncertainty are incorporated. @hauge2007 reviewed the use of reference points in ICES in the framework of precautionary approach. 
 
 These agreements have been included in a variety of management acts or policies. For instance, the US Magnuson Stevens Fishery Conservation and Management Act mandates precautionary management to attain optimum yield, and the Common Fisheries Policy (CFP; Council Regulation (EC) 2371/2002) states that *given that many fish stocks continue to decline, the Common Fisheries Policy should be improved to ensure the long-term viability of the fisheries sector through sustainable exploitation of living aquatic resources based on sound scientific advice and on the precautionary approach*. 
 
-For example, the Convention of the International Commission for the Conservation of Atlantic Tunas (ICCAT) states that *The Commission may, on the basis of scientific evidence, make recommendations designed to maintain the populations of tuna and tuna-like fishes that may be taken in the Convention area at levels which will permit the maximum sustainable catch*. In this and in many other cases, maximum sustainable catch is generally assumed to be synonymous with maximum sustainable yield (MSY). Management must also be consistent with international agreements relating to the Conservation and Management of Straddling and Highly Migratory Fish Stocks (Doulman 1995) and the Precautionary Approach (FAO 1996). 
+For example, the Convention of the International Commission for the Conservation of Atlantic Tunas (ICCAT) states that *The Commission may, on the basis of scientific evidence, make recommendations designed to maintain the populations of tuna and tuna-like fishes that may be taken in the Convention area at levels which will permit the maximum sustainable catch*. In this and in many other cases, maximum sustainable catch is generally assumed to be synonymous with maximum sustainable yield (MSY). Management must also be consistent with international agreements relating to the Conservation and Management of Straddling and Highly Migratory Fish Stocks (Doulman 1995) and the Precautionary Approach [@fao1996]. 
 
-MSY has been criticised as not being a robust management objective since it may lead to unsustainable and/or less than optimal management because of uncertainties associated with interpretation of data and the simplifying assumptions made when modelling biological processes (Rosenberg and Restrepo, 1994). The precautionary approach therefore includes the following recommendations i.e. to
+MSY has been criticised as not being a robust management objective since it may lead to unsustainable and/or less than optimal management because of uncertainties associated with interpretation of data and the simplifying assumptions made when modelling biological processes [@rosenberg1994]. The precautionary approach therefore includes the following recommendations i.e. to
 
 * determine stock-specific target and limit reference points and the action to be taken if they are exceeded; 
 * be more cautious when information is uncertain, unreliable or inadequate; the absence of adequate scientific information shall not be used as a reason for postponing or failing to take conservation measures;
@@ -37,7 +38,7 @@ The types of questions that fisheries scientists have to answer for managers are
 
 Biological reference points are important in answering these sorts of question as they are benchmarks against which stock assessment estimates can be compared and allow advice to be given about the current status of a stock, sustainable level of fishing effort and potential future catches. 
 
-Halliday et al. (2001) defined four main characteristics of stocks i.e. production, abundance, exploitation rate and ecosystem/environment effects. Reference points or indicators are commonly used to assess the status of stocks relative to these characteristics and there are four main types based either upon spawner per recruit, biomass, exploitation rate or size distribution. Quantities based on spatial distributions have also been proposed but to date have not been well developed. Here we consider reference points that are typically calculated from an age based analytical assessments. However reference points can also be calculated from biomass based assessments, surveys and a consideration of life history parameters alone. 
+@halliday2001 defined four main characteristics of stocks i.e. production, abundance, exploitation rate and ecosystem/environment effects. Reference points or indicators are commonly used to assess the status of stocks relative to these characteristics and there are four main types based either upon spawner per recruit, biomass, exploitation rate or size distribution. Quantities based on spatial distributions have also been proposed but to date have not been well developed. Here we consider reference points that are typically calculated from an age based analytical assessments. However reference points can also be calculated from biomass based assessments, surveys and a consideration of life history parameters alone. 
 
 In the case of ICCAT this can be interpreted as maintaining the stocks at a biomass level greater than BMSY, achievable amongst other means by ensuring that the fishing mortality level is less than FMSY
 
@@ -161,5 +162,12 @@ Add references here
 This document is licensed under the [Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0) license.
 
 ## Author information
+**Katel Hammon**
+
+**Laurie Kell**
+
+**Dorleta Garcia** AZTI. Marine Reserach Unit. Txatxarramendi Ugartea z/g, 48395, Sukarrieta, Basque Country, Spain.
 
 **Iago MOSQUEIRA**. European Commission Joint Research Centre (JRC), Institute for the Protection and Security of the Citizen (IPSC), Maritime Affairs Unit, Via E. Fermi 2749, 21027 Ispra VA, Italy. <https://ec.europa.eu/jrc/>
+
+# References
