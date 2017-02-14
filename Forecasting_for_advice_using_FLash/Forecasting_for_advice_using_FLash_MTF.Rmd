@@ -1,5 +1,5 @@
 ---
-title: "Forecasting for advice using FLash: Medium term forecasts"
+title: "Forecasting for advice using **FLash**: Medium term forecasts"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   github_document
@@ -16,8 +16,8 @@ options(width=50)
 set.seed(1423)
 ```
 
-This tutorial describes how Medium-Term Forecasts (MTF) can be performed using *FLR*.
-It uses the *FLash* package for running projections as well as the *FLBRP* package for evaluating reference points.
+This tutorial describes how Medium-Term Forecasts (MTF) can be performed using **FLR**.
+It uses the **FLash** package for running projections as well as the **FLBRP** package for evaluating reference points.
 
 MTFs use the same engine as Short-Term Forecasts (STFs). However, there are some key differences between them.
 MTFs typically project over 5 to 10 years instead of the usual 3 years for a STF.
@@ -54,7 +54,7 @@ library(FLAssess)
 
 Running a MTF is similar to running a STF in that we need several components:
 
-1. An FLStock object set up for the future (assumptions);
+1. An **FLStock** object set up for the future (assumptions);
 2. A stock-recruiment relationship (SRR);
 3. A projection control object;
 
@@ -220,10 +220,10 @@ Here we set SSB as the target.
 ## Care with timing
 
 When setting a biological abundance target we have to consider the timing of the target.
-In an FLStock, abundances are at the beginning of the year (or at the very end of the previous year).
+In an **FLStock**, abundances are at the beginning of the year (or at the very end of the previous year).
 For example, if you look at the total stock abundances you get the stock at the beginning of each year, i.e. before any fishing has occurred.
 
-Internally, *FLash* attempts to hit the desired target by finding the appropriate value of F.
+Internally, **FLash** attempts to hit the desired target by finding the appropriate value of F.
 However, the stock abundance at the start of the year is the result of fishing in the previous year, i.e SSB in year Y depends on F in Y-1.
 This means that if you set an abundance based target, you are really finding the F in the previous year that will give you that target. 
 Setting an SSB target in a year is the equivalent of setting an SSB target for the very `end` of that year (the same as setting a target for the very start of the next year).
@@ -231,7 +231,7 @@ The result is that you have to be careful with the years in the control object w
 
 This is best illustrated with a simple example of a one year projection.
 If we want to hit an SSB target in 2009 (i.e. the SSB at the start of 2009 etc), we actually set it in the control object as being for 2008 as it is in 2008 that the F will be found that hits the SSB in 2009.
-In this example we want the future SSB to be high (we could have used *FLBRP* to come up with a suitable value, e.g. Bmsy but here we just pick a value).
+In this example we want the future SSB to be high (we could have used **FLBRP** to come up with a suitable value, e.g. Bmsy but here we just pick a value).
 
 ```{r, seg2}
 future_ssb <- 300000
@@ -240,7 +240,7 @@ ctrl_ssb
 ple4_ssb <- fwd(ple4_mtf, ctrl_ssb, sr = ple4_sr)
 ```
 
-Remember, we have effectively set an SSB target for the very end of 2008 but we do not see this in the *FLStock* until the very beginning of 2009.
+Remember, we have effectively set an SSB target for the very end of 2008 but we do not see this in the **FLStock** until the very beginning of 2009.
 The result is that we can see that the SSB target has been hit, but not until 2009.
 
 ```{r, seg3}
@@ -310,10 +310,417 @@ plot(window(ple4_rel_catch, start = 2001, end = 2018))
 
 This is equivalent to the catch example above (LINK TO EXAMPLE 2) but without using absolute values.
 
+# Example 5: Minimum and Maximum targets
+
+In this Example we introduce two new things:
+
+1. Multiple targets;
+2. Targets with *bounds*.
+
+Here we set an F target so that the future F = F0.1.
+However, we also don't want the catch to fall below a minimum level.
+We do this by setting a *minimum* value for the catch. 
+
+First we calculate F0.1 using **FLBRP** (see the **FLBRP** tutorial LINK TO FLBRP TUTORIAL):
+
+```{r, meg1}
+f01 <- c(refpts(brp(FLBRP(ple4)))["f0.1","harvest"])
+f01
+```
+We'll set our minimum catch to be the mean catch of the last 3 years.
+
+```{r, meg2}
+min_catch <- mean(catch(ple4_mtf)[,as.character(2006:2008)])
+min_catch
+```
+
+To make the control object we can bind together two data.frames, 1 for each target type.
+Note that we include a *min = NA* as a column of the F data.frame. This is necessary to bind it to the catch data.frame
+
+```{r, meg3}
+ctrl_target <- rbind(
+    f_df <- data.frame(
+        year = 2009:2018,
+        quantity = "f",
+        val = f01,
+        min = NA),
+    catch_df <- data.frame(
+        year = 2009:2018,
+        quantity = "catch",
+        val = NA,
+        min = min_catch)
+)
+```
+
+This looks sort of right but we need to order the data.frame so that the years are sequential
+and within each year, minimum / maximum targets come after the absolute one.
+
+```{r, meg4}
+ctrl_target <- ctrl_target[order(ctrl_target$year),]
+ctrl_target
+```
+Make the control object:
+
+```{r, meg5}
+ctrl_min_catch <- fwdControl(ctrl_target)
+```
+
+What did we create (again, ignore the second table for the moment)?
+We can see that the *min* column has now got some data. The *max* column is still empty.
+
+```{r, meg6}             
+ctrl_min_catch
+```
+
+And project:
+
+```{r, meg7}
+ple4_min_catch <- fwd(ple4_mtf, ctrl_min_catch, sr = ple4_sr)
+```
+
+What happens? The catch constraint is hit in every year of the projection.
+The projected F decreases but never hits the target F because the minimum catch constraint prevents it from dropping further.
+
+```{r, meg8}
+plot(window(ple4_min_catch, start = 2001, end = 2018))
+```
+
+It is possible to also set a maximum constraint, for example, to prevent F from being too large.
+
+# Example 6 - Relative targets and bounds
+
+In this example we use a combination of *relative* targets and *bounds*.
+
+This kind of approach can be used to model a recovery plan.
+For example, we want to decrease F to F0.1 by 2015 (absolute target value) but catches cannot change by more than 15% each year (relative bound).
+This requires careful setting up of the control object.
+Again, we'll bind two data.frames.
+
+We make a vector of the desired F targets using F0.1 we calculated above.
+We set up an F sequence that decreases from the current Fbar in 2008 to F01 in 2015, then F01 until 2018.
+
+```{r, rtbeg1}
+current_fbar <- c(fbar(ple4)[,"2008"])
+f_target <- c(seq(from = current_fbar, to = f01, length = 8)[-1], rep(f01, 3))
+f_target
+```
+
+We set maximum annual change in catch to be 10% (in either direction).
+
+```{r, rtbeg2}
+rel_catch_bound <- 0.10
+```
+
+We make the control **data.frame** by joining a **data.frame** for the F target and one for the catch target.
+Note the use of the *rel.year*, *min* and *max* columns in the catch data.frame.
+
+```{r, rtbeg3}
+ctrl_target <- rbind(
+    f_df <- data.frame(
+        year = 2009:2018,
+        rel.year = NA,
+        quantity = "f",
+        val = f_target,
+        max = NA,
+        min = NA),
+    catch_df <- data.frame(
+        year = 2009:2018,
+        rel.year = 2008:2017,
+        quantity = "catch",
+        val = NA,
+        max = 1 + rel_catch_bound,
+        min = 1 - rel_catch_bound)
+)
+```
+
+We have to reorder the **data.frame** to be in chronological order and for the absolute values to be before the minimum / maximum targets.
+
+```{r, rtbeg4}
+ctrl_target <- ctrl_target[order(ctrl_target$year),]
+ctrl_target
+```
+
+Make the control object. The *min* and *max* columns now both have data:
+
+```{r, rtbeg5}
+ctrl_rel_min_max_catch <- fwdControl(ctrl_target)
+ctrl_rel_min_max_catch
+```
+
+Run the projection:
+
+```{r, rtbeg6}
+recovery<-fwd(ple4_mtf, ctrl=ctrl_rel_min_max_catch, sr=ple4_sr)
+```
+
+What happened? The F decreased and then remains constant, while the catch has changed by only a limited amount each year.
+
+```{r, rtbeg7}
+plot(window(recovery, start = 2001, end = 2018))
+```
+
+The bounds on the catch are operational in several of the years. They prevent the catch from increasing as well as decreasing too strongly, (allegedly) providing stability to the fishery.
+
+```{r, rtbeg8}
+catch(recovery)[,ac(2009:2018)] / catch(recovery)[,ac(2008:2017)]
+```
+
+# Introducing stochasticity 
+
+So far we have looked at combinations of:
+
+* absolute target values;
+* relative target values;
+* bounds on targets, and
+* mixed target types.
+
+But all of the projections have been deterministic, that is they all have only one iteration.
+Now, we are going start looking at projecting with multiple iterations.
+This is important because it can help us understand the impact of uncertainty (e.g. in the stock-recruitment relationship).
+
+*fwd()* is happy to work over iterations.
+It treats each iteration separately. 
+"All" you need to do is set the arguments correctly.
+
+There are two main ways of introducing iterations into fwd():
+
+1. By passing in residuals to the stock-recruitment function (as another argument to *fwd()*);
+2. Through the control object (by setting target values as multiple values)
+
+You can actually use both of these methods at the same time.
+As you can probably imagine, this can quickly become very complicated so we'll just do some simple examples to start with.
+
+## Preparation for projecting with iterations
+
+To perform a stochastic projection you need a stock object with multiple iterations.
+If you are using the output of a stock assessment method, such as *a4a*, then you may have one already.
+Here we use the *propagate()* method to expand the ple4 stock object to have 1000 iterations.
+We'll use the ten year projection as before (remember that we probably should change the assumptions that come with the *stf()* method).
+
+```{r, niter}
+niters <- 1000
+ple4_mtf <- stf(ple4, nyears = 10)
+ple4_mtf <- propagate(ple4_mtf, niters)
+```
+
+You can see that the 6th dimension, iterations, now has length 1000:
+
+```{r, prop}
+summary(ple4_mtf)
+```
+
+## Example 7: Stochastic recruitment
+
+There are two arguments to *fwd()* that we haven't used yet:
+
+1. *sr.residuals*
+2. *sr.residuals.mult*
+   
+These are used for specifying the recruitment residuals (*sr.residuals*) and whether these residuals are multiplicative (*sr.residuals.mult*=TRUE) or additive (FALSE).
+In this example we'll use multiplicative residuals i.e. the recruitment values in projection = deterministic recruitment predicted by the SRR model * residuals.
+The residuals are passed in as an **FLQuant** with years and iterations.
+Here we make an empty **FLQuant** that will be filled with residuals.
+
+```{r, res}
+multi_rec_residuals <- FLQuant(NA, dimnames = list(year=2009:2018, iter=1:niters))
+```
+We're going to use residuals from the stock-recruitment relationship we fitted at the beginning.
+We can access these using:
+
+```{r, res2}
+residuals(ple4_sr)
+```
+
+These residuals are on a log scale i.e.  log_residuals = log(observed_recruitment) - log(predicted_recruitment).
+To use these log residuals multiplicatively we need to transform them with *exp()*:
+
+We want to fill up our *multi_rec_residuals* **FLQuant** by randomly sampling from these log residuals.
+We can do this with the *sample()* function.
+We want to sample with replacement (i.e. if a residual is chosen, it gets put back in the pool and can be chosen again).
+
+First we get generate the samples of the years (indices of the residuals we will pick).
+
+```{r, res3}
+sample_years <- sample(dimnames(residuals(ple4_sr))$year, niters * 10, replace = TRUE)
+```
+
+We fill up the **FLQuant** we made earlier with the residuals using the sampled years:
+
+```{r, res4}
+multi_rec_residuals[] <- exp(residuals(ple4_sr)[,sample_years])
+```
+
+What have we got?
+
+```{r, res5}
+multi_rec_residuals
+```
+
+It's an **FLQuant** of SRR residuals but what do those brackets mean?
+The information in the brackets is the Median Absolute Deviation, a way of summarising the iterations. We have 1000 iterations but don't want to see all of them - just a summary.
+
+We now have the recruitment residuals.
+We'll use the *ctrl_catch* control object we made in Example 2 with decreasing catch.
+We call *fwd()* as usual, only now we have *sr.residuals* and *sr.residuals.mult* arguments.
+This takes a little time (we have 1000 iterations).
+
+```{r, res6}
+ple4_stoch_rec <- fwd(ple4_mtf, ctrl = ctrl_catch, sr = ple4_sr, sr.residuals = multi_rec_residuals, sr.residuals.mult = TRUE)
+```
+
+What just happened? We can see that now we have uncertainty in the recruitment estimates, driven by the residuals.
+This uncertainty feeds into the SSB and, to a lesser extent, the projected F and catch.
+
+```{r, res7}
+plot(window(ple4_stoch_rec, start = 2001, end = 2018))
+```
+
+We can see that the projected stock metrics also have uncertainty in them.
+
+```{r, res8}
+rec(ple4_catch_rec)[,ac(2008:2018)]
+fbar(ple4_catch_rec)[,ac(2008:2018)]
+ssb(ple4_catch_rec)[,ac(2008:2018)]
+```
+
+## Example 8: stochastic target values
+
+In this example we introduce uncertainty by including uncertainty in our target values.
+This example has catch as the target, except now catch will be stochastic.
+
+We will use the ctrl_catch object from above (we make a copy):
+
+```{r, stv1}
+ctrl_catch
+ctrl_catch_iters <- ctrl_catch
+```
+
+Let's take a look at what else is in the control object:
+
+```{r, stv2}
+slotNames(ctrl_catch_iters)
+```
+
+The iterations of the target value are set in the *trgtArray* slot.
+This is the second table that gets printed when you call the control object.
+
+```{r, stv3}
+ctrl_catch_iters@trgtArray
+```
+
+What is this slot?
+
+```{r, stv4}
+class(ctrl_catch_iters@trgtArray)
+dim(ctrl_catch_iters@trgtArray)
+```
+
+It's a 3D array with structure: target no x value x iteration.
+It's in here that we set the stochastic projection values.
+Each row of the *trgtArray* slot corresponds to a row in the control **data.frame** we passed in.
+
+Here we set 10 targets (one for each year in the projection), so the first dimension of *trgtArray* has length 10.
+The second dimension always has length 3 (for *min*, *val* and *max* columns).
+The third dimension is where the iterations are stored.
+This is currently length 1. We have 1000 iterations and therefore we need to expand *trgtArray* along the iter dimension so it can store the 1000 iterations.
+
+Unfortunately, there is not a nice way of doing this.
+The simplest way is just to make a new array with the right dimensions.
+Note that we need to put in dimnames.
+
+```{r, stv5}
+new_trgtArray <- array(NA, dim=c(10,3,niters), dimnames = list(1:10, c("min","val","max"),iter=1:niters))
+dim(new_trgtArray)
+```
+
+Now we can fill it up with new data (our stochastic catch targets).
+
+We need to generate random catch target data.
+This could come from a number of sources (e.g. MSY estimated with uncertainty).
+In this example we make it very simple, by using lognormal distribution with a fixed standard deviation of 0.3.
+We multiply the deterministic catch target values by samples from this distribution.
+
+```{r, stv6}
+future_catch_iters <- ctrl_catch_iters@trgtArray[,"val",] * rlnorm(10 * niters, meanlog = 0, sdlog=0.3)
+```
+
+We fill up *trgtArray* with these values.
+We just fill up the *val* column (you can also set the *min* and *max* columns to set stochastic bounds).
+
+```{r, stv7}
+new_trgtArray[,"val",] <- future_catch_iters
+```
+
+We put our new *trgtArray* into the control object:
+
+```{r, stv8}
+ctrl_catch_iters@trgtArray <- new_trgtArray
+```
+We can see that now we have stochasticity in the target values.
+
+```{r, stv9}
+ctrl_catch_iters
+```
+
+We project as normal using the deterministic SRR.
+
+
+```{r, stv10}
+ple4_catch_iters <- fwd(ple4_mtf, ctrl_catch_iters, sr = ple4_sr)
+```
+What happened?
+
+```{r, stv11}
+plot(window(ple4_catch_iters, start = 2001, end = 2018))
+```
+
+The projected catches reflect the uncertainty in the target.
+
+```{r, stv12}
+catch(ple4_catch_iters)[,ac(2008:2018)]
+```
+
+## Example 9: A projection with stochastic catch and recruiment
+
+What is going on with recruitment in the results of the previous example?
+
+```{r, stv13}
+rec(ple4_catch_iters)[,ac(2008:2018)]
+```
+Remember that here recruitment is not being driven by random residuals, it is only be driven by SSB.
+The recruitment in year Y is a result of the SSB in year Y-1.
+The SSB in year Y-1 is a result of the catch in year Y-2.
+So if catch is stochastic in 2009, we don't see the impact of the stochasticity on the recruitment until 2011. Even then the impact is small.
+This seems unlikely so we can also put in recruitment residuals (we already made them for Example 7).
+
+```{r, stv14}
+ple4_catch_iters <- fwd(ple4_mtf, ctrl_catch_iters, sr = ple4_sr, sr.residuals = multi_rec_residuals, sr.residuals.mult = TRUE)
+```
+
+What happened?
+
+```{r, stv15}
+plot(window(ple4_catch_iters, start = 2001, end = 2018))
+```
+
+The projected recruitment and catches are stochastic.
+
+```{r, stv16}
+catch(ple4_catch_iters)[,ac(2008:2018)]
+rec(ple4_catch_iters)[,ac(2008:2018)]
+```
 
 # Alternative syntax for controlling the projection
 
+TO DO
+
 SOMETHING ON CALLING FWD() AND SPECIFYING TARGETS AS ARGUMENTS
+
+# Notes on conditioning projections
+
+TO DO
+
+SOMETHING ON FWD WINDOW
 
 # References
 
