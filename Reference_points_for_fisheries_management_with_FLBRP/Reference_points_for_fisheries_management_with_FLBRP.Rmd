@@ -47,7 +47,7 @@ In the case of ICCAT this can be interpreted as maintaining the stocks at a biom
 To follow this tutorial you should have installed the following packages:
 
 - CRAN: [ggplot2](https://cran.r-project.org/web/packages/ggplot2/index.html)
-- FLR: [FLCore](http://www.flr-project.org/FLCore/), [ggplotFL](http://www.flr-project.org/ggplotFL/),[FLBRP](http://www.flr-project.org/FLBRP/),
+- FLR: [FLCore](http://www.flr-project.org/FLCore/), [ggplotFL](http://www.flr-project.org/ggplotFL/),[FLBRP](http://www.flr-project.org/FLBRP/)
 
 if you are using Windows, please use 32-bit R version
 
@@ -84,7 +84,7 @@ brp4 <- FLBRP(ple4)
 
 ```
 
-in which case the necessary input slots will be created accordingly, from those slots related to catch, landings, discards, and stock numbers and weights. All slots named `*.obs` will contain the related time series present in the original `FLStock` object, while other slots will contain averages across the year dimension over the last `n` years, where `n` is controlled by these three arguments: `biol.nyears`, `fbar.nyears` and `sel.nyears`, as detailed in the help page for [FLBRP].
+in which case the necessary input slots will be created accordingly, from those slots related to catch, landings, discards, and stock numbers and weights. All slots named `*.obs` will contain the related time series present in the original `FLStock` object, while other slots will contain averages across the year dimension over the last `n` years, where `n` is controlled by these three arguments: `biol.nyears`, `fbar.nyears` and `sel.nyears`, as detailed in the help page for [FLBRP](http://www.flr-project.org/FLBRP/).
 
 ```{r}
 summary(brp4)
@@ -116,7 +116,7 @@ brp4Ri <- FLBRP(ple4, sr=ple4SR)
 
 The process for calculating biological and economic reference points using the `FLBRP` class can now proceed. A first call to `brp()` will calculate the default reference points and return an object of class `FLBRP` where the results have been added to the `refpts` slot. 
 
-The default reference points include the [virgin](#virgin) stock, the [$MSY$](#msy) levels, the [crash](#crash) exploitation, the approximation of MSY [$F_{0.1}$](#f01), [$F_{max}$](#fmax) and [$SPR_{3O}$] (#spr30).
+The default reference points include the [virgin](#virgin) stock, the [MSY](#msy) level, the [crash](#crash) exploitation, the approximation of MSY [$F_{0.1}$](#f01), [$F_{max}$](#fmax) and [$SPR_{3O}$](#spr30).
 
 
 ```{r} 
