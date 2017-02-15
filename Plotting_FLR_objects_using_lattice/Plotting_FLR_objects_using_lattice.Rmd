@@ -12,7 +12,6 @@ license: Creative Commons CC-BY SA
 library(knitr)
 opts_chunk$set(fig.align='center',
   message=FALSE, warning=FALSE, echo=TRUE, cache=FALSE)
-options(width=50)
 set.seed(1423)
 ```
 
@@ -39,11 +38,9 @@ library(lattice)
 
 # GRAPH TYPES AVAILABLE
 
-The typical formula for lattice plots is:
+The typical formula for lattice plots is `graphtype(formula, data=FLQuant)`
 
-**graph_type(formula, data=FLQuant)**
-
-where *graph_type* is selected from the list below. Formula specifies the variable(s) to display and any conditioning variables. For example  ~data|A means display numeric variable for each level of factor A. data~A means display the relationship between numeric variables for factor A levels. ~x means display numeric variable x alone. 
+where *graphtype* is selected from the list below. Formula specifies the variable(s) to display and any conditioning variables. For example  `~ data | A` means display numeric variable for each level of factor A. `data ~ A` means display the relationship between numeric variables for factor A levels. `~ x` means display the numeric variable `x` alone. 
 
 The following lattice graph options could be used for FLR objects: 
 
@@ -56,7 +53,7 @@ xyplot     | scatterplot        | data~A
 wireframe  | 3D wireframe graph | data~A*B
 bubbles    | bubble plot        | A~B
 
-In case of lattice based *plot* simply the name of the object could be used, e.g. *plot(ple4)*
+In case of lattice based *plot* simply the name of the object could be used, e.g. `plot(ple4)`
 
 # STANDARD LATTICE BASED FLR PLOTS
 
@@ -84,11 +81,11 @@ A specific object (FLQuant) of the FLStock can be also plotted by age and year u
 plot(catch.n(ple4)/1000, ylab="Catch numbers (thousands)")
 ```
 
-The plot() finction can be also used to produce summary graphs of objects other then FLStock, such as FLSR objects.
+The plot() function can be also used to produce summary graphs of objects other then FLStock, such as FLSR objects.
 
 ```{r fig3}
 # Plot FLSR
-plot(nsher)
+print(plot(nsher))
 ```
 
 # PLOTTING FLR OBJECTS USING LATTICE
@@ -116,9 +113,8 @@ You could also group your data, e.g. by age/area or season and plot your FLQuant
 
 ```{r fig6}
 xyplot(data/1000~year, groups=age, data=catch.n(ple4), type='l', 
-       auto.key=list(space='bottom',columns=5, cex=0.7),
-       ylab='Catch at age (10^6 units)')
-
+  auto.key=list(space='bottom',columns=5, cex=0.7),
+  ylab='Catch at age (10^6 units)')
 ```
 
 Or analyse your groups by plotting them separately 
