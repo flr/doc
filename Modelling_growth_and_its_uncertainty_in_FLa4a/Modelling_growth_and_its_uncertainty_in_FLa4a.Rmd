@@ -152,7 +152,7 @@ vbNorm <- mvrnorm(10000,vbObj)
 vbNorm@params
 dim(vbNorm@params)
 ```
-We can now convert from length to ages data based on the 10000 parameter iterations. This gives us 10000 sets of age data. For example, here we convert a single length vector using each of the 10000 parameter iterations: 
+We can now convert from length to ages data based on the 10,000 parameter iterations. This gives us 10,000 sets of age data. For example, here we convert a single length vector using each of the 10,000 parameter iterations: 
 
 ```{r, }
 ages <- predict(vbNorm, len=5:10+0.5)
