@@ -1,5 +1,6 @@
 ---
-title: Assessment for All initiative(a4a) - Modelling Individual Growth and Using Stochastic Slicing to Convert Length-based Data Into Age-based Data
+title: Modelling Individual Growth and Using Stochastic Slicing to Convert Length-based Data Into Age-based Data
+subtitle: Assessment for All initiative(a4a) 
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
 github_document:
@@ -13,8 +14,19 @@ license: Creative Commons CC-BY SA
 library(knitr)
 opts_chunk$set(fig.align='center',
   message=FALSE, warning=FALSE, echo=TRUE, cache=FALSE)
-options(width=50)
 set.seed(1423)
+library(captioner)
+fig_nums <- captioner(prefix = "Figure")
+fign <- function(name) {
+  fig_nums(name=name, display="cite")
+}
+knit_hooks$set(fig.cap = function(before, options, envir) {
+  if(before) {
+    invisible(fig_nums(name=options$label, caption=options$fig.cap))
+  }
+  options$fig.cap <- paste0(fig_nums(name=options$label), ".")
+  return(options)
+})
 ```
 
 The document explains the approach being developed by a4a to integrate uncertainty in individual growth into stock assessment and advice. It presents a mixture of text and code, where the first explains the concepts behind the methods, while the last shows how these can be run with the software provided.
@@ -148,7 +160,7 @@ dim(ages)
 # We show the first ten iterations only as an illustration
 ages[,1:10]
 ```
-The marginal distributions can be seen in Figure~\ref{fig:plot_norm_params}.
+The marginal distributions can be seen in `r fign('plot_norm_params')`.
 
 ```{r, plot_norm_params, fig.cap="The marginal distributions of each of the parameters from using a multivariate normal distribution.", echo=FALSE}
 par(mfrow=c(3,1))
@@ -157,13 +169,13 @@ hist(c(params(vbNorm)['k',]), main='k', prob=TRUE, xlab='')
 hist(c(params(vbNorm)['t0',]), main='t0', prob=TRUE, xlab='')
 ```
 
-The shape of the correlation can be seen in Figure~\ref{fig:plot_norm_scatter}.
+The shape of the correlation can be seen in `r fign('plot_norm_scatter')`.
 
 ```{r, plot_norm_scatter, fig.cap="Scatter plot of the 10000 samples parameter from the multivariate normal distribution.", echo=FALSE}
 splom(data.frame(t(params(vbNorm)@.Data)), par.settings=list(plot.symbol=list(pch=19, cex=0.1, col=1)))
 ```
 
-Growth curves for the 1000 iterations can be seen in Figure~\ref{fig:plot_mv_growth}.
+Growth curves for the 1000 iterations can be seen in `r fign('plot_mv_growth')`.
 
 
 ```{r, plot_mv_growth, fig.cap="Growth curves using parameters simulated from a multivariate normal distribution.", echo=FALSE}
@@ -174,7 +186,7 @@ bwplot(value~factor(Var1), data=melt(predict(vbNorm, t=0:50+0.5)), par.settings=
 # Adding uncertainty to growth parameters with a multivariate triangle distribution
 \label{sec:growth_triangle_cop}
 
-One alternative to using a normal distribution is to use a \href{http://en.wikipedia.org/wiki/Triangle\_distribution}{triangle distribution}. We use the package \href{http://cran.r-project.org/web/packages/triangle/index.html}{\pkg{triangle}}, where this distribution is parametrized using the minimum, maximum and median values. This can be very attractive if the analyst needs to scrape information from the web or literature and perform some kind of meta-analysis.
+One alternative to using a normal distribution is to use a [triangle distribution](http://en.wikipedia.org/wiki/Triangle\_distribution). We use the package [triangle](http://cran.r-project.org/web/packages/triangle/index.html), where this distribution is parametrized using the minimum, maximum and median values. This can be very attractive if the analyst needs to scrape information from the web or literature and perform some kind of meta-analysis.
 
 Here we show an example of setting a triangle distribution with values taken from Fishbase.
 
@@ -196,8 +208,8 @@ triPars <- list(list(a=min(linf), b=max(linf), c=median(linf)),
 # Simulate 10000 times using mvrtriangle
 vbTri <- mvrtriangle(10000, vbObj, paramMargins=triPars)
 ```
-The marginals will reflect the uncertainty on the parameter values that were scraped from \href{http://fishbase.org}{Fishbase} but, as we don't really believe the parameters are multivariate normal, here we adopted a distribution based on a *t* copula with triangle marginals.
-The marginal distributions can be seen in Figure~\ref{fig:plot_tri_params} and the shape of the correlation can be seen in Figure~\ref{fig:plot_tri_scatter}.
+The marginals will reflect the uncertainty on the parameter values that were scraped from [Fishbase](http://fishbase.org) but, as we don't really believe the parameters are multivariate normal, here we adopted a distribution based on a *t* copula with triangle marginals.
+The marginal distributions can be seen in `r fign('plot_tri_params')` and the shape of the correlation can be seen in `r fign('plot_tri_scatter')`.
 
 ```{r, plot_tri_params, echo=FALSE, fig.cap="The marginal distributions of each of the parameters from using a multivariate triangle distribution."}
 par(mfrow=c(3,1))
@@ -208,7 +220,7 @@ hist(c(params(vbTri)['t0',]), main='t0', prob=TRUE, xlab='')
 ```{r, plot_tri_scatter, echo=FALSE, fig.cap="Scatter plot of the 10000 samples parameter from the multivariate triangle distribution."}
 splom(data.frame(t(params(vbTri)@.Data)), par.settings=list(plot.symbol=list(pch=19, cex=0.1, col=1)))
 ```
-We can still use \code{predict()} to see the growth model uncertainty (Figure~\ref{fig:plot_tri_growth}).
+We can still use `predict()` to see the growth model uncertainty (`r fign('plot_tri_growth')`).
 
 ```{r, plot_tri_growth, echo=FALSE, fig.cap="Growth curves using parameters simulated from a multivariate triangle distribution."}
 #df0 <- melt(predict(vbTri, t=0:50+0.5))
@@ -219,7 +231,7 @@ Remember that the above examples use a variance-covariance matrix that we essent
 
 # Adding uncertainty to growth parameters with statistical copulas
 
-A more general approach to adding parameter uncertainty is to make use of \href{http://www.encyclopediaofmath.org/index.php/Copula}{statistical copulas} and marginal distributions of choice. This is possible with the \code{mvrcop()} function borrowed from the package \href{http://cran.r-project.org/web/packages/copula/}{\pkg{copula}}. The example below keeps the same parameters and changes only the copula type and family but a lot more can be done. Check the package \pkg{copula} for more information. 
+A more general approach to adding parameter uncertainty is to make use of [statistical copulas](http://www.encyclopediaofmath.org/index.php/Copula) and marginal distributions of choice. This is possible with the `mvrcop()` function borrowed from the package [copula](http://cran.r-project.org/web/packages/copula/). The example below keeps the same parameters and changes only the copula type and family but a lot more can be done. Check the package *copula* for more information. 
 
 % Needs more explanation
 
@@ -227,7 +239,7 @@ A more general approach to adding parameter uncertainty is to make use of \href{
 vbCop <- mvrcop(10000, vbObj, copula='archmCopula', family='clayton', param=2, 
                 margins='triangle', paramMargins=triPars)
 ```
-The shape of the correlation changes (Figure~\ref{fig:plot_cop_tri_scatter}) as well as the resulting growth curves (Figure~\ref{fig:plot_cop_tri_growth}). 
+The shape of the correlation changes (`r fign('plot_cop_tri_scatter')`) as well as the resulting growth curves (`r fign('plot_cop_tri_growth')`). 
 
 ```{r, plot_cop_tri_scatter, echo=FALSE, fig.cap="Scatter plot of the 10000 samples parameter from the using an archmCopula copula with triangle margins."}
 splom(data.frame(t(params(vbCop)@.Data)), par.settings=list(plot.symbol=list(pch=19, cex=0.1, col=1)))
