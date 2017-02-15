@@ -1,5 +1,6 @@
 ---
-title: Assessment for All initiative(a4a) - Natural Mortality Modelling
+title: Natural Mortality Modelling
+subtitle: Assessment for All initiative(a4a)
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
 github_document:
@@ -14,6 +15,18 @@ library(knitr)
 opts_chunk$set(fig.align='center',
   message=FALSE, warning=FALSE, echo=TRUE, cache=FALSE)
 set.seed(1423)
+library(captioner)
+fig_nums <- captioner(prefix = "Figure")
+fign <- function(name) {
+  fig_nums(name=name, display="cite")
+}
+knit_hooks$set(fig.cap = function(before, options, envir) {
+  if(before) {
+    invisible(fig_nums(name=options$label, caption=options$fig.cap))
+  }
+  options$fig.cap <- paste0(fig_nums(name=options$label), ".")
+  return(options)
+})
 ```
 
 The document explains the approach being developed by a4a to integrate uncertainty in natural mortality into stock assessment and advice. It presents a mixture of text and code, where the first explains the concepts behind the methods, while the last shows how these can be run with the software provided.
@@ -64,7 +77,6 @@ The resulting `FLQuant` object can then be directly inserted into an `FLStock` o
 In this section we go through each of the steps in detail using a variety of different models.
 
 For more information on the a4a methodologies refer to [Jardim, et.al, 2014](http://icesjms.oxfordjournals.org/content/early/2014/04/03/icesjms.fsu050.abstract), [Millar, et.al, 2014](http://icesjms.oxfordjournals.org/content/early/2014/03/31/icesjms.fsu043.abstract) and [Scott, et.al, 2016](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0154922).
-
 
 # `a4aM` - The M class
 
@@ -171,7 +183,7 @@ m4 <- a4aM(shape=shape4, level=mvrnorm(100, level4), trend=mvrnorm(100, trend4))
 
 #Adding uncertainty to natural mortality parameters with statistical copulas`
 
-We can also use copulas to add parameter uncertainty to the natural mortality model, similar to the way we use them for the growth model in Section \ref{sec:growth_triangle_cop`. As stated above these processes make use of the methods implemented for the `FLModelSim` class.
+We can also use copulas to add parameter uncertainty to the natural mortality model, similar to the way we use them for the growth model. Using a [triangle distribution](http://en.wikipedia.org/wiki/Triangle\_distribution). We use the package [triangle](http://cran.r-project.org/web/packages/triangle/index.html), where this distribution is parametrized using the minimum, maximum and median values. This can be very attractive if the analyst needs to scrape information from the web or literature and perform some kind of meta-analysis. As stated above these processes make use of the methods implemented for the `FLModelSim` class.
 
 % EXPAND...
 
@@ -195,7 +207,7 @@ pars <- list(list(a=55,b=65), list(a=0.3, b=0.6, c=0.35))
 mgis2 <- mvrtriangle(1000, mgis2, paramMargins=pars)
 mgis2
 ```
-The resulting parameter estimates and marginal distributions can be seen in Figure~\ref{fig:plot_tri_gis_m} and \ref{fig:plot_tri_gis_m_hist}.
+The resulting parameter estimates and marginal distributions can be seen in `r fign('plot_tri_gis_m')` and `r fign('plot_tri_gis_m_hist')`.
 
 ```{r, plot_tri_gis_m, echo=FALSE, fig.cap="Parameter estimates for Gislason's second natural mortality model from using a triangle distribution."}
 splom(t(params(mgis2)@.Data), par.settings=list(plot.symbol=list(pch=19, cex=0.1, col=1)))
@@ -213,7 +225,7 @@ m5 <- a4aM(shape=mgis2, level=level4, trend=trend4)
 m5 <- m4
 shape(m5) <- mgis2
 ```
-#Computing natural mortality time series - the "m" method`
+# Computing natural mortality time series - the "m" method`
 
 Now that we have set up the natural mortality `a4aM` model and added parameter uncertainty to each component, we are ready to generate the `FLQuant` of natural mortality. For that we need the `m()` method.
 
@@ -313,7 +325,7 @@ With ages and years - passing in the NAO data as numeric (1,0,1,0)
 rngyear(m3) <- c(2000, 2003)
 m(m3, nao=as.numeric(nao[,as.character(2000:2003)]))
 ```
-The final example show how `m()` can be used to make an `FLQuant` with uncertainty (see Figure~\ref{fig:uncertain_m`). We use the `m4` object from earlier with uncertainty on the `level` and `trend` parameters.
+The final example show how `m()` can be used to make an `FLQuant` with uncertainty (see `r fign('uncertain_m')`). We use the `m4` object from earlier with uncertainty on the `level` and `trend` parameters.
 
 ```{r, m4_uncertainty_m}
 rngquant(m4) <- c(0,7)
@@ -325,8 +337,6 @@ dim(flq)
 ```{r, uncertain_m, echo=FALSE, fig.cap="Natural mortality with age and year trend."}
 bwplot(data~factor(age)|year, data=flq, par.settings=list(plot.symbol=list(cex=0.2, col="gray50"), box.umbrella=list(col="gray40"), box.rectangle=list(col="gray30")), ylab="M", xlab="age (years)", scales=list(x=list(rot=90)))
 ```
-
-
 
 # More information
 

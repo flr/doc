@@ -1,6 +1,6 @@
 Reading data into FLR
 ================
-14 February, 2017
+15 February, 2017
 
 This tutorial details methods for reading various formats of data into R for generating the `FLStock`, `FLIndex` and `FLFleet` object classes.
 
@@ -16,12 +16,14 @@ You can do so as follows,
 
 ``` r
 install.packages(c("ggplot2"))
-install.packages(c("ggplotFL"), repos="http://flr-project.org/R")
+install.packages(c("ggplotFL"), repos = "http://flr-project.org/R")
 ```
 
 ``` r
-# This chunk loads all necessary packages, trims pkg messages
-library(FLCore); library(FLFleet)
+# This chunk loads all necessary packages, trims
+# pkg messages
+library(FLCore)
+library(FLFleet)
 library(ggplotFL)
 ```
 
@@ -45,7 +47,7 @@ There is many ways of reading csv files. `read.table` with 'header', 'sep', 'dec
 The `read.csv` or `read.csv2` function are very useful to read csv files.
 
 ``` r
-catch.n <- read.csv("src/Data/catch_numbers.csv",row=1)
+catch.n <- read.csv("src/Data/catch_numbers.csv", row = 1)
 ```
 
 We have read in the data as a data.frame
@@ -56,7 +58,7 @@ class(catch.n)
 
     ## [1] "data.frame"
 
-The data are now in your R environment, before creating a **FLQuant** object, you need to make sure it is consistent with the type of object and formatting that is needed to run the `FLQuant()` function. To get information on the structure and format needed type ?FLQuant in your R Console.
+The data are now in your R environment, before creating a **FLQuant** object, you need to make sure it is consistent with the type of object and formatting that is needed to run the `FLQuant` function. To get information on the structure and format needed type ?FLQuant in your R Console.
 
 ### Reshaping data as a matrix
 
@@ -64,7 +66,7 @@ FLQuant accept 'vector', 'array' or 'matrix'. We can convert the object catch.n 
 
 ``` r
 catch.n.matrix <- as.matrix(catch.n)
-catch.n.matrix[,1:8]
+catch.n.matrix[, 1:8]
 ```
 
     ##   X1957 X1958 X1959 X1960 X1961 X1962 X1963 X1964
@@ -78,15 +80,16 @@ catch.n.matrix[,1:8]
 
 A `FLQuant` object is made of six dimensions. The name of the first dimension can be altered by the user from its default, quant. This could typically be age or length for data related to natural populations. The only name not accepted is 'cohort', as data structured along cohort should be stored using the `FLCohort` class instead. Other dimensions are always names as follows: year, for the calendar year of the data point; unit, for any kind of division of the population, e.g. by sex; season, for any temporal strata shorter than year; area, for any kind of spatial stratification; and iter, for replicates obtained through bootstrap, simulation or Bayesian analysis.
 
-When importing catch number for example, the input object needs to be formatted as such: age or length in the first dimension and years in the second dimension. If the object is not formatted in the right way, you can use the `reshape()` function from the package [reshape2](https://cran.r-project.org/web/packages/reshape2/index.html).
+When importing catch number for example, the input object needs to be formatted as such: age or length in the first dimension and years in the second dimension. If the object is not formatted in the right way, you can use the `reshape` functions from the package [reshape2](https://cran.r-project.org/web/packages/reshape2/index.html).
 
 ### Making an FLQuant object
 
 We need to specify the dimnames
 
 ``` r
-catch.n.flq <- FLQuant(catch.n.matrix, dimnames=list(age=1:7, year = 1957:2011))
-catch.n.flq[,1:7]
+catch.n.flq <- FLQuant(catch.n.matrix, dimnames = list(age = 1:7, 
+    year = 1957:2011))
+catch.n.flq[, 1:7]
 ```
 
     ## An object of class "FLQuant"
@@ -110,7 +113,8 @@ FLCore contains functions for reading in fish stock data in commonly used format
 
 ``` r
 # Read from a VPA text file
-catch.n <- readVPAFile(file.path('src','Data','her-irlw',"canum.txt"))
+catch.n <- readVPAFile(file.path("src", "Data", "her-irlw", 
+    "canum.txt"))
 class(catch.n)
 ```
 
@@ -118,13 +122,15 @@ class(catch.n)
     ## attr(,"package")
     ## [1] "FLCore"
 
-This can be repeated for each of the data files. In addition, functions are available for Multifan-CL format `readMFCL` and ADMB `readADMB`.
+This can be repeated for each of the data files. In addition, functions are available for [Multifan-CL](http://www.multifan-cl.org/) format `readMFCL` and [ADMB](http://www.admb-project.org/) `readADMB`.
 
 Alternatively, if you have the full information for a stock in the **Lowestoft VPA**, **Adapt**, **CSA** or **ICA** format you can read in together using the `readFLStock` function. Here, you point the function to the index file, with all other files in the same directory:
 
 ``` r
-# Read a collection of VPA files, pointing to the Index file:
-her <- readFLStock(file.path('src','Data','her-irlw','index.txt'))
+# Read a collection of VPA files, pointing to the
+# Index file:
+her <- readFLStock(file.path("src", "Data", "her-irlw", 
+    "index.txt"))
 class(her)
 ```
 
@@ -172,8 +178,9 @@ Note: the units for the slots have not been set. We will deal with this in the n
 In addition, this object only contains the input data for the stock assessment, not any estimated values (e.g. harvest rates, stock abundances). You can add these to the object as follows:
 
 ``` r
-her@stock.n <- readVPAFile(file.path('src','Data','her-irlw',"n.txt"))
-print(her@stock.n[,ac(2007:2011)]) # only print 2007:2011
+her@stock.n <- readVPAFile(file.path("src", "Data", 
+    "her-irlw", "n.txt"))
+print(her@stock.n[, ac(2007:2011)])  # only print 2007:2011
 ```
 
     ## An object of class "FLQuant"
@@ -192,14 +199,15 @@ print(her@stock.n[,ac(2007:2011)]) # only print 2007:2011
     ## units:  NA
 
 ``` r
-her@harvest <- readVPAFile(file.path('src','Data','her-irlw',"f.txt"))
+her@harvest <- readVPAFile(file.path("src", "Data", 
+    "her-irlw", "f.txt"))
 ```
 
 Now we have a fully filled `FLStock` object. But let's check the data are consistent.
 
 ``` r
 # The sum of products (SOP)
-apply(her@landings.n * her@landings.wt, 2, sum)[,ac(2007:2011)]
+apply(her@landings.n * her@landings.wt, 2, sum)[, ac(2007:2011)]
 ```
 
     ## An object of class "FLQuant"
@@ -213,7 +221,7 @@ apply(her@landings.n * her@landings.wt, 2, sum)[,ac(2007:2011)]
 
 ``` r
 # and the value read in from the VPA file
-her@landings[,ac(2007:2011)]
+her@landings[, ac(2007:2011)]
 ```
 
     ## An object of class "FLQuant"
@@ -226,11 +234,13 @@ her@landings[,ac(2007:2011)]
     ## units:  NA
 
 ``` r
-## They are not the same!!  We correct the landings to be the same as the SOP - there is a handy function for this purpose
+## They are not the same!!  We correct the landings
+## to be the same as the SOP - there is a handy
+## function for this purpose
 her@landings <- computeLandings(her)
 
 # In addition, there is no discard information
-her@discards.wt[,ac(2005:2011)]
+her@discards.wt[, ac(2005:2011)]
 ```
 
     ## An object of class "FLQuant"
@@ -249,7 +259,7 @@ her@discards.wt[,ac(2005:2011)]
     ## units:  NA
 
 ``` r
-her@discards.n[,ac(2005:2011)]
+her@discards.n[, ac(2005:2011)]
 ```
 
     ## An object of class "FLQuant"
@@ -269,19 +279,19 @@ her@discards.n[,ac(2005:2011)]
 
 ``` r
 # Set up the discards and catches
-her@discards.wt   <- her@landings.wt
-her@discards.n[]  <- 0
-her@discards      <- computeDiscards(her)
-her@catch         <- her@landings
-her@catch.wt      <- her@landings.wt
-her@catch.n       <- her@landings.n
+her@discards.wt <- her@landings.wt
+her@discards.n[] <- 0
+her@discards <- computeDiscards(her)
+her@catch <- her@landings
+her@catch.wt <- her@landings.wt
+her@catch.n <- her@landings.n
 ```
 
 Functions are available to `computeLandings`, `computeDiscards`, `computeCatch` and `computeStock`. These functions take the argument `slot = 'catch'`, `slot = 'wt'` and `slot = 'n'` to compute the total weight, individual weight and numbers respectively, in addition to `slot = 'all'`.
 
 ### Adding a description, units, ranges etc..
 
-Before we are finished, we want to ensure the units and range references are correct. This is important as the derived calculations require the correct scaling.
+Before we are finished, we want to ensure the units and range references are correct. This is important as the derived calculations require the correct scaling (e.g. `fbar`, for the average fishing mortality range over the required age ranges).
 
 First, let's ensure an appropriate name and description are assigned:
 
@@ -319,21 +329,21 @@ summary(her)
     ## m.spwn        : [ 7 55 1 1 1 1 ], units =  NA
 
 ``` r
-#name and descriptions
-her@name # ok
+# name and descriptions
+her@name  # ok
 ```
 
     ## [1] "Herring VIa(S) VIIbc "
 
 ``` r
-her@desc # ok
+her@desc  # ok
 ```
 
-    ## [1] "Imported from a VPA file. ( src/Data/her-irlw/index.txt ).  Tue Feb 14 16:47:06 2017"
+    ## [1] "Imported from a VPA file. ( src/Data/her-irlw/index.txt ).  Wed Feb 15 11:48:28 2017"
 
 ``` r
-# Set the Fbar range for the stock 
-her@range[c('minfbar','maxfbar')] # ok, but can be filled with c(min,max)
+# Set the Fbar range for the stock
+her@range[c("minfbar", "maxfbar")]  # ok, but can be filled with  <- c(min,max)
 ```
 
     ## minfbar maxfbar 
@@ -341,13 +351,13 @@ her@range[c('minfbar','maxfbar')] # ok, but can be filled with c(min,max)
 
 ``` r
 # set the plus group
-her@range['plusgroup']  <- 7 # final year is a plusgroup
+her@range["plusgroup"] <- 7  # final year is a plusgroup
 
 ## Units
-units(her@catch)    <- units(her@discards)    <- units(her@landings)    <- units(her@stock)    <- 'tonnes'
-units(her@catch.n)  <- units(her@discards.n)  <- units(her@landings.n)  <- units(her@stock.n)  <- '1000'
-units(her@catch.wt) <- units(her@discards.wt) <- units(her@landings.wt) <- units(her@stock.wt) <- 'kg'
-units(her@harvest) <- 'f'
+units(her@catch) <- units(her@discards) <- units(her@landings) <- units(her@stock) <- "tonnes"
+units(her@catch.n) <- units(her@discards.n) <- units(her@landings.n) <- units(her@stock.n) <- "1000"
+units(her@catch.wt) <- units(her@discards.wt) <- units(her@landings.wt) <- units(her@stock.wt) <- "kg"
+units(her@harvest) <- "f"
 ```
 
 This should now have the correct units defined:
@@ -386,7 +396,7 @@ summary(her)
     ## m.spwn        : [ 7 55 1 1 1 1 ], units =  NA
 
 ``` r
-plot(her) + theme_bw() # using the simple bw theme
+plot(her) + theme_bw()  # using the simple black and white theme
 ```
 
 <img src="Loading_your_data_into_FLR_files/figure-markdown_github/Plot-1.png" style="display: block; margin: auto;" />
@@ -398,26 +408,27 @@ Two solutions can be used to read abundance indices into FLR.
 
 ### Reading from common fisheries data formats
 
-If your data are formatted in a **Lowestoft VPA** format then FLCore contains functions for reading in indices. To read an abundance index, you use the `readFLIndices` function. The following example reads the index from `ple4` example:
+If your data are formatted in a **Lowestoft VPA** format then [FLCore](http://www.flr-project.org/FLCore/) contains functions for reading in indices. To read an abundance index, you use the `readFLIndices` function. The following example reads the index from `ple4` example:
 
 ``` r
-indices <- readFLIndices('src/Data/ple4_ISIS.txt')
+indices <- readFLIndices("src/Data/ple4_ISIS.txt")
 ```
 
-Using this function, `slot indices@names` is already filled by BTS-ISIS, and the information `slot indices@range` too.
+Using this function, slot `indices@names` is already filled by BTS-ISIS, and the information slot `indices@range` too.
 
 ### Reading from flat files
 
-If your data are not formatted in a **Lowestoft VPA** format, then you and read them using `read.table` for example.
+If your data are not formatted in a **Lowestoft VPA** format, then you and read them using `read.table` from base R, for example.
 
 ``` r
-indices <- read.table('src/Data/ple4Index1.txt')
+indices <- read.table("src/Data/ple4Index1.txt")
 ```
 
 which needs to be transformed in FLQuant
 
 ``` r
-indices <- FLQuant(as.matrix(indices), dimnames=list(age=1:8, year = 1985:2008))
+indices <- FLQuant(as.matrix(indices), dimnames = list(age = 1:8, 
+    year = 1985:2008))
 ```
 
 And in FLIndex
@@ -436,10 +447,11 @@ plot(indices[[1]])
 
 <img src="Loading_your_data_into_FLR_files/figure-markdown_github/unnamed-chunk-10-1.png" style="display: block; margin: auto;" />
 
-`slot indices@range` needs to be filled in with the end and start date of the tuning series
+slot `indices@range` needs to be filled in with the end and start date of the tuning series
 
 ``` r
-indices[[1]]@range[c('startf', 'endf')] <- c(0.66,0.75)
+indices[[1]]@range[c("startf", "endf")] <- c(0.66, 
+    0.75)
 ```
 
 FLFleet objects
@@ -528,7 +540,7 @@ summary(FLCatch())
     ## catch.q       : [ 1 1 1 1 1 1 ], units =  NA 
     ## price         : [ 1 1 1 1 1 1 ], units =  NA
 
-Due to the different levels, units and dimensions of the variables and the potentially high number of combinations of fleets, métier and stocks in a mixed fishery - getting the full data into an FLFleets object can be an onerous task.
+Due to the different levels, units and dimensions of the variables and the potentially high number of combinations of fleets, mÃ©tier and stocks in a mixed fishery - getting the full data into an `FLFleets` object (which is a list of `FLFleet` objects) can be an onerous task.
 
 A way of simplifying the generation of the fleet object is to ensure all the data are in a csv file with the following structure:
 
@@ -541,80 +553,91 @@ To generate the required structure, you can then read in the file and generate t
 
 ``` r
 # Example of generating fleets
-fl.nam <- unique(data$Fleet) # each of the fleets
+fl.nam <- unique(data$Fleet)  # each of the fleets
 
-yr.range <- 2005:2011 # year range of the data - must be same, even if filled with NAs or 0s
+yr.range <- 2005:2011  # year range of the data - must be same, even if filled with NAs or 0s
 
 # empty FLQuant for filling with right dimensions
-fq  <- FLQuant(dimnames = list(year = yr.range), quant = 'age')
+fq <- FLQuant(dimnames = list(year = yr.range), quant = "age")
 
 ### Fleet level slots ###
 fleets <- FLFleet(lapply(fl.nam, function(Fl) {
-
-# blank quants with the same dims
-eff <- cap <- crw <- cos.fl <- fq
-
-# fleet effort
-eff[,ac(yr.range)] <- data$data[data$Fleet == Fl & data$type == 'effort']
-units(eff) <- '000 kw days'
-
-## Repeat for each fleet level variables (not shown) ##
-
-### Metier level slots ###
-met.nam  <- unique(data$Metier[data$Fleet == Fl]) # metiers for fleet
-met.nam  <- met.nam[!is.na(met.nam)] # exclude the fleet level data
-
-metiers  <- FLMetiers(lapply(met.nam, function(met) {
-
-# blank quants
-effmet <- cos.met <- fq
-
-# effort share for metier
-effmet[,ac(yr.range)] <- data$data[data$Fleet == Fl & data$Metier & data$type == 'effshare']
-units(effmet)  <- NA
-
-## Repeat for each metier level variables (not shown) ##
-
-
-sp.nam <- unique(data$stock[data$Fleet == Fl & data$Metier == met]) # stocks caught by metier
-sp.nam <- sp.nam[!is.na(sp.nam)] # exclude fleet and metier level data
-
-catch <- FLCatches(lapply(sp.nam, function(S){
-print(S)
-
-# Quant dims may be specific per stock
-la.age <- FLQuant(dimnames = list(age = 1:7, year = yr.range, quant = 'age'))
-la.age[,ac(yr.range)] <- data$data[data$Fleet == Fl & data$Metier == met & data$Stock == S & data$type == 'landings.n']
-units(la.age) <- '1000'
-
-## Repeat for all stock level variables (not shown) ##
-
-# Build F
-res <- FLCatch(range = yr.range, name = S, landings.n = la.age,...)
-
-## Compute any missing slots, e.g.
-res@landings <- computeLandings(res)
-
-return(res) # return filled FLCatch
-
-})) # End of FLCatches
-
-# Fill an FLMetier with all the stock catches
-m <- FLMetier(catches = catch, name = met)
-m@effshare  <- effmet
-m@vcost <- vcost
-
-         })) # end of FLMetiers
-
-fl <- FLFleet(metiers = metiers, name = Fl, effort = ef,...) # fill with all variables
-return(fl)
-
-         }))
+    
+    # blank quants with the same dims
+    eff <- cap <- crw <- cos.fl <- fq
+    
+    # fleet effort
+    eff[, ac(yr.range)] <- data$data[data$Fleet == 
+        Fl & data$type == "effort"]
+    units(eff) <- "000 kw days"
+    
+    ## Repeat for each fleet level variables (not shown)
+    ## ##
+    
+    ### Metier level slots ###
+    met.nam <- unique(data$Metier[data$Fleet == Fl])  # metiers for fleet
+    met.nam <- met.nam[!is.na(met.nam)]  # exclude the fleet level data
+    
+    metiers <- FLMetiers(lapply(met.nam, function(met) {
+        
+        # blank quants
+        effmet <- cos.met <- fq
+        
+        # effort share for metier
+        effmet[, ac(yr.range)] <- data$data[data$Fleet == 
+            Fl & data$Metier & data$type == "effshare"]
+        units(effmet) <- NA
+        
+        ## Repeat for each metier level variables (not
+        ## shown) ##
+        
+        
+        sp.nam <- unique(data$stock[data$Fleet == Fl & 
+            data$Metier == met])  # stocks caught by metier
+        sp.nam <- sp.nam[!is.na(sp.nam)]  # exclude fleet and metier level data
+        
+        catch <- FLCatches(lapply(sp.nam, function(S) {
+            print(S)
+            
+            # Quant dims may be specific per stock
+            la.age <- FLQuant(dimnames = list(age = 1:7, 
+                year = yr.range, quant = "age"))
+            la.age[, ac(yr.range)] <- data$data[data$Fleet == 
+                Fl & data$Metier == met & data$Stock == 
+                S & data$type == "landings.n"]
+            units(la.age) <- "1000"
+            
+            ## Repeat for all stock level variables (not shown)
+            ## ##
+            
+            # Build F
+            res <- FLCatch(range = yr.range, name = S, 
+                landings.n = la.age, ...)
+            
+            ## Compute any missing slots, e.g.
+            res@landings <- computeLandings(res)
+            
+            return(res)  # return filled FLCatch
+            
+        }))  # End of FLCatches
+        
+        # Fill an FLMetier with all the stock catches
+        m <- FLMetier(catches = catch, name = met)
+        m@effshare <- effmet
+        m@vcost <- vcost
+        
+    }))  # end of FLMetiers
+    
+    fl <- FLFleet(metiers = metiers, name = Fl, effort = ef, 
+        ...)  # fill with all variables
+    return(fl)
+    
+}))
 
 names(fleets) <- fl.nam
 ```
 
-You should now have a multilevel object with `FLFleets`, `FLMetiers` and `FLCatches`.
+You should now have a multilevel object with `FLFleets` containing a list of `FLFleet` objects, each which in turn contain `FLMetiers` with a list of `FLMetier` for the fleet, and a list of `FLCatches` containing `FLCatch` objects for each stock caught by the mÃ©tier.
 
 References
 ==========
@@ -631,11 +654,11 @@ More information
 Software Versions
 -----------------
 
--   R version 3.3.1 (2016-06-21)
--   FLCore: 2.6.0.20170130
+-   R version 3.3.2 (2016-10-31)
+-   FLCore: 2.6.0.20170123
 -   ggplotFL: 2.5.9.9000
--   ggplot2: 2.1.0
--   **Compiled**: Tue Feb 14 16:47:09 2017
+-   ggplot2: 2.2.1
+-   **Compiled**: Wed Feb 15 11:48:32 2017
 
 License
 -------

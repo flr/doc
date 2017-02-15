@@ -11,12 +11,12 @@ license: Creative Commons CC-BY SA
 # This chunk set the document environment, so it is hidden
 library(knitr)
 opts_chunk$set(fig.align='center',
-  message=FALSE, warning=FALSE, echo=TRUE, cache=FALSE)
+  message=FALSE, warning=FALSE, echo=TRUE, cache=FALSE, tidy = T)
 options(width=50)
 set.seed(1423)
 ```
 
-This tutorial details methods for reading various formats of data into R for generating the `FLStock`, `FLIndex` and `FLFleet` object classes.
+This tutorial details methods for reading various formats of data into R for generating the [FLStock](http://www.flr-project.org/FLCore/FLStock.html), [FLIndex](http://www.flr-project.org/FLCore/FLStock.html) and [FLFleet](http://www.flr-project.org/FLCore/FLStock.html) object classes.
 
 ## Required packages
 
@@ -40,7 +40,7 @@ library(ggplotFL)
 
 ## FLStock objects 
 
-This section covers methods for reading in the data required to construct `FLStock` objects.
+This section covers methods for reading in the data required to construct [FLStock](http://www.flr-project.org/FLCore/FLStock.html) objects.
 
 ### Reading files (csv, dat, ...)
 
@@ -58,9 +58,9 @@ This tutorial will give some examples but regardless the format, the different s
 ### Importing files into R (example of csv file)
 
 There is many ways of reading csv files. 
-`read.table` with 'header', 'sep', 'dec' and 'row.names' options will allow you reading all .csv and .txt files
+[read.table](http://stat.ethz.ch/R-manual/R-devel/library/utils/html/read.table.html) with 'header', 'sep', 'dec' and 'row.names' options will allow you reading all .csv and .txt files
 
-The `read.csv` or `read.csv2` function are very useful to read csv files. 
+The [read.csv](http://stat.ethz.ch/R-manual/R-devel/library/utils/html/read.table.html) or [read.csv2](http://stat.ethz.ch/R-manual/R-devel/library/utils/html/read.table.html) function are very useful to read csv files. 
 
 ``` {r }
 catch.n <- read.csv("src/Data/catch_numbers.csv",row=1)
@@ -72,7 +72,7 @@ We have read in the data as a data.frame
 class(catch.n)
 ```
 
-The data are now in your R environment, before creating a **FLQuant** object, you need to make sure it is consistent with the type of object and formatting that is needed to run the `FLQuant()` function. To get information on the structure and format needed type ?FLQuant in your R Console.
+The data are now in your R environment, before creating a **FLQuant** object, you need to make sure it is consistent with the type of object and formatting that is needed to run the [FLQuant](http://www.flr-project.org/FLCore/FLQuant.html) methd. To get information on the structure and format needed type ?FLQuant in your R Console.
 
 
 ### Reshaping data as a matrix 
@@ -85,9 +85,9 @@ catch.n.matrix <- as.matrix(catch.n)
 catch.n.matrix[,1:8]
 ```
 
-A `FLQuant` object is made of six dimensions. The name of the first dimension can be altered by the user from its default, quant. This could typically be age or length for data related to natural populations. The only name not accepted is 'cohort', as data structured along cohort should be stored using the `FLCohort` class instead. Other dimensions are always names as follows: year, for the calendar year of the data point; unit, for any kind of division of the population, e.g. by sex; season, for any temporal strata shorter than year; area, for any kind of spatial stratification; and iter, for replicates obtained through bootstrap, simulation or Bayesian analysis.
+A [FLQuant](http://www.flr-project.org/FLCore/FLQuant.html) object is made of six dimensions. The name of the first dimension can be altered by the user from its default, quant. This could typically be age or length for data related to natural populations. The only name not accepted is 'cohort', as data structured along cohort should be stored using the [FLCohort](http://www.flr-project.org/FLCore/FLCohort.html) class instead. Other dimensions are always names as follows: year, for the calendar year of the data point; unit, for any kind of division of the population, e.g. by sex; season, for any temporal strata shorter than year; area, for any kind of spatial stratification; and iter, for replicates obtained through bootstrap, simulation or Bayesian analysis.
 
-When importing catch number for example, the input object needs to be formatted as such: age or length in the first dimension and years in the second dimension. If the object is not formatted in the right way, you can use the `reshape()` function from the package [reshape2](https://cran.r-project.org/web/packages/reshape2/index.html).
+When importing catch number for example, the input object needs to be formatted as such: age or length in the first dimension and years in the second dimension. If the object is not formatted in the right way, you can use the `reshape` functions from the package [reshape2](https://cran.r-project.org/web/packages/reshape2/index.html).
 
 
 ### Making an FLQuant object 
@@ -108,7 +108,7 @@ FLCore contains functions for reading in fish stock data in commonly used format
 catch.n <- readVPAFile(file.path('src','Data','her-irlw',"canum.txt"))
 class(catch.n)
 ```
-This can be repeated for each of the data files. In addition, functions are available for Multifan-CL format  `readMFCL` and ADMB `readADMB`.
+This can be repeated for each of the data files. In addition, functions are available for [Multifan-CL](http://www.multifan-cl.org/) format `readMFCL` and [ADMB](http://www.admb-project.org/) `readADMB`.
 
 Alternatively, if you have the full information for a stock in the **Lowestoft VPA**, **Adapt**, **CSA** or **ICA** format you can read in together using the `readFLStock` function. Here, you point the function to the index file, with all other files in the same directory:
 
@@ -117,7 +117,7 @@ Alternatively, if you have the full information for a stock in the **Lowestoft V
 her <- readFLStock(file.path('src','Data','her-irlw','index.txt'))
 class(her)
 ```
-Which we can see correctly formats the data as an `FLStock` object.
+Which we can see correctly formats the data as an [FLStock](http://www.flr-project.org/FLCore/FLStock.html) object.
 
 ```{r, readFLStock2}
 summary(her)
@@ -133,7 +133,7 @@ print(her@stock.n[,ac(2007:2011)]) # only print 2007:2011
 her@harvest <- readVPAFile(file.path('src','Data','her-irlw',"f.txt"))
 
 ```
-Now we have a fully filled `FLStock` object. But let's check the data are consistent.
+Now we have a fully filled [FLStock](http://www.flr-project.org/FLCore/FLStock.html) object. But let's check the data are consistent.
 
 ```{r, CheckConsistency}
 # The sum of products (SOP)
@@ -156,11 +156,11 @@ her@catch.wt      <- her@landings.wt
 her@catch.n       <- her@landings.n
 
 ```
-Functions are available to `computeLandings`, `computeDiscards`, `computeCatch` and `computeStock`. These functions take the argument `slot = 'catch'`, `slot = 'wt'` and `slot = 'n'` to compute the total weight, individual weight and numbers respectively, in addition to `slot = 'all'`. 
+Functions are available to [computeLandings](http://www.flr-project.org/FLCore/computeLandings.html), [computeDiscards](http://www.flr-project.org/FLCore/computeDiscards.html), [computeCatch](http://www.flr-project.org/FLCore/computeCatch.html) and [computeStock](http://www.flr-project.org/FLCore/computeStock.html). These functions take the argument `slot = 'catch'`, `slot = 'wt'` and `slot = 'n'` to compute the total weight, individual weight and numbers respectively, in addition to `slot = 'all'`. 
 
 ### Adding a description, units, ranges etc..
 
-Before we are finished, we want to ensure the units and range references are correct. This is important as the derived calculations require the correct scaling.
+Before we are finished, we want to ensure the units and range references are correct. This is important as the derived calculations require the correct scaling (e.g. `fbar`, for the average fishing mortality range over the required age ranges).
 
 First, let's ensure an appropriate name and description are assigned:
 
@@ -172,7 +172,7 @@ her@name # ok
 her@desc # ok
 
 # Set the Fbar range for the stock 
-her@range[c('minfbar','maxfbar')] # ok, but can be filled with c(min,max)
+her@range[c('minfbar','maxfbar')] # ok, but can be filled with  <- c(min,max)
 
 # set the plus group
 her@range['plusgroup']  <- 7 # final year is a plusgroup
@@ -188,7 +188,7 @@ This should now have the correct units defined:
 
 ```{r, Plot}
 summary(her)
-plot(her) + theme_bw() # using the simple bw theme
+plot(her) + theme_bw() # using the simple black and white theme
 ```
 
 ## FLIndex objects
@@ -197,17 +197,17 @@ Two solutions can be used to read abundance indices into FLR.
 
 ### Reading from common fisheries data formats 
 
-If your data are formatted in a **Lowestoft VPA** format then FLCore contains functions for reading in indices. To read an abundance index, you use the `readFLIndices` function. The following example reads the index from `ple4` example:
+If your data are formatted in a **Lowestoft VPA** format then [FLCore](http://www.flr-project.org/FLCore/) contains functions for reading in indices. To read an abundance index, you use the `readFLIndices` function. The following example reads the index from `ple4` example:
 
 ```{r }
 indices <- readFLIndices('src/Data/ple4_ISIS.txt')
 ```
 
-Using this function, `slot indices@names` is already filled by `r indices@names`, and the information `slot indices@range` too.
+Using this function, slot `indices@names` is already filled by `r indices@names`, and the information slot `indices@range` too.
 
 ### Reading from flat files 
 
-If your data are not formatted in a **Lowestoft VPA** format, then you and read them using `read.table` for example.
+If your data are not formatted in a **Lowestoft VPA** format, then you and read them using [read.table](http://stat.ethz.ch/R-manual/R-devel/library/utils/html/read.table.html) from base R, for example.
 
 ```{r }
 indices <- read.table('src/Data/ple4Index1.txt')
@@ -228,7 +228,7 @@ plot(indices[[1]])
 
 ```
 
-`slot indices@range` needs to be filled in with the end and start date of the tuning series
+slot `indices@range` needs to be filled in with the end and start date of the tuning series
 
 ```{r }
 indices[[1]]@range[c('startf', 'endf')] <- c(0.66,0.75)
@@ -236,7 +236,7 @@ indices[[1]]@range[c('startf', 'endf')] <- c(0.66,0.75)
 
 ## FLFleet objects
 
-Reading data on fleets into an `FLFleet` object is complicated by the multi-layer structure of the object. The object is defined so that:
+Reading data on fleets into an [FLFleet](http://www.flr-project.org/FLFleet/) object is complicated by the multi-layer structure of the object. The object is defined so that:
 
 ```{r, level table, echo = F}
 kable(data.frame(Level = c(1,2,3),
@@ -258,7 +258,7 @@ summary(FLMetier())
 summary(FLCatch())
 ```
 
-Due to the different levels, units and dimensions of the variables and the potentially high number of combinations of fleets, métier and stocks in a mixed fishery - getting the full data into an FLFleets object can be an onerous task.
+Due to the different levels, units and dimensions of the variables and the potentially high number of combinations of fleets, métier and stocks in a mixed fishery - getting the full data into an `FLFleets` object (which is a list of [FLFleet](http://www.flr-project.org/FLFleet/) objects) can be an onerous task.
 
 A way of simplifying the generation of the fleet object is to ensure all the data are in a csv file with the following structure:
 
@@ -277,7 +277,7 @@ kable(data.frame(Fleet = c('Fleet1', 'Fleet2'),
 ```
 
 
-To generate the required structure, you can then read in the file and generate the object using an `lapply` function:
+To generate the required structure, you can then read in the file and generate the object using an [lapply](http://petewerner.blogspot.it/2012/12/using-apply-sapply-lapply-in-r.html) function:
 
 ```{r, Generating FLFleets, eval = F}
 # Example of generating fleets
@@ -355,7 +355,7 @@ names(fleets) <- fl.nam
 
 ```
 
-You should now have a multilevel object with `FLFleets`, `FLMetiers` and `FLCatches`.
+You should now have a multilevel object with `FLFleets` containing a list of [FLFleet](http://www.flr-project.org/FLCore/FLFleet.html) objects, each which in turn contain `FLMetiers` with a list of [FLMetier](http://www.flr-project.org/FLCore/FLMetier.html) for the fleet, and a list of `FLCatches` containing [FLCatch](http://www.flr-project.org/FLCore/FLCatch.html) objects for each stock caught by the métier.
 
 
 # References

@@ -38,6 +38,36 @@ library(FLAssess)
 library(FLXSA)
 ```
 
+```{r echo=FALSE, eval=TRUE, message = FALSE}
+library(plyr)
+library(ggplot2)
+# setGeneric('diags',   function(object,method,...) standardGeneric('diags'))
+# setMethod('diags',  signature(object='FLXSA',method="missing"), 
+#   function(object,method) {
+#   
+#   res=mdply(data.frame(i=seq(length(object@index))), function(i){
+#     model.frame(FLQuants(obs     =object@index[[i]]%/%object@q.hat[[i]],
+#                          hat     =object@stock.n[dimnames(index(object)[[i]])$age,
+#                                                  dimnames(index(object)[[i]])$year],
+#                          residual=index.res(object)[[i]]),drop=T)})
+#   
+#   res=ddply(res,.(i,age),diags:::diagsFn)
+#   names(res)[1]="name"
+#   #res=transform(res,name=names(u)[i])
+#   res})
+
+setMethod('plot', signature(x='FLXSA', y='missing'),function(x){
+  
+  ggplot(subset(x@diagnostics,age>0))+
+    geom_point(aes(as.numeric(yrcls),nhat,size=0),shape=1,alpha=0)+
+    geom_point(aes(as.numeric(yrcls),nhat,fill=factor(age),size=w),shape=21,
+               data=subset(x@diagnostics,age>0&w>0))+
+    geom_vline(aes(xintercept=range(x)["maxyear"]-x@control@shk.yrs-0-5))+
+    scale_x_discrete(name="") +
+    facet_grid(source~age)+
+    theme_bw()+theme(legend.position="none")})
+```
+
 # Introduction
 
 ## What is VPA
@@ -345,7 +375,19 @@ thorough description of the XSA diagnostics you should consult the VPA users man
 
 ## Plotting Diagnostics 
 Very often the quickest and simplest way to determine the fit of the model is through visual inspection of the
-various diagnostic outputs. Here we provide examples of how to extract the relevant information from the
+various diagnostic outputs.
+
+The default plot for '''FLXSA''' class shows the weight given to each of the indices, incluiding the shrinkage, 
+to estimate total numbers at age along ages and years. The size of the bubbles in the plot is proportional to the 
+weight given to the index to estimate the terminal numbers at age. The rows corresponds with the indices used and the 
+columns with age classes.  The y axis represent the estimate of numbers at age obtained from each index.
+
+```{r echo=TRUE, eval=TRUE}
+ plot(ple4.xsa2)
+```
+
+
+Below we provide examples of how to extract the relevant information from the
 return ```FLXSA``` object and to plot it using a variety of lattice functions available to ```R```. 
 We start by plotting the
 log catchability residuals at age from each of the three tuning series. The data are stored as an ```FLQuants``` 
