@@ -15,6 +15,21 @@ opts_chunk$set(fig.align='center',
   message=FALSE, warning=FALSE, echo=TRUE, cache=FALSE)
 options(width=50)
 set.seed(1423)
+
+# Figures cross-referencing
+library(captioner)
+fig_nums <- captioner(prefix = "Figure")
+fign <- function(name) {
+  fig_nums(name=name, display="cite")
+}
+knit_hooks$set(fig.cap = function(before, options, envir) {
+  if(before) {
+    invisible(fig_nums(name=options$label, caption=options$fig.cap))
+  }
+  options$fig.cap <- paste0("Figure", fig_nums(name=options$label), ".")
+  return(options)
+})
+
 ```
 
 Lorem ipsum dolor sit amet, debitis dissentiunt mel at, porro nemore sea no, eos an albucius definiebas. Vis minim graece aliquam ne, nam in prompta discere appareat. Ad qui enim assentior, ei dicam quando accusata eam, ea cum delenit nusquam. Mei ei noster eripuit pertinacia, no nec simul delicatissimi, nec eu deleniti accusata. Tibique necessitatibus cu qui, semper suscipiantur eam id, ne nam platonem qualisque.
@@ -51,6 +66,8 @@ plot(FLQuant(rnorm(200), dim=c(2,20)))
 ```
 
 ## SubSECTION
+
+`r fign("figA")`
 
 # References
 
