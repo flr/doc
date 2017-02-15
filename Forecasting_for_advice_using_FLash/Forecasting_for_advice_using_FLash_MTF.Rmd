@@ -14,6 +14,20 @@ opts_chunk$set(fig.align='center',
   message=FALSE, warning=FALSE, echo=TRUE, cache=FALSE)
 options(width=50)
 set.seed(1423)
+
+# Figures cross-referencing
+library(captioner)
+fig_nums <- captioner(prefix = "Figure")
+fign <- function(name) {
+  fig_nums(name=name, display="cite")
+}
+knit_hooks$set(fig.cap = function(before, options, envir) {
+  if(before) {
+    invisible(fig_nums(name=options$label, caption=options$fig.cap))
+  }
+  options$fig.cap <- paste0("Figure", fig_nums(name=options$label), ".")
+  return(options)
+})
 ```
 
 This tutorial describes how Medium-Term Forecasts (MTF) can be performed using **FLR**.
@@ -31,7 +45,7 @@ Special attention must be paid to the conditioning and future assumptions of the
 
 To follow this tutorial you should have installed the following packages:
 
-- FLR: [FLCore](http://www.flr-project.org/FLCore/), [FLash](http://www.flr-project.org/FLash/), [FLBRP](http://www.flr-project.org/FLBRP/)
+- FLR: [FLCore](http://www.flr-project.org/FLCore/), [FLash](http://www.flr-project.org/FLash/), [FLBRP](http://www.flr-project.org/FLBRP/), [FLAssess](http://www.flr-project.org/FLAssess/)
 
 You can do so as follows,
 
@@ -104,8 +118,13 @@ In these examples we use a Beverton-Holt model (see the tutorial on fitting SRRs
 
 ```{r, fitSRR}
 ple4_sr <- fmle(as.FLSR(ple4, model="bevholt"), control=list(trace=0))
+```
+
+```{r, plotSRR, fig.cap="Fitted Beverton-Holt stock-recruitment relationship for the *ple4* stock object"}
 plot(ple4_sr)
 ```
+
+The resulting SRR fit can be seen in `r fign("plotSRR")`.
 
 # Example 1: F targets
 
@@ -164,7 +183,7 @@ rec(ple4_f_sq)[,ac(2005:2018)]
 
 The recruitment is not constant but is not changing very much. That's because the fitted model looks flat REF BACK TO THE SRR FIGURE.
 
-# Example 2: A decreasing catch target
+# Example 2: A decreasing catch target #{ex2}
 
 In this example we introduce two new things:
 
@@ -465,7 +484,7 @@ The bounds on the catch are operational in several of the years. They prevent th
 catch(recovery)[,ac(2009:2018)] / catch(recovery)[,ac(2008:2017)]
 ```
 
-# Projectioned with stochasticity 
+# Projections with stochasticity 
 
 So far we have looked at combinations of:
 
@@ -560,7 +579,10 @@ It's an **FLQuant** of SRR residuals but what do those brackets mean?
 The information in the brackets is the Median Absolute Deviation, a way of summarising the iterations. We have 1000 iterations but don't want to see all of them - just a summary.
 
 We now have the recruitment residuals.
-We'll use the *ctrl_catch* control object we made in Example 2 with decreasing catch.
+We'll use the *ctrl_catch* control object we made in [Example 2](#ex2).
+
+
+with decreasing catch.
 We call *fwd()* as usual, only now we have *sr.residuals* and *sr.residuals.mult* arguments.
 This takes a little time (we have 1000 iterations).
 

@@ -292,6 +292,7 @@ nsherAR1 <-fmle(nsher)
 
 plot(nsherAR1)
 ```
+The code is provided for demonstration purposes only as the used dataset is not adequate for all 3 parameters of the SR model to be estimated. 
 
 Finally, a SR model where covariates (e.g. NAO index), can be used to model environmental effects on the stock recruitment relationship.
 ```{r, SR_custom_covars}
