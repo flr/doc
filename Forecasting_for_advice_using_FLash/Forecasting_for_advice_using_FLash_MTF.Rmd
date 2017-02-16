@@ -85,11 +85,10 @@ As ususal, we base the projections on plaice in the North Sea.
 
 # Conditioning the projection
 
-The first step is to condition the projection by making assumptions about the stock in the future and also to fit the SRR.
+The first step is to condition the projection by making assumptions about the stock in the future and by considering the SRR.
+This can be done in several different ways.
 
 ## Making the future stock
-
-SOMETHING ON FWD WINDOW and STF
 
 As ever, load the ple4 data:
 
@@ -99,6 +98,7 @@ data(ple4)
 
 We again use `stf()` to set up a future stock (see the STF tutorial.
 This makes a lot of assumptions about the future stock (see the LINK TO STF tutorial for more details).
+There are methods of setting up the future assumptions but these are not explored here.
 We may want to change some of these assumptions but for the moment we will use the defaults.
 
 ```{r, stf_condition}
