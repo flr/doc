@@ -15,7 +15,7 @@ opts_chunk$set(fig.align='center',
 set.seed(1423)
 ```
 
-This tutorial introduces a basic MSE: conditioning the operating model (starting from an existing stock assessment), setting up the observation error model, constructing a simple model-based HCR (based on the ICES MSY approach), performing the MSE simulations, producing performance statistics
+Management Strategy Evaluation (MSE) is a framework for evaluating the performance of Harvest Control Rules (HCRs) against prevailing uncertainties. This tutorial introduces the basic steps for building a simple single-species MSE: conditioning the operating model, setting up the observation error model, constructing a simple model-based HCR (based on the ICES MSY approach), performing the MSE simulations (including feedback), and producing performance statistics.
 
 ## Required packages
 
