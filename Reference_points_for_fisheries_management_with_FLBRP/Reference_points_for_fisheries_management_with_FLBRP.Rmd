@@ -237,6 +237,7 @@ virgin represents the virgin biomass without exploitation.
 
 * `r version$version.string`
 * FLCore: `r packageVersion('FLCore')`
+* FLBRP: `r packageVersion('FLRP')`
 * ggplotFL: `r packageVersion('ggplotFL')`
 * ggplot2: `r packageVersion('ggplot2')`
 * **Compiled**: `r date()`
