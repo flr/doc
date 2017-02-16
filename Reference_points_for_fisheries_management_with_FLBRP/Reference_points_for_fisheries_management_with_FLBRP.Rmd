@@ -181,7 +181,7 @@ Because of the uncertainty around the *MSY* estimates, @Hilborn2010 introduced t
 Below is an example of calculating the pretty good yield at 95\% of MSY.
 
 ```{r}
-(rge4 <- msy.range(brp4Eco,range=0.05))
+(rge4 <- msyRange(brp4Eco,range=0.05))
 ```
 
 The *F* and *SSB* ranges calculated can also be added to the plots
