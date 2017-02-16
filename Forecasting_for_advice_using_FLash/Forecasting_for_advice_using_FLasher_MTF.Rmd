@@ -203,7 +203,6 @@ This makes a lot of assumptions about the future stock (see the LINK TO STF tuto
 We may want to change some of these assumptions but for the moment we will use the defaults.
 
 ```{r, stf_condition}
-# Set up a 10 year MTF
 ple4_mtf <- stf(ple4, nyears = 10)
 ```
 Now the stock goes up to 2018:
@@ -415,14 +414,6 @@ ctrl_rel_catch <- fwdControl(
 		   value = 0.9,
 		   relYear = 2008:2017))
 ```
-NOTE: NEED TO SET relSeason TO 1 IN fwd() AND OTHERS
-QUICK HACK HERE
-
-```{r, relseason_hack}
-ctrl_rel_catch@target$relSeason <- 1
-ctrl_rel_catch@target$relCatch <- 1
-ctrl_rel_catch@target$relFishery <- 1
-```
 
 The relative year appears in the control object summary:
 
@@ -492,24 +483,14 @@ Note that the data.frame is not in chronological order.
 It is also important that when running the projection the bounding targets (the *min* and the *max* are processed after the non-bounding targets.
 This should be sorted out by the **fwdControl** constructor.
 
-<!--
-This looks sort of right but we need to order the data.frame so that the years are sequential
-and within each year, minimum / maximum targets come after the absolute one.
--->
-
-
-```{r, meg4}
-#ctrl_target <- ctrl_target[order(ctrl_target$year),]
-#ctrl_target
-```
 Make the control object:
 
 ```{r, meg5}
 ctrl_min_catch <- fwdControl(ctrl_target)
 ```
 
-What did we create (again, ignore the second table for the moment)?
-We can see that the *min* column has now got some data. The *max* column is still empty.
+What did we create?
+We can see that the *min* column has now got some data (the *max* column is still empty) and the targets appear in the correct order.
 
 ```{r, meg6}             
 ctrl_min_catch
@@ -581,30 +562,11 @@ ctrl_target <- rbind(
 )
 ```
 
-<!--
-We have to reorder the **data.frame** to be in chronological order and for the absolute values to be before the minimum / maximum targets.
-
--->
-```{r, rtbeg4}
-#ctrl_target <- ctrl_target[order(ctrl_target$year),]
-#ctrl_target
-```
-
 Make the control object. The *min* and *max* columns now both have data:
 
 ```{r, rtbeg5}
 ctrl_rel_min_max_catch <- fwdControl(ctrl_target)
 ctrl_rel_min_max_catch
-```
-
-NOTE: NEED TO SET relSeason TO 1 IN fwd() AND OTHERS
-QUICK HACK HERE
-
-```{r, relseason_hack2}
-rel_rows <- !is.na(ctrl_rel_min_max_catch@target$relYear)
-ctrl_rel_min_max_catch@target[rel_rows, "relSeason"] <- 1
-ctrl_rel_min_max_catch@target[rel_rows, "relCatch"] <- 1
-ctrl_rel_min_max_catch@target[rel_rows, "relFishery"] <- 1
 ```
 
 Run the projection:
