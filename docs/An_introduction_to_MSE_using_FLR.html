@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>An_introduction_to_MSE_with_FLR</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="http://flr-project.org">
+    <span class="fa fa-home"></span>
+     
+    FLR
+  </a>
+</li>
+<li>
+  <a href="index.html">
+    <span class="fa fa-info"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Introduction
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Input
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Visualization
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Modelling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Advice
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    MSE
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://example.com">
+    <span class="fa fa-question fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">An_introduction_to_MSE_with_FLR</h1>
+<h4 class="date"><em>16 February, 2017</em></h4>
+
+</div>
+
+
+<p>This tutorial introduces a basic MSE: conditioning the operating model (starting from an existing stock assessment), setting up the observation error model, constructing a simple model-based HCR (based on the ICES MSY approach), performing the MSE simulations, producing performance statistics</p>
+<div id="required-packages" class="section level2">
+<h2>Required packages</h2>
+<p>To follow this tutorial you should have installed the following packages:</p>
+<ul>
+<li>CRAN: <a href="https://cran.r-project.org/web/packages/ggplot2/index.html">ggplot2</a></li>
+<li>FLR: <a href="http://www.flr-project.org/FLCore/">FLCore</a>, <a href="http://www.flr-project.org/FLCore/">FLash</a>,<a href="http://www.flr-project.org/FLCore/">FLXSA</a>,<a href="http://www.flr-project.org/FLCore/">FLBRP</a>, <a href="http://www.flr-project.org/ggplotFL/">ggplotFL</a></li>
+</ul>
+<p>You can do so as follows,</p>
+<pre class="r"><code>install.packages(c(&quot;ggplot2&quot;))
+install.packages(c(&quot;FLa4a&quot;,&quot;FLash&quot;,&quot;FLXSA&quot;,&quot;FLBRP&quot;,&quot;ggplotFL&quot;), repos=&quot;http://flr-project.org/R&quot;)</code></pre>
+<pre class="r"><code># This chunk loads all necessary packages, trims pkg messages
+library(FLa4a)
+library(FLash)
+library(FLXSA)
+library(FLBRP)
+library(ggplotFL)</code></pre>
+</div>
+<div id="conditioning-the-operating-model" class="section level1">
+<h1>CONDITIONING THE OPERATING MODEL</h1>
+<p><strong>Read in stock assessment data</strong></p>
+<pre class="r"><code>data(ple4)
+data(ple4.index)
+stk &lt;- ple4; rm(&quot;ple4&quot;)
+idx &lt;- FLIndices(idx=ple4.index); rm(&quot;ple4.index&quot;)</code></pre>
+<p><strong>Set up the iteration and projection window parameters</strong></p>
+<pre class="r"><code>it &lt;- 20 # iterations
+y0 &lt;- range(stk)[&quot;minyear&quot;] # initial data year
+dy &lt;- range(stk)[&quot;maxyear&quot;] # final data year
+iy &lt;- dy+1  # initial year of projection (also intermediate)
+fy &lt;- dy+12 # final year
+ny &lt;- fy - iy + 1 # number of years to project from intial year
+nsqy &lt;- 3 # number of years to compute status quo metrics</code></pre>
+<p><strong>Fit stock assessment model a4a</strong></p>
+<pre class="r"><code>qmod &lt;- list(~s(age, k=6))
+fmod &lt;- ~ te(replace(age, age&gt;9,9), year, k=c(6,8))
+mcmc &lt;- 2000
+mcsave &lt;- mcmc / it  #this needs to be an integer value
+fit &lt;- a4aSCA(stk, idx, fmodel=fmod, qmodel=qmod, fit=&quot;MCMC&quot;, mcmc = SCAMCMC(mcmc = mcmc, mcsave = mcsave, mcprobe = 0.4))
+stk &lt;- stk + fit
+stk0 &lt;- qapply(stk, iterMedians) #reduce to keep one iteration only</code></pre>
+<p><strong>Fit stock-recruit model</strong></p>
+<pre class="r"><code>srbh &lt;- fmle(as.FLSR(stk, model=&quot;bevholt&quot;), method=&quot;L-BFGS-B&quot;, lower=c(1e-6, 1e-6), upper=c(max(rec(stk)) * 3, Inf))</code></pre>
+<pre><code>## final  value -13.199792 
+## converged
+## final  value -13.199792 
+## converged
+## final  value -13.161960 
+## converged
+## final  value -13.117131 
+## converged
+## final  value -12.519496 
+## converged
+## final  value -12.925271 
+## converged
+## final  value -13.017653 
+## converged
+## final  value -14.434271 
+## converged
+## final  value -15.942283 
+## converged
+## final  value -13.203449 
+## converged
+## final  value -12.670650 
+## converged
+## final  value -11.813228 
+## converged
+## final  value -11.395789 
+## converged
+## final  value -13.100922 
+## converged
+## final  value -12.684184 
+## converged
+## final  value -11.656310 
+## converged
+## final  value -11.042795 
+## converged
+## final  value -11.929659 
+## converged
+## final  value -11.272703 
+## converged
+## final  value -11.107311 
+## converged</code></pre>
+<pre class="r"><code>srbh0 &lt;- fmle(as.FLSR(stk0, model=&quot;bevholt&quot;), method=&quot;L-BFGS-B&quot;, lower=c(1e-6, 1e-6), upper=c(max(rec(stk)) * 3, Inf))</code></pre>
+<pre><code>## final  value -13.625097 
+## converged</code></pre>
+<pre class="r"><code>srbh.res &lt;- rnorm(it, FLQuant(0, dimnames=list(year=iy:fy)), c(apply(residuals(srbh), 6, mad)))</code></pre>
+<p><strong>Calculate reference points and set up the operating model for the projection window</strong></p>
+<pre class="r"><code>brp &lt;- brp(FLBRP(stk0, srbh0))
+Fmsy &lt;- c(refpts(brp)[&quot;msy&quot;,&quot;harvest&quot;])
+Bpa &lt;- 0.5*c(refpts(brp)[&quot;msy&quot;,&quot;ssb&quot;])
+stk &lt;- stf(stk, fy-dy, nsqy, nsqy)</code></pre>
+</div>
+<div id="set-up-observation-error-model-elements" class="section level1">
+<h1>SET UP OBSERVATION ERROR MODEL ELEMENTS</h1>
+<p><strong>Estimate the indices catchability from the a4a fit (without simulation)</strong></p>
+<pre class="r"><code>idcs &lt;- FLIndices()
+for (i in 1:length(idx)){
+    lst &lt;- mcf(list(idx[[i]]@index, stock.n(stk0)))
+    idx.lq &lt;- log(lst[[1]]/lst[[2]]) # log catchability of index
+    idx.qmu &lt;- idx.qsig &lt;- stock.n(iter(stk,1)) # empty quant
+    idx.qmu[] &lt;- yearMeans(idx.lq) # Every year has the same mean catchability
+    idx.qsig[] &lt;- log((sqrt(yearVars(idx.lq))/yearMeans(idx.lq))^2 + 1) # Every year has same sd
+    idx.q &lt;- FLQuant(NA, dimnames=dimnames(stock.n(stk)))
+    idx.q[,ac(dimnames(stock.n(stk))$year[1]:dy)] &lt;- propagate(exp(idx.lq[,ac(dimnames(stock.n(stk))$year[1]:dy)]), it)
+    idx.q &lt;- rlnorm(it, idx.qmu, idx.qsig) # Build FLQ of index catchability based on lognormal distribution with mean and sd calculated above
+    idx_temp &lt;- idx.q * stock.n(stk)
+    idx_temp &lt;- FLIndex(index=idx_temp, index.q=idx.q) # generate initial index
+    range(idx_temp)[c(&quot;startf&quot;, &quot;endf&quot;)] &lt;- c(0, 0)
+    idcs[[i]] &lt;- idx_temp
+}
+names(idcs) &lt;- names(idx)
+idx&lt;-idcs[1]</code></pre>
+</div>
+<div id="set-up-mse-loop" class="section level1">
+<h1>SET UP MSE LOOP</h1>
+<div id="needed-functions" class="section level2">
+<h2>Needed Functions</h2>
+<p><strong>Observation error model</strong></p>
+<pre class="r"><code>o &lt;- function(stk, idx, assessmentYear, dataYears) {
+    # dataYears is a position vector, not the years themselves
+    stk0 &lt;- stk[, dataYears]
+    # add small amount to avoid zeros
+    catch.n(stk0) &lt;- catch.n(stk0) + 0.1
+    # Generate the indices - Just data years
+    idx0 &lt;- lapply(idx, function(x) x[,dataYears])
+  # Generate objserved index
+    for (i in 1:length(idx)) index(idx[[i]])[, assessmentYear] &lt;- stock.n(stk)[, assessmentYear]*index.q(idx[[i]])[, assessmentYear]
+  list(stk=stk0, idx=idx0, idx.om=idx)
+}</code></pre>
+<p><strong>XSA assessment model</strong></p>
+<pre class="r"><code>xsa &lt;- function(stk0, idx0){
+  # Use default XSA settings
+    control  &lt;- FLXSA.control(tol = 1e-09, maxit=99, min.nse=0.3, fse=2.0,
+                              rage = -1, qage = stk0@range[&quot;max&quot;]-1, shk.n = TRUE, shk.f = TRUE,
+                              shk.yrs = 5, shk.ages= 5, window = 100, tsrange = 99, tspower = 0)
+  # Fit XSA
+  fit0 &lt;- FLXSA(stk0, idx0, control)
+  # convergence diagnostic (quick and dirty)
+  maxit &lt;- c(&quot;maxit&quot; = fit0@control@maxit)
+  # Update stk0
+  stk0   &lt;- transform(stk0, harvest = fit0@harvest, stock.n = fit0@stock.n)
+  return(list(stk0 = stk0, converge = maxit))
+}</code></pre>
+<p><strong>Control object for projections</strong></p>
+<pre class="r"><code>getCtrl &lt;- function(values, quantity, years, it){
+    dnms &lt;- list(iter=1:it, year=years, c(&quot;min&quot;, &quot;val&quot;, &quot;max&quot;))
+    arr0 &lt;- array(NA, dimnames=dnms, dim=unlist(lapply(dnms, length)))
+    arr0[,,&quot;val&quot;] &lt;- unlist(values)
+    arr0 &lt;- aperm(arr0, c(2,3,1))
+    ctrl &lt;- fwdControl(data.frame(year=years, quantity=quantity, val=NA))
+    ctrl@trgtArray &lt;- arr0
+    ctrl
+}</code></pre>
+</div>
+<div id="mse-initialisation" class="section level2">
+<h2>MSE initialisation</h2>
+<pre class="r"><code>vy &lt;- ac(iy:fy)
+TAC &lt;- FLQuant(NA, dimnames=list(TAC=&quot;all&quot;, year=c(dy,vy), iter=1:it))
+TAC[,ac(dy)] &lt;- catch(stk)[,ac(dy)]
+TAC[,ac(iy)] &lt;- TAC[,ac(dy)] #assume same TAC in the first intermediate year
+ctrl &lt;- getCtrl(c(TAC[,ac(iy)]), &quot;catch&quot;, iy, it)
+stk &lt;- fwd(stk, control=ctrl, sr=srbh, sr.residuals = srbh.res, sr.residuals.mult = FALSE)</code></pre>
+</div>
+<div id="start-the-mse-loop" class="section level2">
+<h2>Start the MSE loop</h2>
+<pre class="r"><code>for(i in vy[-length(vy)]){
+  # set up simulations parameters
+    ay &lt;- an(i)
+    cat(i, &quot; &gt; &quot;)
+    vy0 &lt;- 1:(ay-y0) # data years (positions vector) - one less than current year
+    sqy &lt;- (ay-y0-nsqy+1):(ay-y0) # status quo years (positions vector) - one less than current year
+
+  # apply observation error
+    oem &lt;- o(stk, idx, i, vy0)
+    stk0 &lt;- oem$stk
+    idx0 &lt;- oem$idx
+    idx &lt;- oem$idx.om
+
+  # perform assessment
+  out.assess &lt;- eval(call(&quot;xsa&quot;, stk0, idx0))
+  stk0 &lt;- out.assess$stk0
+  
+  # apply ICES MSY-like Rule to obtain Ftrgt
+  flag &lt;- ssb(stk0)[,ac(ay-1)]&lt;Bpa
+  Ftrgt &lt;- ifelse(flag,ssb(stk0)[,ac(ay-1)]*Fmsy/Bpa,Fmsy) 
+
+  # project the perceived stock to get the TAC for ay+1
+  fsq0 &lt;- yearMeans(fbar(stk0)[,sqy]) # Use status quo years defined above
+  ctrl &lt;- getCtrl(c(fsq0, Ftrgt), &quot;f&quot;, c(ay, ay+1), it)
+  stk0 &lt;- stf(stk0, 2)
+  gmean_rec &lt;- c(exp(yearMeans(log(rec(stk0)))))
+  stk0 &lt;- fwd(stk0, control=ctrl, sr=list(model=&quot;mean&quot;, params = FLPar(gmean_rec,iter=it)))
+  TAC[,ac(ay+1)] &lt;- catch(stk0)[,ac(ay+1)]
+
+  # apply the TAC to the operating model stock
+  ctrl &lt;- getCtrl(c(TAC[,ac(ay+1)]), &quot;catch&quot;, ay+1, it)
+  stk &lt;- fwd(stk, control=ctrl,sr=srbh, sr.residuals = srbh.res, sr.residuals.mult = FALSE)
+}</code></pre>
+<pre><code>## 2009  &gt; 2010  &gt; 2011  &gt; 2012  &gt; 2013  &gt; 2014  &gt; 2015  &gt; 2016  &gt; 2017  &gt; 2018  &gt; 2019  &gt;</code></pre>
+<pre class="r"><code>plot(stk)+geom_vline(aes(xintercept=as.numeric(ISOdate(iy,1,1))))</code></pre>
+<div class="figure" style="text-align: center">
+<img src="An_introduction_to_MSE_using_FLR_files/figure-html/figA-1.png" alt="Figure. Operating model results for applying an ICES MSY-like rule" width="672" />
+<p class="caption">
+Figure. Operating model results for applying an ICES MSY-like rule
+</p>
+</div>
+</div>
+</div>
+<div id="references" class="section level1">
+<h1>References</h1>
+</div>
+<div id="more-information" class="section level1">
+<h1>More information</h1>
+<ul>
+<li>You can submit bug reports, questions or suggestions on this tutorial at <a href="https://github.com/flr/doc/issues" class="uri">https://github.com/flr/doc/issues</a>.</li>
+<li>Or send a pull request to <a href="https://github.com/flr/doc/" class="uri">https://github.com/flr/doc/</a></li>
+<li>For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <a href="http://flr-project.org" class="uri">http://flr-project.org</a>.</li>
+</ul>
+<div id="software-versions" class="section level2">
+<h2>Software Versions</h2>
+<ul>
+<li>R version 3.3.2 (2016-10-31)</li>
+<li>FLCore: 2.6.0.20170214</li>
+<li>ggplotFL: 2.5.20161007</li>
+<li>ggplot2: 2.2.1</li>
+<li><strong>Compiled</strong>: Thu Feb 16 09:52:16 2017</li>
+</ul>
+</div>
+<div id="license" class="section level2">
+<h2>License</h2>
+<p>This document is licensed under the <a href="https://creativecommons.org/licenses/by-sa/4.0">Creative Commons Attribution-ShareAlike 4.0 International</a> license.</p>
+</div>
+<div id="author-information" class="section level2">
+<h2>Author information</h2>
+<p><strong>Iago MOSQUEIRA</strong>. European Commission Joint Research Centre (JRC), Institute for the Protection and Security of the Citizen (IPSC), Maritime Affairs Unit, Via E. Fermi 2749, 21027 Ispra VA, Italy. <a href="https://ec.europa.eu/jrc/" class="uri">https://ec.europa.eu/jrc/</a></p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
