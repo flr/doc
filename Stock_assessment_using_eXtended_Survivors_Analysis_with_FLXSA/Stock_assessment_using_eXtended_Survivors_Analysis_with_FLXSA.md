@@ -120,13 +120,13 @@ harvest(ple4.vpa)[, ac(2004:range(ple4)["maxyear"])]
 
 ``` r
 ## Plot results ##
-plot(FLStocks(ple4=ple4, vpa=ple4.new))
+plot(FLStocks(ple4=ple4, vpa=ple4.new),auto.key=list(space="right"))
 ```
 
 <img src="Stock_assessment_using_eXtended_Survivors_Analysis_with_FLXSA_files/figure-markdown_github/unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
 
 ``` r
-plot(FLStocks(vpa=ple4.new))
+plot(FLStocks(vpa=ple4.new),auto.key=list(space="right"))
 ```
 
 <img src="Stock_assessment_using_eXtended_Survivors_Analysis_with_FLXSA_files/figure-markdown_github/unnamed-chunk-6-2.png" style="display: block; margin: auto;" />
@@ -222,7 +222,7 @@ harvest(ple4.LSvpa)[, ac(2004:range(ple4)["maxyear"])]
 
 ``` r
 # Compare the results with previous fits.
-plot(FLStocks(vpa=ple4.new2))
+plot(FLStocks(vpa=ple4.new2),auto.key=list(space="right"))
 ```
 
 <img src="Stock_assessment_using_eXtended_Survivors_Analysis_with_FLXSA_files/figure-markdown_github/unnamed-chunk-8-1.png" style="display: block; margin: auto;" />
@@ -312,7 +312,7 @@ we will run a new XSA for a reduced number of ages and with only one tuning inde
  diagnostics(ple4.xsa2, sections = c(T, T, rep(F, 6)))
 ```
 
-    ## FLR XSA Diagnostics 2017-02-16 09:18:16
+    ## FLR XSA Diagnostics 2017-02-16 13:33:05
     ## 
     ## CPUE data from indices
     ## 
@@ -506,7 +506,7 @@ A simple comparison of the terminal year survivors estimates can be obtained fro
      c(table(diag$yrcls))))
  nplot <- barchart(ac(yrcls) ~ nhat, groups = source, data = diag,
      col = grey(c(0.1, 0.6, 0.3, 0.8)), main = "N Estimates",
-     ylab = "Year Class", key = list(x = 0.6, y = 0.2, text = list(legend =
+     ylab = "Year Class", key = list(x = 0.3, y = 0.25, text = list(legend =
 rev(c("BTS-Isis",
          "BTS-Tridens", "fshk", "SNS"))), rectangles = list(col =
 grey(rev(c(0.1,
@@ -553,7 +553,7 @@ ple4.retro <- tapply(retro.years, 1:length(retro.years), function(x){
 ple4.retro <- FLStocks(ple4.retro)
 # full retrospective summary plot
 ple4.retro@names=ac(c(retro.years))###Add years to legend
-plot(ple4.retro)
+plot(ple4.retro,auto.key=list(space="right"))
 ```
 
 <img src="Stock_assessment_using_eXtended_Survivors_Analysis_with_FLXSA_files/figure-markdown_github/unnamed-chunk-21-1.png" style="display: block; margin: auto;" />
@@ -568,11 +568,11 @@ More information
 Software Versions
 -----------------
 
--   R version 3.3.2 (2016-10-31)
--   FLCore: 2.6.0.20170123
+-   R version 3.2.5 (2016-04-14)
+-   FLCore: 2.6.0.20170214
 -   FLXSA: 2.5.20140808
--   FLAssess: 2.5.20150717
--   **Compiled**: Thu Feb 16 09:18:36 2017
+-   FLAssess: 2.5.20130716
+-   **Compiled**: Thu Feb 16 13:33:27 2017
 
 License
 -------
@@ -589,6 +589,8 @@ Author information
 **Dorleta Garcia** AZTI. Marine Reserach Unit. Txatxarramendi Ugartea z/g, 48395, Sukarrieta, Basque Country, Spain.
 
 **Iago MOSQUEIRA**. European Commission Joint Research Centre (JRC), Institute for the Protection and Security of the Citizen (IPSC), Maritime Affairs Unit, Via E. Fermi 2749, 21027 Ispra VA, Italy. &lt;<https://ec.europa.eu/jrc/>
+
+**Alessandro MANNINI**. European Commission Joint Research Centre (JRC), Institute for the Protection and Security of the Citizen (IPSC), Maritime Affairs Unit, Via E. Fermi 2749, 21027 Ispra VA, Italy. &lt;<https://ec.europa.eu/jrc/>
 
 References
 ==========

@@ -161,8 +161,8 @@ stock.n(ple4.vpa)[, ac(2005:range(ple4)["maxyear"])]
 harvest(ple4.vpa)[, ac(2004:range(ple4)["maxyear"])]
 
 ## Plot results ##
-plot(FLStocks(ple4=ple4, vpa=ple4.new))
-plot(FLStocks(vpa=ple4.new))
+plot(FLStocks(ple4=ple4, vpa=ple4.new),auto.key=list(space="right"))
+plot(FLStocks(vpa=ple4.new),auto.key=list(space="right"))
 ```
 
   The estimated population numbers and fishing mortality values at age from the ```VPA``` are now available in
@@ -231,7 +231,7 @@ stock.n(ple4.LSvpa)[, ac(2005:range(ple4)["maxyear"])]
 harvest(ple4.LSvpa)[, ac(2004:range(ple4)["maxyear"])]
 
 # Compare the results with previous fits.
-plot(FLStocks(vpa=ple4.new2))
+plot(FLStocks(vpa=ple4.new2),auto.key=list(space="right"))
 ```
 
 # ```FLXSA```
@@ -423,7 +423,7 @@ have greater influence at older ages and that throughout all ages F shrinkage re
      c(table(diag$yrcls))))
  nplot <- barchart(ac(yrcls) ~ nhat, groups = source, data = diag,
      col = grey(c(0.1, 0.6, 0.3, 0.8)), main = "N Estimates",
-     ylab = "Year Class", key = list(x = 0.6, y = 0.2, text = list(legend =
+     ylab = "Year Class", key = list(x = 0.3, y = 0.25, text = list(legend =
 rev(c("BTS-Isis",
          "BTS-Tridens", "fshk", "SNS"))), rectangles = list(col =
 grey(rev(c(0.1,
@@ -476,7 +476,7 @@ ple4.retro <- tapply(retro.years, 1:length(retro.years), function(x){
 ple4.retro <- FLStocks(ple4.retro)
 # full retrospective summary plot
 ple4.retro@names=ac(c(retro.years))###Add years to legend
-plot(ple4.retro)
+plot(ple4.retro,auto.key=list(space="right"))
 ```
 
 
