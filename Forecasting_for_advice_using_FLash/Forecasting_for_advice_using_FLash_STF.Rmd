@@ -17,14 +17,24 @@ set.seed(1423)
 
 Short term forecasts help projecting the stock to forecast the implications of different management choices over a limited number of years. There are three necessary ingredients when projecting in FLR: a stock object - that you will forecast and about which you have made some assumptions about what will happen in the future, a stock-recruitment relationship, a projection control - specify what targets and when to hit them.
 
-In FLR, the method for short term forecasts is called fwd(), which takes FLStock, FLSR, and fwdControl. 
+In FLR, the method for short term forecasts is called `fwd()`, which takes an `FLStock`, `FLSR`, and `fwdControl`. 
 
 ## Required packages
 
 To follow this tutorial you should have installed the following packages:
 
 - CRAN: [ggplot2](https://cran.r-project.org/web/packages/ggplot2/index.html)
-- FLR: [FLCore](http://www.flr-project.org/FLCore/), [FLash](http://www.flr-project.org/FLash/),[FLAssess](http://www.flr-project.org/FLAssess/),[FLBRP](http://www.flr-project.org/FLBRP/), [ggplotFL](http://www.flr-project.org/ggplotFL/)
+- FLR: [FLCore](http://www.flr-project.org/FLCore/),  [FLash](http://www.flr-project.org/FLash/), [FLAssess](http://www.flr-project.org/FLAssess/), [FLBRP](http://www.flr-project.org/FLBRP/),  [ggplotFL](http://www.flr-project.org/ggplotFL/)
+
+if you are using Windows, please use 32-bit R version
+
+You can do so as follows,
+
+```{r, eval=FALSE}
+install.packages(c("FLAssess","FLBRP","ggplotFL"), repos="http://flr-project.org/R")
+
+```
+
 
 The example used here is for the ple4 data that is available in FLR. This needs to be loaded first
 
@@ -39,11 +49,11 @@ summary(ple4)
 
 # Extending the stock object for the projections
 
-Our ple4 stock goes up to `r range(ple4)[["maxyear"]]`, and in this example we want to make a 3 year projection, So we need to extend the stock by 3 years.
+Our ple4 stock goes up to `r range(ple4)[["maxyear"]]`, and in this example we want to make a 3 year projection, so we need to extend the stock by  3 years (`nyears`).
 
-The projection will predict abundances in the future, but what  will the future stock weights, maturity, natural mortality, etc. be like? The assumptions on those will affect the outcome of the projection. Rather than using window() or trim() but that makes all future data NA, we use the stf() function (short term forecast) that has several options that allow to control the assumptions about the future stock parameters.
+The projection will predict abundances in the future, but what  will the future stock weights, maturity, natural mortality, etc. be like? The assumptions on those will affect the outcome of the projection. Rather than using `window()` or `trim()` that makes all future data *NA*, we use the `stf()` function (short term forecast) that has several options that allow to control the assumptions about the future stock parameters.
 
-These assumptions specify how many years you want to average over to set future values For example, wts.nyears is the number of years over which to calculate the .wt, .spwn, mat and m slots. By default this is 3 years. This is a fairly standard assumption for STFs, i.e. the future mean weights at age will be the same as the mean of the last 3 years. Hence, What is going to happen in the next few years is probably similar to what happened in the last few years 
+These assumptions specify how many years you want to average over to set future values For example, `wts.nyears` is the number of years over which to calculate the `*.wt`, `*.spwn`, `mat` and `m` slots. By default this is set to 3 years. This is a fairly standard assumption for STFs, i.e. the future mean weights at age will be the same as the mean of the last 3 years. Hence, What is going to happen in the next few years is probably similar to what happened in the last few years. 
 
 A simple 3 year forecast for the weights, natural mortality, etc. assuming these are equal to their averages over the last 3 years is done by
 
@@ -52,9 +62,11 @@ ple4_stf <- stf(ple4,nyears=3,wts.nyears=3, na.rm=TRUE)
 ```
 
 
-Now the stock goes up to `r range(ple4_stf)[["maxyear"]]` and the future weights are equal to the means of the last three observed years, as can be observed from the last six years of the stock weights of the ple4_stf object.
+Previously, the stock went up to `r range(ple4)[["maxyear"]]`. Now the stock goes up to `r range(ple4_stf)[["maxyear"]]` and the future weights are equal to the means of the last three observed years, as can be observed from the last six years of the stock weights of the ple4_stf object.
 
 ```{r, eval=TRUE}
+maxyr_stk <- range(ple4)[["maxyear"]]
+
 range(ple4_stf)
 maxyr_stf <- range(ple4_stf)[["maxyear"]]
 stock.wt(ple4_stf)[,ac((maxyr_stf-5):maxyr_stf)]
@@ -69,16 +81,15 @@ mat(ple4_stf)[,ac((maxyr_stf-5):maxyr_stf)]
 Notice that the  future fishing mortality has also been set (mean of the last 3 years, by default).
 
 ```{r figA}
-sel <- sweep(harvest(ple4_stf), 2:6, apply(harvest(ple4_stf), 2:6, max), "/")
-ggplot(sel[,ac((maxyr_stf-5):maxyr_stf)]) + geom_line(aes(x=age, y=data)) + facet_wrap(~year)
+ggplot(harvest(ple4_stf)[,ac((maxyr_stf-5):maxyr_stf)]) + geom_line(aes(x=age, y=data)) + facet_wrap(~year)
 ```
 
-The stock numbers at age and the catch numbers at age are not forecasted yet: this is what the fwd() function will perform later.  
+The stock numbers at age and the catch numbers at age are not forecasted yet: this is what the `fwd()` function will perform later.  
 ```{r, eval=TRUE}
 stock.n(ple4_stf)[,ac((maxyr_stf-5):maxyr_stf)]
 ```
 
-Meanwhile, the landings and discards are forecasted ratios of what is discarded and what is landed.  
+Meanwhile, the landings and discards are forecasted ratios of what is discarded and what is landed over the last 3 years of data.  
 
 ```{r, eval=TRUE}
 landings.n(ple4_stf)[,ac((maxyr_stf-5):maxyr_stf)]
@@ -87,41 +98,41 @@ discards.n(ple4_stf)[,ac((maxyr_stf-5):maxyr_stf)]
 
 # The stock-recruitment relationship (SRR)
 
-A short term forecast does not use a SRR, instead it generally assumes that recruitment in the future is the mean of the historic recruitments. However, we still need to pass the projection a SRR that contains the mean value, which what we mimic for this example. First we estimate the geometic mean recruitment, that we then add to an SRR object  
+A short term forecast does not use a SRR, instead it generally assumes that recruitment in the future is the mean of the historic recruitments. However, we still need to have a SRR that contains the mean value, which is what we mimic for this example. First we estimate the geometic mean recruitment, that we then add to an SRR object  
 
 ```{r, eval=TRUE}
 mean_rec <- mean(rec(ple4))
 
 ple4_sr <- as.FLSR(ple4, model="geomean")
-params(ple4_sr)
 params(ple4_sr)['a',] <- mean_rec
+params(ple4_sr)
+
 ```
 
 # The control object
 
 The final thing we need to set up is the control object. This tells the projection what to do, i.e. what level of fishing mortality to use
 
-A standard scenario for a STF is the 'status quo' scenario, assuming that the future mean fishing mortality will be the same as the mean of the last X years (X depends on the stock). We will set up this scenario as a simple example using the fbar in the last year (`range(ple4)[["maxyear"]]`), being `mean(fbar(ple4)[,as.character(maxyr_stk)])` per year.
+A standard scenario for a STF is the 'status quo' scenario, assuming that the future mean fishing mortality will be the same as the mean of the last X years (X depends on the stock). We will set up this scenario as a simple example using the Fbar in the last year (`r range(ple4)[["maxyear"]]`), being `r round(mean(fbar(ple4)[,as.character(maxyr_stk)]),3)` per year.
 
 ```{r figB}
-fbar(ple4)
+round(fbar(ple4),3)
 ggplot(fbar(ple4), aes(x=year,y=data)) + geom_line()
 ```
 
-Below we define the last year of the stock and the status quo fbar.
+Below we define the last year of the stock and the status quo Fbar `fbar_SQ`.
 ```{r, eval=TRUE}
-maxyr_stk <- range(ple4)[["maxyear"]]
 fbar_SQ <- mean(fbar(ple4)[,as.character(maxyr_stk)])
 ```
 
-Now we introduce the control object: fwdControl(). This takes 1 argument - a data.frame that sets:
+Now we introduce the control object: `fwdControl()`. This takes 1 argument - a data.frame that sets:
 
-* The year the Fbar target is to be hit 
-* The quantity (or type) of the target (we are using fbar but can also set catch etc. see MTF)
-* The value of the target
+* The quantity (or type) of the target (we are using Fbar but can also set catch etc. see MTF)
+* The value of the target, here status quo F 
+* The year the target is to be hit 
 * Some other things that we will ignore for now
  
-Let's Make the data.frame
+Let's make the data.frame
 
 ```{r, eval=TRUE}
 ctrl_target <- data.frame(year = 2009:2011, quantity = "f", val = fbar_SQ)
@@ -130,13 +141,13 @@ ctrl_f <- fwdControl(ctrl_target)
 ctrl_f
 ```
 
-We see that we have what looks like our ctrl_target, but now it has two more columns (min and max). There is another table underneath which is for uncertainty but that we ignore in STF.
+We see that we have what looks like our `ctrl_target`, but now it has two more columns (min and max). There is another table underneath which is for uncertainty but that we ignore in *STF*.
 
 # Running the STF
 
-Below we run a simple STF with 'status quo' future fishing mortality. Remember we had to make assumptions about the future (weights, selection pattern, discard ratio etc.)
+Below we run a simple STF with 'status quo' future fishing mortality. Remember we had to make assumptions about the future (weights, selection pattern, discard ratio etc.).
 
-This is done using fwd(), which takes three objects: the stock, the control object, the SRR. It returns an updated FLStock object. This updated has forecasted stock numbers, based on the recruitment assumptions, the fishing mortality, and the natural mortality. BEcause we now have stock numbers, we can calculate forecasted ssb.
+This is done using `fwd()`, which takes three objects: the stock, the control object, the SRR. It returns an updated FLStock object. This updated has forecasted stock numbers, based on the recruitment assumptions, the fishing mortality, and the natural mortality. Because we now have stock numbers, we can calculate forecasted ssb.
 
 
 ```{r, eval=TRUE}
@@ -149,25 +160,27 @@ mean_rec
 rec(ple4_sq)[,ac((maxyr_stf-5):maxyr_stf)]
 ```
 
-Similarly, we check if the fbar in the forecasted stock indeed corresponds to the status quo fishing mortality. Also, we 
-
+Similarly, we check if the fbar in the forecasted stock indeed corresponds to the status quo fishing mortality. 
 ```{r, eval=TRUE}
-fbar_SQ
-fbar(ple4_sq)[,ac((maxyr_stf-5):maxyr_stf)]
+round(fbar_SQ,3)
+round(fbar(ple4_sq)[,ac((maxyr_stf-5):maxyr_stf)],3)
+```
 
+The stock numbers are calculated using the recruitment and the future mortality
+```{r, eval=TRUE}
 stock.n(ple4_sq)[,ac((maxyr_stf-5):maxyr_stf)]
 ```
 
 Note that the future harvest slot is different from the harvest from the one we set up, but that the selection pattern is the same: F at age has been multiplied by the same value to give us the target Fbar value
  
 ```{r, eval=TRUE}
-harvest(ple4_stf)[,ac((maxyr_stf-2):maxyr_stf)]
-harvest(ple4_sq)[,ac((maxyr_stf-2):maxyr_stf)]
+round(harvest(ple4_stf)[,ac((maxyr_stf-2):maxyr_stf)],3)
+round(harvest(ple4_sq)[,ac((maxyr_stf-2):maxyr_stf)],3)
 
 harvest(ple4_stf)[,ac((maxyr_stf-2):maxyr_stf)] / harvest(ple4_sq)[,ac((maxyr_stf-2):maxyr_stf)]
 ```
 
-The catch numbers come from the predicted abundance and harvest rates using the Baranov equation, and that the catches are then split into landings and discards using the ratios that stf() gave us
+The catch numbers come from the predicted abundance and harvest rates using the Baranov equation. The catches are then split into landings and discards using the ratios computed by `stf()`.
 
 ```{r, eval=TRUE}
 landings.n(ple4_sq)[,ac((maxyr_stf-5):maxyr_stf)]
@@ -197,7 +210,7 @@ We are going to run several STFs with different values for the fbar_multiplier
 fbar_multiplier <- seq(from = 0, to = 2, by = 0.2)
 ```
 
-Next We are going to build a data.frame that builds these scenarios. Each column in the dataframe is a year, each row is a scenario. Note that if you project for more than 3 years you will need to add more columns / years to the matrix
+Next we are going to build a data.frame that builds these scenarios. Each column in the dataframe is a year, each row is a scenario. Note that if you project for more than 3 years you will need to add more columns / years to the matrix
 
 ```{r, eval=TRUE}
 fbar_scenarios <- cbind(rep(fbar_SQ,length(fbar_multiplier)),
@@ -205,7 +218,7 @@ fbar_scenarios <- cbind(rep(fbar_SQ,length(fbar_multiplier)),
                         fbar_multiplier*fbar_SQ)
 ```
 
-Another scenario we are interested in is F0.1. We can calculate this using FLBRP (or maybe you already have a value).
+Another scenario we are interested in is $F_{0.1}$. We can calculate this using [FLBRP](http://doc.flr-project.org/Reference_points_for_fisheries_management_with_FLBRP.html) (or maybe you already have a value).
 
 ```{r, eval=TRUE}
 f01 <- c(refpts(brp(FLBRP(ple4)))["f0.1","harvest"])
@@ -242,7 +255,7 @@ stk_stf <- FLStocks()
 # Loop over the scenarios (each row in the fbar_scenarios table)
 for (scenario in 1:nrow(fbar_scenarios)) {
     cat("Scenario: ", scenario, "\n")
-    # Make a target object withe F values for that scenario
+    # Make a target object with F values for that scenario
     ctrl_target <- data.frame(year = (maxyr_stf-2):maxyr_stf,
                               quantity = "f",
                               val = fbar_scenarios[scenario,])
@@ -265,9 +278,14 @@ for (scenario in 1:nrow(fbar_scenarios)) {
     stf_results[scenario,4] <- catch(ple4_fwd)[,ac(maxyr_stk+3)] # final stf year
     stf_results[scenario,5] <- ssb(ple4_fwd)[,ac(maxyr_stk+2)] # 2nd stf year
     stf_results[scenario,6] <- ssb(ple4_fwd)[,ac(maxyr_stk+3)] # final stf year
-    # Change in SSB
-    stf_results[scenario,7] <- round((ssb(ple4_fwd)[,ac(maxyr_stk+3)]-ssb(ple4_fwd)[,ac(maxyr_stk+2)])/ssb(ple4_fwd)[,ac(maxyr_stk+2)]*100,1) # change in ssb in last two stf years
-    stf_results[scenario,8] <- round((catch(ple4_fwd)[,ac(maxyr_stk+2)]-catch(ple4_fwd)[,ac(maxyr_stk)])/catch(ple4_fwd)[,ac(maxyr_stk)]*100,1) # change in catch from true year, to 2nd to last stf year
+    
+    # change in ssb in last two stf years
+    stf_results[scenario,7] <- round((ssb(ple4_fwd)[,ac(maxyr_stk+3)]-ssb(ple4_fwd)[,ac(maxyr_stk+2)])/
+                                       ssb(ple4_fwd)[,ac(maxyr_stk+2)]*100,1) 
+    
+    # change in catch from true year, to 2nd to last stf year
+    stf_results[scenario,8] <- round((catch(ple4_fwd)[,ac(maxyr_stk+2)]-catch(ple4_fwd)[,ac(maxyr_stk)])/
+                                       catch(ple4_fwd)[,ac(maxyr_stk)]*100,1) 
 }
 # Give the FLStocks object some names
 names(stk_stf) <- rownames(fbar_scenarios)
@@ -292,8 +310,11 @@ stf_results
 
 * `r version$version.string`
 * FLCore: `r packageVersion('FLCore')`
+* FLAssess: `r packageVersion('FLAssess')`
+* FLash: `r packageVersion('FLash')`
 * ggplotFL: `r packageVersion('ggplotFL')`
 * ggplot2: `r packageVersion('ggplot2')`
+* FLBRP: `r packageVersion('FLBRP')`
 * **Compiled**: `r date()`
 
 ## License
@@ -301,5 +322,8 @@ stf_results
 This document is licensed under the [Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0) license.
 
 ## Author information
+**Jan-Jaap Poos** Wageningen UR. Wageningen Marine Research. Haringkade 1, IJmuiden, The Netherlands.
+
+**Katell Hamon** Wageningen UR. Wageningen Economic Research. Alexanderveld 5, The Hague, The Netherlands.
 
 **Iago MOSQUEIRA**. European Commission Joint Research Centre (JRC), Institute for the Protection and Security of the Citizen (IPSC), Maritime Affairs Unit, Via E. Fermi 2749, 21027 Ispra VA, Italy. <https://ec.europa.eu/jrc/>
