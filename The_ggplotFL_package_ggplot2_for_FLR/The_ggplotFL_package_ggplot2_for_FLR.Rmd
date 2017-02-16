@@ -1,15 +1,24 @@
 ---
-output: html_document
+title: Plotting FLR objects with ggplotFL and ggplot2
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  github_document
+tags:
+license: Creative Commons Attribution-ShareAlike 4.0 International Public License
 ---
-
-Plotting FLR objects with ggplotFL and ggplot2
-================
-13 February, 2017
+ 
+```{r, ini, echo=FALSE, results='hide', message=FALSE}
+# This chunk set the document environment, so it is hidden
+library(knitr)
+opts_chunk$set(fig.align='center',
+  message=FALSE, warning=FALSE, echo=TRUE, cache=FALSE)
+options(width=50)
+set.seed(1423)
+```
 
 The R package ggplot2 offers a plotting style and tools that are increasingly becoming a data visualization standard. On of the added values of ggplot2 is the ease in displaying highly dimensional data in an intuitive way. For these reasons there are a  number of standard methods implemented in the package ggplotFL to plot FLR objects, stock assessment diagnostics and MSE results. In addition standard ggplot2 methods and functions can be used by converting FLR objects into data frames, thus giving an extra flexibility in plotting.  
 
-Required packages
------------------
+# Required packages
 
 To follow this tutorial you should have installed the following packages:
 
@@ -18,9 +27,9 @@ To follow this tutorial you should have installed the following packages:
 
 You can do so as follows,
 
-``` {r, echo=FALSE, results='hide', message=FALSE }
-#install.packages("ggplot2")
-#install.packages(c("ggplotFL"), repos="http://flr-project.org/R")
+``` {r,  eval=FALSE }
+install.packages("ggplot2")
+install.packages(c("ggplotFL"), repos="http://flr-project.org/R")
 ```
 
 ``` {r, echo=TRUE, results='hide', message=FALSE }
@@ -35,20 +44,15 @@ data("ple4sex")
 data("nsher")
 ```
 
-SECTION
-=======
 
+# Using ggplot2 with *FLR* objects
 
-
-Using ggplot2 with *FLR* objects
-========
 
 The `ggplot2` package provides a powerful alternative paradigm for creating both simple and complex plots in R using the ideas of Wilkinson's *Grammar of Graphics* ^[Wilkinson, L. 1999. *The Grammar of Graphics*, Springer. [doi 10.1007/978-3-642-21551-3_13](http://dx.doi.org/10.1007/978-3-642-21551-3_13).]
 
 To facilitate the use of `ggplot2` methods in *FLR*, the `ggplotFL` package has been created. The main resources on offer in this package are overloaded versions of the `ggplot()` method that directly accept certaing *FLR* classes, a new set of basic plots for some *FLR* classes, based on `ggplot2` instead of `lattice`, and some examples and documentation on how best make use of `ggplot2`'s powerful paradigm and implementation to obtain high quality plots for even fairly complex data structures.
 
-The overloaded 'ggplot` method
----------
+## The overloaded 'ggplot` method
 
 The standard `ggplot` functions expects a `data.frame` for its first argument, `data`. If `ggplot` is called on an *FLR* object, a conversion to `data.frame` takes place before the result, plus any other arguments provided, get passed to the original `ggplot()`. Conversion makes use of `as.data.frame`^[`method?as.data.frame('FLQuant')`] methods defined in `FLCore`, with the `cohort` argument set to `TRUE`.
 
@@ -59,15 +63,15 @@ As an example, the FLStock of ple4 is a list containing a number of elements.
 summary(ple4)
 ```
 
-By calling as.data.frame() on an SLStock, the list is collapsed to a dataframe that than can be plotted by selecting the right dimensions in terms of slot, age, iter, etc.. : 
+By calling as.data.frame() on an FLStock, the list is collapsed to a dataframe that than can be plotted by selecting the right dimensions in terms of slot, age, iter, etc.. : 
 
 ```{r}
 head(as.data.frame(ple4))
 ```
 
 
-FLQuant
---------
+## FLQuant
+
 
 Passing an `FLQuant` object to ggplot, we can specify the names of the dimensions as variables in the plot, where `data` refers to the column storing the actual numeric values. For example, to plot `data` (the `catch` slot from `ple4` in this case) against year, we could use
 
@@ -82,23 +86,24 @@ ggplot(data = catch(ple4), aes(year, data)) + geom_point() + geom_line() + ylab(
 where we pass directly an `FLQuant` object for the `data` argument in `ggplot`, specify an aesthetic mapping (`aes(year, data)`), and add both points (`geom_point()`) and lines (`geom_line()`), together with the appropriate axis labels.
 
 ## FLQuants
---------
+
 
 Similarly, we can pass on to `ggplot` an object of class `FLQuants`, and the conversion to `data.frame` will make use of the corresponding method ^[`method?as.data.frame('FLQuants')`]. A new column gives the name of each `FLQuant` in the list, called `qname`. When can then use it to, for example, define a call to `facet_wrap()` to obtain a separate subplot per element.
 
 ```{r, ggflqs, echo=TRUE, fig.cap="Facet wrap line plot of time series from an FLQuants object."}
-ggplot(data=FLQuants(Yield=catch(ple4), SSB=ssb(ple4), F=fbar(ple4)), aes(year, data)) + geom_line() + facet_wrap(~qname, scales="free_y", nrow=3) + labs(x="", y="")
+ggplot(data=FLQuants(Yield=catch(ple4), SSB=ssb(ple4), F=fbar(ple4)), aes(year, data)) + 
+  geom_line() + facet_wrap(~qname, scales="free_y", nrow=3) + labs(x="", y="")
 ```
 
 This procedure is particularly useful when plotting information from objects with multiple `FLQuant` slots, as a subset of slots can be selected for plotting, and even transformations or computations can be carried out in the call to the `FLQuants()` creator.
 
 ## FLStock
---------
 
 A whole FLStock object can also be used as argument to `ggplot()`, even if the heterogeneity in scale of the data contained makes the plot slightly confusing. For example, we can plot time series of every `FLQuant` slot in `ple4`, with color applied to different `age` dimensions, by calling
 
 ```{r, ggfls, echo=TRUE, fig.cap="Overall `ggplot` of an `FLStock` object, faceted by slot.", fig.width=24, fig.height=6}
-ggplot(data=ple4, aes(year, data)) + geom_line(aes(group=age, colour=factor(age))) + facet_wrap(~slot, scales="free", nrow=3) + labs(x="", y="") + theme(legend.position = "none")
+ggplot(data=ple4, aes(year, data)) + geom_line(aes(group=age, colour=factor(age))) + 
+  facet_wrap(~slot, scales="free", nrow=3) + labs(x="", y="") + theme(legend.position = "none")
 
 ```
 
@@ -152,7 +157,7 @@ plot(fqs) + facet_wrap(~qname, scales="free")
 
 The `ggplotFL` version of the standard plot for the `FLStock` class, contains the time series of recruitment (obtained by calling `rec()`), SSB (`ssb()`), catch (`catch()`), and fishing morality or harvest for selected ages(`fbar()`). The four panels are now arranged in a 4-row matrix to better display the trends in the time series.
 
-```{r, pfls, echo=FALSE, cache=TRUE,  fig.cap="ggplot2 version of the standard plot() for FLStock, as applied to `ple4`"}
+```{r, pfls,  fig.cap="ggplot2 version of the standard plot() for FLStock, as applied to `ple4`"}
 plot(ple4)
 ```
 
@@ -160,13 +165,13 @@ plot(ple4)
 
 Similarly, the standard `plot()` method for the `FLStocks` class now relies on ggplot. For example, we can create an example `FLStocks` object by splitting the female and male units of `ple4sex` and adding them as separate elements in the list. A call to `plot()` would give us the corresponding plot. Remember the object returned by `ggplot` can always be assigned to a variable in the workspace and modified as required.
 
-```{r, pflss, echo=FALSE, fig.cap="ggplot2 version of the standard plot() for FLStocks, as applied to the sex-separated FLStock object `ple4sex`"}
+```{r, pflss, fig.cap="ggplot2 version of the standard plot() for FLStocks, as applied to the sex-separated FLStock object `ple4sex`"}
 plot(FLStocks(Male=ple4sex[,,'male'], Female=ple4sex[,,'female'])) + theme(legend.position="top")
 ```
 
 ## FLSR
 
-The `ggplotFL` version of the class plot for `FLSR` contains the same six panels as before: (1) stock-recruit data, fitted model and lowess smoother, (2) residuals by year, (3) lag 1-correlated residuals, (4) residuals by SSB, (5) residuals qqplot and (6) residuals by fitted values. Blud lines are lo9wess smoothers, to better visualize trends in the data shown.
+The `ggplotFL` version of the class plot for `FLSR` contains the same six panels as before: (1) stock-recruit data, fitted model and lowess smoother, (2) residuals by year, (3) lag 1-correlated residuals, (4) residuals by SSB, (5) residuals qqplot and (6) residuals by fitted values. Blue lines are lowess smoothers, to better visualize trends in the data shown.
 
 ```{r, pflsr, echo=TRUE, fig.cap="Standard ggplot2-based plot for an object of class FLSR."}
 plot(nsher)
@@ -176,11 +181,11 @@ plot(nsher)
 
 A class plot also exists for `FLSRs` objects, lists with `FLSR` elements. The comparison shown involves only the model fit across the different model functions or formulations, but not the residuals diagnostics available for `FLSR`. The default legend contains the formula of each of the fitted models and the parameter values (or the median if multiple iterations exist).
 
-```{r, flsrs, echo=TRUE, messages=FALSE, results='hide'}
+```{r, flsrs}
 srs <- FLSRs(sapply(c('ricker', 'bevholt'), function(x) {
-  y <- nsher
-  model(y) <- x
-  return(fmle(y))
+                                                    y <- nsher
+                                                    model(y) <- x
+                                                    return(fmle(y))
 }))
 ```
 
@@ -198,8 +203,10 @@ As is common in `ggplot2`, labels can be specified directly, overwriting those i
 
 ```{r, pflsrs3, echo=TRUE, fig.cap="Standard ggplot2-based plot for an FLSRs object, using model names as legend labels."}
 plot(srs) + scale_color_discrete(name="SR models", breaks=c('ricker', 'bevholt'),
-        labels=c("Ricker", "Beverton & Holt"))
+labels=c("Ricker", "Beverton & Holt"))
 ```
+
+
 
 # Using ggplot2 directly by converting to data.frame
 
@@ -231,7 +238,7 @@ fdf <- as.data.frame(flq, drop=TRUE)
 
 and inspected to see how the 100 `iters` have been now turned into the five requested quantiles in the iter column
 
-```{r, exsim4, echo=FALSE, cache=TRUE, results='markup'}
+```{r, exsim4, cache=TRUE, results='markup'}
 head(fdf, 3)
 ```
 
@@ -251,9 +258,9 @@ We can now use those five quantile columns when plotting shaded areas using `geo
 
 ```{r, exsim7, echo=TRUE, cache=TRUE, fig.cap="Time series with 75% and 90% credibility intervals plotted using geom_ribbon."}
 p <- ggplot(data=fdw, aes(x=year, y=`data.50%`)) +
-	geom_ribbon(aes(x=year, ymin = `data.10%`, ymax = `data.90%`), fill="red", alpha = .15) +
-	geom_ribbon(aes(x=year, ymin = `data.25%`, ymax = `data.75%`), fill="red", alpha = .25) +
-	geom_line() + ylab("data")
+geom_ribbon(aes(x=year, ymin = `data.10%`, ymax = `data.90%`), fill="red", alpha = .15) +
+geom_ribbon(aes(x=year, ymin = `data.25%`, ymax = `data.75%`), fill="red", alpha = .25) +
+geom_line() + ylab("data")
 print(p)
 ```
 
@@ -267,7 +274,7 @@ If the result of an stochastic simulation is summarised by showing credibility i
 fds  <- as.data.frame(iter(fla, c(1, 4, 23)))
 
 p + geom_line(data=fds, aes(year, data, colour=iter), size=0.5) +
-  theme(legend.position = "none")
+theme(legend.position = "none")
 ```
 
 This is easy to do in `ggplot2` by adding an extra element on top of the previous plot, stored in the `p` object from the code above.
@@ -282,7 +289,8 @@ Coercion using `as.data.frame`, combined with the use of `reshape`, or `dcast` a
 Bubble plots allow us to represent a third continuous dimension in a scatter plot by sizing points according the value of a variable. For example, catch in numbers  by age and year can be visualized using
 
 ```{r, exbub, echo=TRUE, cache=TRUE, fig.cap="Bubble plot of catch by age in numbners for North Sea plaice."}
-ggplot(catch.n(ple4), aes(year, as.factor(age), size=data)) + geom_point(shape=21) + scale_size(range = c(1, 20)) + ylab("age") + theme(legend.position = "none")
+ggplot(catch.n(ple4), aes(year, as.factor(age), size=data)) + geom_point(shape=21) + 
+  scale_size(range = c(1, 20)) + ylab("age") + theme(legend.position = "none")
 ```
 
 where *data* is used to size the bubbles in the call to *aes()*. This single line of code replaces the functionality offered by the *lattice*-based *bubbles()* method available in *FLCore*.
@@ -295,46 +303,34 @@ dat <- as.data.frame(catch.n(ple4))
 dat$resid <- dat$data - mean(dat$data)
 
 ggplot(dat, aes(year, as.factor(age), size=resid)) +
-	geom_point(shape=21, aes(colour=factor(sign(resid)), fill=factor(sign(resid)))) +
-	scale_size(range = c(1, 20)) +
-	scale_colour_manual(values=c("black", "white")) +
-	scale_fill_manual(values=c("lightgray", "black")) +
-	 ylab("age")
+geom_point(shape=21, aes(colour=factor(sign(resid)), fill=factor(sign(resid)))) +
+scale_size(range = c(1, 20)) +
+scale_colour_manual(values=c("black", "white")) +
+scale_fill_manual(values=c("lightgray", "black")) +
+ylab("age")
 ```
-
-\vspace{1in}
 
 # More information
 
+* You can submit bug reports, questions or suggestions on this tutorial at <https://github.com/flr/doc/issues>.
+* Or send a pull request to <https://github.com/flr/doc/>
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flr-project.org>.
 
-SubSECTION
-----------
+## Software Versions
 
-References
-==========
+* `r version$version.string`
+* FLCore: `r packageVersion('FLCore')`
+* ggplotFL: `r packageVersion('ggplotFL')`
+* ggplot2: `r packageVersion('ggplot2')`
+* **Compiled**: `r date()`
 
-More information
-================
-
--   You can submit bug reports, questions or suggestions on this tutorial at <https://github.com/flr/doc/issues>.
--   Or send a pull request to <https://github.com/flr/doc/>
--   For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flr-project.org>.
-
-Software Versions
------------------
-
--   R version 3.3.2 (2016-10-31)
--   FLCore: 2.6.0.20170123
--   ggplotFL: 2.5.20161007
--   ggplot2: 2.2.0
--   **Compiled**: Mon Feb 13 11:21:37 2017
-
-License
--------
+## License
 
 This document is licensed under the [Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0) license.
 
-Author information
-------------------
+## Author information
 
-**Iago MOSQUEIRA**, **Giacomo Chato Osio**. European Commission Joint Research Centre (JRC), Institute for the Protection and Security of the Citizen (IPSC), Maritime Affairs Unit, Via E. Fermi 2749, 21027 Ispra VA, Italy. <https://ec.europa.eu/jrc/>
+**Giacomo Chato Osio**, **Iago MOSQUEIRA**. European Commission Joint Research Centre (JRC), Institute for the Protection and Security of the Citizen (IPSC), Maritime Affairs Unit, Via E. Fermi 2749, 21027 Ispra VA, Italy. <https://ec.europa.eu/jrc/>
+
+**Katell Hamon** Wageningen UR. Wageningen Economic Research. Alexanderveld 5, The Hague, The Netherlands.
+
