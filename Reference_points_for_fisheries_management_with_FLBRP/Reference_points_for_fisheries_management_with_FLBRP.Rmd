@@ -146,16 +146,16 @@ In this example, costs linked to the catch of plaice only are made up (because p
 
 ```{r}
 # price of fish at age
-brp4Ri@price[] <- c(rep(1.19,3),rep(1.34,2),rep(1.57,5))
-brp4Ri@price@units <- "keuro/ton"
+price(brp4Ri) <- c(rep(1.19,3),rep(1.34,2),rep(1.57,5))
+price(brp4Ri)@units <- "keuro/ton"
 
 # variable costs per F 
-brp4Ri@vcost[] <- 62000
-brp4Ri@vcost@units <- "keuro/unit F"
+vcost(brp4Ri) <- 62000
+vcost(brp4Ri)@units <- "keuro/unit F"
 
 # variable costs per F 
-brp4Ri@fcost[] <- 25000
-brp4Ri@fcost@units <- "keuro/unit F"
+fcost(brp4Ri) <- 25000
+fcost(brp4Ri)@units <- "keuro/unit F"
 
 ```
 
@@ -174,13 +174,39 @@ plot(brp4Eco)
 
 On this figure we see that $F_{MEY}$ is lower than $F_{MSY}$, meaning that the economic reference point is more sustainable than *MSY*. In rare cases when the price of smaller fish is higher than the price of older fish, $F_{MEY}$ can be higher than $F_{MSY}$.
 
+# Pretty Good Yield
+
+Because of the uncertainty around the *MSY* estimates, @Hilborn2010 introduced the concept of *pretty good yield* corresponding to at least 80\% of the theoretical *MSY*. The range of *Fs* leading to the pretty good yield can be considered a confidence interval around the estimated $F_{MSY}$. The advantage of using the pretty good yield compared to the MSY point estimates is that it is less sensitive to population's basic life history parameters. The concept of pretty good yield has been applied to European fisheries using a 95\% range [@Rindorf2016]. The resulting F ranges could then be used in mixed fisheries management plans in an effort to reconcile the TACs of species caught together with the level of exploitation by the fleets [@stecf2015].
+
+Below is an example of calculating the pretty good yield at 95\% of MSY.
+
+```{r}
+(rge4 <- msy.range(brp4Eco,range=0.05))
+```
+
+The *F* and *SSB* ranges calculated can also be added to the plots
+
+```{r}
+p <- plot(brp4Eco,obs=T)
+
+p$data <- within(p$data,{minrge <- NA
+                         minrge <- replace(minrge,grep("v. F",pnl),rge4@.Data["min","harvest",])
+                         minrge <- replace(minrge,grep("v. SSB",pnl),rge4@.Data["max","ssb",])
+                         maxrge <- NA
+                         maxrge <- replace(maxrge,grep("v. F",pnl),rge4@.Data["max","harvest",])
+                         maxrge <- replace(maxrge,grep("v. SSB",pnl),rge4@.Data["min","ssb",])})
+
+
+p+ geom_area(aes(x = ifelse(x>=minrge & x<=maxrge , x, NA),y=y,group=iter),fill="grey",alpha=0.5)    
+
+```
 
 # Glossary
 
-## $Crash$ {#crash} 
+## Crash {#crash} 
 $F_{Crash}$ is the level of F that will drive the stock to extinction.
 
-## $F_{0.1}$ {#f01}
+## $F_{0.1}$ {#f0.1}
 $F_{0.1}$ is a proxy for $F_{MSY}$ and is the fishing mortality that corresponds to a point on the yield per recruit curve where the slope is 10\% of that at the origin.
 
 ## $F_{Max}$ {#fmax}
@@ -198,8 +224,8 @@ $SPR_O$ is the spawner per recruit at virgin biomass.
 ## $SPR_{3O}$ {#spr30}
 $SPR_{30}$ corresponds to the point on the curve where SPR is 30\% of $SPR_0$. In these cases the biomass, ssb and yield values are derived by multiplying the per recruit values by the average recruitment.
 
-## $virgin$ {#virgin}
-$virgin$ represents the virgin biomass without exploitation.
+## virgin {#virgin}
+virgin represents the virgin biomass without exploitation.
 
 # More information
 
