@@ -12,7 +12,6 @@ license: Creative Commons Attribution-ShareAlike 4.0 International Public Licens
 library(knitr)
 opts_chunk$set(fig.align='center',
   message=FALSE, warning=FALSE, echo=TRUE, cache=TRUE)
-options(width=50)
 set.seed(1423)
 ```
 
@@ -71,8 +70,7 @@ stk <- stk + fit
 stk0 <- qapply(stk, iterMedians) #reduce to keep one iteration only
 ```
 **Fit stock-recruit model**
-```
-#{r, sr, message=FALSE}
+```{r, sr, message=FALSE}
 srbh <- fmle(as.FLSR(stk, model="bevholt"), method="L-BFGS-B", lower=c(1e-6, 1e-6), upper=c(max(rec(stk)) * 3, Inf))
 srbh0 <- fmle(as.FLSR(stk0, model="bevholt"), method="L-BFGS-B", lower=c(1e-6, 1e-6), upper=c(max(rec(stk)) * 3, Inf))
 srbh.res <- rnorm(it, FLQuant(0, dimnames=list(year=iy:fy)), c(apply(residuals(srbh), 6, mad)))
@@ -161,7 +159,7 @@ TAC <- FLQuant(NA, dimnames=list(TAC="all", year=c(dy,vy), iter=1:it))
 TAC[,ac(dy)] <- catch(stk)[,ac(dy)]
 TAC[,ac(iy)] <- TAC[,ac(dy)] #assume same TAC in the first intermediate year
 ctrl <- getCtrl(c(TAC[,ac(iy)]), "catch", iy, it)
-stk <- fwd(stk, ctrl=ctrl,sr=srbh, sr.residuals = srbh.res, sr.residuals.mult = FALSE)
+stk <- fwd(stk, control=ctrl, sr=srbh, sr.residuals = srbh.res, sr.residuals.mult = FALSE)
 ```
 ## Start the MSE loop
 ```{r, mseloop}
@@ -191,12 +189,12 @@ for(i in vy[-length(vy)]){
   ctrl <- getCtrl(c(fsq0, Ftrgt), "f", c(ay, ay+1), it)
   stk0 <- stf(stk0, 2)
   gmean_rec <- c(exp(yearMeans(log(rec(stk0)))))
-  stk0 <- fwd(stk0, ctrl=ctrl, sr=list(model="mean", params = FLPar(gmean_rec,iter=it)))
+  stk0 <- fwd(stk0, control=ctrl, sr=list(model="mean", params = FLPar(gmean_rec,iter=it)))
   TAC[,ac(ay+1)] <- catch(stk0)[,ac(ay+1)]
 
   # apply the TAC to the operating model stock
   ctrl <- getCtrl(c(TAC[,ac(ay+1)]), "catch", ay+1, it)
-  stk <- fwd(stk, ctrl=ctrl,sr=srbh, sr.residuals = srbh.res, sr.residuals.mult = FALSE)
+  stk <- fwd(stk, control=ctrl,sr=srbh, sr.residuals = srbh.res, sr.residuals.mult = FALSE)
 }
 ```
 
