@@ -1,0 +1,126 @@
+---
+title: A quick introduction to FLR
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+github_document:
+  mathjax: TRUE
+tags: FLR FLCore introduction
+license: Creative Commons CC-BY SA
+---
+ 
+```{r, ini, echo=FALSE, results='hide', message=FALSE}
+source("R/ini.R")
+```
+
+The Fisheries Library in R (FLR) is a collection of tools for quantitative fisheries science, developed in the R language, that facilitates the construction of bio-economic simulation models of fisheries systems.
+
+FLR builds on the powerful R environment and syntax to create a [domain-specific language](https://en.wikipedia.org/wiki/Domain-specific_language) for the quantitative analysis of the expected risks and effects of fisheries management decision. The classes and methods in FLR consider uncertainty an integral part of our knowledge of fisheries system. [...]
+
+## Required packages
+
+To follow this tutorial you should have installed the following packages:
+
+- FLR: [FLCore](http://www.flr-project.org/FLCore/)
+
+You can do so as follows,
+
+```{r, eval=FALSE}
+install.packages(c("FLCore"), repos="http://flr-project.org/R")
+```
+
+# Starting with FLR
+
+The main *classes* (i.e. data structures) and methods (i.e. procedures) in the FLR system are found in the `FLCore` package. Let's load it first
+
+```{r, pkgs}
+library(FLCore)
+```
+
+## The `FLQuant` class
+
+The basic element on which the FLR classes are based is the `FLQuant` class. We can look at the structure of the class in its help page
+
+```{r, helpFLQuant, results='hide', eval=FALSE}
+help(FLQuant)
+```
+It is a six-dimensional array, in which the first dimension is free to have any name, *quant* by default, commonly `age`, while the other five have set names:
+
+- `year`: year of the data point.
+- `unit`: any subdivision of the data not based on space or time, for example gender (`male` and `female`).
+- `season`: any time step shorter than year (e.g. month, quarter, week).
+- `area`: spatial subdivision of data
+- `iter`: multiple iterations of the same process (e.g. bootstrap, Bayesian, Monte Carlo, ...)
+
+We can now call the `FLQuant()` constructor method to see an example with some random numbers
+
+```{r, FLQuant}
+FLQuant(rlnorm(20), dim=c(4,5), quant="age", units="kg")
+```
+
+and this produces an `FLQuant` object with some numbers for ages 1 to 4, and years 1 to 5. The name of the first dimension has been specified to be "age", while the units of measurement, "kg", have been stored as an attribute to the array.
+
+An important part of the information associated with any dataset is kept in an `FLQuant` as the `dimnames` of the array. For example, we can specify in the constructor call the names of any of the dimensions, by using the `dimnames` argument
+
+```{r, dimnames}
+FLQuant(rlnorm(20), units="kg",
+  dimnames=list(age=0:3, year=2010:2014))
+```
+
+There are a number of methods and ways to create `FLQuant` objects from different R objects (`vector`, `matrix`, `array` or `data.frame`) once loaded into R, please see `?FLQuant` and `?as.FLQuant` for a complete list of available methods.
+
+Objects of this class have the same properties as any `array` in R, with some important differences. For example, subsetting on an `FLQuant` does not drop by default unused dimensions
+
+```{r, subset}
+flq <- FLQuant(rlnorm(20), units="kg",
+  dimnames=list(age=0:3, year=2010:2014))
+
+flq[1,]
+
+dim(flq[1,])
+```
+
+so they remain valid `FLQuant` objects. Similarly, arithmetic operations on objects of the class, against each other or against numeric vectors, always return an `FLQuant` object.
+
+```{r, arith}
+flq * 2
+
+flq + (flq * 2)
+```
+
+- summary, plot
+
+```{r plotFLQuant}
+plot(FLQuant(rnorm(200), dim=c(2,20)))
+```
+
+- FLStock
+
+
+## FLPar
+
+## FLSR
+
+
+# References
+
+L. T. Kell, I. Mosqueira, P. Grosjean, J-M. Fromentin, D. Garcia, R. Hillary, E. Jardim, S. Mardle, M. A. Pastoors, J. J. Poos, F. Scott, R. D. Scott; FLR: an open-source framework for the evaluation and development of management strategies. *ICES J Mar Sci* 2007; 64 (4): 640-646. doi: [10.1093/icesjms/fsm012](https://doi.org/10.1093/icesjms/fsm012)
+
+# More information
+
+* You can submit bug reports, questions or suggestions on this tutorial at <https://github.com/flr/doc/issues>.
+* Or send a pull request to <https://github.com/flr/doc/>
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flr-project.org>.
+
+## Software Versions
+
+* `r version$version.string`
+* FLCore: `r packageVersion('FLCore')`
+* **Compiled**: `r date()`
+
+## License
+
+This document is licensed under the [Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0) license.
+
+## Author information
+
+**Iago MOSQUEIRA**. European Commission Joint Research Centre (JRC), Institute for the Protection and Security of the Citizen (IPSC), Maritime Affairs Unit, Via E. Fermi 2749, 21027 Ispra VA, Italy. <https://ec.europa.eu/jrc/>

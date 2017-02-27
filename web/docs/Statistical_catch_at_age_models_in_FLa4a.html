@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>The a4a Stock Assessment Modelling Framework</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="http://flr-project.org">
+    <span class="fa fa-home"></span>
+     
+    FLR
+  </a>
+</li>
+<li>
+  <a href="index.html">
+    <span class="fa fa-info"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Introduction
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Input
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Visualization
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Modelling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Advice
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    MSE
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://example.com">
+    <span class="fa fa-question fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">The a4a Stock Assessment Modelling Framework</h1>
+<h3 class="subtitle"><em>Assessment for All initiative(a4a)</em></h3>
+<h4 class="date"><em>27 February, 2017</em></h4>
+
+</div>
+
+
+<p>This document presents the statistical catch-at-age stock assessment model developed in the JRC Assessment For All (a4a) initiative. The stock assessment model framework is a non-linear catch-at-age model implemented in <a href="http://www.r-project.org/">R</a>, <a href="http://www.flr-project.org/">FLR</a> and <a href="http://www.admb-project.org/">ADMB</a> that can be applied rapidly to a wide range of situations with low parametrization requirements. The model structure is defined by submodels, which are the different parts that require structural assumptions. There are 5 submodels in operation: a model for F-at-age, a model for the initial age structure, a model for recruitment, a (list) of model(s) for abundance indices catchability-at-age, and a list of models for the observation variance of catch-at-age and abundance indices. The submodels form use linear models. This opens the possibility of using the linear modelling tools available in R: see for example <a href="http://cran.r-project.org/web/packages/mgcv/index.html">mgcv</a> gam formulas. Detailed model formulas, several diagnostic tools and a large set of models are presented in the document. Additionaly, advanced features like external weighting of the likelihood components and MCMC fits are also described. The target audience for this document are readers with some experience in R and some background on stock assessment. The document explains the approach being developed by a4a for fish stock assessment and scientific advice. It presents a mixture of text and code, where the first explains the concepts behind the methods, while the last shows how these can be run with the software provided.</p>
+<div id="required-packages" class="section level2">
+<h2>Required packages</h2>
+<p>To follow this tutorial you should have installed the following packages:</p>
+<ul>
+<li><p>CRAN: <a href="https://cran.r-project.org/web/packages/copula/index.html">copula</a>, <a href="https://cran.r-project.org/web/packages/triangle/index.html">triangle</a>, <a href="https://cran.r-project.org/web/packages/coda/index.html">coda</a>, <a href="https://cran.r-project.org/web/packages/XML/index.html">XML</a>,<a href="https://cran.r-project.org/web/packages/reshape2/index.html">reshape2</a>, <a href="https://cran.r-project.org/web/packages/latticeExtra/index.html">latticeExtra</a></p></li>
+<li><p>FLR: <a href="http://www.flr-project.org/FLCore/">FLCore</a>, <a href="http://www.flr-project.org/FLa4a/">FLa4a</a></p></li>
+</ul>
+<p>You can do so as follows,</p>
+<pre class="r"><code>install.packages(c(&quot;copula&quot;,&quot;triangle&quot;, &quot;coda&quot;, &quot;XML&quot;, &quot;reshape2&quot;, &quot;latticeExtra&quot;))
+install.packages(c(&quot;FLCore&quot;, &quot;FLa4a&quot;), repos=&quot;http://flr-project.org/R&quot;)</code></pre>
+<pre class="r"><code>library(FLa4a)
+library(latticeExtra)
+
+# datasets
+data(ple4)
+data(ple4.indices)
+data(ple4.index)</code></pre>
+</div>
+<div id="background" class="section level1">
+<h1>Background</h1>
+<p>The stock assessment model framework is a non-linear catch-at-age model implemented in R/FLR/ADMB that can be applied rapidly to a wide range of situations with low parametrization requirements.</p>
+<p>In the a4a assessment model, the model structure is defined by submodels, which are the different parts of a statistical catch at age model that require structural assumptions.</p>
+<p>There are 5 submodels in operation:</p>
+<ul>
+<li>a model for F-at-age,</li>
+<li>a (list) of model(s) for abundance indices catchability-at-age,</li>
+<li>a model for recruitment,</li>
+<li>a list of models for the observation variance of catch-at-age and abundance indices,</li>
+<li>a model for the initial age structure,</li>
+</ul>
+<p>In practice, we fix the variance models and the initial age structure models, but in theory these can be changed.</p>
+<p>The submodels form use linear models. This opens the possibility of using the linear modelling tools available in R: see for example the <a href="http://cran.r-project.org/web/packages/mgcv/index.html">mgcv</a> gam formulas, or factorial design formulas using <code>lm()</code>. In R’s linear modelling language, a constant model is coded as <span class="math inline">\(\sim 1\)</span>, while a slope over age would simply be <span class="math inline">\(\sim age\)</span>. For example, we can write a traditional year/age separable F model like <span class="math inline">\(\sim factor(age) + factor(year)\)</span>.</p>
+<p>The ‘language’ of linear models has been developing within the statistical community for many years, and constitutes an elegant way of defining models without going through the complexity of mathematical representations. This approach makes it also easier to communicate among scientists:</p>
+<ul>
+<li><a href="http://rspa.royalsocietypublishing.org/content/283/1393/147.short">1965 J. A. Nelder</a>, notation for randomized block design</li>
+<li><a href="http://www.jstor.org/stable/info/2346786">1973 Wilkinson and Rodgers</a>, symbolic description for factorial designs</li>
+<li><a href="http://books.google.com/books?isbn=0412343908">1990 Hastie and Tibshirani</a>, introduced notation for smoothers</li>
+<li><a href="http://books.google.com/books?isbn=041283040X">1991 Chambers and Hastie</a>, further developed for use in S</li>
+</ul>
+<p>There are two basic types of assessments available in a4a: the management procedure fit and the full assessment fit. The management procedure fit does not compute estimates of covariances and is therefore quicker to execute, while the full assessment fit returns parameter estimates and their covariances at the expense of longer fitting time.</p>
+</div>
+<div id="stock-assessment-model-details" class="section level1">
+<h1>Stock assessment model details</h1>
+<p>Modelled catches <span class="math inline">\(C\)</span> are defined in terms of the three quantities, natural mortality <span class="math inline">\(M\)</span>, fishing mortality <span class="math inline">\(F\)</span> and recruitment <span class="math inline">\(R\)</span>, using a modified form of the well known Baranov catch equation:</p>
+<p><span class="math display">\[  C_{ay} = \frac{\bf{F}_{ay}}{\bf{F}_{ay}+M_{ay}}\left(1 - e^{-(\bf{F}_{ay}+M_{ay})}\right) \bf{R}_{y}e^{-\sum (\bf{F}_{ay} + M_{ay})} \]</span></p>
+<p>where <span class="math inline">\(a\)</span> and <span class="math inline">\(y\)</span> denote age and year. Modelled survey indices <span class="math inline">\(I\)</span> are defined in terms of the same three quantities with the addition of survey catchability <span class="math inline">\(Q\)</span>:</p>
+<p><span class="math display">\[I_{ays} = \bf{Q}_{ays} \bf{R}_{y}e^{-\sum (\bf{F}_{ay} + M_{ay})}\]</span></p>
+<p>where <span class="math inline">\(s\)</span> denotes survey or abundance index and allows for multiple surveys to be considered. Observed catches <span class="math inline">\(C^{(obs)}\)</span> and the observed survey indices <span class="math inline">\(I^{(obs)}\)</span> are assumed to be log-normally distributed, or equivalently, normally distributed on the log-scale, with age, year and survey specific observation variance:</p>
+<p><span class="math display">\[  \log C^{(obs)}_{ay} \sim \text{Normal} \Big( \log C_{ay}, \bf{\sigma}^2_{ay}\Big) \qquad
+  \log I^{(obs)}_{ays} \sim \text{Normal} \Big( \log I_{ays}, \bf{\tau}^2_{ays} \Big) \]</span></p>
+<p>The full log-likelihood for the a4a statistical catch at age model can now be defined as the sum of the log-likelihood of the observed catches (<span class="math inline">\(\ell_N\)</span> is the log-likelihood of a normal distribution)</p>
+<p><span class="math display">\[  \ell_C = \sum_{ay} w^{(c)}_{ay}\ \ell_N \Big( \log C_{ay}, \bf{\sigma}^2_{ay} ;\ \log C^{(obs)}_{ay} \Big) \]</span></p>
+<p>and the log-likelihood of the observed survey indices</p>
+<p><span class="math display">\[  \ell_I = \sum_s \sum_{ay} w^{(s)}_{ays}\ \ell_N \Big( \log I_{ays}, \bf{\tau}_{ays}^2 ;\ \log I^{(obs)}_{ays} \Big)\]</span></p>
+<p>giving the total log-likelihood</p>
+<p><span class="math display">\[\ell = \ell_C + \ell_I\]</span></p>
+<p>which is defined in terms of the strictly positive quantites, <span class="math inline">\(M_{ay}\)</span>, <span class="math inline">\(F_{ay}\)</span>, <span class="math inline">\(Q_{ays}\)</span> and <span class="math inline">\(R_{y}\)</span>, and the observation variances <span class="math inline">\(\sigma_{ay}\)</span> and <span class="math inline">\(\tau_{ays}\)</span>. As such, the log-likelihood is over-parameterised as there are many more parameters than observations. In order to reduce the number of parameters, <span class="math inline">\(M_{ay}\)</span> is assumed known (as is common), and the remaining parameters are written in terms of a linear combination of covariates <span class="math inline">\(x_{ayk}\)</span>, e.g.</p>
+<p><span class="math display">\[\log F_{ay} = \sum_k \beta_k x_{ayk}\]</span></p>
+<p>where <span class="math inline">\(k\)</span> is the number of parameters to be estimated and is sufficiently small. Using this tecnique the quantities <span class="math inline">\(\log F\)</span>, <span class="math inline">\(\log Q\)</span>, <span class="math inline">\(\log \sigma\)</span> and <span class="math inline">\(\log \tau\)</span> %<span class="math inline">\(\log \text{initial\,age\,structure}\)</span> % this is not present in the above (in bold in the equations above) can be described by a reduced number of parameters. The following section has more discussion on the use of linear models in a4a.</p>
+<div id="stock-recruitment-relationships" class="section level2">
+<h2>Stock recruitment relationships</h2>
+<p>The a4a statistical catch at age model can addiionally allow for a functional relationship to be imposed that links predicted recruitment <span class="math inline">\(\tilde{R}\)</span> based on spawning stock biomass and modelled recruitment <span class="math inline">\(R\)</span>, included as a fixed variance random effect. Options for the relationship are the hard coded models Ricker, Beverton Holt, smooth hockeystick or geometric mean. This is implemented by including a third component in the log-likelihood</p>
+<p><span class="math display">\[\ell_{SR} = \sum_y \ell_N \Big( \log \tilde{R}_y(a, b), \phi_y^2 ;\ \log R_y \Big)\]</span></p>
+<p>giving the total log-likelihood</p>
+<p><span class="math display">\[\ell = \ell_C + \ell_I + \ell_{SR}\]</span></p>
+<p>Using the (time varying) Ricker model as an example, predicted recruitment is</p>
+<p><span class="math display">\[\tilde{R}_y(a_y,b_y) = a_y S_{y-1} e^{-b_y S_{y-1}}\]</span></p>
+<p>where <span class="math inline">\(S\)</span> is spawning stock biomass derived from the model parameters <span class="math inline">\(F\)</span> and <span class="math inline">\(R\)</span>, and the fixed quantites <span class="math inline">\(M\)</span> and mean weights by year and age. It is assumed that <span class="math inline">\(R\)</span> is log-normally distributed, or equivalently, normally distributed on the log-scale about the (log) recruitment predicted by the SR model <span class="math inline">\(\tilde{R}\)</span>, with known variance <span class="math inline">\(\phi^2\)</span>, i.e.</p>
+<p><span class="math display">\[\log R_y \sim \text{Normal} \Big( \log \tilde{R}_y, \phi_y^2 \Big)\]</span></p>
+<p>which leads to the definition of <span class="math inline">\(\ell_{SR}\)</span> given above. In all cases <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are strictly positive, and with the quantities <span class="math inline">\(F\)</span>, <span class="math inline">\(R\)</span>, etc. linear models are used to parameterise <span class="math inline">\(\log a\)</span> and/or <span class="math inline">\(\log b\)</span>, where relevant.</p>
+<p>By default, recruitment <span class="math inline">\(R\)</span> as apposed to the reruitment predicted from a stock recruitment model <span class="math inline">\(\tilde{R}\)</span>, is specified as a linear model with a parameter for each year, i.e.</p>
+<p><span class="math display">\[\log R_y = \gamma_y\]</span></p>
+<p>This is to allow modelled recruitment <span class="math inline">\(R_y\)</span> to be shrunk towards the stock recruitment model. However, if it is considered appropriate that recruitment can be determined exactly by a relationship with covariates, it is possible, to instead define <span class="math inline">\(\log R\)</span> in terms of a linear model in the same way as <span class="math inline">\(\log F\)</span>, <span class="math inline">\(\log Q\)</span>, <span class="math inline">\(\log \sigma\)</span> and <span class="math inline">\(\log \tau\)</span>. %But this is pretty much the same as taking a geometric mean, with a model on log a, and making the variance very small.</p>
+</div>
+</div>
+<div id="quick-and-dirty" class="section level1">
+<h1>Quick and dirty</h1>
+<p>Here we show a simple example of using the assessment model using plaice in the North Sea. The default settings of the stock assessment model work reasonably well. It’s an area of research that will improve with time. Note that because the survey index for plaice has missing values we get a warning saying that we assume these values are missing at random.</p>
+<pre class="r"><code>data(ple4)
+data(ple4.indices)
+fit &lt;- sca(ple4, ple4.indices)</code></pre>
+<p>To inspect the stock assessment summary constituted of trends of fishing mortality (harvest), spawning stock biomass (SSB), catch and recruits, the user may add the <code>a4aFit</code> object to the original <code>FLStock</code> object using the <code>+</code> method and plot the result (Figure 1).</p>
+<pre class="r"><code>stk &lt;- ple4 + fit
+plot(stk)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/summ-1.png" alt="Stock summary for Plaice in ICES area IV, recruits, SSB (Stock Spawning Biomass), catch (catch and landings) and harvest (fishing mortality or F)." width="672" />
+<p class="caption">
+Stock summary for Plaice in ICES area IV, recruits, SSB (Stock Spawning Biomass), catch (catch and landings) and harvest (fishing mortality or F).
+</p>
+</div>
+<p>In more detail, one can plot a 3D representation of fishing mortality (Figure 2),</p>
+<pre class="r"><code>wireframe(harvest(fit), zlab=&quot;F&quot;)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/F-1.png" alt="3D contour plot of estimated fishing mortality at age and year" width="672" />
+<p class="caption">
+3D contour plot of estimated fishing mortality at age and year
+</p>
+</div>
+<p>population abundance (Figure 3) is displaid as a 3D wireframe,</p>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/N-1.png" alt="Population abundance by age and year" width="672" />
+<p class="caption">
+Population abundance by age and year
+</p>
+</div>
+<p>as well as catch-at-age (Figure 4).</p>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/C-1.png" alt="Catches in number of individuals by age and year" width="672" />
+<p class="caption">
+Catches in number of individuals by age and year
+</p>
+</div>
+</div>
+<div id="diagnostics" class="section level1">
+<h1>Diagnostics</h1>
+<p>A set of plots to inspect the fit quality and assumptions are implemented. The most common is to look at standardized log-residuals to check for biased results or large variances. Note that the standardization should produce residuals with variance ~1, which means that most residual values should be between <span class="math inline">\(\sim -2\)</span> and <span class="math inline">\(\sim 2\)</span>. These residuals also allow the user to check for deviances from the log-normal assumption.</p>
+<p>The <code>residuals()</code> method will compute standardized residuals which can be plotted using a set of packed methods.</p>
+<pre class="r"><code>res &lt;- residuals(fit, ple4, ple4.indices)</code></pre>
+<p>Figure 5 shows a scatterplot of residuals by age and survey, with a smoother to guide (or mis-guide …) your visual analysis.</p>
+<pre class="r"><code>plot(res)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/res-1.png" alt="Standardized residuals for abundance indices (SNS, BTS Tridens and BTS Isis) and for catch numbers (catch.n). Each panel is coded by age class, dots represent standardized residuals and lines a simple smoother." width="672" />
+<p class="caption">
+Standardized residuals for abundance indices (SNS, BTS Tridens and BTS Isis) and for catch numbers (catch.n). Each panel is coded by age class, dots represent standardized residuals and lines a simple smoother.
+</p>
+</div>
+<p>The common bubble plot by year and age for each survey are shown in Figure 6. It shows the same information as Figure 5 but in a multivariate perspective.</p>
+<pre class="r"><code>bubbles(res)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/bub-1.png" alt="Bubbles plot of standardized residuals for abundance indices (SNS, BTS Tridens and BTS Isis) and for catch numbers (catch.n)." width="672" />
+<p class="caption">
+Bubbles plot of standardized residuals for abundance indices (SNS, BTS Tridens and BTS Isis) and for catch numbers (catch.n).
+</p>
+</div>
+<p>Figure 7 shows a quantile-quantile plot to assess how well do the residuals match the normal distribution.</p>
+<pre class="r"><code>qqmath(res)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/qq-1.png" alt="Quantile-quantile plot of standardized residuals for abundance indices (SNS, BTS Tridens and BTS Isis) and for catch numbers (catch.n). Each panel is coded by age class, dots represent standardized residuals and lines the normal distribution quantiles." width="672" />
+<p class="caption">
+Quantile-quantile plot of standardized residuals for abundance indices (SNS, BTS Tridens and BTS Isis) and for catch numbers (catch.n). Each panel is coded by age class, dots represent standardized residuals and lines the normal distribution quantiles.
+</p>
+</div>
+<p>To have a look at how well is the model predicting catches and abundance, one can use the <code>plot()</code> method with the <code>a4aFit</code> object and the <code>FLStock</code> (Figure 8) object or the <code>FLIndex</code> object.</p>
+<pre class="r"><code>plot(fit, ple4)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/selplt-1.png" alt="Predict and observed catch-at-age" width="672" />
+<p class="caption">
+Predict and observed catch-at-age
+</p>
+</div>
+<pre class="r"><code>plot(fit, ple4.indices)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/idxplt-1.png" alt="Predict and observed abundance-at-age" width="672" />
+<p class="caption">
+Predict and observed abundance-at-age
+</p>
+</div>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/idxplt-2.png" alt="Predict and observed abundance-at-age" width="672" />
+<p class="caption">
+Predict and observed abundance-at-age
+</p>
+</div>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/idxplt-3.png" alt="Predict and observed abundance-at-age" width="672" />
+<p class="caption">
+Predict and observed abundance-at-age
+</p>
+</div>
+<!-- Finally a retrospective analysis can be carried out using the method `ra()}. Figure  10 shows the results for this assessment.
+
+%```{r, retro, fig.cap="Retrospective analysis"}
+%retro <- ra(ple4, ple4.indices, 5)
+%plot(retro)
+%```
+-->
+<p>To get information about the likelihood fit the method <code>fitSumm()</code> will extract information about likelihood, number of parameters, etc, and the methods <code>AIC()</code> and <code>BIC()</code> will compute the information criteria.</p>
+<pre class="r"><code>fitSumm(fit)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>nopar</td>
+<td align="right">187.0000</td>
+</tr>
+<tr class="even">
+<td>nlogl</td>
+<td align="right">105.4440</td>
+</tr>
+<tr class="odd">
+<td>maxgrad</td>
+<td align="right">0.0000</td>
+</tr>
+<tr class="even">
+<td>nobs</td>
+<td align="right">901.0000</td>
+</tr>
+<tr class="odd">
+<td>gcv</td>
+<td align="right">0.0499</td>
+</tr>
+<tr class="even">
+<td>convergence</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td>accrate</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>AIC(fit)</code></pre>
+<pre><code>## [1] 584.9</code></pre>
+<pre class="r"><code>BIC(fit)</code></pre>
+<pre><code>## [1] 1483</code></pre>
+</div>
+<div id="the-statistical-catch-at-age-stock-assessment-framework---the-sca-method" class="section level1">
+<h1>The statistical catch-at-age stock assessment framework - the <code>sca</code> method</h1>
+<p>The statistical catch at age (<code>sca()</code>) method used in the previous section with the default settings, can be parametrized to control other features of the stock assessment framework. The most interesting ones are the submodels for fishing mortality (<span class="math inline">\(F\)</span>), catchability (<span class="math inline">\(Q\)</span>) and recruitment (<span class="math inline">\(R\)</span>).</p>
+<p>An important argument for <code>sca()</code> is the type of fit, which controls if a full assessment will be performed or a management procedure type of assessment. The argument is called <code>fit</code> and can have the values ‘assessment’ for a full assessemt or ‘MP’ for a simpler assessment. By default <code>sca()</code> uses <code>fit='MP'</code>.</p>
+<p>We’ll start by looking at the submodel for <span class="math inline">\(F\)</span>, then <span class="math inline">\(Q\)</span> and finally <span class="math inline">\(R\)</span>.</p>
+<p>Please note that each of these model <em>forms</em> have not been tuned to the data. The degrees of freedom of each model can be better tuned to the data by using model selection procedures such as Akaike Information Criterion (AIC) or Bayesian Information Criterion (BIC), etc.</p>
+<div id="fishing-mortality-submodel" class="section level2">
+<h2>Fishing mortality submodel</h2>
+<p>We will now take a look at some examples for F models and the forms that we can get. We’ll fix the <span class="math inline">\(Q\)</span> and <span class="math inline">\(R\)</span> submodels.</p>
+<p>Lets start with a separable model in which age and year effects are modelled as dummy variables, using the <code>factor</code> coding provided by R (Figure 11). We’ll use only one index to save running time, with the code <code>ple4.indices[1]</code>. This code creates an <code>FLIndices</code> object which has the first element of our list of indices. Note the difference with <code>ple4.indices[[1]]</code> that would extract the first element of the list, an <code>FLIndex</code> object.</p>
+<pre class="r"><code>qmod &lt;- list(~ factor(age))
+fmod &lt;- ~ factor(age) + factor(year)
+srmod &lt;- ~ factor(year)
+fit &lt;- sca(stock = ple4, indices = ple4.indices[1], fmodel=fmod, qmodel=qmod, srmodel=srmod)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/sep1-1.png" alt="Fishing mortality separable model" width="672" />
+<p class="caption">
+Fishing mortality separable model
+</p>
+</div>
+<p>Next we may make things a bit more interesting by using an (unpenalised) thin plate spline, where we’ll borrow the smoothing splines method (<code>s()</code>) provided by package <a href="http://cran.r-project.org/web/packages/mgcv/">mgcv</a>. We’re using the North Sea Plaice data again, and since it has 10 ages we will use a simple rule of thumb that the spline should have fewer than <span class="math inline">\(\frac{10}{2} = 5\)</span> degrees of freedom, and so we opt for 4 degrees of freedom. We will also do the same for year and model the change in F through time as a smoother with 20 degrees of freedom. Note that this is still a separable model, it’s a smoothed version of the previous model (Figure 12).</p>
+<pre class="r"><code>fmod &lt;- ~ s(age, k=4) + s(year, k = 20)
+# notice that you can specify the submodels without the argument, as an example you
+# don&#39;t need fmodel=fmod, but the order should be respected...
+fit &lt;- sca(ple4, ple4.indices[1], fmod, qmod, srmod)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/sep2-1.png" alt="Fishing mortality smoothed separable model" width="672" />
+<p class="caption">
+Fishing mortality smoothed separable model
+</p>
+</div>
+<p>A non-separable model, where we consider age and year to interact can be modeled using a smooth interaction term in the F model using a tensor product of cubic splines with the <code>te</code> method (Figure 13), again borrowed from <a href="http://cran.r-project.org/web/packages/mgcv/index.html">mgcv</a>.</p>
+<pre class="r"><code>fmod &lt;- ~ te(age, year, k = c(4,20))
+fit &lt;- sca(ple4, ple4.indices[1], fmod, qmod, srmod)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/te1-1.png" alt="Fishing mortality smoothed non-separable model" width="672" />
+<p class="caption">
+Fishing mortality smoothed non-separable model
+</p>
+</div>
+<p>In the last examples the fishing mortalities (Fs’) are linked across age and time. What if we want to free up a specific age class because in the residuals we see a consistent pattern. This can happen, for example, if the spatial distribution of juveniles is disconnected to the distribution of adults. The fishery focuses on the adult fish, and therefore the the F on young fish is a function of the distribution of the juveniles and could deserve a specific model. This can be achieved by adding a component for the year effect on age 1 (Figure 14).</p>
+<pre class="r"><code>fmod &lt;- ~ te(age, year, k = c(4,20)) + s(year, k = 5, by = as.numeric(age==1))
+fit &lt;- sca(ple4, ple4.indices[1], fmod, qmod, srmod)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/age1-1.png" alt="Fishing mortality age-year interaction model with extra age 1 smoother." width="672" />
+<p class="caption">
+Fishing mortality age-year interaction model with extra age 1 smoother.
+</p>
+</div>
+</div>
+<div id="catchability-submodel" class="section level2">
+<h2>Catchability submodel</h2>
+<p>The catchability submodel is set up the same way as the <span class="math inline">\(F\)</span> submodel and the tools available are the same. The only difference is that the submodel is set up as a list of formulas, where each formula relates with one abundance index.</p>
+<p>We’ll start by fixing the <span class="math inline">\(F\)</span> and <span class="math inline">\(R\)</span> models and compute the fraction of the year the index relates to, which will allow us to compute catchability at age and year.</p>
+<pre class="r"><code>fmod &lt;- ~ factor(age) + factor(year)
+srmod &lt;- ~ factor(year)</code></pre>
+<p>A first model is simply a dummy effect on age, which means that a coefficient will be estimated for each age. Note that this kind of model considers that levels of the factor are independent (Figure 15).</p>
+<pre class="r"><code>qmod &lt;- list(~ factor(age))
+fit &lt;- sca(ple4, ple4.indices[1], fmod, qmod, srmod)</code></pre>
+<p>To compute the catchability estimated for each index we’ll need to compute the abundance at the moment the index was carried out and divide the predicted index by the abundance. More precisely we’ll compute abundance in the mid of the index period, which is stored in the <code>FLIndex</code> object, in the slot <code>range</code>, in fractions of the year. Later we’ll see that we can use the method <code>predict()</code> to get the same result, but we’ll need a <code>a4aFitSA</code> object to get the fitted parameters.</p>
+<pre class="r"><code># compute N for the fraction of the year the survey is carried out
+sfrac &lt;- mean(range(ple4.indices[[1]])[c(&quot;startf&quot;, &quot;endf&quot;)])
+# fraction of total mortality up to that moment
+Z &lt;- (m(ple4) + harvest(fit))*sfrac
+lst &lt;- dimnames(fit@index[[1]])
+# survivors
+lst$x &lt;- stock.n(fit)*exp(-Z)
+stkn &lt;- do.call(&quot;trim&quot;, lst)
+qhat &lt;- index(fit)[[1]]/stkn</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/dummyage-1.png" alt="Catchability age independent model" width="672" />
+<p class="caption">
+Catchability age independent model
+</p>
+</div>
+<p>If one considers catchability at a specific age to be dependent on catchability on the other ages, similar to a selectivity modelling approach, one option is to use a smoother at age, and let the data ‘speak’ regarding the shape (Figure 16).</p>
+<pre class="r"><code>qmod &lt;- list(~ s(age, k=4))
+fit &lt;- sca(ple4, ple4.indices[1], fmod, qmod, srmod)
+
+# compute N for the fraction of the year the survey is carried out
+Z &lt;- (m(ple4) + harvest(fit))*sfrac
+lst &lt;- dimnames(fit@index[[1]])
+lst$x &lt;- stock.n(fit)*exp(-Z)
+stkn &lt;- do.call(&quot;trim&quot;, lst)
+qhat &lt;- index(fit)[[1]]/stkn</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/smoothage-1.png" alt="Catchability smoother age model" width="672" />
+<p class="caption">
+Catchability smoother age model
+</p>
+</div>
+<p>As in the case of <span class="math inline">\(F\)</span>, one may consider catchability to be a process that evolves with age and year, including an interaction between the two effects. Such model can be modelled using the tensor product of cubic splines, the same way we did for the <span class="math inline">\(F\)</span> model (Figure 17).</p>
+<pre class="r"><code>qmod &lt;- list(~ te(age, year, k = c(3,40)))
+fit &lt;- sca(ple4, ple4.indices[1], fmod, qmod, srmod)
+
+# compute N for the fraction of the year the survey is carried out
+Z &lt;- (m(ple4) + harvest(fit))*sfrac
+lst &lt;- dimnames(fit@index[[1]])
+lst$x &lt;- stock.n(fit)*exp(-Z)
+stkn &lt;- do.call(&quot;trim&quot;, lst)
+qhat &lt;- index(fit)[[1]]/stkn</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/te2-1.png" alt="Catchability tensor product of age and year" width="672" />
+<p class="caption">
+Catchability tensor product of age and year
+</p>
+</div>
+<p>Finally, one may want to investigate a trend in catchability with time, very common in indices built from CPUE data. In the example given here we’ll use a linear trend in time, set up by a simple linear model (Figure 18).</p>
+<pre class="r"><code>qmod &lt;- list( ~ s(age, k=4) + year)
+fit &lt;- sca(ple4, ple4.indices[1], fmod, qmod, srmod)
+
+# compute N for the fraction of the year the survey is carried out
+Z &lt;- (m(ple4) + harvest(fit))*sfrac
+lst &lt;- dimnames(fit@index[[1]])
+lst$x &lt;- stock.n(fit)*exp(-Z)
+stkn &lt;- do.call(&quot;trim&quot;, lst)
+qhat &lt;- index(fit)[[1]]/stkn</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/qtrend-1.png" alt="Catchability with a linear trend in year" width="672" />
+<p class="caption">
+Catchability with a linear trend in year
+</p>
+</div>
+</div>
+<div id="catchability-submodel-for-age-aggregated-indices" class="section level2">
+<h2>Catchability submodel for age aggregated indices</h2>
+<p>The previous section was focused on age disaggregated indices, but age aggregated indices (CPUE, biomass, DEPM, etc) may also be used to tune the total biomass of the population. In these cases a slightly different class for the index must be used, the <code>FLIndexBiomass</code>, which uses a vector <code>index</code> with the age dimension called “all”. Note that in this case the qmodel should be set without age factors, although it can have a “year” component and covariates if needed. An interesting feature with biomass indices is the age range they refer to can be specified.</p>
+<pre class="r"><code># simulating a biomass index (note the name of the first dimension element) using 
+# the ple4 biomass and an arbritary catchability of 0.001 plus a lognormal error.
+dnms &lt;- list(age=&quot;all&quot;, year=range(ple4)[&quot;minyear&quot;]:range(ple4)[&quot;maxyear&quot;])
+bioidx &lt;- FLIndexBiomass(FLQuant(NA, dimnames=dnms))
+index(bioidx) &lt;- stock(ple4)*0.001
+index(bioidx) &lt;- index(bioidx)*exp(rnorm(index(bioidx), sd=0.1))
+range(bioidx)[c(&quot;startf&quot;,&quot;endf&quot;)] &lt;- c(0,0)
+
+# note the name of the first dimension element
+index(bioidx)</code></pre>
+<pre><code>## An object of class &quot;FLQuant&quot;
+## , , unit = unique, season = all, area = unique
+## 
+##      year
+## age   1957   1958   1959   1960   1961  
+##   all 314.27 376.33 339.07 458.49 423.67
+## 
+##       [ ...  42 years]
+## 
+##      year
+## age   2004   2005   2006   2007   2008  
+##   all 309.57 254.20 277.95 248.41 304.06</code></pre>
+<pre class="r"><code># fitting the model
+fit &lt;- sca(ple4, FLIndices(bioidx), qmodel=list(~1))</code></pre>
+<p>The same methods that are applied to age disaggregated indices apply here, see standardized log residuals in Figure 19. It’s also possible to mix several indices of both types.</p>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/resbio-1.png" alt="Catchability residuals for a biomass index" width="672" />
+<p class="caption">
+Catchability residuals for a biomass index
+</p>
+</div>
+<p>An example where the biomass index refers only to age 2 to 4 (for example a CPUE that targets these particular ages).</p>
+<pre class="r"><code># creating the index
+dnms &lt;- list(age=&quot;all&quot;, year=range(ple4)[&quot;minyear&quot;]:range(ple4)[&quot;maxyear&quot;])
+bioidx &lt;- FLIndexBiomass(FLQuant(NA, dimnames=dnms))
+# but now use only ages 2:4
+index(bioidx) &lt;- tsb(ple4[ac(2:4)])*0.001
+index(bioidx) &lt;- index(bioidx)*exp(rnorm(index(bioidx), sd=0.1))
+range(bioidx)[c(&quot;startf&quot;,&quot;endf&quot;)] &lt;- c(0,0)
+# to pass this information to the model one needs to specify an age range
+range(bioidx)[c(&quot;min&quot;,&quot;max&quot;)] &lt;- c(2,4)
+
+# fitting the model
+fit &lt;- sca(ple4, FLIndices(bioidx), qmodel=list(~1))</code></pre>
+<p>And once more residual plots as dignostics (Figure 20).</p>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/resbio2-1.png" alt="Catchability residuals for a biomass index" width="672" />
+<p class="caption">
+Catchability residuals for a biomass index
+</p>
+</div>
+</div>
+<div id="catchability-submodel-for-single-age-indices" class="section level2">
+<h2>Catchability submodel for single age indices</h2>
+<p>Similar to age aggregated indices one may have an index that relates only to one age, like a recruitment index. In this case the <code>FLIndex</code> object must have in the first dimension the age it referes to. The fit is then done relating the index with the proper age in numbers. Note that in this case the qmodel should be set without age factors, although it can have a “year” component and covariates if needed.</p>
+<pre class="r"><code>fit &lt;- sca(ple4, FLIndices(ple4.index[1]), qmodel=list(~1))</code></pre>
+<p>As previously, the same methods apply, see standardized log residuals in Figure 21.</p>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/resrec-1.png" alt="Catchability residuals for a single age index" width="672" />
+<p class="caption">
+Catchability residuals for a single age index
+</p>
+</div>
+</div>
+<div id="stock-recruitment-submodel" class="section level2">
+<h2>Stock-recruitment submodel</h2>
+<p>The S/R submodel is a special case, in the sense that it can be set up with the same linear tools as the <span class="math inline">\(F\)</span> and <span class="math inline">\(Q\)</span> models, but it can also use some hard coded models. The example shows how to set up a simple dummy model with <code>factor()</code>, a smooth model with <code>s()</code>, a Ricker model (<code>ricker()</code>), a Beverton and Holt model (<code>bevholt()</code>), a hockey stick model (<code>hockey()</code>), and a geometric mean model (<code>geomean()</code>). See Figure 22 for results. As mentioned before, the ‘structural’ models have a fixed variance, which must be set by defining the coefficient of variation. We now fix the <span class="math inline">\(F\)</span> and <span class="math inline">\(Q\)</span> submodels before fiddling around with the S/R model.</p>
+<pre class="r"><code>fmod &lt;- ~ s(age, k=4) + s(year, k = 20)
+qmod &lt;- list(~ s(age, k=4))</code></pre>
+<pre class="r"><code>srmod &lt;- ~ factor(year)
+fit &lt;- sca(ple4, ple4.indices[1], fmod, qmod, srmod)
+srmod &lt;- ~ s(year, k=20)
+fit1 &lt;- sca(ple4, ple4.indices[1], fmod, qmod, srmod)
+srmod &lt;- ~ ricker(CV=0.1)
+fit2 &lt;- sca(ple4, ple4.indices[1], fmod, qmod, srmod)
+srmod &lt;- ~ bevholt(CV=0.1)
+fit3 &lt;- sca(ple4, ple4.indices[1], fmod, qmod, srmod)
+srmod &lt;- ~ hockey(CV=0.2)
+fit4 &lt;- sca(ple4, ple4.indices[1], fmod, qmod, srmod)
+srmod &lt;- ~ geomean(CV=0.1)
+fit5 &lt;- sca(ple4, ple4.indices[1], fmod, qmod, srmod)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/srmod-1.png" alt="Stock-recruitment models fits" width="672" />
+<p class="caption">
+Stock-recruitment models fits
+</p>
+</div>
+</div>
+</div>
+<div id="the-major-effects---age-year-and-cohort" class="section level1">
+<h1>The major effects - age, year and cohort</h1>
+<p>All submodels use the same type of specification process, the R formula interface, wich gives lot’s of flexibility to explore models and combination of sub-models. As a reference one can consider three major effects that can be modelled the same way, the age affect, year effect and cohort effect. As examples note the following models, in these cases applied to fishing mortality, and all of them as a factor, which means one coefficient will be estimated for each level of the factor, meaning age, year or cohort respectively.</p>
+<pre class="r"><code># the age effect
+ageeffect &lt;- ~ factor(age)
+
+# the year effect
+yeareffect &lt;- ~ factor(year)
+
+# the cohort
+cohorteffect &lt;- ~ factor(year-age)
+
+# the fits
+fit1 &lt;- sca(ple4, ple4.indices, fmodel=yeareffect)
+fit2 &lt;- sca(ple4, ple4.indices, fmodel=ageeffect)
+fit3 &lt;- sca(ple4, ple4.indices, fmodel=cohorteffect)</code></pre>
+<p>and the graphical representation of the three models in Figures~ to .</p>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/majeffy-1.png" alt="Major effects: the year effect (~ factor(year))" width="672" />
+<p class="caption">
+Major effects: the year effect (~ factor(year))
+</p>
+</div>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/majeffa-1.png" alt="Major effects: the age effect (~ factor(age))" width="672" />
+<p class="caption">
+Major effects: the age effect (~ factor(age))
+</p>
+</div>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/majeffc-1.png" alt="Major effects: the cohort effect (~ factor(year-age))" width="672" />
+<p class="caption">
+Major effects: the cohort effect (~ factor(year-age))
+</p>
+</div>
+</div>
+<div id="the-statistical-catch-at-age-stock-assessment-framework-advanced-features---the-a4asca-method" class="section level1">
+<h1>The statistical catch-at-age stock assessment framework advanced features - the <code>a4aSCA</code> method</h1>
+<p>A more advanced method for stock assessment can be used through the <code>a4aSCA()</code> method. This method gives access to the submodels for <span class="math inline">\(N1\)</span>, <span class="math inline">\(\sigma^2_{ay}\)</span> and <span class="math inline">\(I_{ays}\)</span> as well as arguments to get the ADMB files, etc. Check the manual pages with <code>?a4aSCA</code> for more information. This method has <em>assessment</em> as the default value for the <code>fit</code> argument, which means that the hessian is going to be computed and all the information about the parameters will be returned by default. Note that the default models of each submodel can be accessed with</p>
+<pre class="r"><code>fit &lt;- a4aSCA(ple4, ple4.indices[1])
+submodels(fit)</code></pre>
+<pre><code>##   fmodel: ~te(age, year, k = c(4, 26), bs = &quot;tp&quot;) + s(age, k = 8)
+##  srmodel: ~factor(year)
+##  n1model: ~factor(age)
+##   qmodel:
+##     BTS-Isis: ~s(age, k = 5)
+##   vmodel:
+##     catch:    ~s(age, k = 3)
+##     BTS-Isis: ~1</code></pre>
+<div id="n1-model" class="section level2">
+<h2>N1 model</h2>
+<p>The submodel for the stock number at age in the first year of the time series is set up with the usual linear tools (Figure 26), but bare in mind that the year effect does not make sense here.</p>
+<pre class="r"><code>n1mod &lt;- ~s(age, k=4)
+fit1 &lt;- a4aSCA(ple4, ple4.indices[1], n1model=n1mod)
+flqs &lt;- FLQuants(smother=stock.n(fit1)[,1], factor=stock.n(fit)[,1])</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/ny1-1.png" alt="Nay=1 models" width="672" />
+<p class="caption">
+Nay=1 models
+</p>
+</div>
+</div>
+<div id="variance-model" class="section level2">
+<h2>Variance model</h2>
+<p>The variance model allows the user to set up the shape of the observation variances <span class="math inline">\(\sigma^2_{ay}\)</span> and <span class="math inline">\(I_{ays}\)</span>. This is an important subject related with fisheries data used for input to stock assessment models. It’s quite common to have more precision on the most represented ages and less precision on the less frequent ages. This is due to the fact that the last ages do not appear as often at the auction markets, in the fishing operations or on survey samples.</p>
+<p>By default the model assumes constant variance over time and ages (~ 1 model) but it can use other models specified by the user. As with the other submodels, R linear model capabilities are used (Figure 27).</p>
+<pre class="r"><code>vmod &lt;- list(~1, ~1)
+fit1 &lt;- a4aSCA(ple4, ple4.indices[1], vmodel=vmod)
+vmod &lt;- list(~ s(age, k=4), ~1)
+fit2 &lt;- a4aSCA(ple4, ple4.indices[1], vmodel=vmod)
+flqs &lt;- FLQuants(cts=catch.n(fit1), smo=catch.n(fit2))</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/varmod-1.png" alt="Population estimates using two different variance models" width="672" />
+<p class="caption">
+Population estimates using two different variance models
+</p>
+</div>
+</div>
+<div id="working-with-covariates" class="section level2">
+<h2>Working with covariates</h2>
+<p>In linear model one can use covariates to explain part of the variance observed on the data that the ‘core’ model does not explain. The same can be done in the a4a framework. The example below uses the North Atlantic Oscillation (NAO) index to model recruitment.</p>
+<pre class="r"><code>nao &lt;- read.table(&quot;https://www.esrl.noaa.gov/psd/data/correlation/nao.data&quot;, skip=1,
+                  nrow=62, na.strings=&quot;-99.90&quot;)
+dnms &lt;- list(quant=&quot;nao&quot;, year=1948:2009, unit=&quot;unique&quot;, season=1:12, area=&quot;unique&quot;)
+nao &lt;- FLQuant(unlist(nao[,-1]), dimnames=dnms, units=&quot;nao&quot;)
+nao &lt;- seasonMeans(trim(nao, year=dimnames(stock.n(ple4))$year))
+nao &lt;- as.numeric(nao)</code></pre>
+<p>First by simply assuming that the NAO index drives recruitment (Figure 28).</p>
+<pre class="r"><code>srmod &lt;- ~ nao
+fit2 &lt;- sca(ple4, ple4.indices[1], qmodel=list(~s(age, k=4)), srmodel=srmod)
+flqs &lt;- FLQuants(simple=stock.n(fit)[1], covar=stock.n(fit2)[1])</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/naor-1.png" alt="Recruitment model with covariates. Using the NAO index as a recruitment index." width="672" />
+<p class="caption">
+Recruitment model with covariates. Using the NAO index as a recruitment index.
+</p>
+</div>
+<p>In a second model we’re using the NAO index not to model recruitment directly but to model one of the parameters of the S/R function (Figure 29).</p>
+<pre class="r"><code>srmod &lt;- ~ ricker(a=~nao, CV=0.1)
+fit3 &lt;- sca(ple4, ple4.indices[1], qmodel=list(~s(age, k=4)), srmodel=srmod)
+flqs &lt;- FLQuants(simple=stock.n(fit)[1], covar=stock.n(fit3)[1])</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/naor2-1.png" alt="Recruitment model with covariates. Using the NAO index as a covariate for the stock-recruitment model parameters." width="672" />
+<p class="caption">
+Recruitment model with covariates. Using the NAO index as a covariate for the stock-recruitment model parameters.
+</p>
+</div>
+<p>Note that covariates can be added to any submodel using the linear model capabilities of R.</p>
+</div>
+<div id="assessing-admb-files" class="section level2">
+<h2>Assessing <code>ADMB</code> files</h2>
+<p>The framework gives access to the files produced to run the <code>ADMB</code> fitting routine through the argument <code>wkdir</code>. When set up all the <code>ADMB</code> files will be left in the directory. Note that the <code>ADMB</code> tpl file is distributed with the <code>FLa4a</code>. One can get it from your <code>R</code> library, under the folder <code>myRlib/FLa4a/admb/</code>.</p>
+<pre class="r"><code>fit1 &lt;- a4aSCA(ple4, ple4.indices, wkdir=&quot;mytest&quot;)</code></pre>
+</div>
+</div>
+<div id="predict-and-simulate" class="section level1">
+<h1>Predict and simulate</h1>
+<p>To predict and simulate <code>R</code> uses the methods <code>predict()</code> and <code>simulate()</code>, which were implemented in <code>FLa4a</code> in the same fashion.</p>
+<pre class="r"><code>fit &lt;- sca(ple4, ple4.indices[1], fit=&quot;assessment&quot;)</code></pre>
+<div id="predict" class="section level2">
+<h2>Predict</h2>
+<p>Predict simply computes the quantities of interest using the estimated coefficients and the design matrix of the model.</p>
+<pre class="r"><code>fit.pred &lt;- predict(fit)
+lapply(fit.pred, names)</code></pre>
+<pre><code>## $stkmodel
+## [1] &quot;harvest&quot; &quot;rec&quot;     &quot;ny1&quot;    
+## 
+## $qmodel
+## [1] &quot;BTS-Isis&quot;
+## 
+## $vmodel
+## [1] &quot;catch&quot;    &quot;BTS-Isis&quot;</code></pre>
+</div>
+<div id="simulate" class="section level2">
+<h2>Simulate</h2>
+<p>Simulate uses the variance-covariance matrix computed from the Hessian returned by <code>ADMB</code> and the fitted parameters, to parametrize a multivariate normal distribution. The simulations are carried out using the method <code>mvrnorm()</code> provided by the R package <a href="http://cran.r-project.org/web/packages/MASS/">MASS</a>. Figure 30 shows a comparison between the estimated values and the medians of the simulation, while Figure 31 presents the stock summary of the simulated and fitted data.</p>
+<pre class="r"><code>fits &lt;- simulate(fit, 100)
+flqs &lt;- FLQuants(sim=iterMedians(stock.n(fits)), det=stock.n(fit))</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/sim-1.png" alt="Median simulations VS fit" width="672" />
+<p class="caption">
+Median simulations VS fit
+</p>
+</div>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/sim2-1.png" alt="Stock summary of the simulated and fitted data" width="672" />
+<p class="caption">
+Stock summary of the simulated and fitted data
+</p>
+</div>
+</div>
+</div>
+<div id="the-statistical-catch-at-age-stock-assessment-framework-with-mcmc" class="section level1">
+<h1>The statistical catch-at-age stock assessment framework with MCMC</h1>
+<p>The previous methods were demonstrated using the maximum likelihood estimation method. However, <code>ADMB</code> can also use MCMC methods to fit the model. This section shows how the <code>sca</code> and <code>a4aSCA</code> methods interface with ADMB to use the MCMC fits.</p>
+<p>The likelihood estimate is</p>
+<pre class="r"><code># ll
+fit &lt;- a4aSCA(ple4, ple4.indices)
+fit &lt;- simulate(fit, 1000)</code></pre>
+<p>To run the MCMC estimate, one needs to configure a set of arguments, which is done by creating a <code>SCAMCMC</code> object. For details on the MCMC configuration in <code>ADMB</code> visit the ADMB website.</p>
+<pre class="r"><code># mcmc
+mc &lt;- SCAMCMC()
+# check the default pars
+mc</code></pre>
+<pre><code>## An object of class &quot;SCAMCMC&quot;
+## Slot &quot;mcmc&quot;:
+## [1] 10000
+## 
+## Slot &quot;mcsave&quot;:
+## [1] 100
+## 
+## Slot &quot;mcscale&quot;:
+## [1] NaN
+## 
+## Slot &quot;mcmult&quot;:
+## [1] NaN
+## 
+## Slot &quot;mcrb&quot;:
+## [1] NaN
+## 
+## Slot &quot;mcprobe&quot;:
+## [1] NaN
+## 
+## Slot &quot;mcseed&quot;:
+## [1] NaN
+## 
+## Slot &quot;mcdiag&quot;:
+## [1] FALSE
+## 
+## Slot &quot;mcnoscale&quot;:
+## [1] FALSE
+## 
+## Slot &quot;mcu&quot;:
+## [1] FALSE
+## 
+## Slot &quot;hybrid&quot;:
+## [1] FALSE
+## 
+## Slot &quot;hynstep&quot;:
+## [1] NaN
+## 
+## Slot &quot;hyeps&quot;:
+## [1] NaN</code></pre>
+<p>Defaults for now are ok, so lets fit the model. Note that the argument <code>fit</code> is set to <em>MCMC</em> and the argument <code>mcmc</code> takes the <code>SCAMCMC</code> object. A major check when running MCMC is the acceptance rate, which should be around 0.3. This is simply a common rule of thumb, for more information read the (extensive) literature on MCMC. The slot <code>fitSumm</code> stores that information.</p>
+<pre class="r"><code># fit the model
+fitmc1 &lt;- a4aSCA(ple4, ple4.indices, fit=&quot;MCMC&quot;, mcmc=mc)
+# check acceptance rate
+fitSumm(fitmc1)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>nopar</td>
+<td align="right">187.0000</td>
+</tr>
+<tr class="even">
+<td>nlogl</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td>maxgrad</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td>nobs</td>
+<td align="right">901.0000</td>
+</tr>
+<tr class="odd">
+<td>gcv</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td>convergence</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td>accrate</td>
+<td align="right">0.3088</td>
+</tr>
+</tbody>
+</table>
+<p>We use the package <code>CODA</code> to run the diagnostics on MCMC fits. First one can plot chains using coda. Note the mcmc object is a matrix with the parameters (row = iters, cols= pars).</p>
+<pre class="r"><code>fitmc1.mc &lt;- as.mcmc(fitmc1)
+plot(fitmc1.mc)</code></pre>
+<p>The usual summary plot,</p>
+<p><img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>As mentioned above <code>ADMB</code> has several options for MCMC. Here we demonstrate one of them, <code>mcprobe</code> which sets a fat-tailed proposal distribution, as an example of how to use the <code>SCAMCMC</code> objects.</p>
+<pre class="r"><code>mc &lt;- SCAMCMC(mcmc=10000, mcsave=200, mcprobe=0.4)
+fitmc2 &lt;- a4aSCA(ple4, ple4.indices, qmodel=list(~s(age, k=3), ~s(age, k=3),~s(age, k=3)), fit=&quot;MCMC&quot;, mcmc=mc)</code></pre>
+<p>All fits together</p>
+<p><img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/unnamed-chunk-37-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="geeky-stuff" class="section level1">
+<h1>Geeky stuff</h1>
+<p>A lot more can be done with the a4a framework. The next sections will describe methods that are more technical. What we’d categorize as ‘matters for geeks’, in the sense that these methods usually will require the users to ‘dive’ into <strong>R</strong> a bit more.</p>
+<pre class="r"><code>fit &lt;- sca(ple4, ple4.indices[1], fit=&quot;assessment&quot;)</code></pre>
+<div id="external-weigthing-of-likelihood-components" class="section level2">
+<h2>External weigthing of likelihood components</h2>
+<p>By default the likelihood components are weighted using inverse variance. However, the user may change the weights by setting the variance of the input parameters. This is done by adding a variance matrix to the <code>catch.n</code> and <code>index.n</code> slots of the stock and index objects. These variances will be used to penalize the data during the likelihood computation. The values should be given as coefficients of variation on the log scale, so that variance is <span class="math inline">\(\log{({CV}^2 + 1)}\)</span>. Figure 32 shows the results of two fits with distinct likelihood weightings.</p>
+<pre class="r"><code>stk &lt;- ple4
+idx &lt;- ple4.indices[1]
+# variance of observed catches
+varslt &lt;- catch.n(stk)
+varslt[] &lt;- 0.4
+catch.n(stk) &lt;- FLQuantDistr(catch.n(stk), varslt)
+# variance of observed indices
+varslt &lt;- index(idx[[1]])
+varslt[] &lt;- 0.1
+index.var(idx[[1]]) &lt;- varslt
+# run
+fit1 &lt;- a4aSCA(stk, idx)
+flqs &lt;- FLQuants(nowgt=stock.n(fit), extwgt=stock.n(fit1))</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/likwgt-1.png" alt="Stock summary of distinct likelihood weightings" width="672" />
+<p class="caption">
+Stock summary of distinct likelihood weightings
+</p>
+</div>
+</div>
+<div id="more-models" class="section level2">
+<h2>More models</h2>
+<p>There’s a set of methods that allow the user to have more flexibility on applying the models referred before. For example to break the time series in two periods, using the method <code>breakpts()</code>, or fixing some parts of the selection pattern by setting F to be the same for a group of ages, using <code>replace()</code>.</p>
+<p>The example below (Figure 33) replaces all ages above 5 by age 5, which means that a single coefficient is going to be estimated for age 5-10.</p>
+<pre class="r"><code>fmod &lt;- ~ s(replace(age, age&gt;5, 5), k=4) + s(year, k=20)
+fit &lt;- sca(ple4, ple4.indices, fmod)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/rep-1.png" alt="F-at-age fixed above age 5" width="672" />
+<p class="caption">
+F-at-age fixed above age 5
+</p>
+</div>
+<p>Or else one can use a closed form fort the selection pattern. The example below uses a logistic form (Figure 34).</p>
+<pre class="r"><code>fmod &lt;- ~ I(1/(1+exp(-age)))
+fit &lt;- sca(ple4, ple4.indices, fmod)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/logistic-1.png" alt="F-at-age logistic" width="672" />
+<p class="caption">
+F-at-age logistic
+</p>
+</div>
+<p>In the next case we’ll use the <code>breakpts()</code> to split the time series at 1990, although keeping the same shape in both periods, a thin plate spline with 3 knots (Figure 35).</p>
+<pre class="r"><code>fmod &lt;- ~s(age, k = 3, by = breakpts(year, 1990))
+fit &lt;- sca(ple4, ple4.indices, fmod)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/brk-1.png" alt="F-at-age in two periods using in both cases a thin plate spline with 3 knots" width="672" />
+<p class="caption">
+F-at-age in two periods using in both cases a thin plate spline with 3 knots
+</p>
+</div>
+<p>More complicated models can be built with these tools. For example, Figure 36 shows a model where the age effect is modelled as a smoother (the same thin plate spline) throughout years but independent from each other.</p>
+<pre class="r"><code>fmod &lt;- ~ factor(age) + s(year, k=10, by = breakpts(age, c(2:8)))
+fit &lt;- sca(ple4, ple4.indices, fmod)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/ageind-1.png" alt="F-at-age as thin plate spline with 3 knots for each age" width="672" />
+<p class="caption">
+F-at-age as thin plate spline with 3 knots for each age
+</p>
+</div>
+<p>A quite complex model that implements a cohort effect can be set through the following formula. Figure 37 shows the resulting fishing mortality. Note that in this case we end up with a variable F pattern over time, but rather than using 4 * 10 = 40 parameters, it uses, 4 + 10 + 10 = 24.</p>
+<pre class="r"><code>fmodel &lt;- ~ s(age, k = 4) + s(pmax(year - age, 1957), k = 10) + s(year, k = 10)
+fit &lt;- sca(ple4, ple4.indices, fmodel=fmodel)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/coh-1.png" alt="F-at-age with a cohort effect." width="672" />
+<p class="caption">
+F-at-age with a cohort effect.
+</p>
+</div>
+</div>
+<div id="propagate-natural-mortality-uncertainty" class="section level2">
+<h2>Propagate natural mortality uncertainty</h2>
+<p>In this section we give an example of how uncertainty in natural mortality, set up using the <code>m()</code> method and the class <code>a4aM</code> (see <code>vignette(&quot;M&quot;)</code>), is propagated through the stock assessment. We’ll start by fitting the default model to the data.</p>
+<pre class="r"><code>data(ple4)
+data(ple4.indices)
+fit &lt;- sca(ple4, ple4.indices)</code></pre>
+<p>Using the a4a methods we’ll model natural mortality using a negative exponential model by age, Jensen’s estimator for the level and a constant trend with time. We include multivariate normal uncertainty using the <code>mvrnorm()</code> method and create 25 iterations.</p>
+<pre class="r"><code>nits &lt;- 25
+
+shape &lt;- FLModelSim(model=~exp(-age-0.5))
+level &lt;- FLModelSim(model=~k^0.66*t^0.57, params = FLPar(k=0.4, t=10),
+                    vcov=matrix(c(0.002, 0.01,0.01, 1), ncol=2))
+trend &lt;- FLModelSim(model=~b, params=FLPar(b=0.5), vcov=matrix(0.02))
+
+m4 &lt;- a4aM(shape=shape, level=level, trend=trend)
+m4 &lt;- mvrnorm(nits, m4)
+range(m4)[] &lt;- range(ple4)[]
+range(m4)[c(&quot;minmbar&quot;,&quot;maxmbar&quot;)]&lt;-c(1,1)
+flq &lt;- m(m4)[]
+quant(flq) &lt;- &quot;age&quot;
+stk &lt;- propagate(ple4, nits)
+m(stk) &lt;- flq</code></pre>
+<p>We fit the same model to the new stock object which has uncertainty in the natural mortality. The assessment is performed for each of the 25 iterations.</p>
+<pre class="r"><code>fit1 &lt;- sca(stk, ple4.indices)</code></pre>
+<p>And compare the two results (Figure 38). It’s quite easy to run these kind of tests and a large part of our effort is to create the tools to do so.</p>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/mprop-1.png" alt="Stock summary for two M models" width="768" />
+<p class="caption">
+Stock summary for two M models
+</p>
+</div>
+</div>
+<div id="wcsam-exercise---replicating-itself" class="section level2">
+<h2>WCSAM exercise - replicating itself</h2>
+<p>The World Conference on Stock Assessment Methods <a href="\href%7Bhttp://www.ices.dk/news-and-events/symposia/WCSAM-2013">WCSAM</a> promoted a workshop where a large simulation study was used to test the performance of distinct stock assessment models. The first criteria used was that the models should be able to reproduce itself. The process involved fitting the model, simulating observation error using the same model, and refitting the model to each iteration. The final results should be similar to the fitted results before observation error was added (see <a href="http://icesjms.oxfordjournals.org/content/early/2014/01/18/icesjms.fst237.abstract">Deroba, et.al, 2014</a> for details). The following analysis runs this analysis and Figure 39 presents the results.</p>
+<pre class="r"><code># number of iters
+nits &lt;- 25
+# fit the model
+fit &lt;- a4aSCA(ple4, ple4.indices[1])
+# update the stock data
+stk &lt;- ple4 + fit
+# simulate controlling the random seed
+fits &lt;- simulate(fit, nits, 1234)
+# update stock and index data, now with iters
+stks &lt;- ple4 + fits
+idxs &lt;- ple4.indices[1]
+index(idxs[[1]]) &lt;- index(fits)[[1]]
+# run assessments on each iter
+sfit &lt;- a4aSCA(stks, idxs, fit=&quot;MP&quot;)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/wcsam-1.png" alt="Replicating the stock assessment model (WCSAM approach)" width="768" />
+<p class="caption">
+Replicating the stock assessment model (WCSAM approach)
+</p>
+</div>
+</div>
+<div id="parallel-computing" class="section level2">
+<h2>Parallel computing</h2>
+<p>This is an example of how to use the <code>parallel</code> R package to run assessments. In this example each iteration is a dataset, including surveys, and we’ll run one assessment for each iteration. Afterwards the data is pulled back together in an <code>FLStock</code> object and plotted (Figure 40). Only 20 iterations are run to avoid taking too long. Also note that we’re using 4 cores. This parameter depends on the computer being used. These days almost all computers have at least 2 cores.</p>
+<p>Finally, compare this code with the one for replicating WCSAM and note that it’s exactly the same, except that we’re using <code>mclapply()</code> from package <code>paralell</code> instead of <code>lapply()</code>.</p>
+<pre class="r"><code>data(ple4)
+data(ple4.indices)
+nits &lt;- 25
+fit &lt;- a4aSCA(ple4, ple4.indices[1])
+stk &lt;- ple4 + fit
+fits &lt;- simulate(fit, nits, 1234)
+stks &lt;- ple4 + fits
+idxs &lt;- ple4.indices[1]
+index(idxs[[1]]) &lt;- index(fits)[[1]]
+library(parallel)
+lst &lt;- mclapply(split(1:nits, 1:nits), function(x){
+    out &lt;- try(a4aSCA(iter(stks, x), FLIndices(iter(idxs[[1]], x)), fit=&quot;MP&quot;))
+    if(is(out, &quot;try-error&quot;)) NULL else out
+})
+
+stks2 &lt;- stks
+for(i in 1:nits){
+    iter(catch.n(stks2), i) &lt;- catch.n(lst[[i]])
+    iter(stock.n(stks2), i) &lt;- stock.n(lst[[i]])
+    iter(harvest(stks2), i) &lt;- harvest(lst[[i]])
+}
+catch(stks2) &lt;- computeCatch(stks2)
+stock(stks2) &lt;- computeStock(stks2)
+stks3 &lt;- FLStocks(original=stk, simulation=stks, &quot;fit over simulation&quot;=stks2)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/wcsampar-1.png" alt="Replicating the stock assessment model (WCSAM approach) using parallel computing" width="672" />
+<p class="caption">
+Replicating the stock assessment model (WCSAM approach) using parallel computing
+</p>
+</div>
+</div>
+</div>
+<div id="more-information" class="section level1">
+<h1>More information</h1>
+<p>Documentation can be found at (<a href="http://flr-project.org/FLa4a" class="uri">http://flr-project.org/FLa4a</a>). You are welcome to:</p>
+<ul>
+<li>Submit suggestions and bug-reports at: (<a href="https://github.com/flr/FLa4a/issues" class="uri">https://github.com/flr/FLa4a/issues</a>)</li>
+<li>Send a pull request on: (<a href="https://github.com/flr/FLa4a/" class="uri">https://github.com/flr/FLa4a/</a>)</li>
+<li>Compose a friendly e-mail to the maintainer, see <code>packageDescription('FLa4a')</code></li>
+</ul>
+<div id="software-versions" class="section level2">
+<h2>Software Versions</h2>
+<ul>
+<li>R version 3.3.2 (2016-10-31)</li>
+<li>FLCore: 2.6.0.20170214</li>
+<li>FLa4a: 1.0.0</li>
+<li><strong>Compiled</strong>: Mon Feb 27 17:23:57 2017</li>
+</ul>
+</div>
+<div id="license" class="section level2">
+<h2>License</h2>
+<p>This document is licensed under the <a href="https://creativecommons.org/licenses/by-sa/4.0">Creative Commons Attribution-ShareAlike 4.0 International</a> license.</p>
+</div>
+<div id="author-information" class="section level2">
+<h2>Author information</h2>
+<p><strong>Ernesto Jardim</strong>. European Commission Joint Research Centre (JRC), Institute for the Protection and Security of the Citizen (IPSC), Maritime Affairs Unit, Via E. Fermi 2749, 21027 Ispra VA, Italy. <a href="https://ec.europa.eu/jrc/" class="uri">https://ec.europa.eu/jrc/</a></p>
+</div>
+</div>
+<div id="references" class="section level1">
+<h1>References</h1>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
