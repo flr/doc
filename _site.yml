@@ -3,9 +3,7 @@ output:
   html_document:
     theme: yeti
     highlight: textmate
-output_dir: "docs"
-include:
-  after_body: footer.html
+output_dir: docs
 navbar:
   left:
     - text: "FLR"

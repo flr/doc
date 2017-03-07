@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Reading data into FLR</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="http://flr-project.org">
+    <span class="fa fa-home"></span>
+     
+    FLR
+  </a>
+</li>
+<li>
+  <a href="index.html">
+    <span class="fa fa-info"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Introduction
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Input
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Visualization
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Modelling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Advice
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    MSE
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://example.com">
+    <span class="fa fa-question fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Reading data into FLR</h1>
+<h4 class="date"><em>07 March, 2017</em></h4>
+
+</div>
+
+
+<p>his tutorial details methods for reading various formats of data into R for generating object of the <a href="http://www.flr-project.org/FLCore/FLStock.html">FLStock</a>, <a href="http://www.flr-project.org/FLCore/FLStock.html">FLIndex</a> and <a href="http://www.flr-project.org/FLCore/FLStock.html">FLFleet</a> classes.</p>
+<div id="required-packages" class="section level2">
+<h2>Required packages</h2>
+<p>To follow this tutorial you should have installed the following packages:</p>
+<ul>
+<li>CRAN: <a href="https://cran.r-project.org/web/packages/ggplot2/index.html">ggplot2</a></li>
+<li>FLR: <a href="http://www.flr-project.org/FLCore/">FLCore</a>; <a href="http://www.flr-project.org/FLFleet/">FLFleet</a>; <a href="http://www.flr-project.org/ggplotFL/">ggplotFL</a></li>
+</ul>
+<p>You can do so as follows,</p>
+<pre class="r"><code>install.packages(c(&quot;ggplot2&quot;))
+install.packages(c(&quot;ggplotFL&quot;), repos=&quot;http://flr-project.org/R&quot;)</code></pre>
+<pre class="r"><code># This chunk loads all necessary packages, trims pkg messages
+library(FLCore); library(FLFleet)
+library(ggplotFL)</code></pre>
+</div>
+<div id="flstock-objects" class="section level2">
+<h2>FLStock objects</h2>
+<p>This section covers methods for reading in the data required to construct <a href="http://www.flr-project.org/FLCore/FLStock.html">FLStock</a> objects.</p>
+<div id="reading-files-csv-dat" class="section level3">
+<h3>Reading files (csv, dat, …)</h3>
+<p>Fisheries data are generally stored in different format (cvs, excel, SAS…). R provides tools to read and import data from simple text files to more advanced SAS files or databases. <a href="https://www.datacamp.com/community/tutorials/importing-data-r-part-two#gs.kNzBd5k">Datacamp</a> is a nice tutorial to quickly import data into R.</p>
+<p>Your data are stored in a folder in your computer or a server. You have to tell R what is the path to the data. You can check the working directory already active in your R session using the command getwd(). To set the working directory use setwd(“directory name”). Case is important, use // or  for separating folders and directories in Windows.</p>
+<p>This tutorial will give some examples but regardless the format, the different steps are: - Finding the right function to import data into R - Reshaping the data as a matrix - creating an FLQuant object</p>
+</div>
+<div id="importing-files-into-r-example-of-csv-file" class="section level3">
+<h3>Importing files into R (example of csv file)</h3>
+<p>There is many ways of reading csv files. <a href="http://stat.ethz.ch/R-manual/R-devel/library/utils/html/read.table.html">read.table</a> with ‘header’, ‘sep’, ‘dec’ and ‘row.names’ options will allow you reading all .csv and .txt files</p>
+<p>The <a href="http://stat.ethz.ch/R-manual/R-devel/library/utils/html/read.table.html">read.csv</a> or <a href="http://stat.ethz.ch/R-manual/R-devel/library/utils/html/read.table.html">read.csv2</a> function are very useful to read csv files.</p>
+<pre class="r"><code>catch.n &lt;- read.csv(&quot;src/catch_numbers.csv&quot;,row=1)</code></pre>
+<p>We have read in the data as a data.frame</p>
+<pre class="r"><code>class(catch.n)</code></pre>
+<pre><code>[1] &quot;data.frame&quot;</code></pre>
+<p>The data are now in your R environment, before creating a <strong>FLQuant</strong> object, you need to make sure it is consistent with the type of object and formatting that is needed to run the <a href="http://www.flr-project.org/FLCore/FLQuant.html">FLQuant</a> methd. To get information on the structure and format needed type ?FLQuant in your R Console.</p>
+</div>
+<div id="reshaping-data-as-a-matrix" class="section level3">
+<h3>Reshaping data as a matrix</h3>
+<p>FLQuant accept ‘vector’, ‘array’ or ‘matrix’. We can convert the object catch.n to a matrix</p>
+<pre class="r"><code>catch.n.matrix &lt;- as.matrix(catch.n)
+catch.n.matrix[,1:8]</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">X1957</th>
+<th align="right">X1958</th>
+<th align="right">X1959</th>
+<th align="right">X1960</th>
+<th align="right">X1961</th>
+<th align="right">X1962</th>
+<th align="right">X1963</th>
+<th align="right">X1964</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0</td>
+<td align="right">100</td>
+<td align="right">1060</td>
+<td align="right">516</td>
+<td align="right">1768</td>
+<td align="right">259</td>
+<td align="right">132</td>
+<td align="right">88</td>
+</tr>
+<tr class="even">
+<td align="right">7709</td>
+<td align="right">3349</td>
+<td align="right">7251</td>
+<td align="right">18221</td>
+<td align="right">7129</td>
+<td align="right">7170</td>
+<td align="right">6446</td>
+<td align="right">7030</td>
+</tr>
+<tr class="odd">
+<td align="right">9965</td>
+<td align="right">9410</td>
+<td align="right">3585</td>
+<td align="right">7373</td>
+<td align="right">14342</td>
+<td align="right">5535</td>
+<td align="right">5929</td>
+<td align="right">5903</td>
+</tr>
+<tr class="even">
+<td align="right">1394</td>
+<td align="right">6130</td>
+<td align="right">8642</td>
+<td align="right">3551</td>
+<td align="right">6598</td>
+<td align="right">10427</td>
+<td align="right">2032</td>
+<td align="right">4048</td>
+</tr>
+<tr class="odd">
+<td align="right">6235</td>
+<td align="right">4065</td>
+<td align="right">3222</td>
+<td align="right">2284</td>
+<td align="right">2481</td>
+<td align="right">5235</td>
+<td align="right">3192</td>
+<td align="right">2195</td>
+</tr>
+<tr class="even">
+<td align="right">2062</td>
+<td align="right">5584</td>
+<td align="right">1757</td>
+<td align="right">770</td>
+<td align="right">2392</td>
+<td align="right">3322</td>
+<td align="right">3541</td>
+<td align="right">3972</td>
+</tr>
+<tr class="odd">
+<td align="right">1720</td>
+<td align="right">6666</td>
+<td align="right">3699</td>
+<td align="right">1924</td>
+<td align="right">1659</td>
+<td align="right">7289</td>
+<td align="right">5889</td>
+<td align="right">9168</td>
+</tr>
+</tbody>
+</table>
+<p>A <a href="http://www.flr-project.org/FLCore/FLQuant.html">FLQuant</a> object is made of six dimensions. The name of the first dimension can be altered by the user from its default, quant. This could typically be age or length for data related to natural populations. The only name not accepted is ‘cohort’, as data structured along cohort should be stored using the <a href="http://www.flr-project.org/FLCore/FLCohort.html">FLCohort</a> class instead. Other dimensions are always names as follows: year, for the calendar year of the data point; unit, for any kind of division of the population, e.g. by sex; season, for any temporal strata shorter than year; area, for any kind of spatial stratification; and iter, for replicates obtained through bootstrap, simulation or Bayesian analysis.</p>
+<p>When importing catch number for example, the input object needs to be formatted as such: age or length in the first dimension and years in the second dimension. If the object is not formatted in the right way, you can use the <code>reshape</code> functions from the package <a href="https://cran.r-project.org/web/packages/reshape2/index.html">reshape2</a>.</p>
+</div>
+<div id="making-an-flquant-object" class="section level3">
+<h3>Making an FLQuant object</h3>
+<p>We need to specify the dimnames</p>
+<pre class="r"><code>catch.n.flq &lt;- FLQuant(catch.n.matrix, dimnames=list(age=1:7, year = 1957:2011))
+catch.n.flq[,1:7]</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+   year
+age 1957  1958  1959  1960  1961  1962  1963 
+  1     0   100  1060   516  1768   259   132
+  2  7709  3349  7251 18221  7129  7170  6446
+  3  9965  9410  3585  7373 14342  5535  5929
+  4  1394  6130  8642  3551  6598 10427  2032
+  5  6235  4065  3222  2284  2481  5235  3192
+  6  2062  5584  1757   770  2392  3322  3541
+  7  1720  6666  3699  1924  1659  7289  5889
+
+units:  NA </code></pre>
+</div>
+<div id="reading-common-fisheries-data-formats" class="section level3">
+<h3>Reading common fisheries data formats</h3>
+<p>FLCore contains functions for reading in fish stock data in commonly used formats. To read a single variable (e.g. numbers-at-age, maturity-at-age) from the <strong>Lowestoft VPA</strong> format you use the <code>readVPA</code> function. The following example reads the catch numbers-at-age for herring:</p>
+<pre class="r"><code># Read from a VPA text file
+catch.n &lt;- readVPAFile(file.path(&#39;src&#39;, &#39;her-irlw&#39;,&quot;canum.txt&quot;))
+class(catch.n)</code></pre>
+<pre><code>[1] &quot;FLQuant&quot;
+attr(,&quot;package&quot;)
+[1] &quot;FLCore&quot;</code></pre>
+<p>This can be repeated for each of the data files. In addition, functions are available for <a href="http://www.multifan-cl.org/">Multifan-CL</a> format <code>readMFCL</code> and <a href="http://www.admb-project.org/">ADMB</a> <code>readADMB</code>.</p>
+<p>Alternatively, if you have the full information for a stock in the <strong>Lowestoft VPA</strong>, <strong>Adapt</strong>, <strong>CSA</strong> or <strong>ICA</strong> format you can read in together using the <code>readFLStock</code> function. Here, you point the function to the index file, with all other files in the same directory:</p>
+<pre class="r"><code># Read a collection of VPA files, pointing to the Index file:
+her &lt;- readFLStock(file.path(&#39;src&#39;,&#39;her-irlw&#39;,&#39;index.txt&#39;))
+class(her)</code></pre>
+<pre><code>[1] &quot;FLStock&quot;
+attr(,&quot;package&quot;)
+[1] &quot;FLCore&quot;</code></pre>
+<p>Which we can see correctly formats the data as an <a href="http://www.flr-project.org/FLCore/FLStock.html">FLStock</a> object.</p>
+<pre class="r"><code>summary(her)</code></pre>
+<pre><code>An object of class &quot;FLStock&quot;
+
+Name: Herring VIa(S) VIIbc  
+Description: Imported from a VPA file. ( src/Data/her-irlw/index.txt ).  Tue Mar   [...] 
+Quant: age 
+Dims:  age  year    unit    season  area    iter
+    7   55  1   1   1   1   
+
+Range:  min max pgroup  minyear maxyear minfbar maxfbar 
+    1   7   NA  1957    2011    1   7   
+
+catch         : [ 1 55 1 1 1 1 ], units =  NA 
+catch.n       : [ 7 55 1 1 1 1 ], units =  NA 
+catch.wt      : [ 7 55 1 1 1 1 ], units =  NA 
+discards      : [ 1 55 1 1 1 1 ], units =  NA 
+discards.n    : [ 7 55 1 1 1 1 ], units =  NA 
+discards.wt   : [ 7 55 1 1 1 1 ], units =  NA 
+landings      : [ 1 55 1 1 1 1 ], units =  NA 
+landings.n    : [ 7 55 1 1 1 1 ], units =  NA 
+landings.wt   : [ 7 55 1 1 1 1 ], units =  NA 
+stock         : [ 1 55 1 1 1 1 ], units =  NA 
+stock.n       : [ 7 55 1 1 1 1 ], units =  NA 
+stock.wt      : [ 7 55 1 1 1 1 ], units =  NA 
+m             : [ 7 55 1 1 1 1 ], units =  NA 
+mat           : [ 7 55 1 1 1 1 ], units =  NA 
+harvest       : [ 7 55 1 1 1 1 ], units =  f 
+harvest.spwn  : [ 7 55 1 1 1 1 ], units =  NA 
+m.spwn        : [ 7 55 1 1 1 1 ], units =  NA </code></pre>
+<p>Note: the units for the slots have not been set. We will deal with this in the next section.</p>
+<p>In addition, this object only contains the input data for the stock assessment, not any estimated values (e.g. harvest rates, stock abundances). You can add these to the object as follows:</p>
+<pre class="r"><code>her@stock.n &lt;- readVPAFile(file.path(&#39;src&#39;,&#39;her-irlw&#39;,&quot;n.txt&quot;))
+print(her@stock.n[,ac(2007:2011)]) # only print 2007:2011</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+   year
+age 2007     2008     2009     2010     2011    
+  1 174571.1 282187.1 256537.9 500771.9 473853.8
+  2 124606.8  64089.7 103602.4  94215.4 183911.3
+  3 113657.7  75691.6  39075.8  65137.7  59210.2
+  4  55794.7  60037.5  40312.1  22271.7  37090.3
+  5  33210.4  28921.5  31447.1  23016.5  12700.7
+  6  17193.0  16241.9  14308.2  17112.1  12507.7
+  7   5355.8   9315.2   8255.6   9662.4  16579.1
+
+units:  NA </code></pre>
+<pre class="r"><code>her@harvest &lt;- readVPAFile(file.path(&#39;src&#39;,&#39;her-irlw&#39;,&quot;f.txt&quot;))</code></pre>
+<p>Now we have a fully filled <a href="http://www.flr-project.org/FLCore/FLStock.html">FLStock</a> object. But let’s check the data are consistent.</p>
+<pre class="r"><code># The sum of products (SOP)
+apply(her@landings.n * her@landings.wt, 2, sum)[,ac(2007:2011)]</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+age   2007    2008    2009    2010    2011   
+  all 17790.6 13340.9 10482.3 10232.6  6921.2
+
+units:  NA </code></pre>
+<pre class="r"><code># and the value read in from the VPA file
+her@landings[,ac(2007:2011)]</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+age   2007  2008  2009  2010  2011 
+  all 17791 13340 10468 10241  6919
+
+units:  NA </code></pre>
+<pre class="r"><code>## They are not the same!!  We correct the landings to be the same as the SOP - there is a handy function for this purpose
+her@landings &lt;- computeLandings(her)
+
+# In addition, there is no discard information
+her@discards.wt[,ac(2005:2011)]</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+   year
+age 2005 2006 2007 2008 2009 2010 2011
+  1 NA   NA   NA   NA   NA   NA   NA  
+  2 NA   NA   NA   NA   NA   NA   NA  
+  3 NA   NA   NA   NA   NA   NA   NA  
+  4 NA   NA   NA   NA   NA   NA   NA  
+  5 NA   NA   NA   NA   NA   NA   NA  
+  6 NA   NA   NA   NA   NA   NA   NA  
+  7 NA   NA   NA   NA   NA   NA   NA  
+
+units:  NA </code></pre>
+<pre class="r"><code>her@discards.n[,ac(2005:2011)]</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+   year
+age 2005 2006 2007 2008 2009 2010 2011
+  1 NA   NA   NA   NA   NA   NA   NA  
+  2 NA   NA   NA   NA   NA   NA   NA  
+  3 NA   NA   NA   NA   NA   NA   NA  
+  4 NA   NA   NA   NA   NA   NA   NA  
+  5 NA   NA   NA   NA   NA   NA   NA  
+  6 NA   NA   NA   NA   NA   NA   NA  
+  7 NA   NA   NA   NA   NA   NA   NA  
+
+units:  NA </code></pre>
+<pre class="r"><code># Set up the discards and catches
+her@discards.wt   &lt;- her@landings.wt
+her@discards.n[]  &lt;- 0
+her@discards      &lt;- computeDiscards(her)
+her@catch         &lt;- her@landings
+her@catch.wt      &lt;- her@landings.wt
+her@catch.n       &lt;- her@landings.n</code></pre>
+<p>Functions are available to <a href="http://www.flr-project.org/FLCore/computeLandings.html">computeLandings</a>, <a href="http://www.flr-project.org/FLCore/computeDiscards.html">computeDiscards</a>, <a href="http://www.flr-project.org/FLCore/computeCatch.html">computeCatch</a> and <a href="http://www.flr-project.org/FLCore/computeStock.html">computeStock</a>. These functions take the argument <code>slot = 'catch'</code>, <code>slot = 'wt'</code> and <code>slot = 'n'</code> to compute the total weight, individual weight and numbers respectively, in addition to <code>slot = 'all'</code>.</p>
+</div>
+<div id="adding-a-description-units-ranges-etc.." class="section level3">
+<h3>Adding a description, units, ranges etc..</h3>
+<p>Before we are finished, we want to ensure the units and range references are correct. This is important as the derived calculations require the correct scaling (e.g. <code>fbar</code>, for the average fishing mortality range over the required age ranges).</p>
+<p>First, let’s ensure an appropriate name and description are assigned:</p>
+<pre class="r"><code>summary(her)</code></pre>
+<pre><code>An object of class &quot;FLStock&quot;
+
+Name: Herring VIa(S) VIIbc  
+Description: Imported from a VPA file. ( src/Data/her-irlw/index.txt ).  Tue Mar   [...] 
+Quant: age 
+Dims:  age  year    unit    season  area    iter
+    7   55  1   1   1   1   
+
+Range:  min max pgroup  minyear maxyear minfbar maxfbar 
+    1   7   NA  1957    2011    1   7   
+
+catch         : [ 1 55 1 1 1 1 ], units =  NA 
+catch.n       : [ 7 55 1 1 1 1 ], units =  NA 
+catch.wt      : [ 7 55 1 1 1 1 ], units =  NA 
+discards      : [ 1 55 1 1 1 1 ], units =  NA 
+discards.n    : [ 7 55 1 1 1 1 ], units =  NA 
+discards.wt   : [ 7 55 1 1 1 1 ], units =  NA 
+landings      : [ 1 55 1 1 1 1 ], units =  NA 
+landings.n    : [ 7 55 1 1 1 1 ], units =  NA 
+landings.wt   : [ 7 55 1 1 1 1 ], units =  NA 
+stock         : [ 1 55 1 1 1 1 ], units =  NA 
+stock.n       : [ 7 55 1 1 1 1 ], units =  NA 
+stock.wt      : [ 7 55 1 1 1 1 ], units =  NA 
+m             : [ 7 55 1 1 1 1 ], units =  NA 
+mat           : [ 7 55 1 1 1 1 ], units =  NA 
+harvest       : [ 7 55 1 1 1 1 ], units =  NA 
+harvest.spwn  : [ 7 55 1 1 1 1 ], units =  NA 
+m.spwn        : [ 7 55 1 1 1 1 ], units =  NA </code></pre>
+<pre class="r"><code>#name and descriptions
+her@name # ok</code></pre>
+<pre><code>[1] &quot;Herring VIa(S) VIIbc &quot;</code></pre>
+<pre class="r"><code>her@desc # ok</code></pre>
+<pre><code>[1] &quot;Imported from a VPA file. ( src/Data/her-irlw/index.txt ).  Tue Mar  7 15:19:36 2017&quot;</code></pre>
+<pre class="r"><code># Set the Fbar range for the stock 
+her@range[c(&#39;minfbar&#39;,&#39;maxfbar&#39;)] # ok, but can be filled with  &lt;- c(min,max)</code></pre>
+<pre><code>minfbar maxfbar 
+      1       7 </code></pre>
+<pre class="r"><code># set the plus group
+her@range[&#39;plusgroup&#39;]  &lt;- 7 # final year is a plusgroup
+
+## Units
+units(her@catch)    &lt;- units(her@discards)    &lt;- units(her@landings)    &lt;- units(her@stock)    &lt;- &#39;tonnes&#39;
+units(her@catch.n)  &lt;- units(her@discards.n)  &lt;- units(her@landings.n)  &lt;- units(her@stock.n)  &lt;- &#39;1000&#39;
+units(her@catch.wt) &lt;- units(her@discards.wt) &lt;- units(her@landings.wt) &lt;- units(her@stock.wt) &lt;- &#39;kg&#39;
+units(her@harvest) &lt;- &#39;f&#39;</code></pre>
+<p>This should now have the correct units defined:</p>
+<pre class="r"><code>summary(her)</code></pre>
+<pre><code>An object of class &quot;FLStock&quot;
+
+Name: Herring VIa(S) VIIbc  
+Description: Imported from a VPA file. ( src/Data/her-irlw/index.txt ).  Tue Mar   [...] 
+Quant: age 
+Dims:  age  year    unit    season  area    iter
+    7   55  1   1   1   1   
+
+Range:  min max pgroup  minyear maxyear minfbar maxfbar 
+    1   7   7   1957    2011    1   7   
+
+catch         : [ 1 55 1 1 1 1 ], units =  tonnes 
+catch.n       : [ 7 55 1 1 1 1 ], units =  1000 
+catch.wt      : [ 7 55 1 1 1 1 ], units =  kg 
+discards      : [ 1 55 1 1 1 1 ], units =  tonnes 
+discards.n    : [ 7 55 1 1 1 1 ], units =  1000 
+discards.wt   : [ 7 55 1 1 1 1 ], units =  kg 
+landings      : [ 1 55 1 1 1 1 ], units =  tonnes 
+landings.n    : [ 7 55 1 1 1 1 ], units =  1000 
+landings.wt   : [ 7 55 1 1 1 1 ], units =  kg 
+stock         : [ 1 55 1 1 1 1 ], units =  tonnes 
+stock.n       : [ 7 55 1 1 1 1 ], units =  1000 
+stock.wt      : [ 7 55 1 1 1 1 ], units =  kg 
+m             : [ 7 55 1 1 1 1 ], units =  NA 
+mat           : [ 7 55 1 1 1 1 ], units =  NA 
+harvest       : [ 7 55 1 1 1 1 ], units =  f 
+harvest.spwn  : [ 7 55 1 1 1 1 ], units =  NA 
+m.spwn        : [ 7 55 1 1 1 1 ], units =  NA </code></pre>
+<pre class="r"><code>plot(her) + theme_bw() # using the simple black and white theme</code></pre>
+<p><img src="Loading_your_data_into_FLR_files/figure-html/Plot-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="flindex-objects" class="section level2">
+<h2>FLIndex objects</h2>
+<p>Two solutions can be used to read abundance indices into FLR.</p>
+<div id="reading-from-common-fisheries-data-formats" class="section level3">
+<h3>Reading from common fisheries data formats</h3>
+<p>If your data are formatted in a <strong>Lowestoft VPA</strong> format then <a href="http://www.flr-project.org/FLCore/">FLCore</a> contains functions for reading in indices. To read an abundance index, you use the <code>readFLIndices</code> function. The following example reads the index from <code>ple4</code> example:</p>
+<pre class="r"><code>indices &lt;- readFLIndices(&#39;src/ple4_ISIS.txt&#39;)</code></pre>
+<p>Using this function, slot <code>indices@names</code> is already filled by BTS-ISIS, and the information slot <code>indices@range</code> too.</p>
+</div>
+<div id="reading-from-flat-files" class="section level3">
+<h3>Reading from flat files</h3>
+<p>If your data are not formatted in a <strong>Lowestoft VPA</strong> format, then you and read them using <a href="http://stat.ethz.ch/R-manual/R-devel/library/utils/html/read.table.html">read.table</a> from base R, for example.</p>
+<pre class="r"><code>indices &lt;- read.table(&#39;src/ple4Index1.txt&#39;)</code></pre>
+<p>which needs to be transformed in FLQuant</p>
+<pre class="r"><code>indices &lt;- FLQuant(as.matrix(indices), dimnames=list(age=1:8, year = 1985:2008))</code></pre>
+<p>And in FLIndex</p>
+<pre class="r"><code>indices &lt;- FLIndex(index = indices)</code></pre>
+<p>And then in FLIndices</p>
+<pre class="r"><code>indices &lt;- FLIndices(indices)
+
+plot(indices[[1]])</code></pre>
+<p><img src="Loading_your_data_into_FLR_files/figure-html/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>slot <code>indices@range</code> needs to be filled in with the end and start date of the tuning series</p>
+<pre class="r"><code>indices[[1]]@range[c(&#39;startf&#39;, &#39;endf&#39;)] &lt;- c(0.66,0.75)</code></pre>
+</div>
+</div>
+<div id="flfleet-objects" class="section level2">
+<h2>FLFleet objects</h2>
+<p>Reading data on fleets into an <a href="http://www.flr-project.org/FLFleet/">FLFleet</a> object is complicated by the multi-layer structure of the object. The object is defined so that:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Level</th>
+<th align="left">Class</th>
+<th align="left">Contains</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">FLFleet</td>
+<td align="left">variables relating to vessel level activity</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left">FLMetier(s)</td>
+<td align="left">variables relating to fishing level activity</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="left">FLCatch(es)</td>
+<td align="left">variables relating to stock catches</td>
+</tr>
+</tbody>
+</table>
+<p>Here are the slots for each level:</p>
+<pre class="r"><code># FLFleet level
+summary(FLFleet())</code></pre>
+<pre><code>An object of class &quot;FLFleet&quot;
+
+Name:  
+Description:  
+Quant: quant 
+Dims:  quant    year    unit    season  area    iter
+    quant   1   1   1   1   1   
+
+Range:  min max minyear maxyear 
+    NA  NA  1   1   
+
+effort        : [ 1 1 1 1 1 1 ], units =  NA 
+fcost         : [ 1 1 1 1 1 1 ], units =  NA 
+capacity      : [ 1 1 1 1 1 1 ], units =  NA 
+crewshare     : [ 1 1 1 1 1 1 ], units =  NA 
+
+Metiers:  </code></pre>
+<pre class="r"><code># FLMetier level
+summary(FLMetier())</code></pre>
+<pre><code>An object of class &quot;FLMetier&quot;
+
+Name:  
+Description:  
+Gear :  NA 
+Quant: quant 
+Dims:  quant    year    unit    season  area    iter
+    quant   1   1   1   1   1   
+
+Range:  min max minyear maxyear 
+    NA  NA  1   1   
+
+effshare      : [ 1 1 1 1 1 1 ], units =  NA 
+vcost         : [ 1 1 1 1 1 1 ], units =  NA 
+
+Catches:  
+     1 : [ 1 1 1 1 1 1 ]</code></pre>
+<pre class="r"><code># FLCatch level
+summary(FLCatch())</code></pre>
+<pre><code>An object of class &quot;FLCatch&quot;
+
+Name: NA 
+Description:  
+Quant: quant 
+Dims:  quant    year    unit    season  area    iter
+    quant   1   1   1   1   1   
+
+Range:  min max pgroup  minyear maxyear 
+    NA  NA  NA  1   1   
+
+landings      : [ 1 1 1 1 1 1 ], units =  NA 
+landings.n    : [ 1 1 1 1 1 1 ], units =  NA 
+landings.wt   : [ 1 1 1 1 1 1 ], units =  NA 
+landings.sel  : [ 1 1 1 1 1 1 ], units =  NA 
+discards      : [ 1 1 1 1 1 1 ], units =  NA 
+discards.n    : [ 1 1 1 1 1 1 ], units =  NA 
+discards.wt   : [ 1 1 1 1 1 1 ], units =  NA 
+discards.sel  : [ 1 1 1 1 1 1 ], units =  NA 
+catch.q       : [ 1 1 1 1 1 1 ], units =  NA 
+price         : [ 1 1 1 1 1 1 ], units =  NA </code></pre>
+<p>Due to the different levels, units and dimensions of the variables and the potentially high number of combinations of fleets, métier and stocks in a mixed fishery - getting the full data into an <code>FLFleets</code> object (which is a list of <a href="http://www.flr-project.org/FLFleet/">FLFleet</a> objects) can be an onerous task.</p>
+<p>A way of simplifying the generation of the fleet object is to ensure all the data are in a csv file with the following structure:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Fleet</th>
+<th align="left">Metier</th>
+<th align="left">Stock</th>
+<th align="left">type</th>
+<th align="right">age</th>
+<th align="right">year</th>
+<th align="right">unit</th>
+<th align="left">season</th>
+<th align="left">area</th>
+<th align="right">iter</th>
+<th align="right">data</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Fleet1</td>
+<td align="left">Metier1</td>
+<td align="left">Stock1</td>
+<td align="left">landings.n</td>
+<td align="right">1</td>
+<td align="right">2011</td>
+<td align="right">1</td>
+<td align="left">all</td>
+<td align="left">unique</td>
+<td align="right">1</td>
+<td align="right">254.0</td>
+</tr>
+<tr class="even">
+<td align="left">Fleet2</td>
+<td align="left">Metier1</td>
+<td align="left">Stock2</td>
+<td align="left">landings.wt</td>
+<td align="right">1</td>
+<td align="right">2011</td>
+<td align="right">1</td>
+<td align="left">all</td>
+<td align="left">unique</td>
+<td align="right">1</td>
+<td align="right">0.3</td>
+</tr>
+</tbody>
+</table>
+<p>To generate the required structure, you can then read in the file and generate the object using an <a href="http://petewerner.blogspot.it/2012/12/using-apply-sapply-lapply-in-r.html">lapply</a> function:</p>
+<pre class="r"><code># Example of generating fleets
+fl.nam &lt;- unique(data$Fleet) # each of the fleets
+
+yr.range &lt;- 2005:2011 # year range of the data - must be same, even if filled with NAs or 0s
+
+# empty FLQuant for filling with right dimensions
+fq  &lt;- FLQuant(dimnames = list(year = yr.range), quant = &#39;age&#39;)
+
+### Fleet level slots ###
+fleets &lt;- FLFleet(lapply(fl.nam, function(Fl) {
+
+# blank quants with the same dims
+eff &lt;- cap &lt;- crw &lt;- cos.fl &lt;- fq
+
+# fleet effort
+eff[,ac(yr.range)] &lt;- data$data[data$Fleet == Fl &amp; data$type == &#39;effort&#39;]
+units(eff) &lt;- &#39;000 kw days&#39;
+
+## Repeat for each fleet level variables (not shown) ##
+
+### Metier level slots ###
+met.nam  &lt;- unique(data$Metier[data$Fleet == Fl]) # metiers for fleet
+met.nam  &lt;- met.nam[!is.na(met.nam)] # exclude the fleet level data
+
+metiers  &lt;- FLMetiers(lapply(met.nam, function(met) {
+
+# blank quants
+effmet &lt;- cos.met &lt;- fq
+
+# effort share for metier
+effmet[,ac(yr.range)] &lt;- data$data[data$Fleet == Fl &amp; data$Metier &amp; data$type == &#39;effshare&#39;]
+units(effmet)  &lt;- NA
+
+## Repeat for each metier level variables (not shown) ##
+
+
+sp.nam &lt;- unique(data$stock[data$Fleet == Fl &amp; data$Metier == met]) # stocks caught by metier
+sp.nam &lt;- sp.nam[!is.na(sp.nam)] # exclude fleet and metier level data
+
+catch &lt;- FLCatches(lapply(sp.nam, function(S){
+print(S)
+
+# Quant dims may be specific per stock
+la.age &lt;- FLQuant(dimnames = list(age = 1:7, year = yr.range, quant = &#39;age&#39;))
+la.age[,ac(yr.range)] &lt;- data$data[data$Fleet == Fl &amp; data$Metier == met &amp; data$Stock == S &amp; data$type == &#39;landings.n&#39;]
+units(la.age) &lt;- &#39;1000&#39;
+
+## Repeat for all stock level variables (not shown) ##
+
+# Build F
+res &lt;- FLCatch(range = yr.range, name = S, landings.n = la.age,...)
+
+## Compute any missing slots, e.g.
+res@landings &lt;- computeLandings(res)
+
+return(res) # return filled FLCatch
+
+})) # End of FLCatches
+
+# Fill an FLMetier with all the stock catches
+m &lt;- FLMetier(catches = catch, name = met)
+m@effshare  &lt;- effmet
+m@vcost &lt;- vcost
+
+         })) # end of FLMetiers
+
+fl &lt;- FLFleet(metiers = metiers, name = Fl, effort = ef,...) # fill with all variables
+return(fl)
+
+         }))
+
+names(fleets) &lt;- fl.nam</code></pre>
+<p>You should now have a multilevel object with <code>FLFleets</code> containing a list of <a href="http://www.flr-project.org/FLCore/FLFleet.html">FLFleet</a> objects, each which in turn contain <code>FLMetiers</code> with a list of <a href="http://www.flr-project.org/FLCore/FLMetier.html">FLMetier</a> for the fleet, and a list of <code>FLCatches</code> containing <a href="http://www.flr-project.org/FLCore/FLCatch.html">FLCatch</a> objects for each stock caught by the métier.</p>
+</div>
+<div id="references" class="section level1">
+<h1>References</h1>
+<p>None</p>
+</div>
+<div id="more-information" class="section level1">
+<h1>More information</h1>
+<ul>
+<li>You can submit bug reports, questions or suggestions on this tutorial at <a href="https://github.com/flr/doc/issues" class="uri">https://github.com/flr/doc/issues</a>.</li>
+<li>Or send a pull request to <a href="https://github.com/flr/doc/" class="uri">https://github.com/flr/doc/</a></li>
+<li>For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR web-page, <a href="http://flr-project.org" class="uri">http://flr-project.org</a>.</li>
+</ul>
+<div id="software-versions" class="section level2">
+<h2>Software Versions</h2>
+<ul>
+<li>R version 3.3.2 (2016-10-31)</li>
+<li>FLCore: 2.6.0.20170228</li>
+<li>ggplotFL: 2.5.9.9000</li>
+<li>ggplot2: 2.2.1</li>
+<li><strong>Compiled</strong>: Tue Mar 7 16:58:48 2017</li>
+</ul>
+</div>
+<div id="license" class="section level2">
+<h2>License</h2>
+<p>This document is licensed under the <a href="https://creativecommons.org/licenses/by-sa/4.0">Creative Commons Attribution-ShareAlike 4.0 International</a> license.</p>
+</div>
+<div id="author-information" class="section level2">
+<h2>Author information</h2>
+<p><strong>Iago MOSQUEIRA</strong>. European Commission, DG Joint Research Centre, Directorate D - Sustainable Resources, Unit D.02 Water and Marine Resources, Via E. Fermi 2749, 21027 Ispra VA, Italy. <a href="https://ec.europa.eu/jrc/" class="uri">https://ec.europa.eu/jrc/</a></p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

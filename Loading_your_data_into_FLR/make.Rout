@@ -1,397 +1,0 @@
-
-R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
-Copyright (C) 2016 The R Foundation for Statistical Computing
-Platform: x86_64-pc-linux-gnu (64-bit)
-
-R is free software and comes with ABSOLUTELY NO WARRANTY.
-You are welcome to redistribute it under certain conditions.
-Type 'license()' or 'licence()' for distribution details.
-
-  Natural language support but running in an English locale
-
-R is a collaborative project with many contributors.
-Type 'contributors()' for more information and
-'citation()' on how to cite R or R packages in publications.
-
-Type 'demo()' for some demos, 'help()' for on-line help, or
-'help.start()' for an HTML browser interface to help.
-Type 'q()' to quit R.
-
-Microsoft R Open 3.3.1
-The enhanced R distribution from Microsoft
-Microsoft packages Copyright (C) 2016 Microsoft Corporation
-
-Using the Intel MKL for parallel mathematical computing(using 2 cores).
-
-Default CRAN mirror snapshot taken on 2016-07-01. See: https://mran.microsoft.com/.
-> # make.R - DESC
-> # make.R
-> 
-> # Copyright 2015 Iago Mosqueira. Distributed under the GPL 2.
-> # Maintainer: Iago Mosqueira, JRC
-> # Soundtrack:
-> # Notes:
-> 
-> library(knitr)
-> library(rmarkdown)
-> 
-> DOC <- list.files(pattern="*.Rmd")[1]
-> 
-> # html
-> rmarkdown::render(DOC, output_format="github_document")
-
-
-processing file: Loading_your_data_into_FLR.Rmd
-  |                                                                         |                                                                 |   0%  |                                                                         |.                                                                |   2%
-   inline R code fragments
-
-  |                                                                         |...                                                              |   4%
-label: ini (with options) 
-List of 3
- $ echo   : logi FALSE
- $ results: chr "hide"
- $ message: logi FALSE
-
-  |                                                                         |....                                                             |   6%
-  ordinary text without R code
-
-  |                                                                         |.....                                                            |   8%
-label: unnamed-chunk-1 (with options) 
-List of 1
- $ eval: logi FALSE
-
-  |                                                                         |.......                                                          |  10%
-  ordinary text without R code
-
-  |                                                                         |........                                                         |  12%
-label: pkgs
-Loading required package: MASS
-Loading required package: lattice
-FLCore (Version 2.6.0.20170130, packaged: Wed Feb 15 09:06:27 2017)
-Loading required package: ggplot2
-
-Attaching package: 'ggplot2'
-
-The following object is masked from 'package:FLCore':
-
-    %+%
-
-  |                                                                         |.........                                                        |  14%
-  ordinary text without R code
-
-  |                                                                         |...........                                                      |  16%
-label: unnamed-chunk-2
-  |                                                                         |............                                                     |  18%
-  ordinary text without R code
-
-  |                                                                         |.............                                                    |  20%
-label: unnamed-chunk-3
-  |                                                                         |...............                                                  |  22%
-  ordinary text without R code
-
-  |                                                                         |................                                                 |  24%
-label: unnamed-chunk-4
-  |                                                                         |.................                                                |  27%
-  ordinary text without R code
-
-  |                                                                         |...................                                              |  29%
-label: unnamed-chunk-5
-  |                                                                         |....................                                             |  31%
-  ordinary text without R code
-
-  |                                                                         |.....................                                            |  33%
-label: readVPA
-  |                                                                         |.......................                                          |  35%
-  ordinary text without R code
-
-  |                                                                         |........................                                         |  37%
-label: readFLStock
-  |                                                                         |.........................                                        |  39%
-  ordinary text without R code
-
-  |                                                                         |...........................                                      |  41%
-label: readFLStock2
-  |                                                                         |............................                                     |  43%
-  ordinary text without R code
-
-  |                                                                         |.............................                                    |  45%
-label: AddMissingAssessmentData
-  |                                                                         |...............................                                  |  47%
-  ordinary text without R code
-
-  |                                                                         |................................                                 |  49%
-label: CheckConsistency
-  |                                                                         |.................................                                |  51%
-  ordinary text without R code
-
-  |                                                                         |..................................                               |  53%
-label: Descriptions
-  |                                                                         |....................................                             |  55%
-  ordinary text without R code
-
-  |                                                                         |.....................................                            |  57%
-label: Plot
-  |                                                                         |......................................                           |  59%
-  ordinary text without R code
-
-  |                                                                         |........................................                         |  61%
-label: unnamed-chunk-6
-  |                                                                         |.........................................                        |  63%
-   inline R code fragments
-
-  |                                                                         |..........................................                       |  65%
-label: unnamed-chunk-7
-  |                                                                         |............................................                     |  67%
-  ordinary text without R code
-
-  |                                                                         |.............................................                    |  69%
-label: unnamed-chunk-8
-  |                                                                         |..............................................                   |  71%
-  ordinary text without R code
-
-  |                                                                         |................................................                 |  73%
-label: unnamed-chunk-9
-  |                                                                         |.................................................                |  76%
-  ordinary text without R code
-
-  |                                                                         |..................................................               |  78%
-label: unnamed-chunk-10
-  |                                                                         |....................................................             |  80%
-  ordinary text without R code
-
-  |                                                                         |.....................................................            |  82%
-label: unnamed-chunk-11
-  |                                                                         |......................................................           |  84%
-  ordinary text without R code
-
-  |                                                                         |........................................................         |  86%
-label: level table (with options) 
-List of 1
- $ echo: symbol F
-
-  |                                                                         |.........................................................        |  88%
-  ordinary text without R code
-
-  |                                                                         |..........................................................       |  90%
-label: FLFleet slots
-  |                                                                         |............................................................     |  92%
-  ordinary text without R code
-
-  |                                                                         |.............................................................    |  94%
-label: Fleetdata (with options) 
-List of 1
- $ echo: symbol F
-
-  |                                                                         |..............................................................   |  96%
-  ordinary text without R code
-
-  |                                                                         |................................................................ |  98%
-label: Generating FLFleets (with options) 
-List of 1
- $ eval: symbol F
-
-  |                                                                         |.................................................................| 100%
-   inline R code fragments
-
-
-output file: Loading_your_data_into_FLR.knit.md
-
-/usr/bin/pandoc +RTS -K512m -RTS Loading_your_data_into_FLR.utf8.md --to markdown_github --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash --output Loading_your_data_into_FLR.md --standalone --template /home/paul/R/x86_64-pc-linux-gnu-library/3.3/rmarkdown/rmarkdown/templates/github_document/resources/default.md 
-/usr/bin/pandoc +RTS -K512m -RTS Loading_your_data_into_FLR.md --to html --from markdown_github --output Loading_your_data_into_FLR.html --standalone --self-contained --highlight-style pygments --template /home/paul/R/x86_64-pc-linux-gnu-library/3.3/rmarkdown/rmarkdown/templates/github_document/resources/preview.html --variable 'github-markdown-css:/home/paul/R/x86_64-pc-linux-gnu-library/3.3/rmarkdown/rmarkdown/templates/github_document/resources/github.css' --email-obfuscation none 
-
-Preview created: Loading_your_data_into_FLR.html
-
-Output created: Loading_your_data_into_FLR.md
-Warning messages:
-1: replacing previous import 'ggplot2::%+%' by 'FLCore::%+%' when loading 'ggplotFL' 
-2: In all(skip) : coercing argument of type 'double' to logical
-3: In dims(object) : NAs introduced by coercion
-4: In dims(object) : NAs introduced by coercion
-5: In dims(object) : NAs introduced by coercion
-6: In dims(object) : NAs introduced by coercion
-7: In dims(object) : NAs introduced by coercion
-8: In dims(object) : NAs introduced by coercion
-9: In dims(object) : NAs introduced by coercion
-10: In dims(object) : NAs introduced by coercion
-> 
-> # pdf
-> rmarkdown::render(DOC, output_format="tufte::tufte_handout")
-
-
-processing file: Loading_your_data_into_FLR.Rmd
-  |                                           |                                   |   0%  |                                           |.                                  |   2%
-   inline R code fragments
-
-  |                                           |.                                  |   4%
-label: ini (with options) 
-List of 3
- $ echo   : logi FALSE
- $ results: chr "hide"
- $ message: logi FALSE
-
-  |                                           |..                                 |   6%
-  ordinary text without R code
-
-  |                                           |...                                |   8%
-label: unnamed-chunk-1 (with options) 
-List of 1
- $ eval: logi FALSE
-
-  |                                           |....                               |  10%
-  ordinary text without R code
-
-  |                                           |....                               |  12%
-label: pkgs
-  |                                           |.....                              |  14%
-  ordinary text without R code
-
-  |                                           |......                             |  16%
-label: unnamed-chunk-2
-  |                                           |......                             |  18%
-  ordinary text without R code
-
-  |                                           |.......                            |  20%
-label: unnamed-chunk-3
-  |                                           |........                           |  22%
-  ordinary text without R code
-
-  |                                           |.........                          |  24%
-label: unnamed-chunk-4
-  |                                           |.........                          |  27%
-  ordinary text without R code
-
-  |                                           |..........                         |  29%
-label: unnamed-chunk-5
-  |                                           |...........                        |  31%
-  ordinary text without R code
-
-  |                                           |...........                        |  33%
-label: readVPA
-  |                                           |............                       |  35%
-  ordinary text without R code
-
-  |                                           |.............                      |  37%
-label: readFLStock
-  |                                           |..............                     |  39%
-  ordinary text without R code
-
-  |                                           |..............                     |  41%
-label: readFLStock2
-  |                                           |...............                    |  43%
-  ordinary text without R code
-
-  |                                           |................                   |  45%
-label: AddMissingAssessmentData
-  |                                           |................                   |  47%
-  ordinary text without R code
-
-  |                                           |.................                  |  49%
-label: CheckConsistency
-  |                                           |..................                 |  51%
-  ordinary text without R code
-
-  |                                           |...................                |  53%
-label: Descriptions
-  |                                           |...................                |  55%
-  ordinary text without R code
-
-  |                                           |....................               |  57%
-label: Plot
-cropping Loading_your_data_into_FLR_files/figure-latex/Plot-1.pdf
-PDFCROP 1.38, 2012/11/02 - Copyright (c) 2002-2012 by Heiko Oberdiek.
-==> 1 page written on `Loading_your_data_into_FLR_files/figure-latex/Plot-1.pdf'.
-  |                                           |.....................              |  59%
-  ordinary text without R code
-
-  |                                           |.....................              |  61%
-label: unnamed-chunk-6
-  |                                           |......................             |  63%
-   inline R code fragments
-
-  |                                           |.......................            |  65%
-label: unnamed-chunk-7
-  |                                           |........................           |  67%
-  ordinary text without R code
-
-  |                                           |........................           |  69%
-label: unnamed-chunk-8
-  |                                           |.........................          |  71%
-  ordinary text without R code
-
-  |                                           |..........................         |  73%
-label: unnamed-chunk-9
-  |                                           |..........................         |  76%
-  ordinary text without R code
-
-  |                                           |...........................        |  78%
-label: unnamed-chunk-10
-cropping Loading_your_data_into_FLR_files/figure-latex/unnamed-chunk-10-1.pdf
-PDFCROP 1.38, 2012/11/02 - Copyright (c) 2002-2012 by Heiko Oberdiek.
-==> 1 page written on `Loading_your_data_into_FLR_files/figure-latex/unnamed-chunk-10-1.pdf'.
-  |                                           |............................       |  80%
-  ordinary text without R code
-
-  |                                           |.............................      |  82%
-label: unnamed-chunk-11
-  |                                           |.............................      |  84%
-  ordinary text without R code
-
-  |                                           |..............................     |  86%
-label: level table (with options) 
-List of 1
- $ echo: symbol F
-
-  |                                           |...............................    |  88%
-  ordinary text without R code
-
-  |                                           |...............................    |  90%
-label: FLFleet slots
-  |                                           |................................   |  92%
-  ordinary text without R code
-
-  |                                           |.................................  |  94%
-label: Fleetdata (with options) 
-List of 1
- $ echo: symbol F
-
-  |                                           |.................................. |  96%
-  ordinary text without R code
-
-  |                                           |.................................. |  98%
-label: Generating FLFleets (with options) 
-List of 1
- $ eval: symbol F
-
-  |                                           |...................................| 100%
-   inline R code fragments
-
-
-output file: Loading_your_data_into_FLR.knit.md
-
-/usr/bin/pandoc +RTS -K512m -RTS Loading_your_data_into_FLR.utf8.md --to latex --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash --output Loading_your_data_into_FLR.pdf --template /home/paul/R/x86_64-pc-linux-gnu-library/3.3/tufte/rmarkdown/templates/tufte_handout/resources/tufte-handout.tex --highlight-style pygments --latex-engine pdflatex --variable 'documentclass:tufte-handout' 
-! Class tufte-handout Error: 
-(tufte-handout)              \subsubsectionis undefined by this class. See Robe
-rt
-(tufte-handout)              Bringhurst's _The Elements of Typographic Style_, 
-section
-(tufte-handout)              4.2.2. \subsubsectionwas used
-
-See the tufte-handout class documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.158 \subsubsection
-
-pandoc: Error producing PDF
-Error: pandoc document conversion failed with error 43
-In addition: Warning messages:
-1: In all(skip) : coercing argument of type 'double' to logical
-2: In dims(object) : NAs introduced by coercion
-3: In dims(object) : NAs introduced by coercion
-4: In dims(object) : NAs introduced by coercion
-5: In dims(object) : NAs introduced by coercion
-6: In dims(object) : NAs introduced by coercion
-7: In dims(object) : NAs introduced by coercion
-8: In dims(object) : NAs introduced by coercion
-9: In dims(object) : NAs introduced by coercion
-Execution halted

@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Plotting FLR objects using lattice</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="http://flr-project.org">
+    <span class="fa fa-home"></span>
+     
+    FLR
+  </a>
+</li>
+<li>
+  <a href="index.html">
+    <span class="fa fa-info"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Introduction
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Input
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Visualization
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Modelling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Advice
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    MSE
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://example.com">
+    <span class="fa fa-question fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Plotting FLR objects using <em>lattice</em></h1>
+<h4 class="date"><em>07 March, 2017</em></h4>
+
+</div>
+
+
+<p>The lattice package (Sarkar, 2008) improves on base R graphics by providing better defaults and the ability to easily display multivariate relationships. In particular, the package supports the creation of trellis graphs - graphs that display a variable or the relationship between variables, conditioned on one or more other variables. Lattice methods (e.g. <code>xyplot()</code>, <code>bwplot()</code>, <code>dotplot()</code>) are available for FLR classes in FLCore, and the standard plots (<code>plot()</code>) in FLR are lattice-based.</p>
+<div id="required-packages" class="section level2">
+<h2>Required packages</h2>
+<p>To follow this tutorial you should have installed the following packages:</p>
+<ul>
+<li>CRAN: <a href="https://cran.r-project.org/web/packages/lattice/index.html">lattice</a></li>
+<li>FLR: <a href="http://www.flr-project.org/FLCore/">FLCore</a></li>
+</ul>
+<p>You can do so as follows:</p>
+<pre class="r"><code>install.packages(c(&quot;lattice&quot;))
+install.packages(c(&quot;FLCore&quot;), repos=&quot;http://flr-project.org/R&quot;)</code></pre>
+<p>Load necessary packages:</p>
+<pre class="r"><code>library(FLCore)
+library(lattice)</code></pre>
+</div>
+<div id="graph-types-available" class="section level1">
+<h1>GRAPH TYPES AVAILABLE</h1>
+<p>The typical formula for lattice plots is <code>graphtype(formula, data=FLQuant)</code></p>
+<p>where <em>graphtype</em> is selected from the list below. Formula specifies the variable(s) to display and any conditioning variables. For example <code>~ data | A</code> means display numeric variable for each level of factor A in separate graphs. <code>data ~ A</code> means display numeric variables for each level of factor A.</p>
+<p>The following lattice graph options could be used for FLR objects:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Graph Type</th>
+<th>Description</th>
+<th>Formula</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>barchart</td>
+<td>bar plot</td>
+<td><code>data ~ A</code></td>
+</tr>
+<tr class="even">
+<td>bwplot</td>
+<td>boxplot</td>
+<td><code>data ~ A</code></td>
+</tr>
+<tr class="odd">
+<td>dotplot</td>
+<td>dotplot</td>
+<td><code>data ~ A</code></td>
+</tr>
+<tr class="even">
+<td>histogram</td>
+<td>histogram</td>
+<td><code>~ data | A</code></td>
+</tr>
+<tr class="odd">
+<td>xyplot</td>
+<td>scatterplot</td>
+<td><code>data ~ A</code> or <code>data ~ A | B</code></td>
+</tr>
+<tr class="even">
+<td>wireframe</td>
+<td>3D wireframe graph</td>
+<td><code>data ~ A + B</code></td>
+</tr>
+<tr class="odd">
+<td>bubbles</td>
+<td>bubble plot</td>
+<td><code>A ~ B</code></td>
+</tr>
+</tbody>
+</table>
+<p>In case of lattice-based <em>plot</em> the name of the object can be simply used, e.g. <code>plot(ple4)</code></p>
+</div>
+<div id="standard-lattice-based-flr-plots" class="section level1">
+<h1>STANDARD LATTICE BASED FLR PLOTS</h1>
+<p>The standard <code>plot()</code> function in FLR returns lattice-based plots for FLR objects.<br />
+In the following examples, the FLStock object <em>ple4</em> and the FLSR object <em>nsher</em> are used.</p>
+<pre class="r"><code>#Read FLR examples
+data(ple4)
+data(nsher)</code></pre>
+<p>Plots of the main FLQuants of an FLStock can be generated using the <code>plot()</code> function</p>
+<pre class="r"><code># Plot FLStock
+plot(ple4)</code></pre>
+<p><img src="Plotting_FLR_objects_using_lattice_files/figure-html/fig1-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>A specific object (FLQuant) of the FLStock can be also plotted by age and year using the <code>plot()</code> function. In the following example, the <code>scales</code> argument has been used to allow different scales on the y axis of each age’s plot.</p>
+<pre class="r"><code># plot FLQuant
+plot(catch.n(ple4)/1000, ylab=&quot;Catch numbers (thousands)&quot;,
+      scales = list(y = list(relation = &#39;free&#39;)))</code></pre>
+<p><img src="Plotting_FLR_objects_using_lattice_files/figure-html/fig2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The <code>plot()</code> function can be also used to produce summary graphs of objects other then FLStock, such as FLSR objects.</p>
+<pre class="r"><code># Plot FLSR
+plot(nsher)</code></pre>
+<p><img src="Plotting_FLR_objects_using_lattice_files/figure-html/fig3-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="plotting-flr-objects-using-lattice" class="section level1">
+<h1>PLOTTING FLR OBJECTS USING LATTICE</h1>
+<p>To plot FLR objects with lattice a conversion to data.frame is required to select columns names for dims and FLR objects (‘data’) to plot. It is usefull to check how the objects look like before plotting it.</p>
+<pre class="r"><code>head(as.data.frame(catch(ple4)))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">age</th>
+<th align="right">year</th>
+<th align="left">unit</th>
+<th align="left">season</th>
+<th align="left">area</th>
+<th align="left">iter</th>
+<th align="right">data</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">all</td>
+<td align="right">1957</td>
+<td align="left">unique</td>
+<td align="left">all</td>
+<td align="left">unique</td>
+<td align="left">1</td>
+<td align="right">78423</td>
+</tr>
+<tr class="even">
+<td align="left">all</td>
+<td align="right">1958</td>
+<td align="left">unique</td>
+<td align="left">all</td>
+<td align="left">unique</td>
+<td align="left">1</td>
+<td align="right">88240</td>
+</tr>
+<tr class="odd">
+<td align="left">all</td>
+<td align="right">1959</td>
+<td align="left">unique</td>
+<td align="left">all</td>
+<td align="left">unique</td>
+<td align="left">1</td>
+<td align="right">109238</td>
+</tr>
+<tr class="even">
+<td align="left">all</td>
+<td align="right">1960</td>
+<td align="left">unique</td>
+<td align="left">all</td>
+<td align="left">unique</td>
+<td align="left">1</td>
+<td align="right">117138</td>
+</tr>
+<tr class="odd">
+<td align="left">all</td>
+<td align="right">1961</td>
+<td align="left">unique</td>
+<td align="left">all</td>
+<td align="left">unique</td>
+<td align="left">1</td>
+<td align="right">118331</td>
+</tr>
+<tr class="even">
+<td align="left">all</td>
+<td align="right">1962</td>
+<td align="left">unique</td>
+<td align="left">all</td>
+<td align="left">unique</td>
+<td align="left">1</td>
+<td align="right">125272</td>
+</tr>
+</tbody>
+</table>
+<div id="xyplots-for-flr" class="section level2">
+<h2>XYPLOTS for FLR</h2>
+<p><code>xyplot</code> produces bivariate scatterplots or time-series plots for FLR objects. Standard features, e.g. division by number could be used in order to update standard FLR units of measurement if needed.</p>
+<p>Use lattice options from <a href="https://cran.r-project.org/web/packages/lattice/lattice.pdf">user guide</a> to update your graphs.</p>
+<pre class="r"><code>xyplot(data/1000~year, data=catch(ple4), type=&#39;b&#39;, pch=19,
+       ylab=&quot;catch (thousand tonnes)&quot;,xlab=&#39;&#39;)</code></pre>
+<p><img src="Plotting_FLR_objects_using_lattice_files/figure-html/fig4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>One could also group the data, e.g. by age/area or season and plot the FLQuant by age class, area or season.</p>
+<pre class="r"><code>xyplot(data/1000~year, groups=age, data=catch.n(ple4), type=&#39;l&#39;, 
+  auto.key=list(space=&#39;bottom&#39;,columns=5, cex=0.7),
+  ylab=&#39;Catch numbers at age (10^6)&#39;,xlab=&#39;&#39;)</code></pre>
+<p><img src="Plotting_FLR_objects_using_lattice_files/figure-html/fig5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Or analyse the groups by plotting them separately</p>
+<pre class="r"><code>xyplot(data/1000~year|factor(age), data=catch.n(ple4), type=&#39;l&#39;,
+        scales = list(y = list(relation = &#39;free&#39;)), ylab=&#39;Catch numbers (10^6)&#39;,xlab=&#39;&#39;)</code></pre>
+<p><img src="Plotting_FLR_objects_using_lattice_files/figure-html/fig6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Methods are also available for plotting multiple FLQuants called by name using ‘qname’</p>
+<pre class="r"><code>xyplot(data~year|qname, data=FLQuants(SSB=ssb(ple4), Yield=catch(ple4), Landings=landings(ple4)),xlab=&#39;&#39;,
+       type=&#39;l&#39;)</code></pre>
+<p><img src="Plotting_FLR_objects_using_lattice_files/figure-html/fig7-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="barcharts" class="section level2">
+<h2>BARCHARTS</h2>
+<p>Similarly to the xyplots, barcharts also allow exploring FLQuants</p>
+<pre class="r"><code>barchart(data/1000~factor(year), 
+         data=landings(ple4),
+         ylab =list(label=&quot;thousand tonnes&quot;,cex=0.8),scales=list(x=list(rot=90)),
+         type=&quot;v&quot;, main = &quot;Total landings&quot; 
+)</code></pre>
+<p><img src="Plotting_FLR_objects_using_lattice_files/figure-html/fig8-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="bwplots" class="section level2">
+<h2>BWPLOTS</h2>
+<p>Boxplots can be created using <code>bwplot()</code>. In the following example some stochasticity has been added to Fbar and the resulting values per year have been plotted as boxplots.</p>
+<pre class="r"><code>bwplot(data~year, rlnorm(200, fbar(ple4), 0.15),scales=list(x=list(rot=90)), ylab=&quot;Fbar&quot;)</code></pre>
+<p><img src="Plotting_FLR_objects_using_lattice_files/figure-html/fig10-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="dotplots" class="section level2">
+<h2>DOTPLOTS</h2>
+<p>Dotplots can be used to plot FLQuants. In the following example, F at age is plotted for the available time-series and colours are used to indicate the different age classes.</p>
+<pre class="r"><code>dotplot(data~year,groups=age,harvest(ple4),
+        scales=list(x=list(rot=90)), auto.key=list(space=&#39;bottom&#39;,columns=5, cex=0.7),ylab=&quot;F at age&quot;)</code></pre>
+<p><img src="Plotting_FLR_objects_using_lattice_files/figure-html/fig11-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="histogram" class="section level2">
+<h2>HISTOGRAM</h2>
+<p>Histograms can be implemented to show what percent of total entries of an FLQuant falls within a specific range of values. The following example shows how younger age classes exhibit greater variability in terms of catch numbers compared to older age classes, as they are affected more from the size of incoming cohorts.</p>
+<pre class="r"><code>histogram(~data|age, catch.n(ple4), xlab=&#39;Catch numbers&#39;)</code></pre>
+<p><img src="Plotting_FLR_objects_using_lattice_files/figure-html/fig12-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="wireframe" class="section level2">
+<h2>WIREFRAME</h2>
+<p>Three-dimensional surface plots can also be used for for plotting FLQuants. In the following example F at age by year is plotted as a three dimensional surface.</p>
+<pre class="r"><code>wireframe(data~age+year, data=harvest(ple4),zlab=&quot;F&quot;,drape = TRUE,
+        col.regions = colorRampPalette(c(&quot;green&quot;, &quot;red&quot;))(100))</code></pre>
+<p><img src="Plotting_FLR_objects_using_lattice_files/figure-html/fig13-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="flr-specific-plots-bubbles" class="section level1">
+<h1>FLR specific plots BUBBLES</h1>
+<p>The bubble plots have been created specifically for FLR and they are typically used to visualise data by age classes.</p>
+<pre class="r"><code>bubbles(age~year, data=catch.n(ple4), xlab=&#39;&#39;, bub.scale=5)</code></pre>
+<p><img src="Plotting_FLR_objects_using_lattice_files/figure-html/fig14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>One could also specify parts of the object of interest, e.g. select age classes between 5 and 10 as following:</p>
+<pre class="r"><code>bubbles(age~year, data=catch.n(ple4)[5:10,], xlab=&#39;&#39;, bub.scale=10)</code></pre>
+<p><img src="Plotting_FLR_objects_using_lattice_files/figure-html/fig15-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="references" class="section level1">
+<h1>References</h1>
+<p><a href="https://cran.r-project.org/web/packages/lattice/lattice.pdf">Package “lattice” user manual</a><br />
+<a href="http://statmethods.net/advgraphs/trellis.html">Quick Lattice Graphs</a><br />
+<a href="http://doc.flr-project.org/A_quick_introduction_to_FLR.html">A quick introduction to FLR</a></p>
+</div>
+<div id="more-information" class="section level1">
+<h1>More information</h1>
+<ul>
+<li>You can submit bug reports, questions or suggestions on this tutorial at <a href="https://github.com/flr/doc/issues" class="uri">https://github.com/flr/doc/issues</a>.</li>
+<li>Or send a pull request to <a href="https://github.com/flr/doc/" class="uri">https://github.com/flr/doc/</a></li>
+<li>For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <a href="http://flr-project.org" class="uri">http://flr-project.org</a>.</li>
+</ul>
+<div id="software-versions" class="section level2">
+<h2>Software Versions</h2>
+<ul>
+<li>R version 3.3.2 (2016-10-31)</li>
+<li>FLCore: 2.6.0.20170228</li>
+<li>lattice: 0.20.34</li>
+<li><strong>Compiled</strong>: Tue Mar 7 16:58:49 2017</li>
+</ul>
+</div>
+<div id="license" class="section level2">
+<h2>License</h2>
+<p>This document is licensed under the <a href="https://creativecommons.org/licenses/by-sa/4.0">Creative Commons Attribution-ShareAlike 4.0 International</a> license.</p>
+</div>
+<div id="author-information" class="section level2">
+<h2>Author information</h2>
+<p><strong>Paris VASILAKOPOULOS</strong>. European Commission, DG Joint Research Centre, Directorate D - Sustainable Resources, Unit D.02 Water and Marine Resources, Via E. Fermi 2749, 21027 Ispra VA, Italy. <a href="https://ec.europa.eu/jrc/" class="uri">https://ec.europa.eu/jrc/</a></p>
+<p><strong>Arina MOTOVA</strong>. SEAFISH, 18 Logie Mill, Logie Green Road, EH7 4HS, Edinburgh, United Kingdom. <a href="http://www.seafish.org/" class="uri">http://www.seafish.org/</a></p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

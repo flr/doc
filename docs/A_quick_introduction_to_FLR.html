@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>A quick introduction to FLR</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="http://flr-project.org">
+    <span class="fa fa-home"></span>
+     
+    FLR
+  </a>
+</li>
+<li>
+  <a href="index.html">
+    <span class="fa fa-info"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Introduction
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Input
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Visualization
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Modelling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Advice
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    MSE
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A.html">Page A</a>
+    </li>
+    <li>
+      <a href="B.html">Page B</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://example.com">
+    <span class="fa fa-question fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">A quick introduction to FLR</h1>
+<h4 class="date"><em>07 March, 2017</em></h4>
+
+</div>
+
+
+<p>The Fisheries Library in R (FLR) is a collection of tools for quantitative fisheries science, developed in the R language, that facilitates the construction of bio-economic simulation models of fisheries systems.</p>
+<p>FLR builds on the powerful R environment and syntax to create a <a href="https://en.wikipedia.org/wiki/Domain-specific_language">domain-specific language</a> for the quantitative analysis of the expected risks and effects of fisheries management decisions. The classes and methods in FLR consider uncertainty an integral part of our knowledge of fisheries system. […]</p>
+<div id="required-packages" class="section level2">
+<h2>Required packages</h2>
+<p>To follow this tutorial you should have installed the following packages:</p>
+<ul>
+<li>FLR: <a href="http://www.flr-project.org/FLCore/">FLCore</a></li>
+</ul>
+<p>You can do so as follows,</p>
+<pre class="r"><code>install.packages(c(&quot;FLCore&quot;), repos=&quot;http://flr-project.org/R&quot;)</code></pre>
+</div>
+<div id="getting-started-with-flcore-classes" class="section level1">
+<h1>Getting started with FLCore classes</h1>
+<p>The main <em>classes</em> (i.e. data structures) and methods (i.e. procedures) in the FLR system are found in the <code>FLCore</code> package. Let’s load it first</p>
+<pre class="r"><code>library(FLCore)</code></pre>
+<p>so can then inspect an example object</p>
+<pre class="r"><code>data(ple4)</code></pre>
+<p>The <code>ple4</code> object is of class <code>FLStock</code>, used in <strong>FLR</strong> to represent the representation of the fish population that is constructed from catch and abundance data through an stock assesssment. <code>FLStock</code> is an S4 class (see <code>?Classes_Details</code> for futher details on S4 classes), consisting of a number of slots able to hold data or results for each of the elements in it. By calling the <code>summary</code> method on the object</p>
+<pre class="r"><code>summary(ple4)</code></pre>
+<pre><code>An object of class &quot;FLStock&quot;
+
+Name: Plaice in IV 
+Description: Imported from a VPA file. ( N:\Projecten\ICES WG\Demersale werkgroep  [...] 
+Quant: age 
+Dims:  age  year    unit    season  area    iter
+    10  52  1   1   1   1   
+
+Range:  min max pgroup  minyear maxyear minfbar maxfbar 
+    1   10  10  1957    2008    2   6   
+
+catch         : [ 1 52 1 1 1 1 ], units =  t 
+catch.n       : [ 10 52 1 1 1 1 ], units =  10^3 
+catch.wt      : [ 10 52 1 1 1 1 ], units =  kg 
+discards      : [ 1 52 1 1 1 1 ], units =  t 
+discards.n    : [ 10 52 1 1 1 1 ], units =  10^3 
+discards.wt   : [ 10 52 1 1 1 1 ], units =  kg 
+landings      : [ 1 52 1 1 1 1 ], units =  t 
+landings.n    : [ 10 52 1 1 1 1 ], units =  10^3 
+landings.wt   : [ 10 52 1 1 1 1 ], units =  kg 
+stock         : [ 1 52 1 1 1 1 ], units =  t 
+stock.n       : [ 10 52 1 1 1 1 ], units =  10^3 
+stock.wt      : [ 10 52 1 1 1 1 ], units =  kg 
+m             : [ 10 52 1 1 1 1 ], units =  m 
+mat           : [ 10 52 1 1 1 1 ], units =  NA 
+harvest       : [ 10 52 1 1 1 1 ], units =  f 
+harvest.spwn  : [ 10 52 1 1 1 1 ], units =  NA 
+m.spwn        : [ 10 52 1 1 1 1 ], units =  NA </code></pre>
+<p>we can inspect the slots, dimensions and structure. Most slots in the class (e.g. <code>catch</code> or <code>stock.n</code>) of themselves of another <strong>FLCore</strong> class, <code>FLQuant</code>. This class, the basic element used to assemble all other classes in <strong>FLR</strong>, is an 6-dimensional array that can take advantange of the powerful array algebra capabilities of R. All slots can be accessed and modified using accessors and replacement methods</p>
+<pre class="r"><code>catch(ple4)</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+age   1957   1958   1959   1960   1961  
+  all  78423  88240 109238 117138 118331
+
+      [ ...  42 years]
+
+     year
+age   2004   2005   2006   2007   2008  
+  all 117702 111060 121205  90283  96040</code></pre>
+<pre class="r"><code>m(ple4) &lt;- m(ple4) + m(ple4) * 0.5</code></pre>
+<p>Other standard R methods have also been defined for these classes in a way that is as intuitive as possible for any R user. For example, subsetting using the <code>[</code> operator works on both <code>FLStock</code></p>
+<pre class="r"><code>summary(ple4[, 1:10])</code></pre>
+<pre><code>An object of class &quot;FLStock&quot;
+
+Name: Plaice in IV 
+Description: Imported from a VPA file. ( N:\Projecten\ICES WG\Demersale werkgroep  [...] 
+Quant: age 
+Dims:  age  year    unit    season  area    iter
+    10  10  1   1   1   1   
+
+Range:  min max pgroup  minyear maxyear minfbar maxfbar 
+    1   10  10  1957    1966    2   6   
+
+catch         : [ 1 10 1 1 1 1 ], units =  t 
+catch.n       : [ 10 10 1 1 1 1 ], units =  10^3 
+catch.wt      : [ 10 10 1 1 1 1 ], units =  kg 
+discards      : [ 1 10 1 1 1 1 ], units =  t 
+discards.n    : [ 10 10 1 1 1 1 ], units =  10^3 
+discards.wt   : [ 10 10 1 1 1 1 ], units =  kg 
+landings      : [ 1 10 1 1 1 1 ], units =  t 
+landings.n    : [ 10 10 1 1 1 1 ], units =  10^3 
+landings.wt   : [ 10 10 1 1 1 1 ], units =  kg 
+stock         : [ 1 10 1 1 1 1 ], units =  t 
+stock.n       : [ 10 10 1 1 1 1 ], units =  10^3 
+stock.wt      : [ 10 10 1 1 1 1 ], units =  kg 
+m             : [ 10 10 1 1 1 1 ], units =  m 
+mat           : [ 10 10 1 1 1 1 ], units =  NA 
+harvest       : [ 10 10 1 1 1 1 ], units =  f 
+harvest.spwn  : [ 10 10 1 1 1 1 ], units =  NA 
+m.spwn        : [ 10 10 1 1 1 1 ], units =  NA </code></pre>
+<p>and <code>FLQuant</code></p>
+<pre class="r"><code>stock.n(ple4)[1,]</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+   year
+age 1957   1958   1959   1960   1961  
+  1 457973 698110 863386 757299 860577
+
+      [ ...  42 years]
+
+   year
+age 2004    2005    2006    2007    2008   
+  1 1159019  714344  820006  949341  844041</code></pre>
+<p>while ensuring that the result are always valid object of the same class. For example, selecting a single element along the first dimension (<code>age</code>) did not drop that dimension from the object, in contrast with the standard behaviour in R for <code>array</code>.</p>
+<p>Similarly to the <code>summary</code> method above, a common set of methods exist for each class to create new objects,</p>
+<pre class="r"><code>FLQuant(rlnorm(30), dimnames=list(age=0:5, year=2012:2017))</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+   year
+age 2012    2013    2014    2015    2016    2017   
+  0 0.60352 1.51710 1.68515 0.59522 0.15654 0.60352
+  1 1.93833 6.16351 0.84972 1.43151 4.84358 1.93833
+  2 0.24826 0.99065 0.61229 5.05653 3.67105 0.24826
+  3 3.14748 3.13919 0.93561 0.69980 0.88436 3.14748
+  4 0.97440 5.28007 1.36443 1.19544 0.69089 0.97440
+  5 2.09946 1.06234 0.53418 0.81529 2.49983 2.09946
+
+units:  NA </code></pre>
+<p>coerce to and from other classes,</p>
+<pre class="r"><code>head(as.data.frame(ple4))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">slot</th>
+<th align="left">age</th>
+<th align="right">year</th>
+<th align="left">unit</th>
+<th align="left">season</th>
+<th align="left">area</th>
+<th align="left">iter</th>
+<th align="right">data</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">catch</td>
+<td align="left">all</td>
+<td align="right">1957</td>
+<td align="left">unique</td>
+<td align="left">all</td>
+<td align="left">unique</td>
+<td align="left">1</td>
+<td align="right">78423</td>
+</tr>
+<tr class="even">
+<td align="left">catch</td>
+<td align="left">all</td>
+<td align="right">1958</td>
+<td align="left">unique</td>
+<td align="left">all</td>
+<td align="left">unique</td>
+<td align="left">1</td>
+<td align="right">88240</td>
+</tr>
+<tr class="odd">
+<td align="left">catch</td>
+<td align="left">all</td>
+<td align="right">1959</td>
+<td align="left">unique</td>
+<td align="left">all</td>
+<td align="left">unique</td>
+<td align="left">1</td>
+<td align="right">109238</td>
+</tr>
+<tr class="even">
+<td align="left">catch</td>
+<td align="left">all</td>
+<td align="right">1960</td>
+<td align="left">unique</td>
+<td align="left">all</td>
+<td align="left">unique</td>
+<td align="left">1</td>
+<td align="right">117138</td>
+</tr>
+<tr class="odd">
+<td align="left">catch</td>
+<td align="left">all</td>
+<td align="right">1961</td>
+<td align="left">unique</td>
+<td align="left">all</td>
+<td align="left">unique</td>
+<td align="left">1</td>
+<td align="right">118331</td>
+</tr>
+<tr class="even">
+<td align="left">catch</td>
+<td align="left">all</td>
+<td align="right">1962</td>
+<td align="left">unique</td>
+<td align="left">all</td>
+<td align="left">unique</td>
+<td align="left">1</td>
+<td align="right">125272</td>
+</tr>
+</tbody>
+</table>
+<p>or plot an object</p>
+<pre class="r"><code>plot(ple4)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="A_quick_introduction_to_FLR_files/figure-html/plotFLStock-1.png" alt="FLStock plot for ple4" width="672" />
+<p class="caption">
+FLStock plot for ple4
+</p>
+</div>
+<p>A number of fisheries specific calculations are also available, Figure 1. For example, the estimated spawning stock biomass (SSB), can be obtained from an <code>FLStock</code> object using</p>
+<pre class="r"><code>ssb(ple4)</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+age   1957   1958   1959   1960   1961  
+  all 274205 288540 296825 308164 321354
+
+      [ ...  42 years]
+
+     year
+age   2004   2005   2006   2007   2008  
+  all 151508 167531 173783 166061 206480</code></pre>
+<p>or the mean fishing mortality accross the fully-selected ages (<span class="math inline">\(\bar{F}\)</span>) with</p>
+<pre class="r"><code>fbar(ple4)</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+age   1957    1958    1959    1960    1961   
+  all 0.26857 0.32106 0.36734 0.36796 0.34756
+
+      [ ...  42 years]
+
+     year
+age   2004    2005    2006    2007    2008   
+  all 0.64015 0.62343 0.54764 0.46392 0.35631</code></pre>
+<div id="class-validity" class="section level2">
+<h2>Class validity</h2>
+<p>The S4 classes defined in <strong>FLCore</strong> all have validity functions defined that limit what changes can be made to an object for it to remain valid. This ensures that methods do not encounter objects that do not have the required dimensions, differ in dimension names, or are not compatible with each other. For example, the validity requirements for the <code>FLQuant</code> class require it</p>
+<ul>
+<li>To be a 6-dimensional array.</li>
+<li>The array is numeric.</li>
+<li>First dimension is not named ‘cohort’,</li>
+<li>and dimension 2:5 are named ‘year, ’unit’ ‘season’, ‘area’ and ‘iter’</li>
+</ul>
+<p>Object validity is checked by the class constructor but also by the replacement methods, for example when calling</p>
+<pre class="r"><code>catch(ple4) &lt;- landings(ple4) + discards(ple4)</code></pre>
+</div>
+</div>
+<div id="a-modelling-example-the-flsr-class" class="section level1">
+<h1>A modelling example: the FLSR class</h1>
+<p>A different type of class defined in <strong>FLCore</strong> is <code>FLSR</code>. This class allows for fitting, exploration and prediction of a stock-recruitment relationship. An example dataset is also available, corresponding to the North Sea herring stock</p>
+<pre class="r"><code>data(nsher)
+summary(nsher)</code></pre>
+<pre><code>An object of class &quot;FLSR&quot;
+
+Name:  
+Description:  
+Quant: age 
+Dims:  age  year    unit    season  area    iter
+    1   45  1   1   1   1   
+
+Range:  min minyear max maxyear 
+    0   1960    0   2004    
+
+rec           : [ 1 45 1 1 1 1 ], units =  10^3 
+ssb           : [ 1 45 1 1 1 1 ], units =  t*10^3 
+residuals     : [ 1 45 1 1 1 1 ], units =  NA 
+fitted        : [ 1 45 1 1 1 1 ], units =  10^3 
+
+Model:  rec ~ a * ssb * exp(-b * ssb)
+&lt;environment: 0xe599430&gt;
+Parameters: 
+    params
+iter     a        b
+   1 119.4 0.009451
+
+Log-likelihood:  15.862(0) 
+Variance-covariance:    
+            a         b
+  a 255.33882 1.809e-02
+  b   0.01809 1.993e-06</code></pre>
+<p>The class holds together <code>FLQuant</code> slots for inputs (<code>rec</code> for recruitment in numbers and <code>ssb</code> for spawning stock biomass or any other proxy of stock reproductive potential) and outputs of the fit (<code>fitted</code> for the estimated recruitment, and <code>residuals</code>, the log residuals of the estimates). It also contains the necessary elements for the model fit to be carried out using maximum likelihood estimation:</p>
+<ul>
+<li><code>logl</code>: a function that computes the log-likehood to be passed on to <code>optim</code>.</li>
+<li><code>model</code>: a formula to calculate the estimated recruitment.</li>
+<li><code>initial</code>: a function to obtain initial parameter values for the minimization algorithm.</li>
+</ul>
+<p>By calling the method that carries out the minimization, <code>fmle</code>, we obtain a new object in which the results of the fit are now available</p>
+<ul>
+<li><code>params</code>: the estimated parameters</li>
+<li><code>logLik</code>: the log-likelihood and degrees of freedom</li>
+<li><code>covar</code>: the variance-covariance matrix of the fit</li>
+<li><code>hessian</code>: the Hessian matrix of the fit</li>
+</ul>
+<p>as well as some other information returned by the fitting procedure.</p>
+<p>Of course we can visualize the result of the model fit, together with an useful set of diagnostics, by simply calling</p>
+<pre class="r"><code>plot(nsher)</code></pre>
+<p><img src="A_quick_introduction_to_FLR_files/figure-html/plotFLSR-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="flbiol" class="section level1">
+<h1>FLBiol</h1>
+</div>
+<div id="packages" class="section level1">
+<h1>Packages</h1>
+</div>
+<div id="references" class="section level1">
+<h1>References</h1>
+<p>L. T. Kell, I. Mosqueira, P. Grosjean, J-M. Fromentin, D. Garcia, R. Hillary, E. Jardim, S. Mardle, M. A. Pastoors, J. J. Poos, F. Scott, R. D. Scott; FLR: an open-source framework for the evaluation and development of management strategies. <em>ICES J Mar Sci</em> 2007; 64 (4): 640-646. doi: <a href="https://doi.org/10.1093/icesjms/fsm012">10.1093/icesjms/fsm012</a></p>
+</div>
+<div id="more-information" class="section level1">
+<h1>More information</h1>
+<ul>
+<li>You can submit bug reports, questions or suggestions on this tutorial at <a href="https://github.com/flr/doc/issues" class="uri">https://github.com/flr/doc/issues</a>.</li>
+<li>Or send a pull request to <a href="https://github.com/flr/doc/" class="uri">https://github.com/flr/doc/</a></li>
+<li>For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <a href="http://flr-project.org" class="uri">http://flr-project.org</a>.</li>
+</ul>
+<div id="software-versions" class="section level2">
+<h2>Software Versions</h2>
+<ul>
+<li>R version 3.3.2 (2016-10-31)</li>
+<li>FLCore: 2.6.0.20170228</li>
+<li><strong>Compiled</strong>: Tue Mar 7 16:58:46 2017</li>
+</ul>
+</div>
+<div id="license" class="section level2">
+<h2>License</h2>
+<p>This document is licensed under the <a href="https://creativecommons.org/licenses/by-sa/4.0">Creative Commons Attribution-ShareAlike 4.0 International</a> license.</p>
+</div>
+<div id="author-information" class="section level2">
+<h2>Author information</h2>
+<p><strong>Iago MOSQUEIRA</strong>. European Commission, DG Joint Research Centre, Directorate D - Sustainable Resources, Unit D.02 Water and Marine Resources, Via E. Fermi 2749, 21027 Ispra VA, Italy. <a href="https://ec.europa.eu/jrc/" class="uri">https://ec.europa.eu/jrc/</a></p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
