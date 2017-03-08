@@ -893,19 +893,19 @@ iters:  200
 
    year
 age 2008           2009           2010           2011          
-  1 844041(     0) 836074(385110) 855582(324725) 878757(430884)
+  1 844041(     0) 836074(385110) 857335(325390) 881970(432963)
    year
 age 2012          
-  1 868431(417748)
+  1 872054(418206)
 
       [ ...  1 years]
 
    year
 age 2014           2015           2016           2017          
-  1 844041(     0) 836074(385110) 855582(324725) 878757(430884)
+  1 844041(     0) 836074(385110) 857335(325390) 881970(432963)
    year
 age 2018          
-  1 868431(417748)</code></pre>
+  1 872054(418206)</code></pre>
 <pre class="r"><code>fbar(ple4_stoch_rec)[,ac(2008:2018)]</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 iters:  200 
@@ -914,19 +914,19 @@ iters:  200
 
      year
 age   2008            2009            2010            2011           
-  all 0.35631(0.0000) 0.30430(0.0116) 0.24641(0.0374) 0.18497(0.0485)
+  all 0.35631(0.0000) 0.28059(0.0100) 0.21405(0.0300) 0.15290(0.0373)
      year
 age   2012           
-  all 0.13795(0.0409)
+  all 0.11049(0.0297)
 
       [ ...  1 years]
 
      year
 age   2014            2015            2016            2017           
-  all 0.35631(0.0000) 0.30430(0.0116) 0.24641(0.0374) 0.18497(0.0485)
+  all 0.35631(0.0000) 0.28059(0.0100) 0.21405(0.0300) 0.15290(0.0373)
      year
 age   2018           
-  all 0.13795(0.0409)</code></pre>
+  all 0.11049(0.0297)</code></pre>
 <pre class="r"><code>ssb(ple4_stoch_rec)[,ac(2008:2018)]</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 iters:  200 
@@ -935,19 +935,19 @@ iters:  200
 
      year
 age   2008          2009          2010          2011         
-  all 206480(    0) 220230(    0) 254265(18959) 295964(41527)
+  all 206480(    0) 231522(    0) 285544(19908) 355350(45295)
      year
 age   2012         
-  all 359881(84946)
+  all 451938(98260)
 
       [ ...  1 years]
 
      year
 age   2014          2015          2016          2017         
-  all 206480(    0) 220230(    0) 254265(18959) 295964(41527)
+  all 206480(    0) 231522(    0) 285544(19908) 355350(45295)
      year
 age   2018         
-  all 359881(84946)</code></pre>
+  all 451938(98260)</code></pre>
 </div>
 <div id="example-8-stochastic-target-values" class="section level2">
 <h2>Example 8: stochastic target values</h2>
@@ -1052,13 +1052,13 @@ iters:  200
 
    year
 age 2008         2009         2010         2011         2012        
-  1 844041(   0) 903372(   0) 905894(   0) 911727(2982) 915766(3715)
+  1 844041(   0) 903372(   0) 907749(   0) 915265(2469) 920593(2761)
 
       [ ...  1 years]
 
    year
 age 2014         2015         2016         2017         2018        
-  1 844041(   0) 903372(   0) 905894(   0) 911727(2982) 915766(3715)</code></pre>
+  1 844041(   0) 903372(   0) 907749(   0) 915265(2469) 920593(2761)</code></pre>
 <p>Remember that here recruitment is not being driven by random residuals, it is only be driven by SSB. The recruitment in year Y is a result of the SSB in year Y-1. The SSB in year Y-1 is a result of the catch in year Y-2. So if catch is stochastic in 2009, we don’t see the impact of the stochasticity on the recruitment until 2011. Even then the impact is small. This seems unlikely so we can also put in recruitment residuals (we already made them for Example 7).</p>
 <pre class="r"><code>ple4_catch_iters &lt;- fwd(ple4_mtf, control=ctrl_catch_iters, sr = ple4_sr, residuals = multi_rec_residuals)</code></pre>
 <p>What happened?</p>
@@ -1088,19 +1088,19 @@ iters:  200
 
    year
 age 2008           2009           2010           2011          
-  1 844041(     0) 836074(385110) 855582(324725) 877513(431789)
+  1 844041(     0) 836074(385110) 857335(325390) 880963(433424)
    year
 age 2012          
-  1 866263(414516)
+  1 870721(416835)
 
       [ ...  1 years]
 
    year
 age 2014           2015           2016           2017          
-  1 844041(     0) 836074(385110) 855582(324725) 877513(431789)
+  1 844041(     0) 836074(385110) 857335(325390) 880963(433424)
    year
 age 2018          
-  1 866263(414516)</code></pre>
+  1 870721(416835)</code></pre>
 </div>
 </div>
 <div id="to-do" class="section level1">
@@ -1131,7 +1131,7 @@ age 2018
 <li>FLCore: 2.6.0.20170228</li>
 <li>FLasher: 0.0.2.9000</li>
 <li>FLAssess: 2.5.20150717</li>
-<li><strong>Compiled</strong>: Wed Mar 8 09:00:00 2017</li>
+<li><strong>Compiled</strong>: Wed Mar 8 10:56:30 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">

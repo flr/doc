@@ -8,7 +8,7 @@
 
 # knitr
 opts_chunk$set(fig.align='center', comment=NA,
-  message=FALSE, warning=FALSE, echo=TRUE, cache=TRUE)
+  message=FALSE, warning=FALSE, echo=TRUE, cache=FALSE)
 
 set.seed(1423)
 

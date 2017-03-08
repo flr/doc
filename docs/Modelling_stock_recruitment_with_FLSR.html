@@ -373,7 +373,7 @@ residuals     : [ 1 51 1 1 1 1 ], units =  NA
 fitted        : [ 1 51 1 1 1 1 ], units =  10^3 
 
 Model:  list()
-&lt;environment: 0xa476548&gt;
+&lt;environment: 0x9d6bb18&gt;
 Parameters: 
     params
 iter
@@ -445,7 +445,7 @@ units:  10^3 </code></pre>
 model(p4sr) &lt;- ricker()
 model(p4sr)</code></pre>
 <pre><code>rec ~ a * ssb * exp(-b * ssb)
-&lt;environment: 0xfd64940&gt;</code></pre>
+&lt;environment: 0x95603d8&gt;</code></pre>
 <pre class="r"><code># the fmle method then fits the SR model using logl and R&#39;s optim model fitting through MLE
 p4sr&lt;-fmle(p4sr)</code></pre>
 <pre><code>  Nelder-Mead direct search function minimizer
@@ -498,7 +498,7 @@ initial(p4sr)</code></pre>
     res &lt;- coefficients(lm(log(c(rec)/c(ssb)) ~ c(ssb)))
     return(FLPar(a = max(exp(res[1])), b = -max(res[2])))
 }
-&lt;environment: 0xfd64940&gt;
+&lt;environment: 0x95603d8&gt;
 attr(,&quot;lower&quot;)
 [1] -Inf -Inf
 attr(,&quot;upper&quot;)
@@ -539,7 +539,7 @@ residuals     : [ 1 45 1 1 1 1 ], units =  NA
 fitted        : [ 1 45 1 1 1 1 ], units =  10^3 
 
 Model:  rec ~ a * ssb * exp(-b * ssb)
-&lt;environment: 0xb582bd0&gt;
+&lt;environment: 0xa013e60&gt;
 Parameters: 
     params
 iter     a        b
@@ -1085,7 +1085,7 @@ Exiting from Nelder Mead minimizer
 <li>FLCore: 2.6.0.20170228</li>
 <li>ggplotFL: 2.5.9.9000</li>
 <li>ggplot2: 2.2.1</li>
-<li><strong>Compiled</strong>: Wed Mar 8 09:00:02 2017</li>
+<li><strong>Compiled</strong>: Wed Mar 8 10:57:40 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">

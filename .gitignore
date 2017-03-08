@@ -1,4 +1,8 @@
 /*_cache/
 /*_files/
-docs/pdf/*_files/
 /*.html
+.Rproj.user
+docs/pdf/*_files/
+docs/Makefile
+docs/bibliography.bib
+docs/R/ini.R
