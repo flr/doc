@@ -311,7 +311,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Modelling Individual Growth and Using Stochastic Slicing to Convert Length-based Data Into Age-based Data</h1>
 <h3 class="subtitle"><em>Assessment for All initiative(a4a)</em></h3>
-<h4 class="date"><em>07 March, 2017</em></h4>
+<h4 class="date"><em>08 March, 2017</em></h4>
 
 </div>
 
@@ -645,7 +645,7 @@ Growth curves from the using an archmCopula copula with triangle margins.
 <pre class="r"><code>vbTriSmall &lt;- mvrtriangle(10, vbObj, paramMargins=triPars)
 cth.n &lt;- l2a(catch.n(rfLen.stk), vbTriSmall)</code></pre>
 <pre class="r"><code>dim(cth.n)</code></pre>
-<pre><code>[1] 78 26  1  4  1 10</code></pre>
+<pre><code>[1] 77 26  1  4  1 10</code></pre>
 <p>In the previous example, the <code>FLQuant</code> object that was sliced (<code>catch.n(rfLen.stk)</code>) had only one iteration. This iteration was sliced by each of the iterations in the growth model. It is possible for the <code>FLQuant</code> object to have the same number of iterations as the growth model, in which case each iteration of the <code>FLQuant</code> and the growth model are used together. It is also possible for the growth model to have only one iteration while the <code>FLQuant</code> object has many iterations. The same growth model is then used for each of the <code>FLQuant</code> iterations. As with all <code>FLR</code> objects, the general rule is <em>one or n</em> iterations.</p>
 <p>As well as converting one <code>FLQuant</code> at a time, we can convert entire <code>FLStock</code> and <code>FLIndex</code> objects. In these cases the individual <code>FLQuant</code> slots of those classes are converted from length-based to age-based. As mentioned above, the aggregation method depends on the type of values the slots contain. The abundance slots (<code>*.n</code>, such as <code>stock.n</code>) are summed. The <code>*.wt</code>, <code>m</code>, <code>mat</code>, <code>harvest.spwn</code> and <code>m.spwn</code> slots of an <code>FLStock</code> object are averaged. The <code>catch.wt</code> and <code>sel.pattern</code> slots of an <code>FLIndex</code> object are averaged, while the <code>index</code>, <code>index.var</code> and <code>catch.n</code> slots are summed.</p>
 <p>The method for <code>FLStock</code> classes takes an additional argument for the plusgroup.</p>
@@ -681,7 +681,7 @@ cth.n &lt;- l2a(catch.n(rfLen.stk), vbTriSmall)</code></pre>
 <li>R version 3.3.2 (2016-10-31)</li>
 <li>FLCore: 2.6.0.20170228</li>
 <li>FLa4a: 1.0.0</li>
-<li><strong>Compiled</strong>: Tue Mar 7 16:58:48 2017</li>
+<li><strong>Compiled</strong>: Wed Mar 8 09:00:01 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">

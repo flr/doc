@@ -311,7 +311,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">The a4a Stock Assessment Modelling Framework</h1>
 <h3 class="subtitle"><em>Assessment for All initiative(a4a)</em></h3>
-<h4 class="date"><em>07 March, 2017</em></h4>
+<h4 class="date"><em>08 March, 2017</em></h4>
 
 </div>
 
@@ -483,7 +483,7 @@ Predict and observed abundance-at-age
 Predict and observed abundance-at-age
 </p>
 </div>
-<p>%Finally a retrospective analysis can be carried out using the method `ra()}. Figure 9 shows the results for this assessment.</p>
+<p>%Finally a retrospective analysis can be carried out using the method `ra()}. Figure 10 shows the results for this assessment.</p>
 <p>%<code>{r, retro, fig.cap=&quot;Retrospective analysis&quot;} %retro &lt;- ra(ple4, ple4.indices, 5) %plot(retro) %</code></p>
 <p>To get information about the likelihood fit the method <code>fitSumm()</code> will extract information about likelihood, number of parameters, etc, and the methods <code>AIC()</code> and <code>BIC()</code> will compute the information criteria.</p>
 <pre class="r"><code>fitSumm(fit)</code></pre>
@@ -539,7 +539,7 @@ Predict and observed abundance-at-age
 <div id="fishing-mortality-submodel" class="section level2">
 <h2>Fishing mortality submodel</h2>
 <p>We will now take a look at some examples for F models and the forms that we can get. We’ll fix the <span class="math inline">\(Q\)</span> and <span class="math inline">\(R\)</span> submodels.</p>
-<p>Lets start with a separable model in which age and year effects are modelled as dummy variables, using the <code>factor</code> coding provided by R (Figure 10). We’ll use only one index to save running time, with the code <code>ple4.indices[1]</code>. This code creates an <code>FLIndices</code> object which has the first element of our list of indices. Note the difference with <code>ple4.indices[[1]]</code> that would extract the first element of the list, an <code>FLIndex</code> object.</p>
+<p>Lets start with a separable model in which age and year effects are modelled as dummy variables, using the <code>factor</code> coding provided by R (Figure 11). We’ll use only one index to save running time, with the code <code>ple4.indices[1]</code>. This code creates an <code>FLIndices</code> object which has the first element of our list of indices. Note the difference with <code>ple4.indices[[1]]</code> that would extract the first element of the list, an <code>FLIndex</code> object.</p>
 <pre class="r"><code>qmod &lt;- list(~ factor(age))
 fmod &lt;- ~ factor(age) + factor(year)
 srmod &lt;- ~ factor(year)
@@ -550,7 +550,7 @@ fit &lt;- sca(stock = ple4, indices = ple4.indices[1], fmodel=fmod, qmodel=qmod,
 Fishing mortality separable model
 </p>
 </div>
-<p>Next we may make things a bit more interesting by using an (unpenalised) thin plate spline, where we’ll borrow the smoothing splines method (<code>s()</code>) provided by package <a href="http://cran.r-project.org/web/packages/mgcv/">mgcv</a>. We’re using the North Sea Plaice data again, and since it has 10 ages we will use a simple rule of thumb that the spline should have fewer than <span class="math inline">\(\frac{10}{2} = 5\)</span> degrees of freedom, and so we opt for 4 degrees of freedom. We will also do the same for year and model the change in F through time as a smoother with 20 degrees of freedom. Note that this is still a separable model, it’s a smoothed version of the previous model (Figure 11).</p>
+<p>Next we may make things a bit more interesting by using an (unpenalised) thin plate spline, where we’ll borrow the smoothing splines method (<code>s()</code>) provided by package <a href="http://cran.r-project.org/web/packages/mgcv/">mgcv</a>. We’re using the North Sea Plaice data again, and since it has 10 ages we will use a simple rule of thumb that the spline should have fewer than <span class="math inline">\(\frac{10}{2} = 5\)</span> degrees of freedom, and so we opt for 4 degrees of freedom. We will also do the same for year and model the change in F through time as a smoother with 20 degrees of freedom. Note that this is still a separable model, it’s a smoothed version of the previous model (Figure 12).</p>
 <pre class="r"><code>fmod &lt;- ~ s(age, k=4) + s(year, k = 20)
 # notice that you can specify the submodels without the argument, as an example you
 # don&#39;t need fmodel=fmod, but the order should be respected...
@@ -561,7 +561,7 @@ fit &lt;- sca(ple4, ple4.indices[1], fmod, qmod, srmod)</code></pre>
 Fishing mortality smoothed separable model
 </p>
 </div>
-<p>A non-separable model, where we consider age and year to interact can be modeled using a smooth interaction term in the F model using a tensor product of cubic splines with the `te} method (Figure 12), again borrowed from <a href="http://cran.r-project.org/web/packages/mgcv/index.html">mgcv</a>.</p>
+<p>A non-separable model, where we consider age and year to interact can be modeled using a smooth interaction term in the F model using a tensor product of cubic splines with the `te} method (Figure 13), again borrowed from <a href="http://cran.r-project.org/web/packages/mgcv/index.html">mgcv</a>.</p>
 <pre class="r"><code>fmod &lt;- ~ te(age, year, k = c(4,20))
 fit &lt;- sca(ple4, ple4.indices[1], fmod, qmod, srmod)</code></pre>
 <div class="figure" style="text-align: center">
@@ -570,7 +570,7 @@ fit &lt;- sca(ple4, ple4.indices[1], fmod, qmod, srmod)</code></pre>
 Fishing mortality smoothed non-separable model
 </p>
 </div>
-<p>In the last examples the fishing mortalities (Fs’) are linked across age and time. What if we want to free up a specific age class because in the residuals we see a consistent pattern. This can happen, for example, if the spatial distribution of juveniles is disconnected to the distribution of adults. The fishery focuses on the adult fish, and therefore the the F on young fish is a function of the distribution of the juveniles and could deserve a specific model. This can be achieved by adding a component for the year effect on age 1 (Figure 13).</p>
+<p>In the last examples the fishing mortalities (Fs’) are linked across age and time. What if we want to free up a specific age class because in the residuals we see a consistent pattern. This can happen, for example, if the spatial distribution of juveniles is disconnected to the distribution of adults. The fishery focuses on the adult fish, and therefore the the F on young fish is a function of the distribution of the juveniles and could deserve a specific model. This can be achieved by adding a component for the year effect on age 1 (Figure 14).</p>
 <pre class="r"><code>fmod &lt;- ~ te(age, year, k = c(4,20)) + s(year, k = 5, by = as.numeric(age==1))
 fit &lt;- sca(ple4, ple4.indices[1], fmod, qmod, srmod)</code></pre>
 <div class="figure" style="text-align: center">
@@ -586,7 +586,7 @@ Fishing mortality age-year interaction model with extra age 1 smoother.
 <p>We’ll start by fixing the <span class="math inline">\(F\)</span> and <span class="math inline">\(R\)</span> models and compute the fraction of the year the index relates to, which will allow us to compute catchability at age and year.</p>
 <pre class="r"><code>fmod &lt;- ~ factor(age) + factor(year)
 srmod &lt;- ~ factor(year)</code></pre>
-<p>A first model is simply a dummy effect on age, which means that a coefficient will be estimated for each age. Note that this kind of model considers that levels of the factor are independent (Figure 14).</p>
+<p>A first model is simply a dummy effect on age, which means that a coefficient will be estimated for each age. Note that this kind of model considers that levels of the factor are independent (Figure 15).</p>
 <pre class="r"><code>qmod &lt;- list(~ factor(age))
 fit &lt;- sca(ple4, ple4.indices[1], fmod, qmod, srmod)</code></pre>
 <p>To compute the catchability estimated for each index we’ll need to compute the abundance at the moment the index was carried out and divide the predicted index by the abundance. More precisely we’ll compute abundance in the mid of the index period, which is stored in the <code>FLIndex</code> object, in the slot <code>range</code>, in fractions of the year. Later we’ll see that we can use the method <code>predict()</code> to get the same result, but we’ll need a <code>a4aFitSA</code> object to get the fitted parameters.</p>
@@ -605,7 +605,7 @@ qhat &lt;- index(fit)[[1]]/stkn</code></pre>
 Catchability age independent model
 </p>
 </div>
-<p>If one considers catchability at a specific age to be dependent on catchability on the other ages, similar to a selectivity modelling approach, one option is to use a smoother at age, and let the data ‘speak’ regarding the shape (Figure 15).</p>
+<p>If one considers catchability at a specific age to be dependent on catchability on the other ages, similar to a selectivity modelling approach, one option is to use a smoother at age, and let the data ‘speak’ regarding the shape (Figure 16).</p>
 <pre class="r"><code>qmod &lt;- list(~ s(age, k=4))
 fit &lt;- sca(ple4, ple4.indices[1], fmod, qmod, srmod)
 
@@ -621,7 +621,7 @@ qhat &lt;- index(fit)[[1]]/stkn</code></pre>
 Catchability smoother age model
 </p>
 </div>
-<p>As in the case of <span class="math inline">\(F\)</span>, one may consider catchability to be a process that evolves with age and year, including an interaction between the two effects. Such model can be modelled using the tensor product of cubic splines, the same way we did for the <span class="math inline">\(F\)</span> model (Figure 16).</p>
+<p>As in the case of <span class="math inline">\(F\)</span>, one may consider catchability to be a process that evolves with age and year, including an interaction between the two effects. Such model can be modelled using the tensor product of cubic splines, the same way we did for the <span class="math inline">\(F\)</span> model (Figure 17).</p>
 <pre class="r"><code>qmod &lt;- list(~ te(age, year, k = c(3,40)))
 fit &lt;- sca(ple4, ple4.indices[1], fmod, qmod, srmod)
 
@@ -637,7 +637,7 @@ qhat &lt;- index(fit)[[1]]/stkn</code></pre>
 Catchability tensor product of age and year
 </p>
 </div>
-<p>Finally, one may want to investigate a trend in catchability with time, very common in indices built from CPUE data. In the example given here we’ll use a linear trend in time, set up by a simple linear model (Figure 17).</p>
+<p>Finally, one may want to investigate a trend in catchability with time, very common in indices built from CPUE data. In the example given here we’ll use a linear trend in time, set up by a simple linear model (Figure 18).</p>
 <pre class="r"><code>qmod &lt;- list( ~ s(age, k=4) + year)
 fit &lt;- sca(ple4, ple4.indices[1], fmod, qmod, srmod)
 
@@ -681,7 +681,7 @@ age   2004   2005   2006   2007   2008
   all 309.57 254.20 277.95 248.41 304.06</code></pre>
 <pre class="r"><code># fitting the model
 fit &lt;- sca(ple4, FLIndices(bioidx), qmodel=list(~1))</code></pre>
-<p>The same methods that are applied to age disaggregated indices apply here, see standardized log residuals in Figure 18. It’s also possible to mix several indices of both types.</p>
+<p>The same methods that are applied to age disaggregated indices apply here, see standardized log residuals in Figure 19. It’s also possible to mix several indices of both types.</p>
 <div class="figure" style="text-align: center">
 <img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/resbio-1.png" alt="Catchability residuals for a biomass index" width="672" />
 <p class="caption">
@@ -701,7 +701,7 @@ range(bioidx)[c(&quot;min&quot;,&quot;max&quot;)] &lt;- c(2,4)
 
 # fitting the model
 fit &lt;- sca(ple4, FLIndices(bioidx), qmodel=list(~1))</code></pre>
-<p>And once more residual plots as dignostics (Figure 19).</p>
+<p>And once more residual plots as dignostics (Figure 20).</p>
 <div class="figure" style="text-align: center">
 <img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/resbio2-1.png" alt="Catchability residuals for a biomass index" width="672" />
 <p class="caption">
@@ -713,7 +713,7 @@ Catchability residuals for a biomass index
 <h2>Catchability submodel for single age indices</h2>
 <p>Similar to age aggregated indices one may have an index that relates only to one age, like a recruitment index. In this case the <code>FLIndex</code> object must have in the first dimension the age it referes to. The fit is then done relating the index with the proper age in numbers. Note that in this case the qmodel should be set without age factors, although it can have a “year” component and covariates if needed.</p>
 <pre class="r"><code>fit &lt;- sca(ple4, FLIndices(ple4.index[1]), qmodel=list(~1))</code></pre>
-<p>As previously, the same methods apply, see standardized log residuals in Figure 20.</p>
+<p>As previously, the same methods apply, see standardized log residuals in Figure 21.</p>
 <div class="figure" style="text-align: center">
 <img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/resrec-1.png" alt="Catchability residuals for a single age index" width="672" />
 <p class="caption">
@@ -723,7 +723,7 @@ Catchability residuals for a single age index
 </div>
 <div id="stock-recruitment-submodel" class="section level2">
 <h2>Stock-recruitment submodel</h2>
-<p>The S/R submodel is a special case, in the sense that it can be set up with the same linear tools as the <span class="math inline">\(F\)</span> and <span class="math inline">\(Q\)</span> models, but it can also use some hard coded models. The example shows how to set up a simple dummy model with <code>factor()</code>, a smooth model with <code>s()</code>, a Ricker model (<code>ricker()</code>), a Beverton and Holt model (<code>bevholt()</code>), a hockey stick model (<code>hockey()</code>), and a geometric mean model (<code>geomean()</code>). See Figure 21 for results. As mentioned before, the ‘structural’ models have a fixed variance, which must be set by defining the coefficient of variation. We now fix the <span class="math inline">\(F\)</span> and <span class="math inline">\(Q\)</span> submodels before fiddling around with the S/R model.</p>
+<p>The S/R submodel is a special case, in the sense that it can be set up with the same linear tools as the <span class="math inline">\(F\)</span> and <span class="math inline">\(Q\)</span> models, but it can also use some hard coded models. The example shows how to set up a simple dummy model with <code>factor()</code>, a smooth model with <code>s()</code>, a Ricker model (<code>ricker()</code>), a Beverton and Holt model (<code>bevholt()</code>), a hockey stick model (<code>hockey()</code>), and a geometric mean model (<code>geomean()</code>). See Figure 22 for results. As mentioned before, the ‘structural’ models have a fixed variance, which must be set by defining the coefficient of variation. We now fix the <span class="math inline">\(F\)</span> and <span class="math inline">\(Q\)</span> submodels before fiddling around with the S/R model.</p>
 <pre class="r"><code>fmod &lt;- ~ s(age, k=4) + s(year, k = 20)
 qmod &lt;- list(~ s(age, k=4))</code></pre>
 <pre class="r"><code>srmod &lt;- ~ factor(year)
@@ -797,7 +797,7 @@ submodels(fit)</code></pre>
        BTS-Isis: ~1</code></pre>
 <div id="n1-model" class="section level2">
 <h2>N1 model</h2>
-<p>The submodel for the stock number at age in the first year of the time series is set up with the usual linear tools (Figure 22), but bare in mind that the year effect does not make sense here.</p>
+<p>The submodel for the stock number at age in the first year of the time series is set up with the usual linear tools (Figure 26), but bare in mind that the year effect does not make sense here.</p>
 <pre class="r"><code>n1mod &lt;- ~s(age, k=4)
 fit1 &lt;- a4aSCA(ple4, ple4.indices[1], n1model=n1mod)
 flqs &lt;- FLQuants(smother=stock.n(fit1)[,1], factor=stock.n(fit)[,1])</code></pre>
@@ -811,7 +811,7 @@ Nay=1 models
 <div id="variance-model" class="section level2">
 <h2>Variance model</h2>
 <p>The variance model allows the user to set up the shape of the observation variances <span class="math inline">\(\sigma^2_{ay}\)</span> and <span class="math inline">\(I_{ays}\)</span>. This is an important subject related with fisheries data used for input to stock assessment models. It’s quite common to have more precision on the most represented ages and less precision on the less frequent ages. This is due to the fact that the last ages do not appear as often at the auction markets, in the fishing operations or on survey samples.</p>
-<p>By default the model assumes constant variance over time and ages (~ 1 model) but it can use other models specified by the user. As with the other submodels, R linear model capabilities are used (Figure 23).</p>
+<p>By default the model assumes constant variance over time and ages (~ 1 model) but it can use other models specified by the user. As with the other submodels, R linear model capabilities are used (Figure 27).</p>
 <pre class="r"><code>vmod &lt;- list(~1, ~1)
 fit1 &lt;- a4aSCA(ple4, ple4.indices[1], vmodel=vmod)
 vmod &lt;- list(~ s(age, k=4), ~1)
@@ -833,7 +833,7 @@ dnms &lt;- list(quant=&quot;nao&quot;, year=1948:2009, unit=&quot;unique&quot;, 
 nao &lt;- FLQuant(unlist(nao[,-1]), dimnames=dnms, units=&quot;nao&quot;)
 nao &lt;- seasonMeans(trim(nao, year=dimnames(stock.n(ple4))$year))
 nao &lt;- as.numeric(nao)</code></pre>
-<p>First by simply assuming that the NAO index drives recruitment (Figure 24).</p>
+<p>First by simply assuming that the NAO index drives recruitment (Figure 28).</p>
 <pre class="r"><code>srmod &lt;- ~ nao
 fit2 &lt;- sca(ple4, ple4.indices[1], qmodel=list(~s(age, k=4)), srmodel=srmod)
 flqs &lt;- FLQuants(simple=stock.n(fit)[1], covar=stock.n(fit2)[1])</code></pre>
@@ -843,7 +843,7 @@ flqs &lt;- FLQuants(simple=stock.n(fit)[1], covar=stock.n(fit2)[1])</code></pre>
 Recruitment model with covariates. Using the NAO index as a recruitment index.
 </p>
 </div>
-<p>In a second model we’re using the NAO index not to model recruitment directly but to model one of the parameters of the S/R function (Figure 25).</p>
+<p>In a second model we’re using the NAO index not to model recruitment directly but to model one of the parameters of the S/R function (Figure 29).</p>
 <pre class="r"><code>srmod &lt;- ~ ricker(a=~nao, CV=0.1)
 fit3 &lt;- sca(ple4, ple4.indices[1], qmodel=list(~s(age, k=4)), srmodel=srmod)
 flqs &lt;- FLQuants(simple=stock.n(fit)[1], covar=stock.n(fit3)[1])</code></pre>
@@ -881,7 +881,7 @@ $vmodel
 </div>
 <div id="simulate" class="section level2">
 <h2>Simulate</h2>
-<p>Simulate uses the variance-covariance matrix computed from the Hessian returned by <code>ADMB</code> and the fitted parameters, to parametrize a multivariate normal distribution. The simulations are carried out using the method <code>mvrnorm()</code> provided by the R package <a href="http://cran.r-project.org/web/packages/MASS/">MASS</a>. Figure 26 shows a comparison between the estimated values and the medians of the simulation, while Figure 27 presents the stock summary of the simulated and fitted data.</p>
+<p>Simulate uses the variance-covariance matrix computed from the Hessian returned by <code>ADMB</code> and the fitted parameters, to parametrize a multivariate normal distribution. The simulations are carried out using the method <code>mvrnorm()</code> provided by the R package <a href="http://cran.r-project.org/web/packages/MASS/">MASS</a>. Figure 30 shows a comparison between the estimated values and the medians of the simulation, while Figure 31 presents the stock summary of the simulated and fitted data.</p>
 <pre class="r"><code>fits &lt;- simulate(fit, 100)
 flqs &lt;- FLQuants(sim=iterMedians(stock.n(fits)), det=stock.n(fit))</code></pre>
 <div class="figure" style="text-align: center">
@@ -1009,7 +1009,7 @@ fitmc2 &lt;- a4aSCA(ple4, ple4.indices, qmodel=list(~s(age, k=3), ~s(age, k=3),~
 <pre class="r"><code>fit &lt;- sca(ple4, ple4.indices[1], fit=&quot;assessment&quot;)</code></pre>
 <div id="external-weigthing-of-likelihood-components" class="section level2">
 <h2>External weigthing of likelihood components</h2>
-<p>By default the likelihood components are weighted using inverse variance. However, the user may change the weights by setting the variance of the input parameters. This is done by adding a variance matrix to the <code>catch.n</code> and <code>index.n</code> slots of the stock and index objects. These variances will be used to penalize the data during the likelihood computation. The values should be given as coefficients of variation on the log scale, so that variance is <span class="math inline">\(\log{({CV}^2 + 1)}\)</span>. Figure 28 shows the results of two fits with distinct likelihood weightings.</p>
+<p>By default the likelihood components are weighted using inverse variance. However, the user may change the weights by setting the variance of the input parameters. This is done by adding a variance matrix to the <code>catch.n</code> and <code>index.n</code> slots of the stock and index objects. These variances will be used to penalize the data during the likelihood computation. The values should be given as coefficients of variation on the log scale, so that variance is <span class="math inline">\(\log{({CV}^2 + 1)}\)</span>. Figure 32 shows the results of two fits with distinct likelihood weightings.</p>
 <pre class="r"><code>stk &lt;- ple4
 idx &lt;- ple4.indices[1]
 # variance of observed catches
@@ -1033,7 +1033,7 @@ Stock summary of distinct likelihood weightings
 <div id="more-models" class="section level2">
 <h2>More models</h2>
 <p>There’s a set of methods that allow the user to have more flexibility on applying the models referred before. For example to break the time series in two periods, using the method <code>breakpts()</code>, or fixing some parts of the selection pattern by setting F to be the same for a group of ages, using <code>replace()</code>.</p>
-<p>The example below (Figure 29) replaces all ages above 5 by age 5, which means that a single coefficient is going to be estimated for age 5-10.</p>
+<p>The example below (Figure 33) replaces all ages above 5 by age 5, which means that a single coefficient is going to be estimated for age 5-10.</p>
 <pre class="r"><code>fmod &lt;- ~ s(replace(age, age&gt;5, 5), k=4) + s(year, k=20)
 fit &lt;- sca(ple4, ple4.indices, fmod)</code></pre>
 <div class="figure" style="text-align: center">
@@ -1042,7 +1042,7 @@ fit &lt;- sca(ple4, ple4.indices, fmod)</code></pre>
 F-at-age fixed above age 5
 </p>
 </div>
-<p>Or else one can use a closed form fort the selection pattern. The example below uses a logistic form (Figure 30).</p>
+<p>Or else one can use a closed form fort the selection pattern. The example below uses a logistic form (Figure 34).</p>
 <pre class="r"><code>fmod &lt;- ~ I(1/(1+exp(-age)))
 fit &lt;- sca(ple4, ple4.indices, fmod)</code></pre>
 <div class="figure" style="text-align: center">
@@ -1051,7 +1051,7 @@ fit &lt;- sca(ple4, ple4.indices, fmod)</code></pre>
 F-at-age logistic
 </p>
 </div>
-<p>In the next case we’ll use the <code>breakpts()</code> to split the time series at 1990, although keeping the same shape in both periods, a thin plate spline with 3 knots (Figure 31).</p>
+<p>In the next case we’ll use the <code>breakpts()</code> to split the time series at 1990, although keeping the same shape in both periods, a thin plate spline with 3 knots (Figure 35).</p>
 <pre class="r"><code>fmod &lt;- ~s(age, k = 3, by = breakpts(year, 1990))
 fit &lt;- sca(ple4, ple4.indices, fmod)</code></pre>
 <div class="figure" style="text-align: center">
@@ -1060,7 +1060,7 @@ fit &lt;- sca(ple4, ple4.indices, fmod)</code></pre>
 F-at-age in two periods using in both cases a thin plate spline with 3 knots
 </p>
 </div>
-<p>More complicated models can be built with these tools. For example, Figure 32 shows a model where the age effect is modelled as a smoother (the same thin plate spline) throughout years but independent from each other.</p>
+<p>More complicated models can be built with these tools. For example, Figure 36 shows a model where the age effect is modelled as a smoother (the same thin plate spline) throughout years but independent from each other.</p>
 <pre class="r"><code>fmod &lt;- ~ factor(age) + s(year, k=10, by = breakpts(age, c(2:8)))
 fit &lt;- sca(ple4, ple4.indices, fmod)</code></pre>
 <div class="figure" style="text-align: center">
@@ -1069,7 +1069,7 @@ fit &lt;- sca(ple4, ple4.indices, fmod)</code></pre>
 F-at-age as thin plate spline with 3 knots for each age
 </p>
 </div>
-<p>A quite complex model that implements a cohort effect can be set through the following formula. Figure 33 shows the resulting fishing mortality. Note that in this case we end up with a variable F pattern over time, but rather than using 4 * 10 = 40 parameters, it uses, 4 + 10 + 10 = 24.</p>
+<p>A quite complex model that implements a cohort effect can be set through the following formula. Figure 37 shows the resulting fishing mortality. Note that in this case we end up with a variable F pattern over time, but rather than using 4 * 10 = 40 parameters, it uses, 4 + 10 + 10 = 24.</p>
 <pre class="r"><code>fmodel &lt;- ~ s(age, k = 4) + s(pmax(year - age, 1957), k = 10) + s(year, k = 10)
 fit &lt;- sca(ple4, ple4.indices, fmodel=fmodel)</code></pre>
 <div class="figure" style="text-align: center">
@@ -1103,7 +1103,7 @@ stk &lt;- propagate(ple4, nits)
 m(stk) &lt;- flq</code></pre>
 <p>We fit the same model to the new stock object which has uncertainty in the natural mortality. The assessment is performed for each of the 25 iterations.</p>
 <pre class="r"><code>fit1 &lt;- sca(stk, ple4.indices)</code></pre>
-<p>And compare the two results (Figure 34). It’s quite easy to run these kind of tests and a large part of our effort is to create the tools to do so.</p>
+<p>And compare the two results (Figure 38). It’s quite easy to run these kind of tests and a large part of our effort is to create the tools to do so.</p>
 <div class="figure" style="text-align: center">
 <img src="Statistical_catch_at_age_models_in_FLa4a_files/figure-html/mprop-1.png" alt="Stock summary for two M models" width="768" />
 <p class="caption">
@@ -1113,7 +1113,7 @@ Stock summary for two M models
 </div>
 <div id="wcsam-exercise---replicating-itself" class="section level2">
 <h2>WCSAM exercise - replicating itself</h2>
-<p>The World Conference on Stock Assessment Methods <a href="\href%7Bhttp://www.ices.dk/news-and-events/symposia/WCSAM-2013">WCSAM</a> promoted a workshop where a large simulation study was used to test the performance of distinct stock assessment models. The first criteria used was that the models should be able to reproduce itself. The process involved fitting the model, simulating observation error using the same model, and refitting the model to each iteration. The final results should be similar to the fitted results before observation error was added (see <a href="http://icesjms.oxfordjournals.org/content/early/2014/01/18/icesjms.fst237.abstract">Deroba, et.al, 2014</a> for details). The following analysis runs this analysis and Figure 35 presents the results.</p>
+<p>The World Conference on Stock Assessment Methods <a href="\href%7Bhttp://www.ices.dk/news-and-events/symposia/WCSAM-2013">WCSAM</a> promoted a workshop where a large simulation study was used to test the performance of distinct stock assessment models. The first criteria used was that the models should be able to reproduce itself. The process involved fitting the model, simulating observation error using the same model, and refitting the model to each iteration. The final results should be similar to the fitted results before observation error was added (see <a href="http://icesjms.oxfordjournals.org/content/early/2014/01/18/icesjms.fst237.abstract">Deroba, et.al, 2014</a> for details). The following analysis runs this analysis and Figure 39 presents the results.</p>
 <pre class="r"><code># number of iters
 nits &lt;- 25
 # fit the model
@@ -1137,7 +1137,7 @@ Replicating the stock assessment model (WCSAM approach)
 </div>
 <div id="parallel-computing" class="section level2">
 <h2>Parallel computing</h2>
-<p>This is an example of how to use the <code>parallel</code> R package to run assessments. In this example each iteration is a dataset, including surveys, and we’ll run one assessment for each iteration. Afterwards the data is pulled back together in an <code>FLStock</code> object and plotted (Figure 36). Only 20 iterations are run to avoid taking too long. Also note that we’re using 4 cores. This parameter depends on the computer being used. These days almost all computers have at least 2 cores.</p>
+<p>This is an example of how to use the <code>parallel</code> R package to run assessments. In this example each iteration is a dataset, including surveys, and we’ll run one assessment for each iteration. Afterwards the data is pulled back together in an <code>FLStock</code> object and plotted (Figure 40). Only 20 iterations are run to avoid taking too long. Also note that we’re using 4 cores. This parameter depends on the computer being used. These days almost all computers have at least 2 cores.</p>
 <p>Finally, compare this code with the one for replicating WCSAM and note that it’s exactly the same, except that we’re using <code>mclapply()</code> from package <code>paralell</code> instead of <code>lapply()</code>.</p>
 <pre class="r"><code>data(ple4)
 data(ple4.indices)
@@ -1188,7 +1188,7 @@ Replicating the stock assessment model (WCSAM approach) using parallel computing
 <li>R version 3.3.2 (2016-10-31)</li>
 <li>FLCore: 2.6.0.20170228</li>
 <li>FLa4a: 1.0.0</li>
-<li><strong>Compiled</strong>: Tue Mar 7 16:58:51 2017</li>
+<li><strong>Compiled</strong>: Wed Mar 8 09:29:39 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">

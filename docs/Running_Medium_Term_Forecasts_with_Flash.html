@@ -673,7 +673,7 @@ units:  NA </code></pre>
 <p>First we calculate F0.1 using <strong>FLBRP</strong> (see the <strong>FLBRP</strong> tutorial LINK TO FLBRP TUTORIAL):</p>
 <pre class="r"><code>f01 &lt;- c(refpts(brp(FLBRP(ple4)))[&quot;f0.1&quot;,&quot;harvest&quot;])
 f01</code></pre>
-<pre><code>[1] 0.0876</code></pre>
+<pre><code>[1] 0.1111</code></pre>
 <p>We’ll set our minimum catch to be the mean catch of the last 3 years.</p>
 <pre class="r"><code>min_catch &lt;- mean(catch(ple4_mtf)[,as.character(2006:2008)])
 min_catch</code></pre>
@@ -709,7 +709,7 @@ ctrl_target</code></pre>
 <td>1</td>
 <td align="right">2009</td>
 <td align="left">f</td>
-<td align="right">0.0876</td>
+<td align="right">0.1111</td>
 <td align="right">NA</td>
 </tr>
 <tr class="even">
@@ -723,7 +723,7 @@ ctrl_target</code></pre>
 <td>2</td>
 <td align="right">2010</td>
 <td align="left">f</td>
-<td align="right">0.0876</td>
+<td align="right">0.1111</td>
 <td align="right">NA</td>
 </tr>
 <tr class="even">
@@ -737,7 +737,7 @@ ctrl_target</code></pre>
 <td>3</td>
 <td align="right">2011</td>
 <td align="left">f</td>
-<td align="right">0.0876</td>
+<td align="right">0.1111</td>
 <td align="right">NA</td>
 </tr>
 <tr class="even">
@@ -751,7 +751,7 @@ ctrl_target</code></pre>
 <td>4</td>
 <td align="right">2012</td>
 <td align="left">f</td>
-<td align="right">0.0876</td>
+<td align="right">0.1111</td>
 <td align="right">NA</td>
 </tr>
 <tr class="even">
@@ -765,7 +765,7 @@ ctrl_target</code></pre>
 <td>5</td>
 <td align="right">2013</td>
 <td align="left">f</td>
-<td align="right">0.0876</td>
+<td align="right">0.1111</td>
 <td align="right">NA</td>
 </tr>
 <tr class="even">
@@ -779,7 +779,7 @@ ctrl_target</code></pre>
 <td>6</td>
 <td align="right">2014</td>
 <td align="left">f</td>
-<td align="right">0.0876</td>
+<td align="right">0.1111</td>
 <td align="right">NA</td>
 </tr>
 <tr class="even">
@@ -793,7 +793,7 @@ ctrl_target</code></pre>
 <td>7</td>
 <td align="right">2015</td>
 <td align="left">f</td>
-<td align="right">0.0876</td>
+<td align="right">0.1111</td>
 <td align="right">NA</td>
 </tr>
 <tr class="even">
@@ -807,7 +807,7 @@ ctrl_target</code></pre>
 <td>8</td>
 <td align="right">2016</td>
 <td align="left">f</td>
-<td align="right">0.0876</td>
+<td align="right">0.1111</td>
 <td align="right">NA</td>
 </tr>
 <tr class="even">
@@ -821,7 +821,7 @@ ctrl_target</code></pre>
 <td>9</td>
 <td align="right">2017</td>
 <td align="left">f</td>
-<td align="right">0.0876</td>
+<td align="right">0.1111</td>
 <td align="right">NA</td>
 </tr>
 <tr class="even">
@@ -835,7 +835,7 @@ ctrl_target</code></pre>
 <td>10</td>
 <td align="right">2018</td>
 <td align="left">f</td>
-<td align="right">0.0876</td>
+<td align="right">0.1111</td>
 <td align="right">NA</td>
 </tr>
 <tr class="even">
@@ -860,48 +860,48 @@ ctrl_target</code></pre>
 <pre><code>
 Target
    year quantity    min    val max
-1  2009        f     NA 0.0876  NA
+1  2009        f     NA 0.1111  NA
 2  2009    catch 102510     NA  NA
-3  2010        f     NA 0.0876  NA
+3  2010        f     NA 0.1111  NA
 4  2010    catch 102510     NA  NA
-5  2011        f     NA 0.0876  NA
+5  2011        f     NA 0.1111  NA
 6  2011    catch 102510     NA  NA
-7  2012        f     NA 0.0876  NA
+7  2012        f     NA 0.1111  NA
 8  2012    catch 102510     NA  NA
-9  2013        f     NA 0.0876  NA
+9  2013        f     NA 0.1111  NA
 10 2013    catch 102510     NA  NA
-11 2014        f     NA 0.0876  NA
+11 2014        f     NA 0.1111  NA
 12 2014    catch 102510     NA  NA
-13 2015        f     NA 0.0876  NA
+13 2015        f     NA 0.1111  NA
 14 2015    catch 102510     NA  NA
-15 2016        f     NA 0.0876  NA
+15 2016        f     NA 0.1111  NA
 16 2016    catch 102510     NA  NA
-17 2017        f     NA 0.0876  NA
+17 2017        f     NA 0.1111  NA
 18 2017    catch 102510     NA  NA
-19 2018        f     NA 0.0876  NA
+19 2018        f     NA 0.1111  NA
 20 2018    catch 102510     NA  NA
 
     
      min        val        max       
-  1          NA 8.7602e-02         NA
+  1          NA 1.1114e-01         NA
   2  1.0251e+05         NA         NA
-  3          NA 8.7602e-02         NA
+  3          NA 1.1114e-01         NA
   4  1.0251e+05         NA         NA
-  5          NA 8.7602e-02         NA
+  5          NA 1.1114e-01         NA
   6  1.0251e+05         NA         NA
-  7          NA 8.7602e-02         NA
+  7          NA 1.1114e-01         NA
   8  1.0251e+05         NA         NA
-  9          NA 8.7602e-02         NA
+  9          NA 1.1114e-01         NA
   10 1.0251e+05         NA         NA
-  11         NA 8.7602e-02         NA
+  11         NA 1.1114e-01         NA
   12 1.0251e+05         NA         NA
-  13         NA 8.7602e-02         NA
+  13         NA 1.1114e-01         NA
   14 1.0251e+05         NA         NA
-  15         NA 8.7602e-02         NA
+  15         NA 1.1114e-01         NA
   16 1.0251e+05         NA         NA
-  17         NA 8.7602e-02         NA
+  17         NA 1.1114e-01         NA
   18 1.0251e+05         NA         NA
-  19         NA 8.7602e-02         NA
+  19         NA 1.1114e-01         NA
   20 1.0251e+05         NA         NA</code></pre>
 <p>And project:</p>
 <pre class="r"><code>ple4_min_catch &lt;- fwd(ple4_mtf, ctrl_min_catch, sr = ple4_sr)</code></pre>
@@ -918,7 +918,7 @@ Target
 <pre class="r"><code>current_fbar &lt;- c(fbar(ple4)[,&quot;2008&quot;])
 f_target &lt;- c(seq(from = current_fbar, to = f01, length = 8)[-1], rep(f01, 3))
 f_target</code></pre>
-<pre><code> [1] 0.3179 0.2795 0.2412 0.2028 0.1644 0.1260 0.0876 0.0876 0.0876 0.0876</code></pre>
+<pre><code> [1] 0.3213 0.2863 0.2512 0.2162 0.1812 0.1462 0.1111 0.1111 0.1111 0.1111</code></pre>
 <p>We set maximum annual change in catch to be 10% (in either direction).</p>
 <pre class="r"><code>rel_catch_bound &lt;- 0.10</code></pre>
 <p>We make the control <strong>data.frame</strong> by joining a <strong>data.frame</strong> for the F target and one for the catch target. Note the use of the <em>rel.year</em>, <em>min</em> and <em>max</em> columns in the catch data.frame.</p>
@@ -959,7 +959,7 @@ ctrl_target</code></pre>
 <td align="right">2009</td>
 <td align="right">NA</td>
 <td align="left">f</td>
-<td align="right">0.3179</td>
+<td align="right">0.3213</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
 </tr>
@@ -977,7 +977,7 @@ ctrl_target</code></pre>
 <td align="right">2010</td>
 <td align="right">NA</td>
 <td align="left">f</td>
-<td align="right">0.2795</td>
+<td align="right">0.2863</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
 </tr>
@@ -995,7 +995,7 @@ ctrl_target</code></pre>
 <td align="right">2011</td>
 <td align="right">NA</td>
 <td align="left">f</td>
-<td align="right">0.2412</td>
+<td align="right">0.2512</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
 </tr>
@@ -1013,7 +1013,7 @@ ctrl_target</code></pre>
 <td align="right">2012</td>
 <td align="right">NA</td>
 <td align="left">f</td>
-<td align="right">0.2028</td>
+<td align="right">0.2162</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
 </tr>
@@ -1031,7 +1031,7 @@ ctrl_target</code></pre>
 <td align="right">2013</td>
 <td align="right">NA</td>
 <td align="left">f</td>
-<td align="right">0.1644</td>
+<td align="right">0.1812</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
 </tr>
@@ -1049,7 +1049,7 @@ ctrl_target</code></pre>
 <td align="right">2014</td>
 <td align="right">NA</td>
 <td align="left">f</td>
-<td align="right">0.1260</td>
+<td align="right">0.1462</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
 </tr>
@@ -1067,7 +1067,7 @@ ctrl_target</code></pre>
 <td align="right">2015</td>
 <td align="right">NA</td>
 <td align="left">f</td>
-<td align="right">0.0876</td>
+<td align="right">0.1111</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
 </tr>
@@ -1085,7 +1085,7 @@ ctrl_target</code></pre>
 <td align="right">2016</td>
 <td align="right">NA</td>
 <td align="left">f</td>
-<td align="right">0.0876</td>
+<td align="right">0.1111</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
 </tr>
@@ -1103,7 +1103,7 @@ ctrl_target</code></pre>
 <td align="right">2017</td>
 <td align="right">NA</td>
 <td align="left">f</td>
-<td align="right">0.0876</td>
+<td align="right">0.1111</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
 </tr>
@@ -1121,7 +1121,7 @@ ctrl_target</code></pre>
 <td align="right">2018</td>
 <td align="right">NA</td>
 <td align="left">f</td>
-<td align="right">0.0876</td>
+<td align="right">0.1111</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
 </tr>
@@ -1142,49 +1142,49 @@ ctrl_rel_min_max_catch</code></pre>
 <pre><code>
 Target
    year quantity min    val max rel.year
-1  2009        f  NA 0.3179  NA       NA
+1  2009        f  NA 0.3213  NA       NA
 2  2009    catch 0.9     NA 1.1     2008
-3  2010        f  NA 0.2795  NA       NA
+3  2010        f  NA 0.2863  NA       NA
 4  2010    catch 0.9     NA 1.1     2009
-5  2011        f  NA 0.2412  NA       NA
+5  2011        f  NA 0.2512  NA       NA
 6  2011    catch 0.9     NA 1.1     2010
-7  2012        f  NA 0.2028  NA       NA
+7  2012        f  NA 0.2162  NA       NA
 8  2012    catch 0.9     NA 1.1     2011
-9  2013        f  NA 0.1644  NA       NA
+9  2013        f  NA 0.1812  NA       NA
 10 2013    catch 0.9     NA 1.1     2012
-11 2014        f  NA 0.1260  NA       NA
+11 2014        f  NA 0.1462  NA       NA
 12 2014    catch 0.9     NA 1.1     2013
-13 2015        f  NA 0.0876  NA       NA
+13 2015        f  NA 0.1111  NA       NA
 14 2015    catch 0.9     NA 1.1     2014
-15 2016        f  NA 0.0876  NA       NA
+15 2016        f  NA 0.1111  NA       NA
 16 2016    catch 0.9     NA 1.1     2015
-17 2017        f  NA 0.0876  NA       NA
+17 2017        f  NA 0.1111  NA       NA
 18 2017    catch 0.9     NA 1.1     2016
-19 2018        f  NA 0.0876  NA       NA
+19 2018        f  NA 0.1111  NA       NA
 20 2018    catch 0.9     NA 1.1     2017
 
     
-     min      val      max     
-  1        NA 0.317925       NA
-  2  0.900000       NA 1.100000
-  3        NA 0.279538       NA
-  4  0.900000       NA 1.100000
-  5        NA 0.241151       NA
-  6  0.900000       NA 1.100000
-  7        NA 0.202763       NA
-  8  0.900000       NA 1.100000
-  9        NA 0.164376       NA
-  10 0.900000       NA 1.100000
-  11       NA 0.125989       NA
-  12 0.900000       NA 1.100000
-  13       NA 0.087602       NA
-  14 0.900000       NA 1.100000
-  15       NA 0.087602       NA
-  16 0.900000       NA 1.100000
-  17       NA 0.087602       NA
-  18 0.900000       NA 1.100000
-  19       NA 0.087602       NA
-  20 0.900000       NA 1.100000</code></pre>
+     min     val     max    
+  1       NA 0.32129      NA
+  2  0.90000      NA 1.10000
+  3       NA 0.28626      NA
+  4  0.90000      NA 1.10000
+  5       NA 0.25124      NA
+  6  0.90000      NA 1.10000
+  7       NA 0.21621      NA
+  8  0.90000      NA 1.10000
+  9       NA 0.18119      NA
+  10 0.90000      NA 1.10000
+  11      NA 0.14617      NA
+  12 0.90000      NA 1.10000
+  13      NA 0.11114      NA
+  14 0.90000      NA 1.10000
+  15      NA 0.11114      NA
+  16 0.90000      NA 1.10000
+  17      NA 0.11114      NA
+  18 0.90000      NA 1.10000
+  19      NA 0.11114      NA
+  20 0.90000      NA 1.10000</code></pre>
 <p>Run the projection:</p>
 <pre class="r"><code>recovery&lt;-fwd(ple4_mtf, ctrl=ctrl_rel_min_max_catch, sr=ple4_sr)</code></pre>
 <p>What happened? The F decreased and then remains constant, while the catch has changed by only a limited amount each year.</p>
@@ -1198,7 +1198,7 @@ An object of class &quot;FLQuant&quot;
 
      year
 age   2009    2010    2011    2012    2013    2014    2015    2016   
-  all 1.00648 1.00235 0.99738 0.96291 0.93628 0.90000 0.90000 1.02479
+  all 1.01551 1.01125 1.00796 0.97726 0.95813 0.92853 0.90000 1.10000
      year
 age   2017    2018   
   all 1.10000 1.10000
@@ -1323,19 +1323,19 @@ iters:  1000
 
    year
 age 2008           2009           2010           2011          
-  1 844041(     0) 860256(386777) 859031(385229) 865238(414725)
+  1 844041(     0) 860256(386777) 857275(384441) 862049(413918)
    year
 age 2012          
-  1 873320(393490)
+  1 869043(390218)
 
       [ ...  1 years]
 
    year
 age 2014           2015           2016           2017          
-  1 844041(     0) 860256(386777) 859031(385229) 865238(414725)
+  1 844041(     0) 860256(386777) 857275(384441) 862049(413918)
    year
 age 2018          
-  1 873320(393490)</code></pre>
+  1 869043(390218)</code></pre>
 <pre class="r"><code>fbar(ple4_stoch_rec)[,ac(2008:2018)]</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 iters:  1000 
@@ -1343,20 +1343,20 @@ iters:  1000
 , , unit = unique, season = all, area = unique
 
      year
-age   2008             2009             2010             2011            
-  all 0.35631(0.00000) 0.28018(0.00953) 0.21126(0.02797) 0.15065(0.03443)
+age   2008            2009            2010            2011           
+  all 0.35631(0.0000) 0.30382(0.0110) 0.24285(0.0345) 0.18162(0.0450)
      year
-age   2012            
-  all 0.10846(0.02918)
+age   2012           
+  all 0.13570(0.0398)
 
       [ ...  1 years]
 
      year
-age   2014             2015             2016             2017            
-  all 0.35631(0.00000) 0.28018(0.00953) 0.21126(0.02797) 0.15065(0.03443)
+age   2014            2015            2016            2017           
+  all 0.35631(0.0000) 0.30382(0.0110) 0.24285(0.0345) 0.18162(0.0450)
      year
-age   2018            
-  all 0.10846(0.02918)</code></pre>
+age   2018           
+  all 0.13570(0.0398)</code></pre>
 <pre class="r"><code>ssb(ple4_stoch_rec)[,ac(2008:2018)]</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 iters:  1000 
@@ -1364,20 +1364,20 @@ iters:  1000
 , , unit = unique, season = all, area = unique
 
      year
-age   2008           2009           2010           2011          
-  all 206480(     0) 231522(     0) 286736( 19980) 359101( 44955)
+age   2008          2009          2010          2011         
+  all 206480(    0) 220230(    0) 255400(19025) 300388(41984)
      year
-age   2012          
-  all 464029(100098)
+age   2012         
+  all 369020(87825)
 
       [ ...  1 years]
 
      year
-age   2014           2015           2016           2017          
-  all 206480(     0) 231522(     0) 286736( 19980) 359101( 44955)
+age   2014          2015          2016          2017         
+  all 206480(    0) 220230(    0) 255400(19025) 300388(41984)
      year
-age   2018          
-  all 464029(100098)</code></pre>
+age   2018         
+  all 369020(87825)</code></pre>
 </div>
 <div id="example-8-stochastic-target-values" class="section level2">
 <h2>Example 8: stochastic target values</h2>
@@ -1510,13 +1510,13 @@ iters:  1000
 
    year
 age 2008         2009         2010         2011         2012        
-  1 844041(   0) 903372(   0) 907749(   0) 914888(2711) 920280(3204)
+  1 844041(   0) 903372(   0) 905894(   0) 911269(3287) 915329(4259)
 
       [ ...  1 years]
 
    year
 age 2014         2015         2016         2017         2018        
-  1 844041(   0) 903372(   0) 907749(   0) 914888(2711) 920280(3204)</code></pre>
+  1 844041(   0) 903372(   0) 905894(   0) 911269(3287) 915329(4259)</code></pre>
 <p>Remember that here recruitment is not being driven by random residuals, it is only be driven by SSB. The recruitment in year Y is a result of the SSB in year Y-1. The SSB in year Y-1 is a result of the catch in year Y-2. So if catch is stochastic in 2009, we don’t see the impact of the stochasticity on the recruitment until 2011. Even then the impact is small. This seems unlikely so we can also put in recruitment residuals (we already made them for Example 7).</p>
 <pre class="r"><code>ple4_catch_iters &lt;- fwd(ple4_mtf, ctrl_catch_iters, sr = ple4_sr, sr.residuals = multi_rec_residuals, sr.residuals.mult = TRUE)</code></pre>
 <p>What happened?</p>
@@ -1546,19 +1546,19 @@ iters:  1000
 
    year
 age 2008           2009           2010           2011          
-  1 844041(     0) 860256(386777) 859031(385229) 865372(414588)
+  1 844041(     0) 860256(386777) 857275(384441) 862016(413501)
    year
 age 2012          
-  1 873305(389954)
+  1 869468(386033)
 
       [ ...  1 years]
 
    year
 age 2014           2015           2016           2017          
-  1 844041(     0) 860256(386777) 859031(385229) 865372(414588)
+  1 844041(     0) 860256(386777) 857275(384441) 862016(413501)
    year
 age 2018          
-  1 873305(389954)</code></pre>
+  1 869468(386033)</code></pre>
 </div>
 </div>
 <div id="to-do" class="section level1">
@@ -1588,9 +1588,9 @@ age 2018
 <li>R version 3.3.2 (2016-10-31)</li>
 <li>FLCore: 2.6.0.20170228</li>
 <li>FLash: 2.5.7</li>
-<li>FLBRP: 2.5.20170228</li>
+<li>FLBRP: 2.5.20170307</li>
 <li>FLAssess: 2.5.20150717</li>
-<li><strong>Compiled</strong>: Tue Mar 7 16:58:50 2017</li>
+<li><strong>Compiled</strong>: Tue Mar 7 23:00:16 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">

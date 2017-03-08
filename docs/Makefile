@@ -1,2 +1,30 @@
-all:
-	R -e "rmarkdown::render_site(output_format='html_document')"
+SOURCES := $(wildcard *.Rmd)
+FILES = $(SOURCES:%.Rmd=%_files)
+CACHE = $(SOURCES:%.Rmd=%_cache)
+TARGETS = $(SOURCES:%.Rmd=docs/%.html) # $(SOURCES:%.Rmd=docs/R/%.R) $(SOURCES:%.Rmd=docs/pdf/%.pdf)
+
+.PHONY: all clean
+
+all: main
+
+main: $(TARGETS)
+
+docs/%.html: %.Rmd
+	@echo "$< -> $@"
+	@R -e "rmarkdown::render_site('$<')"
+
+%.pdf: %.Rmd
+	@echo "$< -> $@"
+	@R -e "rmarkdown::render('$<', output_format='tufte::tufte_handout')"
+
+%.R: %.Rmd
+	@echo "$< -> $@"
+	@R -e "knitr::purl('$<')"
+
+default: $(TARGETS)
+
+clean:
+	rm -rf $(TARGETS)
+
+cleanall:
+	rm -rf $(FILES) -rf $(CACHE)
