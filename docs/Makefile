@@ -1,7 +1,7 @@
 SOURCES := $(wildcard *.Rmd)
 FILES = $(SOURCES:%.Rmd=%_files)
 CACHE = $(SOURCES:%.Rmd=%_cache)
-TARGETS = $(SOURCES:%.Rmd=docs/%.html) # $(SOURCES:%.Rmd=docs/R/%.R) $(SOURCES:%.Rmd=docs/pdf/%.pdf)
+TARGETS = $(SOURCES:%.Rmd=docs/%.html) $(SOURCES:%.Rmd=docs/R/%.R) # $(SOURCES:%.Rmd=docs/pdf/%.pdf)
 
 .PHONY: all clean
 
@@ -13,11 +13,11 @@ docs/%.html: %.Rmd
 	@echo "$< -> $@"
 	@R -e "rmarkdown::render_site('$<')"
 
-%.pdf: %.Rmd
+docs/pdf/%.pdf: %.Rmd
 	@echo "$< -> $@"
 	@R -e "rmarkdown::render('$<', output_format='tufte::tufte_handout')"
 
-%.R: %.Rmd
+docs/R/%.R: %.Rmd
 	@echo "$< -> $@"
 	@R -e "knitr::purl('$<')"
 
