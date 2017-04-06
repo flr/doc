@@ -192,6 +192,7 @@ Now the stock goes up to 2018:
 ```{r, summarymtf}
 summary(ple4_mtf)
 ```
+
 MORE ON ASSUMPTIONS AND CONDITIONING
 
 ## The stock-recruitment relationship
@@ -208,9 +209,9 @@ plot(ple4_sr)
 
 The resulting SRR fit can be seen in `r fign("plotSRR")`.
 
-# Example 1: F targets
+# Example 1: Fbar targets
 
-We saw in the STF tutorial how to set an F target (LINK).
+We saw in the STF tutorial how to set an Fbar target (LINK).
 Here is some quick revision.
 
 We will set the future F at F status quo (again) and we assume that F status quo is the mean of the last 4 years
@@ -265,7 +266,7 @@ What about recruitment? Remember we are now using a Beverton-Holt model.
 rec(ple4_f_sq)[,ac(2005:2018)]
 ```
 
-The recruitment is not constant but is not changing very much. That's because the fitted model looks flat REF BACK TO THE SRR FIGURE.
+The recruitment is not constant but it is not changing very much. That's because the fitted model looks flat REF BACK TO THE SRR FIGURE.
 
 
 # Example 2: A decreasing catch target {#ex2}
@@ -309,6 +310,10 @@ ple4_catch <- fwd(ple4_mtf, control = ctrl_catch, sr = ple4_sr)
 
 And take a look at the results:
 
+```{r, ceg5}
+catch(ple4_catch)[,ac(2008:2018)]
+```
+
 ```{r, cegplot}
 plot(window(ple4_catch, start=2000))
 ```
@@ -316,66 +321,177 @@ plot(window(ple4_catch, start=2000))
 The decreasing catch targets have been hit. Note that F has to be similarly reduced to hit the catch targets, resulting in a surge in SSB.
 
 
-# Example 3: Setting an SSB target
+# Example 3: Setting biological targets
 
 In the previous examples we have set target types based on the activity of the fleet (F and catch).
 We can also set biological target types. This is useful when there are biological reference points, e.g. Bpa.
-Here we set SSB as the target.
 
 Setting a biological target must be done with care as it may not be possible to hit the target. For example, even when F is set to 0 the stock may not be productive enough to increase its abundance sufficiently to hit the target.
 
-## Care with timing
+There are currently three types of biological target available in **FLasher**: SRP, SSB and biomass.
+Of these, there are several flavours of SSB and biomass that differ in terms of timing.
 
-When setting a biological abundance target we have to consider the timing of the target.
-In an **FLStock**, abundances are at the beginning of the year (or at the very end of the previous year).
-For example, if you look at the total stock abundances you get the stock at the beginning of each year, i.e. before any fishing has occurred.
+The SRP target is the Stock Recruitment Potential `at the time of spawning`, i.e. if a stock spawns in the middle of the year, after the abundance has been reduced by fishing and natural mortality, this is the SRP at that point in time. At the moment, SRP is calculated as the mass of mature fish.
+If setting an SRP target you must be aware of the timing of spawning and the timing of the fishing period.
+Internally, **FLasher** attempts to hit the desired target in a time step by finding the appropriate value of F in that timestep.
+If the stock spawns before fishing starts, then changing the fishing activity in that timestep has no effect on the SRP at the time of spawning.
+It is not possible to hit the target by manipulating F in that timestep and **FLasher** gives up.
 
-Internally, **FLash** attempts to hit the desired target by finding the appropriate value of F.
-However, the stock abundance at the start of the year is the result of fishing in the previous year, i.e SSB in year Y depends on F in Y-1.
-This means that if you set an abundance based target, you are really finding the F in the previous year that will give you that target. 
-Setting an SSB target in a year is the equivalent of setting an SSB target for the very `end` of that year (the same as setting a target for the very start of the next year).
-The result is that you have to be careful with the years in the control object when setting a target based on the stock abundance.
+SSB is the Spawning Stock Biomass calculated as the total biomass of mature fish. The biomass is simply the total biomass of the stock.
+For the SSB and biomass targets there are three different flavours based on timing:
 
-This is best illustrated with a simple example of a one year projection.
-If we want to hit an SSB target in 2009 (i.e. the SSB at the start of 2009 etc), we actually set it in the control object as being for 2008 as it is in 2008 that the F will be found that hits the SSB in 2009.
-In this example we want the future SSB to be high (we could have used **FLBRP** to come up with a suitable value, e.g. Bmsy but here we just pick a value).
+* `ssb_end` and `biomass_end` - at the end of the time step after all mortality (natural and fishing) has ceased;
+* `ssb_spawn` and `biomass_spawn` - at the time of spawning (mimics the `ssb()` method for **FLStock** objects);
+* `ssb_flash` and `biomass_flash` - an attempt to mimic the behaviour of the original **FLash** package.
+
+This last one needs some explanation.
+If fishing starts before spawning (i.e. the *harvest.spwn* slot of an **FLStock** is greater than 0) then the SSB or biomass at the time of spawning in that timestep is returned.
+If fishing starts after spawning, or there is no spawning in that time step (which may happen with a seasonal model), then the SSB or biomass at the time of spawning in the next timestep is returned.
+However, this second case can be more complicated for several reasons.
+If there is no spawning in the next time step then we have a problem and **FLasher** gives up (F in the current timestep does not affect the SSB or biomass at the time of spawning in the current or next timestep).
+Additionally, if there is no next time step (we have reached the end of the projection) then **FLasher** gives up.
+There is also a potential problem that if the fishing in the next timestep starts before spawning, the SSB or biomass at the time of spawning in the next timestep will be affected by the effort in the current timestep AND the next timestep. The solver cannot handle this and weird results will occur (although it is an unusal situation).
+For these reasons, it is better to only use the **FLash**-like target for annual models and when fishing and spawning happen at the same time in each year through the projection.
+
+
+## Demonstrating the biological targets
+
+Here we give simple demonstrations of the different types of biological targets using SSB.
+The results of using a biomass target will have the same behaviour.
+Only a 1 year projection is run.
+
+The timing of the spawning and fishing are controlled by the `m.spwn` and `harvest.spwn` slots.
+Our test **FLStock** object has `m.spwn` and `harvest.spwn` values of 0.
+This means that spawning and fishing happens at the start of the year and that spawning is assumed to happen before fishing.
+
+### Targets at end of timestep
+
+Here we set a target SSB for the end of the timestep:
 
 ```{r, seg2}
-future_ssb <- 250000
-ctrl_ssb <- fwdControl(data.frame(year=2008, quant = "ssb", value=future_ssb))
-ctrl_ssb
+final_ssb <- 100000
+ctrl_ssb <- fwdControl(data.frame(year=2009, quant = "ssb_end", value=final_ssb))
 ple4_ssb <- fwd(ple4_mtf, control=ctrl_ssb, sr = ple4_sr)
 ```
 
-Remember, we have effectively set an SSB target for the very end of 2008 but we do not see this in the **FLStock** until the very beginning of 2009.
-The result is that we can see that the SSB target has been hit, but not until 2009.
+How do we know if we hit the target?
+We must calculate the final SSB ourselves.
 
-```{r, seg3}
-ssb(ple4_ssb)[,ac(2005:2009)]
+```{r}
+survivors <- stock.n(ple4_ssb) * exp(-harvest(ple4_ssb) - m(ple4_ssb))
+quantSums((survivors * stock.wt(ple4_ssb) * mat(ple4_ssb))[,ac(2009)])
 ```
 
-## A longer projection
+### Targets at the time of spawning
 
-Here we run a longer projection with a constant SSB target.
-The future stock object, `ple4_mtf`, only goes up to 2018. This means that in the control object we can only set an SSB target up to 2017.
-Setting an SSB target for 2018 would try to hit the SSB at the start of 2019 which is outside of our stock object, resulting in an error (try it, if you want).
+If fishing occurs after spawning, the level of fishing will not affect the SSB or biomass at the time of spawning.
+This is currently the case as `m.spwn` and `harvest.spwn` have values of 0.
+The result is that the projection will fail with a warning (intentionally).
+We see this here.
 
-```{r, seg4}
-future_ssb <- 250000
-ctrl_ssb <- fwdControl(data.frame(year=2008:2017, quant = "ssb", value=future_ssb))
+```{r, warning=TRUE}
+spawn_ssb <- 100000
+ctrl_ssb <- fwdControl(data.frame(year=2009, quant = "ssb_spawn", value=spawn_ssb))
+ple4_ssb <- fwd(ple4_mtf, control=ctrl_ssb, sr = ple4_sr)
+```
+
+We can use the `ssb()` method to get the SSB at the time of spawning. We can see that the projection failed.
+
+```{r}
+ssb(ple4_ssb)[,ac(2009)]
+```
+
+In our example, spawning happens at the start of the year.
+We can change this with the `m.spwn` slot. Natural mortality is assumed to happen continuously through the year.
+Therefore, if we set the `m.spwn` slot to 0.5, then half the natural mortality happens before spawning, i.e. spawning happens half way through the year.
+Similarly, the current value of `harvest.spwn` is 0, meaning that spawning happens before any fishing happens.
+If we set this value to 0.5 then half of the fishing mortality has occurred before spawning.
+
+The example now runs.
+
+```{r}
+m.spwn(ple4_mtf)[,ac(2009)] <- 0.5
+harvest.spwn(ple4_mtf)[,ac(2009)] <- 0.5
+spawn_ssb <- 100000
+ctrl_ssb <- fwdControl(data.frame(year=2009, quant = "ssb_spawn", value=spawn_ssb))
+ple4_ssb <- fwd(ple4_mtf, control=ctrl_ssb, sr = ple4_sr)
+# We hit the target
+ssb(ple4_ssb)[,ac(2009)]
+```
+
+At the moment **Flasher** calculates the SRP as SSB. This means that the SRP target type behaves in the same way as the `ssb_spawn` target.
+
+```{r}
+srp <- 100000
+ctrl_ssb <- fwdControl(data.frame(year=2009, quant = "srp", value=srp))
+ple4_ssb <- fwd(ple4_mtf, control=ctrl_ssb, sr = ple4_sr)
+# We hit the target
+ssb(ple4_ssb)[,ac(2009)]
+```
+
+### **FLash**-like targets
+
+As mentioned above, the **FLash**-like targets can have different behaviour depending on the timing of spawning and fishing.
+
+If fishing starts before spawning, the SSB or biomass at the time of spawning `in the current timestep` will be hit (if possible).
+This is demonstrated here:
+
+```{r}
+# Force spawning to happen half way through the year and fishing starts at the beginning of the year
+m.spwn(ple4_mtf)[,ac(2009)] <- 0.5
+harvest.spwn(ple4_mtf)[,ac(2009)] <- 0.5
+flash_ssb <- 150000
+ctrl_ssb <- fwdControl(data.frame(year=2009, quant = "ssb_flash", value=flash_ssb))
+ple4_ssb <- fwd(ple4_mtf, control=ctrl_ssb, sr = ple4_sr)
+# Hit the target? Yes
+ssb(ple4_ssb)[,ac(2009)]
+```
+
+However, if fishing starts after spawning, the SSB or biomass at the time of spawning `in the next timestep` will be hit (if possible).
+This is because fishing in the current timestep will have no impact on the SSB at the time of spawning in the current timestep.
+
+```{r}
+# Force spawning to happen at the start of the year before fishing
+m.spwn(ple4_mtf)[,ac(2009)] <- 0.0
+harvest.spwn(ple4_mtf)[,ac(2009)] <- 0.0
+flash_ssb <- 150000
+ctrl_ssb <- fwdControl(data.frame(year=2009, quant = "ssb_flash", value=flash_ssb))
+ple4_ssb <- fwd(ple4_mtf, control=ctrl_ssb, sr = ple4_sr)
+```
+
+We did hit the SSB target, but not until 2010.
+
+```{r}
+ssb(ple4_ssb)[,ac(2009:2010)]
+```
+
+## A longer SSB projection
+
+Here we run a longer projection with a constant **FLash**-like SSB target.
+Spawning happens before fishing so the target will not be hit until the following year. 
+
+
+```{r}
+# Force spawning to happen at the start of the year before fishing
+m.spwn(ple4_mtf)[,ac(2009)] <- 0.0
+harvest.spwn(ple4_mtf)[,ac(2009)] <- 0.0
+future_ssb <- 200000
+ctrl_ssb <- fwdControl(data.frame(year=2009:2018, quant = "ssb_flash", value=future_ssb))
 ple4_ssb <- fwd(ple4_mtf, control = ctrl_ssb, sr = ple4_sr)
 ```
 
-The SSB has been hit upto 2018.
+We get a warning about running out of room.
+This is because future stock object, `ple4_mtf`, goes up to 2018. When we set the SSB target for 2018, it tries to hit the final year target in 2019.
+The targets that were set for 2009 to 2017 have been hit in 2010 to 2018.
+However, we cannot hit the target that was set for 2018. This means that the returned value of F in 2018 needs to be discounted.
 
-```{r, seg5}
-ssb(ple4_ssb)[,ac(2005:2018)]
+```{r}
+ssb(ple4_ssb)[,ac(2009:2018)]
+fbar(ple4_ssb)[,ac(2009:2018)]
 ```
 
-Note: we have to ignore the F and removals (catch, landings and discards) in 2018 as these have not been included in the projection and still hold their initial values.
-
 ```{r, seg6}
-plot(window(ple4_ssb, start=2000, end=2017))
+plot(window(ple4_ssb, start=2000, end=2018))
 ```
 
 # Example 4:  Relative catch target
@@ -443,32 +559,25 @@ min_catch <- mean(catch(ple4_mtf)[,as.character(2006:2008)])
 min_catch
 ```
 
-To make the control object we can bind together two data.frames, 1 for each target type.
-Note that we include a *min = NA* as a column of the F data.frame. This is necessary to bind it to the catch data.frame
+To make the control object we make a data.frame with both target types.
+Note that we include a *min* column.
 
 ```{r, meg3}
-ctrl_target <- rbind(
-    f_df <- data.frame(
-        year = 2009:2018,
-        quant = "f",
-        value = f01,
-        min = NA),
-    catch_df <- data.frame(
-        year = 2009:2018,
-        quant = "catch",
-        value = NA,
-        min = min_catch)
-)
+df <- data.frame(
+    year = rep(2009:2018, each=2),
+    quant = c("f","catch"),
+    value = c(f01, NA),
+    min = c(NA, min_catch)
+    )
 ```
 
-Note that the data.frame is not in chronological order.
-It is also important that when running the projection the bounding targets (the *min* and the *max* are processed after the non-bounding targets.
+It is also important that when running the projection, the bounding targets (the *min* and the *max*) are processed after the non-bounding targets.
 This should be sorted out by the **fwdControl** constructor.
 
 Make the control object:
 
 ```{r, meg5}
-ctrl_min_catch <- fwdControl(ctrl_target)
+ctrl_min_catch <- fwdControl(df)
 ```
 
 What did we create?
@@ -488,8 +597,8 @@ What happens? The catch constraint is hit in every year of the projection.
 The projected F decreases but never hits the target F because the minimum catch constraint prevents it from dropping further.
 
 ```{r, megc}
-#catch(ple4_min_catch)[,ac(2008:2018)]
-#fbar(ple4_min_catch)[,ac(2008:2018)]
+fbar(ple4_min_catch)[,ac(2008:2018)]
+catch(ple4_min_catch)[,ac(2008:2018)]
 ```
 
 ```{r, meg8, fig.cap="Example with a minimum catch bound and constant F target"}
@@ -522,32 +631,23 @@ We set maximum annual change in catch to be 10% (in either direction).
 rel_catch_bound <- 0.10
 ```
 
-We make the control **data.frame** by joining a **data.frame** for the F target and one for the catch target.
-Note the use of the *relYear*, *min* and *max* columns in the catch data.frame.
+We make the control **data.frame** with the F target and the catch target.
+Note the use of the *relYear*, *min* and *max* columns in the data.frame.
 
 ```{r, rtbeg3}
-ctrl_target <- rbind(
-    f_df <- data.frame(
-        year = 2009:2018,
-        relYear = NA,
-        quant = "f",
-        value = f_target,
-        max = NA,
-        min = NA),
-    catch_df <- data.frame(
-        year = 2009:2018,
-        relYear = 2008:2017,
-        quant = "catch",
-        value = NA,
-        max = 1 + rel_catch_bound,
-        min = 1 - rel_catch_bound)
-)
+df <- data.frame(
+    year = rep(2009:2018, 2),
+    relYear =c(rep(NA,10), 2008:2017),
+    quant = c(rep("f",10), rep("catch",10)),
+    value = c(f_target, rep(NA,10)),
+    max = c(rep(NA,10), rep(1+rel_catch_bound, 10)),
+    min = c(rep(NA,10), rep(1-rel_catch_bound, 10)))
 ```
 
 Make the control object. The *min* and *max* columns now both have data:
 
 ```{r, rtbeg5}
-ctrl_rel_min_max_catch <- fwdControl(ctrl_target)
+ctrl_rel_min_max_catch <- fwdControl(df)
 ctrl_rel_min_max_catch
 ```
 
@@ -563,7 +663,7 @@ What happened? The F decreased and then remains constant, while the catch has ch
 plot(window(recovery, start = 2001, end = 2018))
 ```
 
-The bounds on the catch are operational in several of the years. They prevent the catch from increasing as well as decreasing too strongly, (allegedly) providing stability to the fishery.
+The minimum and maximum bounds on the catch are operational in several of the years. They prevent the catch from increasing as well as decreasing too strongly, (allegedly) providing stability to the fishery.
 
 ```{r, rtbeg8}
 catch(recovery)[,ac(2009:2018)] / catch(recovery)[,ac(2008:2017)]
@@ -573,10 +673,10 @@ catch(recovery)[,ac(2009:2018)] / catch(recovery)[,ac(2008:2017)]
 
 So far we have looked at combinations of:
 
-* absolute target values;
-* relative target values;
-* bounds on targets, and
-* mixed target types.
+* Absolute target values;
+* Relative target values;
+* Bounds on targets, and
+* Mixed target types.
 
 But all of the projections have been deterministic, i.e. they all had only one iteration.
 Now, we are going start looking at projecting with multiple iterations.
