@@ -13,9 +13,9 @@ library(knitr)
 source("R/ini.R")
 ```
 
-The Fisheries Library in R (FLR) is a collection of tools for quantitative fisheries science, developed in the R language, that facilitates the construction of bio-economic simulation models of fisheries systems.
+The Fisheries Library in R (FLR) is a collection of tools for quantitative fisheries science, developed in the R language, that facilitates the construction of bio-economic simulation models of fisheries systems as well as the application of a wide range of quantitative analysis.
 
-FLR builds on the powerful R environment and syntax to create a [domain-specific language](https://en.wikipedia.org/wiki/Domain-specific_language) for the quantitative analysis of the expected risks and effects of fisheries management decisions. The classes and methods in FLR consider uncertainty an integral part of our knowledge of fisheries system. [...]
+FLR builds on the powerful R environment and syntax to create a [domain-specific language](https://en.wikipedia.org/wiki/Domain-specific_language) for the quantitative analysis of the expected risks and impacts of fisheries management decisions. The classes and methods in FLR consider uncertainty an integral part of our knowledge of fisheries system. [...]
 
 ## Required packages
 
@@ -23,7 +23,7 @@ To follow this tutorial you should have installed the following packages:
 
 - FLR: [FLCore](http://www.flr-project.org/FLCore/)
 
-You can do so as follows,
+You can do so as follows:
 
 ```{r, eval=FALSE}
 install.packages(c("FLCore"), repos="http://flr-project.org/R")
@@ -31,25 +31,25 @@ install.packages(c("FLCore"), repos="http://flr-project.org/R")
 
 # Getting started with FLCore classes
 
-The main *classes* (i.e. data structures) and methods (i.e. procedures) in the FLR system are found in the `FLCore` package. Let's load it first
+The main *classes* (i.e. data structures) and methods (i.e. procedures) in the FLR system are found in the `FLCore` package. Let's load it first.
 
 ```{r, pkgs}
 library(FLCore)
 ```
 
-so can then inspect an example object
+We can then inspect an example object.
 
 ```{r, ple4}
 data(ple4)
 ```
 
-The `ple4` object is of class `FLStock`, used in **FLR** to represent the representation of the fish population that is constructed from catch and abundance data through an stock assesssment. `FLStock` is an S4 class (see `?Classes_Details` for futher details on S4 classes), consisting of a number of slots able to hold data or results for each of the elements in it. By calling the `summary` method on the object
+The `ple4` object is of class `FLStock`, used in **FLR** to represent a fish population that is constructed from catch and abundance data through a stock assesssment model. `FLStock` is an S4 class (see `?Classes_Details` for futher details on S4 classes), consisting of a number of slots able to hold data or results for each of the elements in it. By calling the `summary` method on the object
 
 ```{r, summaryple4}
 summary(ple4)
 ```
 
-we can inspect the slots, dimensions and structure. Most slots in the class (e.g. `catch` or `stock.n`) of themselves of another **FLCore** class, `FLQuant`. This class, the basic element used to assemble all other classes in **FLR**, is an 6-dimensional array that can take advantange of the powerful array algebra capabilities of R. All slots can be accessed and modified using accessors and replacement methods
+we can inspect the slots, dimensions and structure. Most slots in the class (e.g. `catch` or `stock.n`) are themselves of another **FLCore** class, `FLQuant`. This class, the basic element used to assemble all other classes in **FLR**, is a 6-dimensional array that can take advantange of the powerful array algebra capabilities of R. All slots can be accessed and modified using accessors and replacement methods.
 
 ```{r, accessors}
 catch(ple4)
@@ -68,9 +68,9 @@ and `FLQuant`
 stock.n(ple4)[1,]
 ```
 
-while ensuring that the result are always valid object of the same class. For example, selecting a single element along the first dimension (`age`) did not drop that dimension from the object, in contrast with the standard behaviour in R for `array`.
+while ensuring that the result are always valid objects of the same class. However, selecting a single element along the first dimension (`age`) did not drop that dimension from the object, in contrast with the standard behaviour in R for `array`.
 
-Similarly to the `summary` method above, a common set of methods exist for each class to create new objects,
+In addition to the `summary` method above, a common set of methods exist for each class to create new objects,
 
 ```{r, creator}
 FLQuant(rlnorm(30), dimnames=list(age=0:5, year=2012:2017))
@@ -82,13 +82,13 @@ coerce to and from other classes,
 head(as.data.frame(ple4))
 ```
 
-or plot an object
+and plot an object.
 
 ```{r, plotFLStock, fig.cap="FLStock plot for ple4"}
 plot(ple4)
 ```
 
-A number of fisheries specific calculations are also available,  `r fign("plotFLStock")`. For example, the estimated spawning stock biomass (SSB), can be obtained from an `FLStock` object using
+A number of fisheries-specific calculations are also available. For example, the estimated spawning stock biomass ($SSB$), can be obtained from an `FLStock` object using
 
 ```{r, ssb}
 ssb(ple4)
@@ -102,14 +102,14 @@ fbar(ple4)
 
 ## Class validity
 
-The S4 classes defined in **FLCore**  all have validity functions defined that limit what changes can be made to an object for it to remain valid. This ensures that methods do not encounter objects that do not have the required dimensions, differ in dimension names, or are not compatible with each other. For example, the validity requirements for the `FLQuant` class require it
+The S4 classes defined in **FLCore**  all have validity functions defined that limit what changes can be made to an object for it to remain valid. This ensures that methods do not encounter objects that do not have the required dimensions, differ in dimension names, or are not compatible with each other. For example, the validity requirements for the `FLQuant` class require that
 
-- To be a 6-dimensional array.
-- The array is numeric.
-- First dimension is not named 'cohort',
-- and dimension 2:5 are named 'year, 'unit' 'season', 'area' and 'iter'
+- it is a 6-dimensional array,
+- the array is numeric,
+- the first dimension is not named 'cohort', and
+- dimensions 2:5 are named 'year, 'unit' 'season', 'area' and 'iter'.
 
-Object validity is checked by the class constructor but also by the replacement methods, for example when calling
+Object validity is checked not only by the class constructor, but also by the replacement methods, for example when calling
 
 ```{r, validity}
 catch(ple4) <- landings(ple4) + discards(ple4)
@@ -117,29 +117,29 @@ catch(ple4) <- landings(ple4) + discards(ple4)
 
 # A modelling example: the FLSR class
 
-A different type of class defined in **FLCore** is `FLSR`. This class allows for fitting, exploration and prediction of a stock-recruitment relationship. An example dataset is also available, corresponding to the North Sea herring stock
+A different type of class defined in **FLCore** is `FLSR`. This class allows for fitting, exploration and prediction of a stock-recruitment relationship. An example dataset is also available, corresponding to the North Sea herring stock.
 
 ```{r, nsher}
 data(nsher)
 summary(nsher)
 ```
 
-The class holds together `FLQuant` slots for inputs (`rec` for recruitment in numbers and `ssb` for spawning stock biomass or any other proxy of stock reproductive potential) and outputs of the fit (`fitted` for the estimated recruitment, and `residuals`, the log residuals of the estimates). It also contains the necessary elements for the model fit to be carried out using maximum likelihood estimation:
+The class holds together `FLQuant` slots for inputs (`rec` for recruitment in numbers and `ssb` for spawning stock biomass or any other proxy of stock reproductive potential) and outputs of the fit (`fitted` for the estimated recruitment, and `residuals` for the log residuals of the estimates). It also contains the necessary elements for the model fit to be carried out using maximum likelihood estimation:
 
-- `logl`: a function that computes the log-likehood to be passed on to `optim`.
-- `model`: a formula to calculate the estimated recruitment.
+- `logl`: a function that computes the log-likehood to be passed on to `optim`,
+- `model`: a formula to calculate the estimated recruitment, and
 - `initial`: a function to obtain initial parameter values for the minimization algorithm.
 
-By calling the method that carries out the minimization, `fmle`, we obtain a new object in which the results of the fit are now available
+By calling the method that carries out the minimization, `fmle`, we obtain a new object in which the results of the fit are now available:
 
-- `params`: the estimated parameters
-- `logLik`: the log-likelihood and degrees of freedom
-- `covar`: the variance-covariance matrix of the fit
-- `hessian`: the Hessian matrix of the fit
+- `params`: the estimated parameters,
+- `logLik`: the log-likelihood and degrees of freedom,
+- `covar`: the variance-covariance matrix of the fit, and
+- `hessian`: the Hessian matrix of the fit,
 
 as well as some other information returned by the fitting procedure.
 
-Of course we can visualize the result of the model fit, together with an useful set of diagnostics, by simply calling
+Of course we can visualize the result of the model fit, together with n useful set of diagnostics, by simply calling the following.
 
 ```{r, plotFLSR}
 plot(nsher)
@@ -151,13 +151,13 @@ plot(nsher)
 
 # References
 
-L. T. Kell, I. Mosqueira, P. Grosjean, J-M. Fromentin, D. Garcia, R. Hillary, E. Jardim, S. Mardle, M. A. Pastoors, J. J. Poos, F. Scott, R. D. Scott; FLR: an open-source framework for the evaluation and development of management strategies. *ICES J Mar Sci* 2007; 64 (4): 640-646. doi: [10.1093/icesjms/fsm012](https://doi.org/10.1093/icesjms/fsm012)
+L. T. Kell, I. Mosqueira, P. Grosjean, J-M. Fromentin, D. Garcia, R. Hillary, E. Jardim, S. Mardle, M. A. Pastoors, J. J. Poos, F. Scott, R. D. Scott; FLR: an open-source framework for the evaluation and development of management strategies. *ICES J Mar Sci* 2007; 64 (4): 640-646. doi: [10.1093/icesjms/fsm012](https://doi.org/10.1093/icesjms/fsm012).
 
 # More information
 
 * You can submit bug reports, questions or suggestions on this tutorial at <https://github.com/flr/doc/issues>.
-* Or send a pull request to <https://github.com/flr/doc/>
-* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flr-project.org>.
+* Alternatively, send a pull request to <https://github.com/flr/doc/>.
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage: <http://flr-project.org>.
 
 ## Software Versions
 
@@ -171,4 +171,4 @@ This document is licensed under the [Creative Commons Attribution-ShareAlike 4.0
 
 ## Author information
 
-**Iago MOSQUEIRA**. European Commission, DG Joint Research Centre, Directorate D - Sustainable Resources, Unit D.02 Water and Marine Resources, Via E. Fermi 2749, 21027 Ispra VA, Italy. <https://ec.europa.eu/jrc/>
+**Iago MOSQUEIRA**. European Commission, DG Joint Research Centre, Directorate D - Sustainable Resources, Unit D.02 Water and Marine Resources, Via E. Fermi 2749, 21027 Ispra VA, Italy. <https://ec.europa.eu/jrc/>.
