@@ -310,29 +310,29 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">A quick introduction to FLR</h1>
-<h4 class="date"><em>08 March, 2017</em></h4>
+<h4 class="date"><em>14 July, 2017</em></h4>
 
 </div>
 
 
-<p>The Fisheries Library in R (FLR) is a collection of tools for quantitative fisheries science, developed in the R language, that facilitates the construction of bio-economic simulation models of fisheries systems.</p>
-<p>FLR builds on the powerful R environment and syntax to create a <a href="https://en.wikipedia.org/wiki/Domain-specific_language">domain-specific language</a> for the quantitative analysis of the expected risks and effects of fisheries management decisions. The classes and methods in FLR consider uncertainty an integral part of our knowledge of fisheries system. […]</p>
+<p>The Fisheries Library in R (FLR) is a collection of tools for quantitative fisheries science, developed in the R language, that facilitates the construction of bio-economic simulation models of fisheries systems as well as the application of a wide range of quantitative analysis.</p>
+<p>FLR builds on the powerful R environment and syntax to create a <a href="https://en.wikipedia.org/wiki/Domain-specific_language">domain-specific language</a> for the quantitative analysis of the expected risks and impacts of fisheries management decisions. The classes and methods in FLR consider uncertainty an integral part of our knowledge of fisheries system. […]</p>
 <div id="required-packages" class="section level2">
 <h2>Required packages</h2>
 <p>To follow this tutorial you should have installed the following packages:</p>
 <ul>
 <li>FLR: <a href="http://www.flr-project.org/FLCore/">FLCore</a></li>
 </ul>
-<p>You can do so as follows,</p>
+<p>You can do so as follows:</p>
 <pre class="r"><code>install.packages(c(&quot;FLCore&quot;), repos=&quot;http://flr-project.org/R&quot;)</code></pre>
 </div>
 <div id="getting-started-with-flcore-classes" class="section level1">
 <h1>Getting started with FLCore classes</h1>
-<p>The main <em>classes</em> (i.e. data structures) and methods (i.e. procedures) in the FLR system are found in the <code>FLCore</code> package. Let’s load it first</p>
+<p>The main <em>classes</em> (i.e. data structures) and methods (i.e. procedures) in the FLR system are found in the <code>FLCore</code> package. Let’s load it first.</p>
 <pre class="r"><code>library(FLCore)</code></pre>
-<p>so can then inspect an example object</p>
+<p>We can then inspect an example object.</p>
 <pre class="r"><code>data(ple4)</code></pre>
-<p>The <code>ple4</code> object is of class <code>FLStock</code>, used in <strong>FLR</strong> to represent the representation of the fish population that is constructed from catch and abundance data through an stock assesssment. <code>FLStock</code> is an S4 class (see <code>?Classes_Details</code> for futher details on S4 classes), consisting of a number of slots able to hold data or results for each of the elements in it. By calling the <code>summary</code> method on the object</p>
+<p>The <code>ple4</code> object is of class <code>FLStock</code>, used in <strong>FLR</strong> to represent a fish population that is constructed from catch and abundance data through a stock assesssment model. <code>FLStock</code> is an S4 class (see <code>?Classes_Details</code> for futher details on S4 classes), consisting of a number of slots able to hold data or results for each of the elements in it. By calling the <code>summary</code> method on the object</p>
 <pre class="r"><code>summary(ple4)</code></pre>
 <pre><code>An object of class &quot;FLStock&quot;
 
@@ -358,11 +358,11 @@ stock         : [ 1 52 1 1 1 1 ], units =  t
 stock.n       : [ 10 52 1 1 1 1 ], units =  10^3 
 stock.wt      : [ 10 52 1 1 1 1 ], units =  kg 
 m             : [ 10 52 1 1 1 1 ], units =  m 
-mat           : [ 10 52 1 1 1 1 ], units =  NA 
+mat           : [ 10 52 1 1 1 1 ], units =   
 harvest       : [ 10 52 1 1 1 1 ], units =  f 
-harvest.spwn  : [ 10 52 1 1 1 1 ], units =  NA 
-m.spwn        : [ 10 52 1 1 1 1 ], units =  NA </code></pre>
-<p>we can inspect the slots, dimensions and structure. Most slots in the class (e.g. <code>catch</code> or <code>stock.n</code>) of themselves of another <strong>FLCore</strong> class, <code>FLQuant</code>. This class, the basic element used to assemble all other classes in <strong>FLR</strong>, is an 6-dimensional array that can take advantange of the powerful array algebra capabilities of R. All slots can be accessed and modified using accessors and replacement methods</p>
+harvest.spwn  : [ 10 52 1 1 1 1 ], units =   
+m.spwn        : [ 10 52 1 1 1 1 ], units =   </code></pre>
+<p>we can inspect the slots, dimensions and structure. Most slots in the class (e.g. <code>catch</code> or <code>stock.n</code>) are themselves of another <strong>FLCore</strong> class, <code>FLQuant</code>. This class, the basic element used to assemble all other classes in <strong>FLR</strong>, is a 6-dimensional array that can take advantange of the powerful array algebra capabilities of R. All slots can be accessed and modified using accessors and replacement methods.</p>
 <pre class="r"><code>catch(ple4)</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 , , unit = unique, season = all, area = unique
@@ -403,10 +403,10 @@ stock         : [ 1 10 1 1 1 1 ], units =  t
 stock.n       : [ 10 10 1 1 1 1 ], units =  10^3 
 stock.wt      : [ 10 10 1 1 1 1 ], units =  kg 
 m             : [ 10 10 1 1 1 1 ], units =  m 
-mat           : [ 10 10 1 1 1 1 ], units =  NA 
+mat           : [ 10 10 1 1 1 1 ], units =   
 harvest       : [ 10 10 1 1 1 1 ], units =  f 
-harvest.spwn  : [ 10 10 1 1 1 1 ], units =  NA 
-m.spwn        : [ 10 10 1 1 1 1 ], units =  NA </code></pre>
+harvest.spwn  : [ 10 10 1 1 1 1 ], units =   
+m.spwn        : [ 10 10 1 1 1 1 ], units =   </code></pre>
 <p>and <code>FLQuant</code></p>
 <pre class="r"><code>stock.n(ple4)[1,]</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
@@ -421,8 +421,8 @@ age 1957   1958   1959   1960   1961
    year
 age 2004    2005    2006    2007    2008   
   1 1159019  714344  820006  949341  844041</code></pre>
-<p>while ensuring that the result are always valid object of the same class. For example, selecting a single element along the first dimension (<code>age</code>) did not drop that dimension from the object, in contrast with the standard behaviour in R for <code>array</code>.</p>
-<p>Similarly to the <code>summary</code> method above, a common set of methods exist for each class to create new objects,</p>
+<p>while ensuring that the result are always valid objects of the same class. However, selecting a single element along the first dimension (<code>age</code>) did not drop that dimension from the object, in contrast with the standard behaviour in R for <code>array</code>.</p>
+<p>In addition to the <code>summary</code> method above, a common set of methods exist for each class to create new objects,</p>
 <pre class="r"><code>FLQuant(rlnorm(30), dimnames=list(age=0:5, year=2012:2017))</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 An object of class &quot;FLQuant&quot;
@@ -516,7 +516,7 @@ units:  NA </code></pre>
 </tr>
 </tbody>
 </table>
-<p>or plot an object</p>
+<p>and plot an object.</p>
 <pre class="r"><code>plot(ple4)</code></pre>
 <div class="figure" style="text-align: center">
 <img src="A_quick_introduction_to_FLR_files/figure-html/plotFLStock-1.png" alt="FLStock plot for ple4" width="672" />
@@ -524,7 +524,7 @@ units:  NA </code></pre>
 FLStock plot for ple4
 </p>
 </div>
-<p>A number of fisheries specific calculations are also available, Figure 1. For example, the estimated spawning stock biomass (SSB), can be obtained from an <code>FLStock</code> object using</p>
+<p>A number of fisheries-specific calculations are also available. For example, the estimated spawning stock biomass (<span class="math inline">\(SSB\)</span>), can be obtained from an <code>FLStock</code> object using</p>
 <pre class="r"><code>ssb(ple4)</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 , , unit = unique, season = all, area = unique
@@ -554,20 +554,20 @@ age   2004    2005    2006    2007    2008
   all 0.64015 0.62343 0.54764 0.46392 0.35631</code></pre>
 <div id="class-validity" class="section level2">
 <h2>Class validity</h2>
-<p>The S4 classes defined in <strong>FLCore</strong> all have validity functions defined that limit what changes can be made to an object for it to remain valid. This ensures that methods do not encounter objects that do not have the required dimensions, differ in dimension names, or are not compatible with each other. For example, the validity requirements for the <code>FLQuant</code> class require it</p>
+<p>The S4 classes defined in <strong>FLCore</strong> all have validity functions defined that limit what changes can be made to an object for it to remain valid. This ensures that methods do not encounter objects that do not have the required dimensions, differ in dimension names, or are not compatible with each other. For example, the validity requirements for the <code>FLQuant</code> class require that</p>
 <ul>
-<li>To be a 6-dimensional array.</li>
-<li>The array is numeric.</li>
-<li>First dimension is not named ‘cohort’,</li>
-<li>and dimension 2:5 are named ‘year, ’unit’ ‘season’, ‘area’ and ‘iter’</li>
+<li>it is a 6-dimensional array,</li>
+<li>the array is numeric,</li>
+<li>the first dimension is not named ‘cohort’, and</li>
+<li>dimensions 2:5 are named ‘year, ’unit’ ‘season’, ‘area’ and ‘iter’.</li>
 </ul>
-<p>Object validity is checked by the class constructor but also by the replacement methods, for example when calling</p>
+<p>Object validity is checked not only by the class constructor, but also by the replacement methods, for example when calling</p>
 <pre class="r"><code>catch(ple4) &lt;- landings(ple4) + discards(ple4)</code></pre>
 </div>
 </div>
 <div id="a-modelling-example-the-flsr-class" class="section level1">
 <h1>A modelling example: the FLSR class</h1>
-<p>A different type of class defined in <strong>FLCore</strong> is <code>FLSR</code>. This class allows for fitting, exploration and prediction of a stock-recruitment relationship. An example dataset is also available, corresponding to the North Sea herring stock</p>
+<p>A different type of class defined in <strong>FLCore</strong> is <code>FLSR</code>. This class allows for fitting, exploration and prediction of a stock-recruitment relationship. An example dataset is also available, corresponding to the North Sea herring stock.</p>
 <pre class="r"><code>data(nsher)
 summary(nsher)</code></pre>
 <pre><code>An object of class &quot;FLSR&quot;
@@ -587,7 +587,7 @@ residuals     : [ 1 45 1 1 1 1 ], units =  NA
 fitted        : [ 1 45 1 1 1 1 ], units =  10^3 
 
 Model:  rec ~ a * ssb * exp(-b * ssb)
-&lt;environment: 0x90ede78&gt;
+&lt;environment: 0xb0dc1a8&gt;
 Parameters: 
     params
 iter     a        b
@@ -598,21 +598,21 @@ Variance-covariance:
             a         b
   a 255.33882 1.809e-02
   b   0.01809 1.993e-06</code></pre>
-<p>The class holds together <code>FLQuant</code> slots for inputs (<code>rec</code> for recruitment in numbers and <code>ssb</code> for spawning stock biomass or any other proxy of stock reproductive potential) and outputs of the fit (<code>fitted</code> for the estimated recruitment, and <code>residuals</code>, the log residuals of the estimates). It also contains the necessary elements for the model fit to be carried out using maximum likelihood estimation:</p>
+<p>The class holds together <code>FLQuant</code> slots for inputs (<code>rec</code> for recruitment in numbers and <code>ssb</code> for spawning stock biomass or any other proxy of stock reproductive potential) and outputs of the fit (<code>fitted</code> for the estimated recruitment, and <code>residuals</code> for the log residuals of the estimates). It also contains the necessary elements for the model fit to be carried out using maximum likelihood estimation:</p>
 <ul>
-<li><code>logl</code>: a function that computes the log-likehood to be passed on to <code>optim</code>.</li>
-<li><code>model</code>: a formula to calculate the estimated recruitment.</li>
+<li><code>logl</code>: a function that computes the log-likehood to be passed on to <code>optim</code>,</li>
+<li><code>model</code>: a formula to calculate the estimated recruitment, and</li>
 <li><code>initial</code>: a function to obtain initial parameter values for the minimization algorithm.</li>
 </ul>
-<p>By calling the method that carries out the minimization, <code>fmle</code>, we obtain a new object in which the results of the fit are now available</p>
+<p>By calling the method that carries out the minimization, <code>fmle</code>, we obtain a new object in which the results of the fit are now available:</p>
 <ul>
-<li><code>params</code>: the estimated parameters</li>
-<li><code>logLik</code>: the log-likelihood and degrees of freedom</li>
-<li><code>covar</code>: the variance-covariance matrix of the fit</li>
-<li><code>hessian</code>: the Hessian matrix of the fit</li>
+<li><code>params</code>: the estimated parameters,</li>
+<li><code>logLik</code>: the log-likelihood and degrees of freedom,</li>
+<li><code>covar</code>: the variance-covariance matrix of the fit, and</li>
+<li><code>hessian</code>: the Hessian matrix of the fit,</li>
 </ul>
 <p>as well as some other information returned by the fitting procedure.</p>
-<p>Of course we can visualize the result of the model fit, together with an useful set of diagnostics, by simply calling</p>
+<p>Of course we can visualize the result of the model fit, together with n useful set of diagnostics, by simply calling the following.</p>
 <pre class="r"><code>plot(nsher)</code></pre>
 <p><img src="A_quick_introduction_to_FLR_files/figure-html/plotFLSR-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
@@ -624,21 +624,21 @@ Variance-covariance:
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
-<p>L. T. Kell, I. Mosqueira, P. Grosjean, J-M. Fromentin, D. Garcia, R. Hillary, E. Jardim, S. Mardle, M. A. Pastoors, J. J. Poos, F. Scott, R. D. Scott; FLR: an open-source framework for the evaluation and development of management strategies. <em>ICES J Mar Sci</em> 2007; 64 (4): 640-646. doi: <a href="https://doi.org/10.1093/icesjms/fsm012">10.1093/icesjms/fsm012</a></p>
+<p>L. T. Kell, I. Mosqueira, P. Grosjean, J-M. Fromentin, D. Garcia, R. Hillary, E. Jardim, S. Mardle, M. A. Pastoors, J. J. Poos, F. Scott, R. D. Scott; FLR: an open-source framework for the evaluation and development of management strategies. <em>ICES J Mar Sci</em> 2007; 64 (4): 640-646. doi: <a href="https://doi.org/10.1093/icesjms/fsm012">10.1093/icesjms/fsm012</a>.</p>
 </div>
 <div id="more-information" class="section level1">
 <h1>More information</h1>
 <ul>
 <li>You can submit bug reports, questions or suggestions on this tutorial at <a href="https://github.com/flr/doc/issues" class="uri">https://github.com/flr/doc/issues</a>.</li>
-<li>Or send a pull request to <a href="https://github.com/flr/doc/" class="uri">https://github.com/flr/doc/</a></li>
-<li>For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <a href="http://flr-project.org" class="uri">http://flr-project.org</a>.</li>
+<li>Alternatively, send a pull request to <a href="https://github.com/flr/doc/" class="uri">https://github.com/flr/doc/</a>.</li>
+<li>For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage: <a href="http://flr-project.org" class="uri">http://flr-project.org</a>.</li>
 </ul>
 <div id="software-versions" class="section level2">
 <h2>Software Versions</h2>
 <ul>
-<li>R version 3.3.2 (2016-10-31)</li>
-<li>FLCore: 2.6.0.20170228</li>
-<li><strong>Compiled</strong>: Wed Mar 8 13:47:34 2017</li>
+<li>R version 3.3.3 (2017-03-06)</li>
+<li>FLCore: 2.6.3.9004</li>
+<li><strong>Compiled</strong>: Fri Jul 14 14:17:37 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">
@@ -647,7 +647,7 @@ Variance-covariance:
 </div>
 <div id="author-information" class="section level2">
 <h2>Author information</h2>
-<p><strong>Iago MOSQUEIRA</strong>. European Commission, DG Joint Research Centre, Directorate D - Sustainable Resources, Unit D.02 Water and Marine Resources, Via E. Fermi 2749, 21027 Ispra VA, Italy. <a href="https://ec.europa.eu/jrc/" class="uri">https://ec.europa.eu/jrc/</a></p>
+<p><strong>Iago MOSQUEIRA</strong>. European Commission, DG Joint Research Centre, Directorate D - Sustainable Resources, Unit D.02 Water and Marine Resources, Via E. Fermi 2749, 21027 Ispra VA, Italy. <a href="https://ec.europa.eu/jrc/" class="uri">https://ec.europa.eu/jrc/</a>.</p>
 </div>
 </div>
 

@@ -1,0 +1,869 @@
+% Author: laurence kell <lauriekell@gmail.com>
+
+%\VignetteIndexEntry{wwd}
+%\VignetteIndexEntry{An Introduction to R}
+%\VignetteKeyword{data, IO, read, write}
+
+\documentclass[shortnames,nojss,article]{jss}
+
+\usepackage[utf8]{inputenc}
+%\usepackage{hyperref}
+%\usepackage{geometry}
+\usepackage{framed}
+\usepackage{color}
+\usepackage[onehalfspacing]{setspace}
+\usepackage{natbib} \bibliographystyle{plain}
+\usepackage{graphicx, psfrag, Sweave}
+%\usepackage{enumerate}
+%\geometry{verbose,a4paper,tmargin=2cm,bmargin=1.5cm,lmargin=2cm,rmargin=3cm}
+
+%\usepackage{booktabs,flafter} %,thumbpdf}
+
+\definecolor{shadecolor}{rgb}{0.9,0.9,0.9}
+
+\newenvironment{mylisting}
+{\begin{list}{}{\setlength{\leftmargin}{1em}}\item\scriptsize\bfseries}
+{\end{list}}
+
+\newenvironment{mytinylisting}
+{\begin{list}{}{\setlength{\leftmargin}{1em}}\item\tiny\bfseries}
+{\end{list}}
+
+
+\author{Laurence T. Kell\\ICCAT }
+\Plainauthor{Laurence T. Kell}
+
+
+\title{Working With Data}
+\Plaintitle{Working With Data}
+
+\Abstract{
+
+R has a rich variety of data types such as scalars, vectors, matrices, arrays, data frames and lists. Before you can take advantage of R and the many contributed packages you have to be able to import your data that may have been stored in a variety of text files, spreadsheets, databases or even binary files. Once you have got your data into R it will be necessary to convert them from one type to another (i.e. coercion), summarise, subset and plot them and to transform objects often by writing R functions.
+In this document we describe the main R data types, show how to imported data into R and to manipulate them.
+}
+\Keywords{\proglang{R}, data types, import, export}
+\Plainkeywords{R, data types, import, export}
+
+\Address{
+  Laurence Kell \\
+  ICCAT Secretariat\\ 
+  C/Coraz\'{o}n de Mar\'{\i}a, 8. \\
+  28002 Madrid\\
+  Spain\\   
+  E-mail: \email{Laurie.Kell@iccat.int}\\
+
+}
+
+%% need no \usepackage{Sweave.sty}
+
+
+<<prelim,echo=FALSE,print=FALSE>>=
+stampIt=function(...){
+   require(plyr)
+
+   args=list(...)
+   
+   ldply(args, function(x) { res=packageDescription(x)
+                            c(Package=x,
+                              Version=packageDescription("ALKr")$Version,
+                              Date   =packageDescription("ALKr")$Date)})}
+
+smry=stampIt("ALKr")
+
+theme_ms <- function(base_size = 12, base_family = "",...) { 
+  # Starts with theme_grey and then modify some parts 
+  res=theme_grey(base_size = base_size, base_family   = base_family) %+replace% 
+    theme(axis.text         = element_text(                                     size   = rel(0.8)), 
+          axis.ticks        = element_line(                 colour = "black"), 
+          legend.key        = element_rect(                 colour = "grey80"), 
+          panel.background  = element_rect(fill = "white",  colour = NA), 
+          panel.border      = element_rect(fill = NA,       colour = "grey50"), 
+          panel.grid.major  = element_line(                 colour = "grey90",  size = 0.2), 
+          panel.grid.minor  = element_line(                 colour = "grey98",  size = 0.5), 
+          strip.background  = element_rect(fill = "grey80", colour = "grey50"), 
+          strip.background  = element_rect(fill = "grey80", colour = "grey50")) 
+  
+  modifyList(res, list(...))} 
+@
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+\newpage
+\section{Introduction}
+
+R has a rich variety of data types such as scalars, vectors, matrices, arrays, data frames and lists, as well as
+data in S4 classes. However, before you can take advantage of R and contributed packages to work on your own data you have to be able to import it into R from a variety of files, e.g. text, spreadsheets, databases or binary files. Then once you have your data in R it may be necessary to convert them from one type to another (i.e. coercion), plot, summarise and subset them and to transform objects often by writing R functions. In this document we describe the main R data types, then show how to manipulate them and imported data into R.
+
+R data types including scalars, vectors, matrices, data frames and lists, which may contain variables of different types, e.g. numerical, character, logical.  See the \href{http://cran.r-project.org/doc/manuals/R-lang.html}{R language definition} for full documentation and the \href{http://cran.r-project.org/doc/contrib/Short-refcard.pdf}{R reference card} for a summary of methods and functions to use with them.
+
+\section{Help}
+
+R has extensive documentation and the main ways of finding help are 
+
+\begin{center}
+\begin{minipage}[H]{0.95\textwidth}%
+\begin{shaded}%
+\begin{tabular}{ l c l }
+\ttfamily
+  ?lm  		              & \# & specific help - if you know the name of the function \\
+  args(lm) 		          & \# & gives the specific arguments to the function         \\
+  example(log)          & \# & Example code                                         \\
+  help.start()          & \# & Start the browser                                    \\
+  help.search("plot")   & \# & if you only know the subject area                    \\
+  apropos('lm')		      & \# & returns a character string of all potential matches  \\
+  ??plot		            & \# & returns the package and all available methods        \\
+  help.start()		      & \# & launches the online html help.                       \\
+  example(array)	      & \# & returns the example code provided in the help doc    \\
+  find('par')		        & \# & will tell you what package something is in	          \\
+  search()		          & \# & returns a list of attached packages		              \\
+  demo(graphics)        & \# & demos of what a package does		                      \\
+\end{tabular}
+\end{shaded}%
+\end{minipage}
+\end{center}
+
+There are also extensive online resources, i.e. websites such as 
+\href{http://cran.r-project.org}{CRAN}, 
+\href{http://cran.r-project.org/doc/FAQ/R-FAQ.html}{R FAQ}, \href{http://cran.r-project.org/bin/windows/base/rw-FAQ.html}{Windows R FAQ} and \href{http://www.rseek.org}{R seek}; mailing lists for users where you can find 
+\href{https://stat.ethz.ch/pipermail/r-help/2006-May/thread.html#106031}{examples \& join discussions}; the
+\href{http://journal.r-project.org/}{R Journal}, 
+\href{http://www.r-bloggers.com/}{blogs} and reference guides such as 
+\href{http://www.statmethods.net/index.html}{Quick-R}.
+
+An important feature of R are the many packages that have been contributed by users for a variety of tasks. These often have there own guides and mailing lists and guides, for example the graphics package \href{http://ggplot2.org}{ggplot2}.
+
+When working in an R Session you will want to occasionally save code as you are working on. You
+can recall the code, i.e. the commands, that you have been running in your session by typing
+history(). By default only 25 lines are shown, you can also save your entire history to a file and
+even run previous commands. To find out more use the help i.e.
+
+\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded}
+<<results=hide, echo=TRUE, eval=FALSE>>=
+?history
+@
+\end{shaded}\end{minipage}\end{center}
+
+\section{Data}
+
+Vectors are continuous cells containing data of a single type. Types can be character (i.e. string),
+integer, double, logical, raw (or bytes) or complex. Matrices and arrays are similar to vectors but
+with 2 or more dimensions. There are also attributes for the dimensions (dim) and, optionally the dimension names (dimnames); a matrix has 2 dimensions (i.e. row and column) and arrays 2 or more dimensions.
+
+Methods for finding out what class a particular object belongs to, what type of data it contains and
+what storage mode is used to store the information are important. As an example we generate
+some random data and use it to create an array. You will see that the storage mode of the objects
+contents is 'numeric' whilst the specific data type is 'double'. The object oriented approach allows
+simple classes to be extended to form more complex classes, e.g. vectors can be coerced into a data.frame The 'is' method can be used to view the full class inheritance tree of the object.
+
+\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded}
+<<echo=TRUE>>=
+x = array(rnorm(9),dim=c(3,3),
+                   dimnames=list(row=c("x","y","z"),col=1:3))
+x
+
+# what is it?
+class(x)
+typeof(x)
+mode(x)
+is(x)
+@
+\end{shaded}\end{minipage}\end{center}\\
+
+
+Data frames are similar to data sets as used by statistical software such as SAS and contain variables (columns) by observations (row). The  columns may contain vectors of different types, e.g. numeric, logical, character or factors. They must all have the length. In addition, a data frame generally has a names attribute labelling the variables and a row.names attribute for labelling the observations. A data frame can also contain a list of the same length as the other components.A list is a collection of objects that may be of any type and length. 
+
+It is worth mentioning in passing the model.frame method (or function) which in certain packges returns a data.frame with the variable needed to use the formula in a model, such as a linear regression, stored as columns.
+
+\subsection{Vectors}
+
+R is a vector orientated language and the assignment symbol "=" or "<-" creates a new object.  Typing only the name of the object outputs its values. Calculations are performed on all elements of a vector thus the square of all elements in vector b can be computed simply by passing the vector b to the appropriate method as shown
+below.
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded}
+<<echo=TRUE>>=
+b = 1:5
+length(b)
+b
+b^2
+@
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+R is case sensitive and the correct case must be used when calling functions and methods and referencing variables. Variables names can contain letters, digits, \. and \_, however the variable name must start with a letter.
+
+A vector must contain elements of the same type, e.g. a vector of doubles as above. The vector
+oriented approach of the the R language means that functions such as log will be applied to all
+elements in the vector passed as an argument e.g.
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded}
+<<>>=
+log(b)
+@
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+\section{Methods}
+
+R is an object oriented language and an important concept is that everything in R is an object and that every object belongs to a class. Without getting into a detailed explanation of Object Oriented Programming (OOP) many packages are based on the S4 classes using OOP . An S4 class contains structures composed of certain
+types of data and methods or functions that manipulate the classes. What class an object belongs to determines what operations can be performed on it and what a generic method like plot() or or summary() produces. 
+
+\subsection{Plotting}
+
+Since R is an object orientated language it knows how to make appropraite plots for any object, since it uses
+methods, i.e. generic functions that behave appropriately depending on the object passed as an
+argument. In this case a trivial exercise but with more complicated objects this is a useful feature.
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded}
+<<>>=
+plot(b)
+@
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+\section{Examples}
+
+Recycling is an important feature of vector arithmetic. When two vectors of unequal length are
+combined, the elements of the shorter vector are reused. In the example below, after the third
+element in a, the first element in b is reused. This process is known as automatic recursion and can
+be a very powerful tool in R. But beware of it! R will use automatic recursion and will assume that
+the user is aware of it. If the length of the smaller object is a multiple of the larger object, R will use
+automatic recursion. If the length of the smaller object is not a multiple of the larger object, R will
+still perform the action but will give a warning that the sizes of the two objects are not compatible.
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded}
+<<>>=
+# recycling
+a = 1:6
+b = 1:3
+a + b
+c = 1:4
+a + c
+@
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+A variety of missing values can be specified in R. Values can take Inf or -Inf for infinity, NA for a
+missing value and NaN for not a number. Dividing a positive number by 0 will produce Inf value
+and dividing a negative number by 0 will produce a -Inf value. NaN values can be created by trying
+to calculate the log of a negative number, for example.
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded}
+<<>>=
+a = c(3, 4, NA, Inf)
+a
+tt = c(1, NA, 3, 4, NA, 6, NaN)
+is.na(tt)
+is.nan(tt)
+@
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+The sum of vector a will in the example above be defined as NA, since NA is propagated. The na.rm argument will remove the NAs and then sum the valid values in the vector.
+
+\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded}
+<<>>=
+a=1
+sum(a)
+sum(a, na.rm = T)
+@
+\end{shaded}\end{minipage}\end{center}
+
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded}
+<<>>=
+a=1
+sum(a)
+sum(a, na.rm = T)
+@
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+Similar rules apply for string manipulation, for which additional methods such as paste are available
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded}
+<<echo=TRUE>>=
+b = c("yes", "no", "maybe")
+paste("is it", b)
+paste("is it", b, sep = ",")
+paste("is it", b, sep = " ", collapse = ", ")
+@
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+
+A variety of methods exist for creating objects with different characteristics for example rnorm creates random numbers
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded}
+<<echo=TRUE>>=
+a = rnorm(100)
+@
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+A vector can be summaried by calculating it mean and standard deviation and plotted as a histogram. Many basic functions exist in R to create a variety of summary statistics. In addition a number of basic plotting functions are also available for quick and easy data visualisation e.g.
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded}
+<<eval=FALSE,echo=FALSE>>=
+mean(a)
+sd(a)
+plot(a)
+hist(a)
+boxplot(a)
+boxplot(a, col="red")
+qqnorm(a)
+qqline(a)
+fivenum(a)
+stem(a)
+@
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+
+max() and min() return the maximum and minimum values in a vector, and pmax and pmin perform a pairwise comparison, i.e. comparing the vector with 0.0.
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded}
+<<echo=FALSE>>=
+max(a)
+pmax(a, 0)
+@
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+Comparing elements of vectors can be done with ==, and ! is the logical inverse
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded}
+<<eval=TRUE>>=
+c(T, F, T, T, F, F) == TRUE
+!c(T, F, T, T, F, F)
+@
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+A vector can be subset using logical values or using a comparison operator, in this instance to get
+all values greater than two or by sub-setting the vector by its index, i.e. to get the first three
+elements
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded}
+<<eval=TRUE>>=
+a = c(T, T, F, F, T)
+b = 1:5
+b[a]
+b[b > 2]
+b[1:3]
+@
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+Alternatively by giving a list of numbers, or by excluding an element
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded}
+<<eval=TRUE>>=
+b[c(1, 2, 1, 3, 4, 1, 1, 5)]
+b[-3]
+@
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+Vectors of one type can be converted to vectors of other types through coercion, i.e. from
+integer to logical
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded}
+<<eval=TRUE>>=
+b = c(0, b)
+lb = as.logical(b)
+lb
+@
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+
+\subsection{Matrices and Arrays}
+  
+Matrices and arrays are vectors with attributes that define the dimensions (dims) and optionally the
+dimension names (dimnames), recalling two-dimensional array (i.e. matrix) x that we created
+before use the following
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded}
+<<eval=TRUE>>=
+# create an array
+x = array(rnorm(9),dim=c(3,3),
+                    dimnames=list(row=c("x","y","z"),col=1:3))
+@
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+The matrix function takes an argument that determines how the matrix is filled, i.e. by row or by
+column. Note that by default a matrix is filled by column, you can change the way that the matrix is
+filled by setting the argument 'byrow' to TRUE. The kind of data structure (i.e. number of rows and
+columns) is determined by the attributes of the object.
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded}
+<<eval=TRUE>>=
+# dimensions
+dim(x)
+dimnames(x)
+attributes(x)
+
+# alternatives for creating an array
+a = matrix(1:16, nrow = 4)
+aa= matrix(1:16, nrow = 4, byrow = TRUE)
+a
+aa
+@
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+It is possible to remove dimensions, for example to get a vector rather than a matrix, by changing the attributes of the object. A matrix can be subset to obtain specific values, i.e. a vector defined by row or column A vector can also be reshaped to get a higher dimensional array, note that you cannot go out of a vectors bounds, since this is protected
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded}
+<<eval=TRUE>>=
+# changing attributes
+a=1
+dim(a) = NULL
+attributes(a)
+a
+
+attr(aa, "dim") = c(2, 4, 2)
+attributes(aa)
+aa
+
+aa[2, 3,1]
+aa[2,,]
+aa[1:2,, ]
+@
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+\subsection{Lists}
+
+Lists are simply collections of objects. The objects contained in any given list can be of different types. In this example we create a list of length 3 containing string, integer and logical types.
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded}
+<<eval=TRUE>>=
+fish = list(name = "cod", age = 3, male = FALSE)
+fish
+@
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+You can retrieve an element of a list in different ways, either by name or by specifying its index using square brackets.
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded}
+<<eval=TRUE>>=
+fish$name
+fish[["name"]]
+fish[[1]]
+@
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+
+Note how we use double square brackets to index the list. Indexing a list with single square brackets will return an object of class list that has length 1 and contains the element of the list that we have requested. When using double square brackets we are returned an object in the class of the contents of the element of the list that we are accessing.
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded}
+<<eval=TRUE>>=
+class(fish$name)
+class(fish[["name"]])
+class(fish[[1]])
+class(fish[1])
+@
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+Using double square brackets returns the original type, whilst single square brackets returns a
+list. You can also create arrays of type list e.g.
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded} 
+<<eval=TRUE>>=
+array(list(), c(2, 3))
+@ 
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+\subsection{Data frames}
+
+In a data.frame all vectors need to be of the same length, this is equivalent to a SAS data set or
+simple Excel sheet. First we create a list with equal vector length, then make the data.frame.
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded} 
+<<eval=TRUE>>=
+a = list(age = 1:10, weight = c(0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.6, 0.7, 0.9))
+a
+b = as.data.frame(a)
+b
+@ 
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+It is also possible to make data.frame in one go and because of recycling you dont need to replicate
+all elements.
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded} 
+<<eval=TRUE>>=
+fish = list(name = "cod", age = 3, male = FALSE)
+fish
+@ 
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+
+You can subset a data.frame like you would a list i.e. to get a vector
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded} 
+<<eval=TRUE>>=
+fish$name
+fish[["name"]]
+fish[[1]]
+@ 
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+Sometimes it will be useful to determine what class an object belongs to and to add comments.
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded} 
+<<eval=TRUE>>=
+class(fish$name)
+class(fish[["name"]])
+class(fish[[1]])
+class(fish[1])
+attr(fish, "rem") = "This is my dataframe"
+@ 
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+You can edit a data.frame as you would spreadsheet using fix and import and export dataframes, by
+default if no path, then file is put in setwd() dir
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded} 
+<<eval=TRUE>>=
+args(fix)
+write.table(b, )
+args(write.table)
+args(read.table)
+@ 
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+\subsection{Coercion}
+
+Coercion is the act of creating one type of R object from another, this can be changing the basic
+type, i.e. a string into a number, or a matrix into a data.frame.
+
+Coercion just requires sticking an ???as.??? in front of the type you want to create e.g. for both the
+atomic types (i.e. vectors of type integer, double,..)
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded} 
+<<eval=TRUE>>=
+as.double("2")
+as.character(2)
+df = data.frame(string = c("a", "b", "c", "d"), integer = 1:4)
+as.matrix(df)
+@ 
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+\section{Importing Data}
+
+Very often the data that you want to analyse will be available in a file format that is supported by
+another piece of software such as a spreadsheet, a database or a statistical package. There are
+a variety of methods for importing data of many different formats into your R session. See the guide \href{R Data Import/Export}{http://cran.r-project.org/doc/manuals/R-data.pdf} for a full review.
+
+A number of packages have been developed to enable import of data from other formats. For example the 'foreign' package allows a number of alterrnative data formats to be read into R including SAS formatted data and SAS transfer files, and the package 'RODBC' provides database functionality.
+
+\subsection{Text}
+
+Here we consider the most common data format i.e. comma or space
+separated data saved as a flat text file. 
+The required methods are read.table and read.csv, although your data do not
+necessarily have to be comma separated. Spaces, tabs and any other form of separator may be used,
+but they must be used consistently. Files containing a combination of different separators will be
+very difficult to read using the methods below. There are a number of functions provided in the base
+distribution of R for importing data into your work session. These include scan, readLines
+and read.table. Perhaps the simplest method is to use scan which simply reads all of the data
+contained in the file into a single vector. The data can then be coerced into the required type as
+shown. The readLines method will do something very similar but will read in only the
+specified number of lines. The read.table method is particularly useful. It returns a data.frame object
+containing the data. If the header is specified as TRUE then the first line of data to be read in will
+be used for the column names in the returned data.frame object. read.csv() is similar to read.table
+and is basically a wrapper that defines the seperators ad ???,??? and sets header=TRUE by default e.g.
+to read in the catch distribution data. You will need to change the file path given in the example
+below to the location of the file on your machine.
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded} 
+<<eval=FALSE>>=
+dirData=paste(system.file(package="saCourse", mustWork=TRUE),"examples",sep="/")
+
+## read.csv
+fileCdis =paste(dirData,"cdis.csv",sep="")
+cdis=read.csv(fileCdis)
+head(cdis)
+@ 
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+read.table() can also read from http and fttp, e.g. the NAO data on the NOAA website
+as it also accepts web addresses e.g.
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded} 
+<<eval=FALSE>>=
+nao =read.table("http://www.cdc.noaa.gov/data/correlation/nao.data", skip=1,
+nrow=62,
+na.strings="-99.90")
+@ 
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+scan() is more flexible but requires a bit more effort, here we read in data from a file that holds the
+catch-at-age data for mediterannean swordfish and create an array with appropriate dims and
+dimnames
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded} 
+<<eval=FALSE>>=
+fileSwo="swoCN.dat"
+yrs =scan(fileSwo,skip=2,nlines=1)
+ages=scan(fileSwo,skip=3,nlines=1)
+dat =scan(fileSwo,skip=5)
+caa =array(dat,dim     =c(diff(ages)+1, diff(yrs)+1),
+               dimnames=list(age =ages[1]:ages[2],year=yrs[1]:yrs[2]))
+@ 
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+\subsection{Spreadsheets}
+As is almost always the case with R, there are several different ways to perform the same task. Data
+can be read in from an Excel spreadsheet using one of a number of methods. The packages
+RODBC, xlsReadWrite, xlsx and gdata all contain routines for accessing data in spreadsheet form.
+In the example below we use the read.xls method available in the gdata package to read data
+from the excel file swordfish.xls. This is because it uses the same defaults as for read.csv() making
+it easier to use. You will need to change the file path given in the example below to the location of
+the file on your machine. If you haven't already installed the gdata package you will need to do this
+first, and also install perl
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded} 
+<<eval=FALSE>>=
+install.packages('gdata')
+library(gdata)
+yrs =read.xls("swordfish.xls",sheet="CatchN",skip=1,nrow=1)[1:2]
+ages =read.xls("swordfish.xls",sheet="CatchN",skip=2,nrow=1)[1:2]
+dat =read.xls("swordfish.xls",sheet="CatchN",skip=5,header=F)
+caaXl=array(dat,dim
+=c(diff(ages)+1, diff(yrs)+1),
+dimnames=list(age =ages[1]:ages[2],year=yrs[1]:yrs[2]))
+is(ages)
+is(yrs)
+is(dat)
+ages=unlist(ages)
+yrs =unlist(yrs)
+dat =t(as.matrix(dat))
+caaXl=array(dat,dim
+=c(diff(ages)+1, diff(yrs)+1),
+dimnames=list(age =ages[1]:ages[2],year=yrs[1]:yrs[2]))
+caaXl
+@ 
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+As you can see, the example given above counts the number of sheets in the excel file, obtains the
+names of each of those sheets and finally accesses the data in the second sheet, ommitting the first
+four rows of data and extracting the following 5 rows of data. The results are returned as a
+data.frame to the object we have called xlsdata.
+
+\subsection{Databases}
+
+Databases prove more flexibility, since you can access different tables and views. Where a view is a virtual
+table, i.e. it is constructed from other tables in the database.
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded} 
+<<eval=FALSE>>=
+chlT3sz   =odbcConnectAccess(fileT3sz)
+sqlTables(chlT3sz)
+t3sz     = sqlQuery(chlT3sz, "select * from [t2szFreqs]")
+head( t3sz)
+names(t3sz)
+
+head(sqlQuery(chlT3sz, "select * from [Species]"))
+head(sqlQuery(chlT3sz, "select * from [t2szFreqs]"))
+head(sqlQuery(chlT3sz, "select * from [t2szProcs]"))
+head(sqlQuery(chlT3sz, "select * from [t2szStrata]"))
+head(sqlQuery(chlT3sz, "select * from [cat_szDetail]"))
+head(sqlQuery(chlT3sz, "select * from [cat_szSummary]"))
+head(sqlQuery(chlT3sz, "select * from [subSets]"))
+head(sqlQuery(chlT3sz, "select * from [t2szProcs Query]"))
+@ 
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+
+An example of creating a database and making a query
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded} 
+<<eval=FALSE>>=
+library(RSQLite)
+## Initialise the SQLite engine
+SQLite()
+## connect DB
+dbMC ="c:/temp/t.dbf"
+conMC =dbConnect(dbDriver("SQLite"), dbname=dbMC)
+df=data.frame(n=rep(1:4,25),a=rep(c("a","b","c","d"),each=25))
+dbWriteTable(conMC,"EastMC",df,append=TRUE)
+dbListTables(conMC)
+file.info(dbMC)
+query="SELECT * FROM 'EastMC' WHERE n IN (2) AND a IN ('a','b') LIMIT 10"
+x= dbGetQuery(conMC, query)
+@ 
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+A utility function for database queries
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded} 
+<<eval=FALSE>>=
+setGeneric("sqlVar", function(object, ...)
+standardGeneric("sqlVar"))
+setMethod("sqlVar", signature("character"),
+function(object, ...) paste("('",paste(object,collapse="','"),"')",sep=""))
+setMethod("sqlVar", signature("numeric"),
+function(object, ...) paste("(",paste(object,collapse=","),")",sep=""))
+sqlVar(c("b"))
+sqlVar(2)
+query= paste("SELECT * FROM 'EastMC' WHERE n IN", sqlVar(2), "AND a IN", sqlVar(c("a","b")), "LIMIT
+10")
+x= dbGetQuery(conMC, query)
+dbDisconnect(conMC)
+@ 
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+
+\section{Manipulating Objects}
+R has many functions and methods for manipulating data objects such as arrays, data.frames and lists. 
+Although FLR is based on object oriented (OO) programming where data (i.e. slots) and actions (i.e. methods)
+are grouped together in S4 classes, these methods can still be used with FLR. For example an FLQuant is 
+derived from an array and so can be manipulated using functions written for arrays, while an FLR class 
+has similarities to a list (in that it can contain a variety of data types) and  functions that work for
+ lists have been overloaded so that they work for  FLR classes. In R it is recommended that rather 
+than using ???for loops??? that you use apply and sweep. To the new user this can appear to be confusing
+ but using them speeds up code and helps conceptually by moving towards a "whole object" view. The
+ apply family of functions allow functions to be applied on subsets of different types of R classes
+ (i.e. lapply, tapply, sapply, rapply mapply etc). Sweep is useful when trying to perform an operation 
+on two arrays that might have different dimensions. 
+
+We show how these and related functions can be used within FLR. Firstly showing how R functions used
+for arrays can be used with the FLQuant class, we then describe additional features and functions that
+have been added to FLR. Following this we describe functions that have been added for the FLR classes 
+themselves.Let's start by loading FLCore and some data sets distributed with it.
+
+\subsection{apply}
+
+The apply function in base R applies a function to the margins of an array and returns a vector or array
+or list of the values obtained.
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded} 
+<<eval=FALSE>>=
+?apply
+example(apply)
+@ 
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+\subsection{sweep}
+
+sweep return an array derived from an input array by sweeping out a summary statistic 
+The function is useful when performing an operation on two arrays which dont have the same dimensions, for example when calculating selection pattern by first scaling fishing mortality-at-age by the average value or looking at sex ratios where numbers by sex are divided by total numbers
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded} 
+<<eval=FALSE>>=
+?sweep
+example(sweep)
+@ 
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+
+\subsection{Re-shaping}
+
+see \href{plyr}{http://plyr.had.co.nz/} for a set of tools for data manipulation. For example to split up a big data structure into homogeneous pieces, apply a function to each piece and then combine all the results back together.
+
+
+\section{Functions}
+
+Very often you will want to write a function in R to perform a given task or routine that may be
+required several times. If you have previously written code for other languages you may be familiar
+with the conventional approach of writing 'for loops' whereby the code loops successively through
+each element of the object and performs the same action on each. The example below is a trivial
+case, simply adding 2 to a numeric vector using the conventional programming approach. In R, this
+is generally the slow and inefficient method.
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded} 
+<<eval=FALSE>>=
+for (i in 1:length(x))
+x[i] = x[i] + 2
+@ 
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+A far more effective approach is to use the vectorised arithmetic of R. But as mentioned above,
+beware of automatic recursion.
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded} 
+<<eval=FALSE>>=
+x = c(2, 3, 4, 5)
+x + 2
+@ 
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+In the example below we create a very simple function that calculates the cube of any value, or
+vector of values passed to it. A function comprises 2 main components: the function arguments and
+a function body. The function body contains error trapping, the main processes of the function and
+the return statement.
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded}
+<<eval=FALSE>>=
+cube = function(x, na.rm = TRUE) {
+if (na.rm == TRUE)
+x = x[!is.na(x)]
+return(x^3)
+}
+a = 1:5
+cube(a)
+@
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+Our function takes two arguments, x and na.rm and that by default na.rm is set to TRUE. The
+function performs some simple error trapping conditional on the value of na.rm and returns an
+object of the same class as x, cubed.
+If we want to see the formal arguments to any function we can use the args() method, as below.
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded}
+<<eval=FALSE>>=
+args(cube)
+@
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+\subsection{Debugging}
+As soon as you write a function you will find that it doesnt work as expected due to a bug.
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded}
+<<eval=FALSE>>=
+err = function(a){
+    loga = log(a[,1])
+    
+    res  = mean(log(a))
+    
+    return(res)}
+
+err(rnorm(5,0,1))
+@
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+You can debug functions written in R using the environment browser. This will interrupt the
+execution of an expression and allow the inspection of the environment where ???browser??? was called
+from. A call to ???browser??? can be included in the body of a function. When reached, this causes a
+pause in the execution of the current expression and allows access to the R interpreter, enabling you
+to interrogate the objects that have been declared locally within the function.
+For example if we have the following function which takes a numeric vector and performs a
+number of simple tasks eventually returning the object res ...
+You will see that the function returns an error: Error in a[, 1] : incorrect number of dimensions
+To debug the function we simply insert a call to browser() within the function as below. This will
+halt execution of the function at the point of the call to browser(). Entering 'n' at the command
+prompt will execute the remainder of the function line by line. Entering a 'c' will execute the
+remaining code and exit the function.
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded}
+<<eval=FALSE>>=
+err2 = function(a,b){
+browser()
+v1 = mean(a)
+v2 = median(a)
+loga = log(a[,1])
+res= mean(log(a))
+return(res)}
+err2(rnorm(5,0,1))
+@
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+By stepping through the code and interrogating the objects that are created you should be able to
+detect the line at which the function fails. One disadvantage of browser() is that on encountering the
+point of failure the environment immediately returns to the top level.
+A more sophisticated debugger is available in the 'debug' package
+
+
+\begin{mylisting}\begin{center}\begin{minipage}[H]{0.95\textwidth}\begin{shaded}
+<<eval=FALSE>>=
+install.packages('debug')
+library(debug)
+mtrace(err)
+err(rnorm(5,0,1))
+mtrace.off(err)
+@
+\end{shaded}\end{minipage}\end{center}\end{mylisting}
+
+With debug there is no need to insert break points or commands within the function. Instead you
+declare the function for debugging using 'mtrace' as shown below
+
+
+\end{document}
