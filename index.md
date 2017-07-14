@@ -5,6 +5,7 @@ title: "FLR tutorials"
 - [An_introduction_to_MSE_using_FLR](An_introduction_to_MSE_using_FLR.html)
 - [An_overview_of_the_FLCore_classes](An_overview_of_the_FLCore_classes.html)
 - [A_quick_introduction_to_FLR](A_quick_introduction_to_FLR.html)
+- [Units of measurement in FLR objects](Units_of_measurement_in_FLR_objects.html)
 - [Forecasting_on_the_Medium_Term_for_advice_using_FLasher](Forecasting_on_the_Medium_Term_for_advice_using_FLasher.html)
 - [ggplotFL_plotting_FLR_objects_with_ggplot2](ggplotFL_plotting_FLR_objects_with_ggplot2.html)
 - [Loading_your_data_into_FLR](Loading_your_data_into_FLR.html)
