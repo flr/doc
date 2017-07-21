@@ -1,4 +1,4 @@
----
+﻿---
 title: Modelling Stock-Recruitment with FLSR
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
@@ -12,7 +12,7 @@ library(knitr)
 source("R/ini.R")
 ```
  
-*FLSR* is a [S4](https://stat.ethz.ch/R-manual/R-devel/library/methods/html/Classes_Details.html) class for Stock-Recruitment (SR) models, an extension of *FLModel* , and part of the *FLCore* package.  Commonly used or custom-tailored SR models can be fitted directly on *FLStock* objects and provide estimates of uncertainty. *FLSR* class objects can be then used to visualize the fitted models, in calculations of biological reference points using *FLBPR* or when performing stock projections. 
+*FLSR* is an [S4](https://stat.ethz.ch/R-manual/R-devel/library/methods/html/Classes_Details.html) class for Stock-Recruitment (SR) models, an extension of *FLModel* , and part of the *FLCore* package.  Commonly used or custom-tailored SR models can be fitted directly to *FLStock* objects, providing estimates of uncertainty. *FLSR* class objects can then be used to visualize the fitted models, calculate biological reference points using *FLBPR*, and perform stock projections. 
 
 ## Required packages
 
@@ -32,31 +32,28 @@ install.packages(c("ggplotFL"), repos="http://flr-project.org/R")
 Initially, the libraries need to be called.
 
 ```{r, pkgs}
-# This chunk loads all necessary packages, trims pkg messages
 library(FLCore)
 library(ggplotFL)
 ```
 
-And then the user can load and visualize the results of an assessment (VPA) already performed and stored in the ple4 *FLStock* object.
+The user can load and visualize the results of an assessment (VPA) already performed and stored in the ple4 *FLStock* object.
 
 ```{r, data}
-# This chunk loads the ple4 FLStock object 
+# Load the ple4 FLStock object 
 data(ple4)
 ```
 
 ```{r figA}
-# This chunk plots the assesment output
+# Plot the assesment output
 plot(ple4)
 ```
-
 
 # The Stock-Recruitment (SR) relationship
 
 Given that recruitment and spawning stock biomass (SSB) are provided as an output of the assessment, their relationship can be visualized simply by ploting the recruits against the SSB.
 
 ```{r figB}
-# This chunk plots the SSB-Recruits graph
-#plot(FLQuants(ple4, "ssb", "rec"))
+# Plot the SSB-Recruits graph
 ggplot(aes(ssb,rec), data=model.frame(FLQuants(ple4, "ssb", "rec")))+geom_point()+geom_smooth()
 ```
 
@@ -64,28 +61,25 @@ ggplot(aes(ssb,rec), data=model.frame(FLQuants(ple4, "ssb", "rec")))+geom_point(
 An empty *FLSR* object can be directly created simply by:
 
 ```{r, FLSRobject1}
-# This chunk creates an empty FLSR object
 sr1 <- FLSR()
 ```
 
-An *FLSR* object can be also be created from converting directly an *FLStock* object:
+An *FLSR* object can be also be created by directly converting an *FLStock* object:
 
 ```{r, FLSRobject2}
-# This chunk converts an FLStock object into an FLSR object
 p4sr <- as.FLSR(ple4)
 ```
 
 The contents of the *FLSR* object are the following:
 
 ```{r, FLSRobject2_contents}
-# This chunk outputs the summary of the FLSR object
 summary(p4sr)
 ```
 
-In the case of ple4 data, recruits are fish of age=1. Hence, the lag between ssb and rec is also 1 year. The starting year for SSB is 1957, whereas for recruits it is 1958. 
+In the case of the ple4 *FLStock* object, recruits are fish of age=1. Hence, the lag between ssb and rec is 1 year. The starting year for SSB is 1957, whereas for recruits it is 1958. 
 
 ```{r, rec_ssb_lag}
-# This chunk outputs the contents of the rec and ssb slots of the FLSR object
+# Outputs the contents of the first year of the rec and ssb slots of the FLSR object
 ssb(p4sr)[,1]
 rec(p4sr)[,1]
 ```
