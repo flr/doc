@@ -44,7 +44,7 @@ data(ple4.index)
 data(rfLen)
 ```
 
-# Backround
+# Background
 
 The a4a stock assessment framework is based on age dynamics. Therefore, to use length information, this length information must be processed before it can be used in an assessment. The rationale is that the processing should give the analyst the flexibility to use a range of sources of information, e.g. literature or online databases, to obtain information about the species growth model and the uncertainty about model parameters.
 
@@ -264,6 +264,12 @@ aIdx <- l2a(rfTrawl.idx, vbTriSmall)
 When converting with `l2a()` all lengths above Linf are converted to the maximum age, because there is no information in the growth model about how to deal with individuals larger than Linf. 
 
 # References
+
+Ernesto Jardim, Colin P. Millar, Iago Mosqueira, Finlay Scott, Giacomo Chato Osio, Marco Ferretti, Nekane Alzorriz, Alessandro Orio; What if stock assessment is as simple as a linear model? The a4a initiative. ICES J Mar Sci 2015; 72 (1): 232-236. DOI: https://doi.org/10.1093/icesjms/fsu050
+
+Colin P. Millar, Ernesto Jardim, Finlay Scott, Giacomo Chato Osio, Iago Mosqueira, Nekane Alzorriz; Model averaging to streamline the stock assessment process. ICES J Mar Sci 2015; 72 (1): 93-98. DOI: https://doi.org/10.1093/icesjms/fsu043
+
+Scott F, Jardim E, Millar CP, Cerviño S (2016) An Applied Framework for Incorporating Multiple Sources of Uncertainty in Fisheries Stock Assessments. PLoS ONE 11(5): e0154922. DOI: https://doi.org/10.1371/journal.pone.0154922
 
 # More information
 
