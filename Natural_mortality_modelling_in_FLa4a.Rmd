@@ -240,7 +240,7 @@ rngyear(m2) <- c(2000, 2003)
 range(m2)
 m(m2)
 # Note that the level value is
-predict(level(m2))
+c(predict(level(m2)))
 # which is the same as
 m(m2)["0"]
 # This is because the mbar range is currently set to "0" and "0" (see above)
@@ -254,7 +254,7 @@ m(m2)
 quantMeans(m(m2)[as.character(0:5)])
 ```
 
-The next example uses a time trend for the *trend*` model. We use the m3 model we derived earlier. The *trend* model for this model has a covariate, 'nao'. This needs to be passed to the `m()` method. The year range of the 'nao' covariate should match that of the *range* slot.
+The next example uses a time trend for the *trend* model. We use the m3 model we derived earlier. The *trend* model for this model has a covariate, 'nao'. This needs to be passed to the `m()` method. The year range of the 'nao' covariate should match that of the *range* slot.
 
 ```{r, m3_trend}
 # Pass in a single nao value (only one year, because the trend model needs
