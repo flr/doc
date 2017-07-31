@@ -12,14 +12,15 @@ library(knitr)
 source("R/ini.R")
 ```
 
-This tutorial describes how Medium-Term Forecasts (MTF) can be performed using **FLR**.
-It uses the **FLasher** package for running projections, an updated version of **FLash**.
+*THE FWD FUNCTION IS NOT WORKING IN THIS TUTORIAL*
+
+This tutorial describes how Medium-Term Forecasts (MTF) can be performed using FLR. It uses the `FLasher` package for running projections, an updated version of `FLash`.
 
 MTFs use the same engine as Short-Term Forecasts (STFs). However, there are some key differences between them.
-MTFs typically project over 5 to 10 years instead of the usual 3 years for a STF.
-Because of this increase in projection length it is necessary to include a stock-recruitment relationship to simulate the dynamics of the biological stock (an STF uses a constant recruitment assumption).
-MTFs may also have a more complicated projection control object because they can try to simulate management objectives (e.g. decreases in F over time).
-Finally, MTFs may also include consideration of uncertainty by including stochasticity in the projections.
+
+* MTFs typically project over 5 to 10 years instead of the usual 3 years for a STF. Because of this increase in projection length it is necessary to include a stock-recruitment relationship to simulate the dynamics of the biological stock (an STF uses a constant recruitment assumption).
+* MTFs may also have a more complicated projection control object because they can try to simulate management objectives (e.g. decreases in F over time).
+* Finally, MTFs may also include consideration of uncertainty by including stochasticity in the projections.
 
 Special attention must be paid to the conditioning and future assumptions of the stock.
 
@@ -38,12 +39,12 @@ install.packages(c("FLAssess"), repos="http://flr-project.org/R")
 ```
 
 ```{r, pkgs}
-# This chunk loads all necessary packages, trims pkg messages
+# Load all necessary packages, trim pkg messages
 library(FLCore)
 library(FLasher)
 ```
 
-```{r, stf, echo=FALSE}
+```{r, stf, echo=FALSE, results='hide'}
 setGeneric("stf", function(object,...)
 	standardGeneric("stf"))
 
@@ -150,46 +151,40 @@ setMethod('stf', signature(object='FLBiol'),
 
 # Introduction to Medium Term Forecasts
 
-Running a MTF is similar to running a STF in that we need several components:
+Running an MTF is similar to running an STF in that we need several components:
 
-1. An **FLStock** object set up for the future (assumptions);
+1. An `FLStock` object set up for the future (assumptions);
 2. A stock-recruiment relationship (SRR);
 3. A projection control object;
+
 However, there are some significant differences between an MTF and an STF:
 
-1. An MTF is normally run for 5 to 10 years (an STF is normally 3 years);
-2. An MTF can use different target types (e.g. setting catch targets, not just F targets);
-3. A dynamic SRR should be used (the STF assumption of mean recruitment is not a good one for more a projection of more than 3 years);
-4. We can include uncertainty in the recruitment and target values.
+i. An MTF is usually run for 5 to 10 years (an STF for 3 years);
+ii. An MTF can use different target types (e.g. setting catch targets, not just F targets);
+iii. A dynamic SRR should be used (the STF assumption of mean recruitment is not a good one for a projection of more than 3 years);
+iv. We can include uncertainty in the recruitment and target values.
 
-In this tutorial we will build a 10 year projection, introduce a range of target types (including minimum and maximum target values and relative target values), use a dynamic SRR and introduce uncertainty.
+In this tutorial we will build a 10 year projection, introduce a range of target types (including minimum and maximum target values, as well as relative target values), use a dynamic SRR and introduce uncertainty.
 
 As ususal, we base the projections on plaice in the North Sea.
-
-# Conditioning the projection
-
-The first step is to condition the projection by making assumptions about the stock in the future and also to fit the SRR.
-
-## Making the future stock
-
-SOMETHING ON FWD WINDOW and STF
-
-As ever, load the ple4 data:
 
 ```{r, ple4}
 data(ple4)
 ```
 
-We again use `stf()` to set up a future stock (see the STF tutorial.
-This makes a lot of assumptions about the future stock (see the LINK TO STF tutorial for more details).
-We may want to change some of these assumptions but for the moment we will use the defaults.
+# Conditioning the projection
+
+The first step is to condition the projection by making assumptions about the stock in the future, and to fit the SRR.
+
+## Making the future stock
+
+SOMETHING ON FWD WINDOW and STF
+
+We initially use `stf()`, which makes a lot of assumptions, to set up a future stock, (see the STF tutorial). We may want to change some of these assumptions, but for the moment we will use the defaults.
 
 ```{r, stf_condition}
 ple4_mtf <- stf(ple4, nyears = 10)
-```
-Now the stock goes up to 2018:
-
-```{r, summarymtf}
+# Now the stock goes up to 2018
 summary(ple4_mtf)
 ```
 
@@ -197,219 +192,166 @@ MORE ON ASSUMPTIONS AND CONDITIONING
 
 ## The stock-recruitment relationship
 
-In these examples we use a Beverton-Holt model (see the tutorial on fitting SRRs for more detail LINK TO SRR TUTORIAL).
+In these examples we use a Beverton-Holt model (see the tutorial on fitting SRRs for more detail). The resulting SRR fit can be seen in `r fign("plotSRR")`.
 
 ```{r, fitSRR}
 ple4_sr <- fmle(as.FLSR(ple4, model="bevholt"), control=list(trace=0))
 ```
-
 ```{r, plotSRR, fig.cap="Fitted Beverton-Holt stock-recruitment relationship for the *ple4* stock object"}
 plot(ple4_sr)
 ```
-
-The resulting SRR fit can be seen in `r fign("plotSRR")`.
-
 # Example 1: Fbar targets
 
-We saw in the STF tutorial how to set an Fbar target (LINK).
-Here is some quick revision.
+We saw in the STF tutorial how to set an Fbar target (LINK). Here is some quick revision.
 
-We will set the future F at F status quo (again) and we assume that F status quo is the mean of the last 4 years
+We will set the future F at F status quo and assume that F status quo is the mean of the last 4 years
 
-```{r, feg1}
+```{r, ex1a}
 f_status_quo <- mean(fbar(ple4)[,as.character(2005:2008)])
 f_status_quo
 ```
 
-Make the control *data.frame* including all the years of the projection:
-(Note that **FLash** used *quantity* and *val* as column names and **FLasher** uses *quant* and *value*).
-```{r, feg2}
+Make the control `data.frame` including all the years of the projection (note that `FLash` used *quantity* and *val* as column names and `FLasher` uses *quant* and *value*)
+
+```{r, ex1b}
 ctrl_target <- data.frame(year = 2009:2018,
-			  quant = "f",
-			  value = f_status_quo)
+			                    quant = "f",
+			                    value = f_status_quo)
 ```
 
-Make the *fwdControl* object from the control *data.frame*:
-```{r, feg3}
+BUG IN FWD: f_status_quo NEEDS TO BE MULTIPLIED BY 10 TO GET THE DESIRED RESULT 
+
+
+Make the `fwdControl` object from the control `data.frame`
+
+```{r, ex1c}
 ctrl_f <- fwdControl(ctrl_target)
-```
-
-We can take a look at the control object.
-We have columns of *year*, *quant* (target type), *min*, *val* and *max* and and some others. 
-Here we are only using *year*, *quant* and *value*.
-
-```{r, reg31}
 ctrl_f
 ```
 
-We can now run fwd() with our three ingredients.
-Note that the *control* argument used to be called *ctrl* in **FLash**. Also, with **FLasher** the *control* and *sr* arguments must be named.
-```{r, feg4}
+We have columns of *year*, *quant* (target type), *min*, *value* and *max* (and others not necessarily shown). Here we are only using *year*, *quant* and *value*. We can now run fwd() with our three ingredients. Note that the *control* argument used to be called *ctrl* in `FLash`. Also, with `FLasher` the *control* and *sr* arguments must be named.
+
+```{r, ex1d}
 ple4_f_sq <- fwd(ple4_mtf, control = ctrl_f, sr = ple4_sr)
-```
-
-What just happened? We plot the stock from the year 2000.
-
-```{r, fegplot}
+# What just happened? We plot the stock from the year 2000.
 plot(window(ple4_f_sq, start=2000))
 ```
 
-The future Fs are as we set in the control object (good):
+The future Fs are as we set in the control object
 
-```{r, feg5}
+```{r, ex1e}
 fbar(ple4_f_sq)[,ac(2005:2018)]
 ```
 
 What about recruitment? Remember we are now using a Beverton-Holt model.
 
-```{r, feg6}
+```{r, ex1f}
 rec(ple4_f_sq)[,ac(2005:2018)]
 ```
 
-The recruitment is not constant but it is not changing very much. That's because the fitted model looks flat REF BACK TO THE SRR FIGURE.
-
+The recruitment is not constant but it is not changing very much. That's because the fitted model looks flat (`r fign("plotSRR")`).
 
 # Example 2: A decreasing catch target {#ex2}
 
 In this example we introduce two new things:
 
-1. A new target type (catch);
-2. A changing target value.
+1. A new target type (catch)
+2. A changing target value
 
-Setting a catch target allows to explore the consequences of different TAC strategies.
-In this example, the TAC (the total catch of the stock) is reduced 10% each year for 10 years.
+Setting a catch target allows exploring the consequences of different TAC strategies. In this example, the TAC (the total catch of the stock) is reduced 10% each year for 10 years.
 
 We create a vector of future catches based on the catch in 2008:
 
-```{r, ceg1}
+```{r, ex2a}
 future_catch <- c(catch(ple4)[,"2008"]) * 0.9^(1:10)
 future_catch
 ```
 
-We create the *fwdControl* object, setting the target quantity to `catch` and passing in the vector of future catches:
+We create the `fwdControl` object, setting the target quantity to *catch* and passing in the vector of future catches
 
-```{r, ceg2}
+```{r, ex2b}
 ctrl_catch <- fwdControl(
 	data.frame(
 		year=2009:2018,
 		quant = "catch",
 		value=future_catch))
-```
-
-The control object has the desired catch target values.
-
-```{r, ceg3}
+# The control object has the desired catch target values
 ctrl_catch
 ```
 
-We call `fwd()` with the stock, the control object and the SRR:
+BUG IN FWD: future_catch NEEDS TO BE MULTIPLIED BY 10 TO GET THE DESIRED RESULT 
 
-```{r, ceg4}
+We call `fwd()` with the stock, the control object and the SRR, and look at the results
+
+```{r, ex2c}
 ple4_catch <- fwd(ple4_mtf, control = ctrl_catch, sr = ple4_sr)
-```
-
-And take a look at the results:
-
-```{r, ceg5}
 catch(ple4_catch)[,ac(2008:2018)]
-```
-
-```{r, cegplot}
 plot(window(ple4_catch, start=2000))
 ```
 
 The decreasing catch targets have been hit. Note that F has to be similarly reduced to hit the catch targets, resulting in a surge in SSB.
 
-
 # Example 3: Setting biological targets
 
-In the previous examples we have set target types based on the activity of the fleet (F and catch).
-We can also set biological target types. This is useful when there are biological reference points, e.g. Bpa.
+In the previous examples we have set target types based on the activity of the fleet (F and catch). We can also set biological target types. This is useful when there are biological reference points, e.g. Bpa.
 
-Setting a biological target must be done with care as it may not be possible to hit the target. For example, even when F is set to 0 the stock may not be productive enough to increase its abundance sufficiently to hit the target.
+Setting a biological target must be done with care because it may not be possible to hit the target. For example, even when F is set to 0, the stock may not be productive enough to increase its abundance sufficiently to hit the target.
 
-There are currently three types of biological target available in **FLasher**: SRP, SSB and biomass.
-Of these, there are several flavours of SSB and biomass that differ in terms of timing.
+There are currently three types of biological target available in `FLasher`: *SRP*, *SSB* and *biomass*. Of these, there are several flavours of *SSB* and *biomass* that differ in terms of timing.
 
-The SRP target is the Stock Recruitment Potential `at the time of spawning`, i.e. if a stock spawns in the middle of the year, after the abundance has been reduced by fishing and natural mortality, this is the SRP at that point in time. At the moment, SRP is calculated as the mass of mature fish.
-If setting an SRP target you must be aware of the timing of spawning and the timing of the fishing period.
-Internally, **FLasher** attempts to hit the desired target in a time step by finding the appropriate value of F in that timestep.
-If the stock spawns before fishing starts, then changing the fishing activity in that timestep has no effect on the SRP at the time of spawning.
-It is not possible to hit the target by manipulating F in that timestep and **FLasher** gives up.
+The *SRP* target is the Stock Recruitment Potential *at the time of spawning*, i.e. if a stock spawns in the middle of the year, after the abundance has been reduced by fishing and natural mortality, this is the SRP at that point in time. At the moment, SRP is calculated as the mass of mature fish. If setting an *SRP* target, you must be aware of the timing of spawning and the timing of the fishing period.
 
-SSB is the Spawning Stock Biomass calculated as the total biomass of mature fish. The biomass is simply the total biomass of the stock.
-For the SSB and biomass targets there are three different flavours based on timing:
+Internally, `FLasher` attempts to hit the desired target in a time step by finding the appropriate value of F in that timestep. If the stock spawns before fishing starts, then changing the fishing activity in that timestep has no effect on the SRP at the time of spawning. It is not possible to hit the target by manipulating F in that timestep and `FLasher` gives up.
 
-* `ssb_end` and `biomass_end` - at the end of the time step after all mortality (natural and fishing) has ceased;
-* `ssb_spawn` and `biomass_spawn` - at the time of spawning (mimics the `ssb()` method for **FLStock** objects);
-* `ssb_flash` and `biomass_flash` - an attempt to mimic the behaviour of the original **FLash** package.
+*SSB* is the Spawning Stock Biomass calculated as the total biomass of mature fish. The *biomass* is simply the total biomass of the stock. For the *SSB* and *biomass* targets, there are three different flavours based on timing:
 
-This last one needs some explanation.
-If fishing starts before spawning (i.e. the *harvest.spwn* slot of an **FLStock** is greater than 0) then the SSB or biomass at the time of spawning in that timestep is returned.
-If fishing starts after spawning, or there is no spawning in that time step (which may happen with a seasonal model), then the SSB or biomass at the time of spawning in the next timestep is returned.
-However, this second case can be more complicated for several reasons.
-If there is no spawning in the next time step then we have a problem and **FLasher** gives up (F in the current timestep does not affect the SSB or biomass at the time of spawning in the current or next timestep).
-Additionally, if there is no next time step (we have reached the end of the projection) then **FLasher** gives up.
-There is also a potential problem that if the fishing in the next timestep starts before spawning, the SSB or biomass at the time of spawning in the next timestep will be affected by the effort in the current timestep AND the next timestep. The solver cannot handle this and weird results will occur (although it is an unusal situation).
-For these reasons, it is better to only use the **FLash**-like target for annual models and when fishing and spawning happen at the same time in each year through the projection.
+* *ssb_end* and *biomass_end* - at the end of the time step after all mortality (natural and fishing) has ceased;
+* *ssb_spawn* and *biomass_spawn* - at the time of spawning (mimics the `ssb()` method for `FLStock` objects);
+* *ssb_flash* and *biomass_flash* - an attempt to mimic the behaviour of the original `FLash` package.
 
+This last bullet needs some explanation. If fishing starts before spawning (i.e. the *harvest.spwn* slot of an `FLStock` is greater than 0) then the SSB or biomass at the time of spawning in that timestep is returned. If fishing starts after spawning, or there is no spawning in that time step (which may happen with a seasonal model), then the SSB or biomass at the time of spawning in the next timestep is returned.
+
+However, this second case can be more complicated for several reasons. If there is no spawning in the next time step then we have a problem and `FLasher` gives up (F in the current timestep does not affect the SSB or biomass at the time of spawning in the current or next timestep). Additionally, if there is no next time step (i.e. we have reached the end of the projection) then `FLasher` gives up.
+
+There is also a potential problem that if the fishing in the next timestep starts before spawning, the SSB or biomass at the time of spawning in the next timestep will be affected by the effort in the current timestep AND the next timestep. `FLasher` cannot handle this and weird results will occur (although it is an unusal situation).
+
+For these reasons, it is better to only use the `FLash`-like target for annual models and when fishing and spawning happen at the same time in each year through the projection.
 
 ## Demonstrating the biological targets
 
-Here we give simple demonstrations of the different types of biological targets using SSB.
-The results of using a biomass target will have the same behaviour.
-Only a 1 year projection is run.
+Here we give simple demonstrations of the different types of biological targets using SSB. The results of using a biomass target will have the same behaviour. Only a 1 year projection is run.
 
-The timing of the spawning and fishing are controlled by the `m.spwn` and `harvest.spwn` slots.
-Our test **FLStock** object has `m.spwn` and `harvest.spwn` values of 0.
-This means that spawning and fishing happens at the start of the year and that spawning is assumed to happen before fishing.
+The timing of spawning and fishing are controlled by the *m.spwn* and *harvest.spwn* slots. Our test `FLStock` object has *m.spwn* and *harvest.spwn* values of 0. This means that spawning and fishing happens at the start of the year and that spawning is assumed to happen before fishing.
 
-### Targets at end of timestep
+### Targets at the end of the timestep
 
-Here we set a target SSB for the end of the timestep:
+Here we set a target SSB for the end of the timestep
 
-```{r, seg2}
+```{r, ex3a}
 final_ssb <- 100000
 ctrl_ssb <- fwdControl(data.frame(year=2009, quant = "ssb_end", value=final_ssb))
 ple4_ssb <- fwd(ple4_mtf, control=ctrl_ssb, sr = ple4_sr)
-```
-
-How do we know if we hit the target?
-We must calculate the final SSB ourselves.
-
-```{r}
+# Calculate the final SSB to check the target has been hit
 survivors <- stock.n(ple4_ssb) * exp(-harvest(ple4_ssb) - m(ple4_ssb))
 quantSums((survivors * stock.wt(ple4_ssb) * mat(ple4_ssb))[,ac(2009)])
 ```
 
 ### Targets at the time of spawning
 
-If fishing occurs after spawning, the level of fishing will not affect the SSB or biomass at the time of spawning.
-This is currently the case as `m.spwn` and `harvest.spwn` have values of 0.
-The result is that the projection will fail with a warning (intentionally).
-We see this here.
+If fishing occurs after spawning, the level of fishing will not affect the SSB or biomass at the time of spawning. This is currently the case because *m.spwn* and *harvest.spwn* have values of 0. The result is that the projection will fail with a warning (intentionally). We see this here.
 
-```{r, warning=TRUE}
+```{r, ex3b, warning=TRUE}
 spawn_ssb <- 100000
 ctrl_ssb <- fwdControl(data.frame(year=2009, quant = "ssb_spawn", value=spawn_ssb))
 ple4_ssb <- fwd(ple4_mtf, control=ctrl_ssb, sr = ple4_sr)
-```
-
-We can use the `ssb()` method to get the SSB at the time of spawning. We can see that the projection failed.
-
-```{r}
+# Using the `ssb()` method to get the SSB at the time of spawning,
+# we can see that the projection failed
 ssb(ple4_ssb)[,ac(2009)]
 ```
 
-In our example, spawning happens at the start of the year.
-We can change this with the `m.spwn` slot. Natural mortality is assumed to happen continuously through the year.
-Therefore, if we set the `m.spwn` slot to 0.5, then half the natural mortality happens before spawning, i.e. spawning happens half way through the year.
-Similarly, the current value of `harvest.spwn` is 0, meaning that spawning happens before any fishing happens.
-If we set this value to 0.5 then half of the fishing mortality has occurred before spawning.
+In our example, spawning happens at the start of the year. We can change this with the *m.spwn* slot. Natural mortality is assumed to happen continuously through the year. Therefore, if we set the *m.spwn* slot to 0.5, then half the natural mortality happens before spawning, i.e. spawning happens half way through the year. Similarly, the current value of *harvest.spwn* is 0, meaning that spawning happens before any fishing happens. If we set this value to 0.5 then half of the fishing mortality has occurred before spawning. With these changes, the example now runs.
 
-The example now runs.
-
-```{r}
+```{r, ex3c}
 m.spwn(ple4_mtf)[,ac(2009)] <- 0.5
 harvest.spwn(ple4_mtf)[,ac(2009)] <- 0.5
 spawn_ssb <- 100000
@@ -419,9 +361,9 @@ ple4_ssb <- fwd(ple4_mtf, control=ctrl_ssb, sr = ple4_sr)
 ssb(ple4_ssb)[,ac(2009)]
 ```
 
-At the moment **Flasher** calculates the SRP as SSB. This means that the SRP target type behaves in the same way as the `ssb_spawn` target.
+At the moment `FLasher` calculates the SRP as SSB. This means that the *SRP* target type behaves in the same way as the *ssb_spawn* target.
 
-```{r}
+```{r, ex3d}
 srp <- 100000
 ctrl_ssb <- fwdControl(data.frame(year=2009, quant = "srp", value=srp))
 ple4_ssb <- fwd(ple4_mtf, control=ctrl_ssb, sr = ple4_sr)
@@ -429,15 +371,13 @@ ple4_ssb <- fwd(ple4_mtf, control=ctrl_ssb, sr = ple4_sr)
 ssb(ple4_ssb)[,ac(2009)]
 ```
 
-### **FLash**-like targets
+### `FLash`-like targets
 
-As mentioned above, the **FLash**-like targets can have different behaviour depending on the timing of spawning and fishing.
+As mentioned above, the `FLash`-like targets can have different behaviour depending on the timing of spawning and fishing. If fishing starts before spawning, the SSB or biomass at the time of spawning *in the current timestep* will be hit (if possible). This is demonstrated here.
 
-If fishing starts before spawning, the SSB or biomass at the time of spawning `in the current timestep` will be hit (if possible).
-This is demonstrated here:
-
-```{r}
-# Force spawning to happen half way through the year and fishing starts at the beginning of the year
+```{r, ex3e}
+# Force spawning to happen half way through the year
+# and fishing to start at the beginning of the year
 m.spwn(ple4_mtf)[,ac(2009)] <- 0.5
 harvest.spwn(ple4_mtf)[,ac(2009)] <- 0.5
 flash_ssb <- 150000
@@ -447,31 +387,24 @@ ple4_ssb <- fwd(ple4_mtf, control=ctrl_ssb, sr = ple4_sr)
 ssb(ple4_ssb)[,ac(2009)]
 ```
 
-However, if fishing starts after spawning, the SSB or biomass at the time of spawning `in the next timestep` will be hit (if possible).
-This is because fishing in the current timestep will have no impact on the SSB at the time of spawning in the current timestep.
+However, if fishing starts after spawning, the SSB or biomass at the time of spawning *in the next timestep* will be hit (if possible). This is because fishing in the current timestep will have no impact on the SSB at the time of spawning in the current timestep.
 
-```{r}
+```{r, ex3f}
 # Force spawning to happen at the start of the year before fishing
 m.spwn(ple4_mtf)[,ac(2009)] <- 0.0
 harvest.spwn(ple4_mtf)[,ac(2009)] <- 0.0
 flash_ssb <- 150000
 ctrl_ssb <- fwdControl(data.frame(year=2009, quant = "ssb_flash", value=flash_ssb))
 ple4_ssb <- fwd(ple4_mtf, control=ctrl_ssb, sr = ple4_sr)
-```
-
-We did hit the SSB target, but not until 2010.
-
-```{r}
+# We did hit the SSB target, but not until 2010.
 ssb(ple4_ssb)[,ac(2009:2010)]
 ```
 
 ## A longer SSB projection
 
-Here we run a longer projection with a constant **FLash**-like SSB target.
-Spawning happens before fishing so the target will not be hit until the following year. 
+Here we run a longer projection with a constant `FLash`-like SSB target. Spawning happens before fishing so the target will not be hit until the following year. 
 
-
-```{r}
+```{r, ex3g}
 # Force spawning to happen at the start of the year before fishing
 m.spwn(ple4_mtf)[,ac(2009)] <- 0.0
 harvest.spwn(ple4_mtf)[,ac(2009)] <- 0.0
@@ -480,61 +413,47 @@ ctrl_ssb <- fwdControl(data.frame(year=2009:2018, quant = "ssb_flash", value=fut
 ple4_ssb <- fwd(ple4_mtf, control = ctrl_ssb, sr = ple4_sr)
 ```
 
-We get a warning about running out of room.
-This is because future stock object, `ple4_mtf`, goes up to 2018. When we set the SSB target for 2018, it tries to hit the final year target in 2019.
-The targets that were set for 2009 to 2017 have been hit in 2010 to 2018.
-However, we cannot hit the target that was set for 2018. This means that the returned value of F in 2018 needs to be discounted.
+BUG IN FWD: DO NOT HIT future_ssb TARGET, BUT ONE TENTH OF IT
 
-```{r}
+We get a warning about running out of room. This is because future stock object, *ple4_mtf*, goes up to 2018. When we set the SSB target for 2018, it tries to hit the final year target in 2019. The targets that were set for 2009 to 2017 have been hit in 2010 to 2018. However, we cannot hit the target that was set for 2018. This means that the returned value of F in 2018 needs to be discounted.
+
+```{r, ex3h}
 ssb(ple4_ssb)[,ac(2009:2018)]
 fbar(ple4_ssb)[,ac(2009:2018)]
-```
-
-```{r, seg6}
 plot(window(ple4_ssb, start=2000, end=2018))
 ```
 
 # Example 4:  Relative catch target
 
-The examples above have dealt with *absolute* target values.
-We now introduce the idea of *relative* values.
-This allows us to set the target value *relative* to the value in another time step. 
+The examples above have dealt with *absolute* target values. We now introduce the idea of *relative* values. This allows us to set the target value *relative* to the value in another time step. 
 
-We do this by using the *relYear* column in the control object (the year that the target is relative to).
-The *value* column now holds the relative value, not the absolute value.
+We do this by using the *relYear* column in the control object (the year that the target is relative to). The *value* column now holds the relative value, not the absolute value.
 
 Here we set catches in the projection years to be 90% of the catches in the previous year, i.e. we want the catche in 2009 to be 0.9 * value in 2008 etc.
 
-```{r, rceg1}
+```{r, ex4a}
 ctrl_rel_catch <- fwdControl(
 	data.frame(year = 2009:2018,
 		   quant = "catch",
 		   value = 0.9,
 		   relYear = 2008:2017))
-```
-
-The relative year appears in the control object summary:
-
-```{r, rceg2}
+# The relative year appears in the control object summary
 ctrl_rel_catch
 ```
+BUG HERE WITH VALUE IN THE RELATIVE CALC (ORDER OF MAGNITUDE OUT, SO VALUE=0.9 DOES NOT DO AS INTENDED AND NEEDS TO BE SET TO VALUE=9)
 
-We run the projection as normal:
+We run the projection as normal
 
-```{r, rceg3}
+```{r, ex4b}
 ple4_rel_catch <- fwd(ple4_mtf, control = ctrl_rel_catch, sr = ple4_sr)
-```
-
-```{r, rceg4}
 catch(ple4_rel_catch)
 catch(ple4_rel_catch)[,ac(2008:2018)] / catch(ple4_rel_catch)[,ac(2007:2017)]
 ```
-
-```{r, plotrelC, fig.cap="Relative catch example"}
+```{r, ex4c, fig.cap="Relative catch example"}
 plot(window(ple4_rel_catch, start = 2001, end = 2018))
 ```
 
-This is equivalent to the catch example above (LINK TO EXAMPLE 2) but without using absolute values.
+This is equivalent to the catch example above (LINK) but without using absolute values.
 
 # Example 5: Minimum and Maximum targets
 
@@ -543,65 +462,54 @@ In this Example we introduce two new things:
 1. Multiple target types;
 2. Targets with *bounds*.
 
-Here we set an F target so that the future F = F0.1.
-However, we also don't want the catch to fall below a minimum level.
-We do this by setting a *minimum* value for the catch. 
+Here we set an F target so that the future F = F0.1. However, we also don't want the catch to fall below a minimum level. We do this by setting a *minimum* value for the catch. 
 
-First we set a value for F0.1 (you could use the **FLBRP** package to do this - tutorial LINK TO FLBRP TUTORIAL):
+First we set a value for F0.1 (you could use the `FLBRP` package to do this (LINK))
 
-```{r, meg1}
+```{r, ex5a}
 f01 <- 0.1
 ```
+
 We'll set our minimum catch to be the mean catch of the last 3 years.
 
-```{r, meg2}
+```{r, ex5b}
 min_catch <- mean(catch(ple4_mtf)[,as.character(2006:2008)])
 min_catch
 ```
 
-To make the control object we make a data.frame with both target types.
-Note that we include a *min* column.
+To create the control object, we make a `data.frame` with both target types. Note that we include a *min* column.
 
-```{r, meg3}
+```{r, ex5c}
 df <- data.frame(
     year = rep(2009:2018, each=2),
     quant = c("f","catch"),
     value = c(f01, NA),
-    min = c(NA, min_catch)
-    )
+    min = c(NA, min_catch))
 ```
 
-It is also important that when running the projection, the bounding targets (the *min* and the *max*) are processed after the non-bounding targets.
-This should be sorted out by the **fwdControl** constructor.
+ANOTHER BUG HERE WITH VALUE AND MIN - THESE NEED TO BE MULTIPLIED BY 20 TO GIVE THE DESIRED RESULT!!!
 
-Make the control object:
+It is also important that when running the projection, the bounding targets (the *min* and the *max*) are processed after the non-bounding targets. This should be sorted out by the `fwdControl` constructor.
 
-```{r, meg5}
+Make the control object
+
+```{r, ex5d}
 ctrl_min_catch <- fwdControl(df)
-```
-
-What did we create?
-We can see that the *min* column has now got some data (the *max* column is still empty) and the targets appear in the correct order.
-
-```{r, meg6}             
 ctrl_min_catch
 ```
 
-And project:
+What did we create? We can see that the *min* column has now got some data (the *max* column is still empty) and the targets appear in the correct order. Now project forward
 
-```{r, meg7}
+```{r, ex5e}
 ple4_min_catch <- fwd(ple4_mtf, control = ctrl_min_catch, sr = ple4_sr)
+fbar(ple4_min_catch)[,ac(2008:2018)]
+catch(ple4_min_catch)[,ac(2008:2018)]
 ```
 
 What happens? The catch constraint is hit in every year of the projection.
 The projected F decreases but never hits the target F because the minimum catch constraint prevents it from dropping further.
 
-```{r, megc}
-fbar(ple4_min_catch)[,ac(2008:2018)]
-catch(ple4_min_catch)[,ac(2008:2018)]
-```
-
-```{r, meg8, fig.cap="Example with a minimum catch bound and constant F target"}
+```{r, ex5f, fig.cap="Example with a minimum catch bound and constant F target"}
 plot(window(ple4_min_catch, start = 2001, end = 2018))
 ```
 
@@ -611,15 +519,11 @@ It is possible to also set a maximum constraint, for example, to prevent F from 
 
 In this example we use a combination of *relative* targets and *bounds*.
 
-This kind of approach can be used to model a recovery plan.
-For example, we want to decrease F to F0.1 by 2015 (absolute target value) but catches cannot change by more than 15% each year (relative bound).
-This requires careful setting up of the control object.
-Again, we'll bind two data.frames.
+This kind of approach can be used to model a recovery plan. For example, we want to decrease F to F0.1 by 2015 (absolute target value) but catches cannot change by more than 15% each year (relative bound). This requires careful setting up of the control object.
 
-We make a vector of the desired F targets using F0.1 we calculated above.
-We set up an F sequence that decreases from the current Fbar in 2008 to F01 in 2015, then F01 until 2018.
+We make a vector of the desired F targets using the F0.1 we calculated above. We set up an F sequence that decreases from the current Fbar in 2008 to F01 in 2015, then F01 until 2018.
 
-```{r, rtbeg1}
+```{r, ex6a}
 current_fbar <- c(fbar(ple4)[,"2008"])
 f_target <- c(seq(from = current_fbar, to = f01, length = 8)[-1], rep(f01, 3))
 f_target
@@ -627,14 +531,13 @@ f_target
 
 We set maximum annual change in catch to be 10% (in either direction).
 
-```{r, rtbeg2}
+```{r, ex6b}
 rel_catch_bound <- 0.10
 ```
 
-We make the control **data.frame** with the F target and the catch target.
-Note the use of the *relYear*, *min* and *max* columns in the data.frame.
+We make the control `data.frame` with the F target and the catch target. Note the use of the *relYear*, *min* and *max* columns in the dataframe.
 
-```{r, rtbeg3}
+```{r, ex6c}
 df <- data.frame(
     year = rep(2009:2018, 2),
     relYear =c(rep(NA,10), 2008:2017),
@@ -644,28 +547,30 @@ df <- data.frame(
     min = c(rep(NA,10), rep(1-rel_catch_bound, 10)))
 ```
 
-Make the control object. The *min* and *max* columns now both have data:
+BUG IN FWD: DON'T KNOW WHAT THIS IS DOING, BUT IT IS NOT THE DESIRED RESULT.
 
-```{r, rtbeg5}
+Make the control object. The *min* and *max* columns now both have data
+
+```{r, ex6d}
 ctrl_rel_min_max_catch <- fwdControl(df)
 ctrl_rel_min_max_catch
 ```
 
 Run the projection:
 
-```{r, rtbeg6}
+```{r, ex6e}
 recovery<-fwd(ple4_mtf, control=ctrl_rel_min_max_catch, sr=ple4_sr)
 ```
 
 What happened? The F decreased and then remains constant, while the catch has changed by only a limited amount each year.
 
-```{r, rtbeg7}
+```{r, ex6f}
 plot(window(recovery, start = 2001, end = 2018))
 ```
 
 The minimum and maximum bounds on the catch are operational in several of the years. They prevent the catch from increasing as well as decreasing too strongly, (allegedly) providing stability to the fishery.
 
-```{r, rtbeg8}
+```{r, ex6g}
 catch(recovery)[,ac(2009:2018)] / catch(recovery)[,ac(2008:2017)]
 ```
 
