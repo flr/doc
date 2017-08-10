@@ -4,15 +4,20 @@ source("R/ini.R")
 
 ## ---- eval=FALSE---------------------------------------------------------
 ## install.packages(c("ggplot2"))
-## install.packages(c("ggplotFL"), repos="http://flr-project.org/R")
+## install.packages(c("FLcore", "ggplotFL"), repos="http://flr-project.org/R")
 
 ## ---- pkgs---------------------------------------------------------------
 # This chunk loads all necessary packages, trims pkg messages
-library(FLCore); library(FLFleet)
+library(FLFleet)
 library(ggplotFL)
 
+## ---- getfiles, message=FALSE--------------------------------------------
+dir <- tempdir()
+download.file("http://flr-project.org/doc/src/loading_data.zip", file.path(dir, "loading_data.zip"))
+unzip(file.path(dir, "loading_data.zip"), exdir=dir)
+
 ## ------------------------------------------------------------------------
-catch.n <- read.csv("src/catch_numbers.csv",row=1)
+catch.n <- read.csv(file.path(dir,"catch_numbers.csv"), row=1)
 
 ## ------------------------------------------------------------------------
 class(catch.n)
@@ -28,22 +33,22 @@ catch.n.flq[,1:7]
 
 ## ---- readVPA------------------------------------------------------------
 # Read from a VPA text file
-catch.n <- readVPAFile(file.path('src', 'her-irlw',"canum.txt"))
+catch.n <- readVPAFile(file.path(dir, "her-irlw","canum.txt"))
 class(catch.n)
 
 ## ---- readFLStock--------------------------------------------------------
 # Read a collection of VPA files, pointing to the Index file:
-her <- readFLStock(file.path('src','her-irlw','index.txt'))
+her <- readFLStock(file.path(dir,'her-irlw','index.txt'))
 class(her)
 
 ## ---- readFLStock2-------------------------------------------------------
 summary(her)
 
 ## ---- AddMissingAssessmentData-------------------------------------------
-her@stock.n <- readVPAFile(file.path('src','her-irlw',"n.txt"))
+her@stock.n <- readVPAFile(file.path(dir, "her-irlw", "n.txt"))
 print(her@stock.n[,ac(2007:2011)]) # only print 2007:2011
 
-her@harvest <- readVPAFile(file.path('src','her-irlw',"f.txt"))
+her@harvest <- readVPAFile(file.path(dir,"her-irlw", "f.txt"))
 
 
 ## ---- CheckConsistency---------------------------------------------------
@@ -92,10 +97,10 @@ summary(her)
 plot(her) + theme_bw() # using the simple black and white theme
 
 ## ------------------------------------------------------------------------
-indices <- readFLIndices('src/ple4_ISIS.txt')
+indices <- readFLIndices(file.path(dir, "ple4_ISIS.txt"))
 
 ## ------------------------------------------------------------------------
-indices <- read.table('src/ple4Index1.txt')
+indices <- read.table(file.path(dir, "ple4Index1.txt"))
 
 ## ------------------------------------------------------------------------
 indices <- FLQuant(as.matrix(indices), dimnames=list(age=1:8, year = 1985:2008))

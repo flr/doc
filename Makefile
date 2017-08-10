@@ -24,7 +24,7 @@ docs/R/%.R: %.Rmd
 default: $(TARGETS)
 
 clean:
-	rm -rf $(TARGETS)
+	rm -rf $(FILES) $(CACHE)
 
-cleanall:
-	rm -rf $(TARGETS) $(FILES) $(CACHE)
+cleanall: clean
+	rm -rf $(TARGETS)

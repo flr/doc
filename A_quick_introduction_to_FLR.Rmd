@@ -29,9 +29,9 @@ You can do so as follows:
 install.packages(c("FLCore"), repos="http://flr-project.org/R")
 ```
 
-# Getting started with FLCore classes
+# Getting started with the FLCore classes
 
-The main *classes* (i.e. data structures) and methods (i.e. procedures) in the FLR system are found in the `FLCore` package. Let's load it first.
+The main *classes* (i.e. data structures) and *methods* (i.e. procedures) in the FLR system are found in the `FLCore` package. Let's load it first.
 
 ```{r, pkgs}
 library(FLCore)
@@ -43,13 +43,13 @@ We can then inspect an example object.
 data(ple4)
 ```
 
-The `ple4` object is of class `FLStock`, used in **FLR** to represent a fish population that is constructed from catch and abundance data through a stock assesssment model. `FLStock` is an S4 class (see `?Classes_Details` for futher details on S4 classes), consisting of a number of slots able to hold data or results for each of the elements in it. By calling the `summary` method on the object
+The `ple4` object is of class `FLStock`, used in **FLR** to represent a fish population that is constructed from catch and abundance data through a stock assesssment model. `FLStock` is an S4 class (see `?Classes_Details` for futher details), consisting of a number of slots designed to each of the elements, data or results, needed to construct a view of a fish stock. By calling the `summary` method on the object
 
 ```{r, summaryple4}
 summary(ple4)
 ```
 
-we can inspect the slots, dimensions and structure. Most slots in the class (e.g. `catch` or `stock.n`) are themselves of another **FLCore** class, `FLQuant`. This class, the basic element used to assemble all other classes in **FLR**, is a 6-dimensional array that can take advantange of the powerful array algebra capabilities of R. All slots can be accessed and modified using accessors and replacement methods.
+we can inspect the slots, dimensions and structure. Most slots in the class (e.g. `catch` or `stock.n`) are themselves of another **FLCore** class, `FLQuant`. This class, the basic element used to assemble all other classes in **FLR**, is a 6-dimensional array that can take advantage of the powerful array algebra capabilities of R. All slots can be accessed and modified using accessors and replacement methods.
 
 ```{r, accessors}
 catch(ple4)
@@ -68,21 +68,21 @@ and `FLQuant`
 stock.n(ple4)[1,]
 ```
 
-while ensuring that the result are always valid objects of the same class. However, selecting a single element along the first dimension (`age`) did not drop that dimension from the object, in contrast with the standard behaviour in R for `array`.
+while ensuring that the result are always valid objects of the same class. There are, however, necessary difference. For example, selecting a single element along the first dimension (`age`) did not drop that dimension from the object (`drop=FALSE`), in contrast with the standard behaviour in R for `array`.
 
-In addition to the `summary` method above, a common set of methods exist for each class to create new objects,
+In addition to the `summary` method above, a creator method is available for each class
 
 ```{r, creator}
 FLQuant(rlnorm(30), dimnames=list(age=0:5, year=2012:2017))
 ```
 
-coerce to and from other classes,
+Other common methods have also been defined for all of them, for example to be able to coerce to and from other classes,
 
 ```{r, as.df}
 head(as.data.frame(ple4))
 ```
 
-and plot an object.
+or plot an object.
 
 ```{r, plotFLStock, fig.cap="FLStock plot for ple4"}
 plot(ple4)
@@ -94,7 +94,7 @@ A number of fisheries-specific calculations are also available. For example, the
 ssb(ple4)
 ```
 
-or the mean fishing mortality accross the fully-selected ages ($\bar{F}$) with
+while the mean fishing mortality accross the fully-selected ages ($\bar{F}$) is calculated with
 
 ```{r, fbar}
 fbar(ple4)
@@ -115,6 +115,8 @@ Object validity is checked not only by the class constructor, but also by the re
 catch(ple4) <- landings(ple4) + discards(ple4)
 ```
 
+to assign a new value (the result of adding `landings` and `discards`) to a single slot (`catch`).
+
 # A modelling example: the FLSR class
 
 A different type of class defined in **FLCore** is `FLSR`. This class allows for fitting, exploration and prediction of a stock-recruitment relationship. An example dataset is also available, corresponding to the North Sea herring stock.
@@ -124,9 +126,9 @@ data(nsher)
 summary(nsher)
 ```
 
-The class holds together `FLQuant` slots for inputs (`rec` for recruitment in numbers and `ssb` for spawning stock biomass or any other proxy of stock reproductive potential) and outputs of the fit (`fitted` for the estimated recruitment, and `residuals` for the log residuals of the estimates). It also contains the necessary elements for the model fit to be carried out using maximum likelihood estimation:
+The class holds together `FLQuant` slots for inputs (`rec` for recruitment in numbers and `ssb` for spawning stock biomass or any other proxy of stock reproductive potential) and outputs of the fit (`params` for the estimated parameters, `fitted` for the estimated recruitment, and `residuals` for the log residuals). It also contains the necessary elements for the model fit to be carried out using maximum likelihood estimation:
 
-- `logl`: a function that computes the log-likehood to be passed on to `optim`,
+- `logl`: a function that computes the log-likehood from observations and parameter values, to be passed on to `optim`,
 - `model`: a formula to calculate the estimated recruitment, and
 - `initial`: a function to obtain initial parameter values for the minimization algorithm.
 
@@ -139,7 +141,7 @@ By calling the method that carries out the minimization, `fmle`, we obtain a new
 
 as well as some other information returned by the fitting procedure.
 
-Of course we can visualize the result of the model fit, together with n useful set of diagnostics, by simply calling the following.
+Of course we can visualize the result of the model fit, together with a useful set of diagnostics, by simply calling the `plot` method for the class
 
 ```{r, plotFLSR}
 plot(nsher)

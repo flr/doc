@@ -12,7 +12,7 @@ library(knitr)
 source("R/ini.R")
 ```
  
-his tutorial details methods for reading various formats of data into R for generating object of the [FLStock](http://www.flr-project.org/FLCore/FLStock.html), [FLIndex](http://www.flr-project.org/FLCore/FLStock.html) and [FLFleet](http://www.flr-project.org/FLCore/FLStock.html) classes.
+This tutorial details methods for reading various formats of data into R for generating object of the [FLStock](http://www.flr-project.org/FLCore/FLStock.html), [FLIndex](http://www.flr-project.org/FLCore/FLStock.html) and [FLFleet](http://www.flr-project.org/FLCore/FLStock.html) classes.
 
 ## Required packages
 
@@ -25,20 +25,26 @@ You can do so as follows,
 
 ```{r, eval=FALSE}
 install.packages(c("ggplot2"))
-install.packages(c("ggplotFL"), repos="http://flr-project.org/R")
+install.packages(c("FLcore", "ggplotFL"), repos="http://flr-project.org/R")
 ```
 
 ```{r, pkgs}
 # This chunk loads all necessary packages, trims pkg messages
-library(FLCore); library(FLFleet)
+library(FLFleet)
 library(ggplotFL)
 ```
 
-## FLStock objects 
+## Example data files
 
-This section covers methods for reading in the data required to construct [FLStock](http://www.flr-project.org/FLCore/FLStock.html) objects.
+The data files used in this tutorial need to be available in R's working directory, and this code obtains them from the **FLR** website. Files will be downloaded to a temporary folder. If you want to keep a local copy, simply set a different value to the `dir` variable below
 
-### Reading files (csv, dat, ...)
+```{r, getfiles, message=FALSE}
+dir <- tempdir()
+download.file("http://flr-project.org/doc/src/loading_data.zip", file.path(dir, "loading_data.zip"))
+unzip(file.path(dir, "loading_data.zip"), exdir=dir)
+```
+
+## Reading files (csv, dat, ...)
 
 Fisheries data are generally stored in different format (cvs, excel, SAS...). R provides tools to read and import data from simple text files to more advanced SAS files or databases. [Datacamp](https://www.datacamp.com/community/tutorials/importing-data-r-part-two#gs.kNzBd5k) is a nice tutorial to quickly import data into R.
 
@@ -51,27 +57,27 @@ This tutorial will give some examples but regardless the format, the different s
 - Reshaping the data as a matrix 
 - creating an FLQuant object
 
-### Importing files into R (example of csv file)
+## Importing files into R (example of csv file)
 
 There is many ways of reading csv files. 
 [read.table](http://stat.ethz.ch/R-manual/R-devel/library/utils/html/read.table.html) with 'header', 'sep', 'dec' and 'row.names' options will allow you reading all .csv and .txt files
 
 The [read.csv](http://stat.ethz.ch/R-manual/R-devel/library/utils/html/read.table.html) or [read.csv2](http://stat.ethz.ch/R-manual/R-devel/library/utils/html/read.table.html) function are very useful to read csv files. 
 
-``` {r }
-catch.n <- read.csv("src/catch_numbers.csv",row=1)
+```{r}
+catch.n <- read.csv(file.path(dir,"catch_numbers.csv"), row=1)
 ```
 
-We have read in the data as a data.frame
+We have read in the data as a `data.frame`
 
-``` {r }
+```{r }
 class(catch.n)
 ```
 
-The data are now in your R environment, before creating a **FLQuant** object, you need to make sure it is consistent with the type of object and formatting that is needed to run the [FLQuant](http://www.flr-project.org/FLCore/FLQuant.html) methd. To get information on the structure and format needed type ?FLQuant in your R Console.
+The data are now in your R environment, and before creating a **FLQuant** object, you need to make sure it is consistent with the type of object and formatting that is needed to run the [FLQuant](http://www.flr-project.org/FLCore/FLQuant.html) methd. To get information on the structure and format needed type ?FLQuant in your R Console.
 
 
-### Reshaping data as a matrix 
+## Reshaping data as a matrix 
 
 FLQuant accept 'vector', 'array' or 'matrix'. 
 We can convert the object catch.n to a matrix
@@ -86,7 +92,7 @@ A [FLQuant](http://www.flr-project.org/FLCore/FLQuant.html) object is made of si
 When importing catch number for example, the input object needs to be formatted as such: age or length in the first dimension and years in the second dimension. If the object is not formatted in the right way, you can use the `reshape` functions from the package [reshape2](https://cran.r-project.org/web/packages/reshape2/index.html).
 
 
-### Making an FLQuant object 
+## Making an FLQuant object 
 
 We need to specify the dimnames
 ``` {r }
@@ -95,22 +101,22 @@ catch.n.flq[,1:7]
 
 ```
 
-### Reading common fisheries data formats 
+## Reading common fisheries data formats 
 
 FLCore contains functions for reading in fish stock data in commonly used formats. To read a single variable (e.g. numbers-at-age, maturity-at-age) from the **Lowestoft VPA** format you use the `readVPA` function. The following example reads the catch numbers-at-age for herring:
 
 ```{r, readVPA}
 # Read from a VPA text file
-catch.n <- readVPAFile(file.path('src', 'her-irlw',"canum.txt"))
+catch.n <- readVPAFile(file.path(dir, "her-irlw","canum.txt"))
 class(catch.n)
 ```
-This can be repeated for each of the data files. In addition, functions are available for [Multifan-CL](http://www.multifan-cl.org/) format `readMFCL` and [ADMB](http://www.admb-project.org/) `readADMB`.
+This can be repeated for each of the data files. In addition, functions are available for [Multifan-CL](http://www.multifan-cl.org/) format, `readMFCL`, and [ADMB](http://www.admb-project.org/), `readADMB`.
 
 Alternatively, if you have the full information for a stock in the **Lowestoft VPA**, **Adapt**, **CSA** or **ICA** format you can read in together using the `readFLStock` function. Here, you point the function to the index file, with all other files in the same directory:
 
 ```{r, readFLStock}
 # Read a collection of VPA files, pointing to the Index file:
-her <- readFLStock(file.path('src','her-irlw','index.txt'))
+her <- readFLStock(file.path(dir,'her-irlw','index.txt'))
 class(her)
 ```
 Which we can see correctly formats the data as an [FLStock](http://www.flr-project.org/FLCore/FLStock.html) object.
@@ -123,10 +129,10 @@ Note: the units for the slots have not been set. We will deal with this in the n
 In addition, this object only contains the input data for the stock assessment, not any estimated values (e.g. harvest rates, stock abundances). You can add these to the object as follows:
 
 ```{r, AddMissingAssessmentData}
-her@stock.n <- readVPAFile(file.path('src','her-irlw',"n.txt"))
+her@stock.n <- readVPAFile(file.path(dir, "her-irlw", "n.txt"))
 print(her@stock.n[,ac(2007:2011)]) # only print 2007:2011
 
-her@harvest <- readVPAFile(file.path('src','her-irlw',"f.txt"))
+her@harvest <- readVPAFile(file.path(dir,"her-irlw", "f.txt"))
 
 ```
 Now we have a fully filled [FLStock](http://www.flr-project.org/FLCore/FLStock.html) object. But let's check the data are consistent.
@@ -154,7 +160,7 @@ her@catch.n       <- her@landings.n
 ```
 Functions are available to [computeLandings](http://www.flr-project.org/FLCore/computeLandings.html), [computeDiscards](http://www.flr-project.org/FLCore/computeDiscards.html), [computeCatch](http://www.flr-project.org/FLCore/computeCatch.html) and [computeStock](http://www.flr-project.org/FLCore/computeStock.html). These functions take the argument `slot = 'catch'`, `slot = 'wt'` and `slot = 'n'` to compute the total weight, individual weight and numbers respectively, in addition to `slot = 'all'`. 
 
-### Adding a description, units, ranges etc..
+## Adding a description, units, ranges etc..
 
 Before we are finished, we want to ensure the units and range references are correct. This is important as the derived calculations require the correct scaling (e.g. `fbar`, for the average fishing mortality range over the required age ranges).
 
@@ -191,22 +197,18 @@ plot(her) + theme_bw() # using the simple black and white theme
 
 Two solutions can be used to read abundance indices into FLR. 
 
-### Reading from common fisheries data formats 
-
 If your data are formatted in a **Lowestoft VPA** format then [FLCore](http://www.flr-project.org/FLCore/) contains functions for reading in indices. To read an abundance index, you use the `readFLIndices` function. The following example reads the index from `ple4` example:
 
 ```{r }
-indices <- readFLIndices('src/ple4_ISIS.txt')
+indices <- readFLIndices(file.path(dir, "ple4_ISIS.txt"))
 ```
 
 Using this function, slot `indices@names` is already filled by `r indices@names`, and the information slot `indices@range` too.
 
-### Reading from flat files 
-
 If your data are not formatted in a **Lowestoft VPA** format, then you and read them using [read.table](http://stat.ethz.ch/R-manual/R-devel/library/utils/html/read.table.html) from base R, for example.
 
 ```{r }
-indices <- read.table('src/ple4Index1.txt')
+indices <- read.table(file.path(dir, "ple4Index1.txt"))
 ```
 which needs to be transformed in FLQuant
 ```{r }
