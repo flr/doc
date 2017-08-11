@@ -15,8 +15,8 @@ navbar:
     - text: "Introduction"
       icon: fa-gear
       menu:
-        - text: "Page A"
-          href: A.html
+        - text: "A quick intro"
+          href: A_quick_introduction_to_FLR.html
         - text: "Page B"
           href: B.html
     - text: "Input"

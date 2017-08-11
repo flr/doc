@@ -16,7 +16,7 @@ title: "FLR tutorials"
 - [ggplotFL_plotting_FLR_objects_with_ggplot2](ggplotFL_plotting_FLR_objects_with_ggplot2.html)
 - [Plotting_FLR_objects_using_lattice](Plotting_FLR_objects_using_lattice.html)
 
-## Stock Assessment
+## Fisheries Modelling
 
 - [Modelling_stock_recruitment_with_FLSR](Modelling_stock_recruitment_with_FLSR.html)
 - [Statistical_catch_at_age_models_in_FLa4a](Statistical_catch_at_age_models_in_FLa4a.html)
@@ -31,7 +31,7 @@ title: "FLR tutorials"
 - [Forecasting_on_the_Medium_Term_for_advice_using_FLasher](Forecasting_on_the_Medium_Term_for_advice_using_FLasher.html)
 - [Reference_points_for_fisheries_management_with_FLBRP](Reference_points_for_fisheries_management_with_FLBRP.html)
 
-## MSE
+## Management Strategy Evaluation
 
 - [An_introduction_to_MSE_using_FLR](An_introduction_to_MSE_using_FLR.html)
 
