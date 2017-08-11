@@ -26,7 +26,7 @@ title: "FLR tutorials"
 
 ## Management Advice
 
-- [Runnin Medium Term Forecasts with Flash](Running_Medium_Term_Forecasts_with_Flash.html)
+- [Runnin Medium Term Forecasts with FLash](Running_Medium_Term_Forecasts_with_FLash.html)
 - [Short Term Forecasting for advice using FLash](Short_Term_Forecasting_for_advice_using_FLash.html)
 - [Forecasting on the Medium Term for advice using FLasher](Forecasting_on_the_Medium_Term_for_advice_using_FLasher.html)
 - [Reference points for fisheries management with FLBRP](Reference_points_for_fisheries_management_with_FLBRP.html)
