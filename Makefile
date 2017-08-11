@@ -24,7 +24,8 @@ docs/R/%.R: %.Rmd
 default: $(TARGETS)
 
 clean:
-	rm -rf $(FILES) $(CACHE)
+	rm *.html
+	rm -rf $(CACHE)
 
 cleanall: clean
-	rm -rf $(TARGETS)
+	rm -rf $(FILES) $(TARGETS)

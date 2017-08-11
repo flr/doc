@@ -1,0 +1,21 @@
+---
+title: 
+author: Iago Mosqueira (EC JRC) <iago.mosqueira@ec.europa.eu>
+date: 2017-08-11 11:51
+documentclass: article
+output:
+  pdf_document:
+    fig_caption: yes
+    number_sections: yes
+    toc: yes
+tags:
+abstract:
+license: Creative Commons Attribution-ShareAlike 4.0 International Public License
+---
+
+
+
+## If a single tutorial has been changed
+
+- `make SOURCES=tutorial_name.Rmd`
+- `rmarkdown::render_site9"tutorial_name.Rmd")`

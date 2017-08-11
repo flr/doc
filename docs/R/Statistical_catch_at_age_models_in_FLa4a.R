@@ -8,7 +8,7 @@ source("R/ini.R")
 ## install.packages(c("FLCore", "FLa4a"), repos="http://flr-project.org/R")
 
 ## ---- pkgs---------------------------------------------------------------
-# This chunk loads all necessary packages, trims pkg messages
+# This chunk loads all necessary packages
 library(FLa4a)
 library(latticeExtra)
 # datasets

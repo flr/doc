@@ -2,9 +2,10 @@
 title: Modelling Stock-Recruitment with FLSR
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-    github_document
-tags:
-license: Creative Commons CC-BY SA
+github_document:
+  mathjax: TRUE
+tags: [FLR]
+license: Creative Commons Attribution-ShareAlike 4.0 International Public License
 ---
 
 ```{r, ini, echo=FALSE, results='hide', message=FALSE, warnings=FALSE, cache=FALSE}

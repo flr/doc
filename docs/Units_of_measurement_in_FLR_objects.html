@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -200,7 +200,7 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="A.html">Page A</a>
+      <a href="A_quick_introduction_to_FLR.html">A quick intro</a>
     </li>
     <li>
       <a href="B.html">Page B</a>
@@ -310,7 +310,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Units of measurement in FLR objects</h1>
-<h4 class="date"><em>14 July, 2017</em></h4>
+<h4 class="date"><em>11 August, 2017</em></h4>
 
 </div>
 
@@ -331,39 +331,39 @@ $(document).ready(function () {
 <p>Units of measurements can be specified in the <code>units</code> slot of the <code>FLQuant</code> and <code>FLCohort</code> classes, as a character vector of length 1</p>
 <pre class="r"><code>fq &lt;- FLQuant(1.287, units=&quot;kg&quot;)
 print(fq)</code></pre>
-<pre><code>## An object of class &quot;FLQuant&quot;
-## , , unit = unique, season = all, area = unique
-## 
-##      year
-## quant 1    
-##   all 1.287
-## 
-## units:  kg</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+quant 1    
+  all 1.287
+
+units:  kg </code></pre>
 <p>and for the <code>FLPar</code> class as a vector of length equal to the number of parameters (<code>params</code>)</p>
 <pre class="r"><code>FLPar(Linf=50, K=0.5, t0=-0.2, units=c(&quot;cm&quot;, &quot;1/y&quot;, &quot;y&quot;))</code></pre>
-<pre><code>## An object of class &quot;FLPar&quot;
-## params
-## Linf    K   t0 
-## 50.0  0.5 -0.2 
-## units:  cm 1/y y</code></pre>
+<pre><code>An object of class &quot;FLPar&quot;
+params
+Linf    K   t0 
+50.0  0.5 -0.2 
+units:  cm 1/y y </code></pre>
 <p>The content of this slot can be extracted and altered, using the usual accessor and replacement methods, in this case <code>units</code> and <code>units&lt;-</code>.</p>
 <pre class="r"><code>units(fq)</code></pre>
-<pre><code>## [1] &quot;kg&quot;</code></pre>
+<pre><code>[1] &quot;kg&quot;</code></pre>
 <pre class="r"><code>units(fq) &lt;- &quot;t&quot;
 
 summary(fq)</code></pre>
-<pre><code>## An object of class &quot;FLQuant&quot; with:
-## dim  :  1 1 1 1 1 1 
-## quant:  quant 
-## units:  t 
-## 
-## Min    :  1.287 
-## 1st Qu.:  1.287 
-## Mean   :  1.287 
-## Median :  1.287 
-## 3rd Qu.:  1.287 
-## Max    :  1.287 
-## NAs    :  0 %</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot; with:
+dim  :  1 1 1 1 1 1 
+quant:  quant 
+units:  t 
+
+Min    :  1.287 
+1st Qu.:  1.287 
+Mean   :  1.287 
+Median :  1.287 
+3rd Qu.:  1.287 
+Max    :  1.287 
+NAs    :  0 %</code></pre>
 </div>
 <div id="computable-units-of-measurement" class="section level1">
 <h1>Computable units of measurement</h1>
@@ -399,14 +399,15 @@ summary(fq)</code></pre>
 <h2>Currency</h2>
 <p>Objects containing economic information, such as prices of fish or costs of fishing, should use the corresponding <a href="https://en.wikipedia.org/wiki/ISO_4217">ISO 4217 currency code</a>, of which two are already present in the table used by <code>uom</code>: <code>EUR</code> for Euro, and <code>USD</code> for US Dollar.</p>
 <pre class="r"><code>FLQuant(1.2e6, units=&quot;EUR&quot;)</code></pre>
-<pre><code>## An object of class &quot;FLQuant&quot;
-## , , unit = unique, season = all, area = unique
-## 
-##      year
-## quant 1      
-##   all 1200000
-## 
-## units:  EUR</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+quant 1      
+  all 1200000
+
+units:  EUR </code></pre>
 </div>
 <div id="time" class="section level2">
 <h2>Time</h2>
@@ -425,17 +426,18 @@ summary(fq)</code></pre>
 <h1>Units of measurement when computing with FLQuants</h1>
 <p>Arithmetic operations on <code>FLQuant</code> objects will invoque the <code>uom</code> function to assign a value to the <code>units</code> slot of the returned object. This function takes three character arguments: the first for the operation being carried out, one of <code>/</code>, <code>*</code>, <code>+</code> or <code>-</code>, and the content of the <code>units</code> slot of each of the objects. For example, the addition of two objects with <code>kg</code> as units would lead to another object also with <code>kg</code> as units of measurement</p>
 <pre class="r"><code>FLQuant(9230, units=&quot;kg&quot;) + FLQuant(367, units=&quot;kg&quot;)</code></pre>
-<pre><code>## An object of class &quot;FLQuant&quot;
-## , , unit = unique, season = all, area = unique
-## 
-##      year
-## quant 1   
-##   all 9597
-## 
-## units:  kg</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+quant 1   
+  all 9597
+
+units:  kg </code></pre>
 <p>which internally is calling <code>uom</code> with the necessary arguments</p>
 <pre class="r"><code>uom(&quot;+&quot;, &quot;kg&quot;, &quot;kg&quot;)</code></pre>
-<pre><code>## [1] &quot;kg&quot;</code></pre>
+<pre><code>[1] &quot;kg&quot;</code></pre>
 <p>The addition or substraction of two objects with the same units will return a new object that shares those units of measurement.</p>
 <div id="products-of-numbers" class="section level2">
 <h2>Products of numbers</h2>
@@ -445,14 +447,15 @@ summary(fq)</code></pre>
 <li><code>1e4 * 100 = 1e6</code></li>
 </ul>
 <pre class="r"><code>FLQuant(c(467.34, 345.33), units=&quot;1000&quot;) * FLQuant(c(2.4, 3.5), units=&quot;100&quot;)</code></pre>
-<pre><code>## An object of class &quot;FLQuant&quot;
-## , , unit = unique, season = all, area = unique
-## 
-##      year
-## quant 1      2     
-##   all 1121.6 1208.7
-## 
-## units:  1e5</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+quant 1      2     
+  all 1121.6 1208.7
+
+units:  1e5 </code></pre>
 </div>
 <div id="transformation-of-units" class="section level2">
 <h2>Transformation of units</h2>
@@ -461,84 +464,91 @@ summary(fq)</code></pre>
 <li><code>1000 * kg = t</code> for any of the alllowed notations for the first quantity, and for all subsequent calculation, such as <code>t / 1000 = kg</code>.</li>
 </ul>
 <pre class="r"><code>FLQuant(c(467.34, 345.33), units=&quot;1000&quot;) * FLQuant(c(2.4, 3.5), units=&quot;kg&quot;)</code></pre>
-<pre><code>## An object of class &quot;FLQuant&quot;
-## , , unit = unique, season = all, area = unique
-## 
-##      year
-## quant 1      2     
-##   all 1121.6 1208.7
-## 
-## units:  t</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+quant 1      2     
+  all 1121.6 1208.7
+
+units:  t </code></pre>
 <ul>
 <li><code>f + m = z</code>, and subsequent combinations, like <code>z - m = f</code> etc.</li>
 </ul>
 <pre class="r"><code>FLQuant(runif(8, 0.1, 0.8), units=&quot;f&quot;) %+% FLQuant(0.2, units=&quot;m&quot;)</code></pre>
-<pre><code>## An object of class &quot;FLQuant&quot;
-## , , unit = unique, season = all, area = unique
-## 
-##      year
-## quant 1       2       3       4       5       6       7       8      
-##   all 0.46910 0.45602 0.45013 0.37218 0.57140 0.68470 0.65551 0.73240
-## 
-## units:  z</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+quant 1       2       3       4       5       6       7       8      
+  all 0.51475 0.35683 0.82217 0.67726 0.35724 0.45620 0.91196 0.39663
+
+units:  z </code></pre>
 </div>
 <div id="products-and-division-of-composite-units" class="section level2">
 <h2>Products and division of composite units</h2>
 <p>Some cases in which composite units of measurement, those formed by a string showing the operation carried out, like <code>100 * kg</code> or <code>EUR / d</code> can, for certain operations, be simplified. Two possible cases exist that <code>uom</code> is able to handle. The first one is a product of a quantity with another in which the later has as units a division with the units of the first as denominator. For example, fixed costs in a fishery, expressed as a ratio of some currency per boat, <code>EUR / boat</code>, can then be multiplied by the number of boats operating per unit of time to obtain the total amount</p>
 <pre class="r"><code>FLQuant(126, units=&quot;boat&quot;) * FLQuant(2350, units=&quot;EUR / boat&quot;)</code></pre>
-<pre><code>## An object of class &quot;FLQuant&quot;
-## , , unit = unique, season = all, area = unique
-## 
-##      year
-## quant 1     
-##   all 296100
-## 
-## units:  EUR</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+quant 1     
+  all 296100
+
+units:  EUR </code></pre>
 <p>This works even if the units expression of the first</p>
 <pre class="r"><code>FLQuant(126, units=&quot;boat / d&quot;) * FLQuant(2350, units=&quot;EUR / boat / d&quot;)</code></pre>
-<pre><code>## An object of class &quot;FLQuant&quot;
-## , , unit = unique, season = all, area = unique
-## 
-##      year
-## quant 1     
-##   all 296100
-## 
-## units:  EUR</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+quant 1     
+  all 296100
+
+units:  EUR </code></pre>
 <pre class="r"><code>FLQuant(2350, units=&quot;EUR / boat / d&quot;) * FLQuant(2350, units=&quot;boat / d&quot;)</code></pre>
-<pre><code>## An object of class &quot;FLQuant&quot;
-## , , unit = unique, season = all, area = unique
-## 
-##      year
-## quant 1      
-##   all 5522500
-## 
-## units:  EUR</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+quant 1      
+  all 5522500
+
+units:  EUR </code></pre>
 </div>
 <div id="computing-ratios" class="section level2">
 <h2>Computing ratios</h2>
 <p>The division of any object by another with the same units of measurement will lead to an object with no units in the slot, i.e. a unitless ratio.</p>
 <pre class="r"><code>FLQuant(34170, units=&quot;t&quot;) / FLQuant(2.32, units=&quot;t&quot;)</code></pre>
-<pre><code>## An object of class &quot;FLQuant&quot;
-## , , unit = unique, season = all, area = unique
-## 
-##      year
-## quant 1    
-##   all 14728
-## 
-## units:</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+quant 1    
+  all 14728
+
+units:   </code></pre>
 </div>
 <div id="dealing-with-missing-units" class="section level2">
 <h2>Dealing with missing units</h2>
 <p>When the units of measurement in one of the objects are missing, they are “NA”, any operation will lead to an object with “NA” in the <code>units</code> slot.</p>
 <pre class="r"><code>FLQuant(34170, units=&quot;t&quot;) / FLQuant(2.32, units=&quot;NA&quot;)</code></pre>
-<pre><code>## An object of class &quot;FLQuant&quot;
-## , , unit = unique, season = all, area = unique
-## 
-##      year
-## quant 1    
-##   all 14728
-## 
-## units:  NA</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+quant 1    
+  all 14728
+
+units:  NA </code></pre>
 </div>
 </div>
 <div id="references" class="section level1">
@@ -556,9 +566,9 @@ summary(fq)</code></pre>
 <div id="software-versions" class="section level2">
 <h2>Software Versions</h2>
 <ul>
-<li>R version 3.3.3 (2017-03-06)</li>
-<li>FLCore: 2.6.3.9004</li>
-<li><strong>Compiled</strong>: Fri Jul 14 14:19:42 2017</li>
+<li>R version 3.4.1 (2017-06-30)</li>
+<li>FLCore: 2.6.3.9006</li>
+<li><strong>Compiled</strong>: Fri Aug 11 11:41:26 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">
@@ -594,7 +604,7 @@ $(document).ready(function () {
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

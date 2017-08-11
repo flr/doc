@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -15,12 +15,12 @@
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-1.1/highlight.js"></script>
 <link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
 
@@ -98,34 +98,34 @@ button.code-folding-btn:focus {
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
-  padding-top: 45px;
+  padding-top: 51px;
   padding-bottom: 40px;
 }
 /* offset scroll position for anchor links (for fixed navbar)  */
 .section h1 {
-  padding-top: 50px;
-  margin-top: -50px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 
 .section h2 {
-  padding-top: 50px;
-  margin-top: -50px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 .section h3 {
-  padding-top: 50px;
-  margin-top: -50px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 .section h4 {
-  padding-top: 50px;
-  margin-top: -50px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 .section h5 {
-  padding-top: 50px;
-  margin-top: -50px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 .section h6 {
-  padding-top: 50px;
-  margin-top: -50px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 </style>
 
@@ -200,7 +200,7 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="A.html">Page A</a>
+      <a href="A_quick_introduction_to_FLR.html">A quick intro</a>
     </li>
     <li>
       <a href="B.html">Page B</a>
@@ -310,7 +310,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Short Term Forecasting for advice using FLash</h1>
-<h4 class="date"><em>08 March, 2017</em></h4>
+<h4 class="date"><em>11 August, 2017</em></h4>
 
 </div>
 
@@ -358,10 +358,10 @@ stock         : [ 1 52 1 1 1 1 ], units =  t
 stock.n       : [ 10 52 1 1 1 1 ], units =  10^3 
 stock.wt      : [ 10 52 1 1 1 1 ], units =  kg 
 m             : [ 10 52 1 1 1 1 ], units =  m 
-mat           : [ 10 52 1 1 1 1 ], units =  NA 
+mat           : [ 10 52 1 1 1 1 ], units =   
 harvest       : [ 10 52 1 1 1 1 ], units =  f 
-harvest.spwn  : [ 10 52 1 1 1 1 ], units =  NA 
-m.spwn        : [ 10 52 1 1 1 1 ], units =  NA </code></pre>
+harvest.spwn  : [ 10 52 1 1 1 1 ], units =   
+m.spwn        : [ 10 52 1 1 1 1 ], units =   </code></pre>
 </div>
 <div id="extending-the-stock-object-for-the-projections" class="section level1">
 <h1>Extending the stock object for the projections</h1>
@@ -415,7 +415,7 @@ age  2006 2007 2008 2009 2010 2011
   9  1.0  1.0  1.0  1.0  1.0  1.0 
   10 1.0  1.0  1.0  1.0  1.0  1.0 
 
-units:  NA </code></pre>
+units:   </code></pre>
 <p>Notice that the future fishing mortality has also been set (mean of the last 3 years, by default).</p>
 <pre class="r"><code>ggplot(harvest(ple4_stf)[,ac((maxyr_stf-5):maxyr_stf)]) + geom_line(aes(x=age, y=data)) + facet_wrap(~year)</code></pre>
 <p><img src="Short_Term_Forecasting_for_advice_using_FLash_files/figure-html/figA-1.png" width="672" style="display: block; margin: auto;" /></p>
@@ -648,7 +648,7 @@ age  2009   2010   2011
   9  1.2797 1.2797 1.2797
   10 1.2797 1.2797 1.2797
 
-units:  f </code></pre>
+units:  NA </code></pre>
 <p>The catch numbers come from the predicted abundance and harvest rates using the Baranov equation. The catches are then split into landings and discards using the ratios computed by <code>stf()</code>.</p>
 <pre class="r"><code>landings.n(ple4_sq)[,ac((maxyr_stf-5):maxyr_stf)]</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
@@ -1003,14 +1003,14 @@ plot(stk_stf)</code></pre>
 <div id="software-versions" class="section level2">
 <h2>Software Versions</h2>
 <ul>
-<li>R version 3.3.2 (2016-10-31)</li>
-<li>FLCore: 2.6.0.20170228</li>
-<li>FLAssess: 2.5.20150717</li>
+<li>R version 3.4.1 (2017-06-30)</li>
+<li>FLCore: 2.6.3.9006</li>
+<li>FLAssess: 2.6.1</li>
 <li>FLash: 2.5.7</li>
-<li>ggplotFL: 2.5.9.9000</li>
-<li>ggplot2: 2.2.1</li>
-<li>FLBRP: 2.5.20170228</li>
-<li><strong>Compiled</strong>: Wed Mar 8 13:50:34 2017</li>
+<li>ggplotFL: 2.6.0</li>
+<li>ggplot2: 2.2.1.9000</li>
+<li>FLBRP: 2.5.20170307</li>
+<li><strong>Compiled</strong>: Fri Aug 11 14:18:26 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">
@@ -1047,7 +1047,7 @@ $(document).ready(function () {
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

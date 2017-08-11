@@ -1,6 +1,6 @@
 ## ---- ini, echo=FALSE, results='hide', message=FALSE, warnings=FALSE, cache=FALSE----
 library(knitr)
-set.seed(8765)
+source("R/ini.R")
 
 ## ---- eval=FALSE---------------------------------------------------------
 ## install.packages(c("FLCore"), repos="http://flr-project.org/R")

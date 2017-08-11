@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -200,7 +200,7 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="A.html">Page A</a>
+      <a href="A_quick_introduction_to_FLR.html">A quick intro</a>
     </li>
     <li>
       <a href="B.html">Page B</a>
@@ -310,7 +310,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">A quick introduction to FLR</h1>
-<h4 class="date"><em>14 July, 2017</em></h4>
+<h4 class="date"><em>11 August, 2017</em></h4>
 
 </div>
 
@@ -326,13 +326,13 @@ $(document).ready(function () {
 <p>You can do so as follows:</p>
 <pre class="r"><code>install.packages(c(&quot;FLCore&quot;), repos=&quot;http://flr-project.org/R&quot;)</code></pre>
 </div>
-<div id="getting-started-with-flcore-classes" class="section level1">
-<h1>Getting started with FLCore classes</h1>
-<p>The main <em>classes</em> (i.e. data structures) and methods (i.e. procedures) in the FLR system are found in the <code>FLCore</code> package. Let’s load it first.</p>
+<div id="getting-started-with-the-flcore-classes" class="section level1">
+<h1>Getting started with the FLCore classes</h1>
+<p>The main <em>classes</em> (i.e. data structures) and <em>methods</em> (i.e. procedures) in the FLR system are found in the <code>FLCore</code> package. Let’s load it first.</p>
 <pre class="r"><code>library(FLCore)</code></pre>
 <p>We can then inspect an example object.</p>
 <pre class="r"><code>data(ple4)</code></pre>
-<p>The <code>ple4</code> object is of class <code>FLStock</code>, used in <strong>FLR</strong> to represent a fish population that is constructed from catch and abundance data through a stock assesssment model. <code>FLStock</code> is an S4 class (see <code>?Classes_Details</code> for futher details on S4 classes), consisting of a number of slots able to hold data or results for each of the elements in it. By calling the <code>summary</code> method on the object</p>
+<p>The <code>ple4</code> object is of class <code>FLStock</code>, used in <strong>FLR</strong> to represent a fish population that is constructed from catch and abundance data through a stock assesssment model. <code>FLStock</code> is an S4 class (see <code>?Classes_Details</code> for futher details), consisting of a number of slots designed to each of the elements, data or results, needed to construct a view of a fish stock. By calling the <code>summary</code> method on the object</p>
 <pre class="r"><code>summary(ple4)</code></pre>
 <pre><code>An object of class &quot;FLStock&quot;
 
@@ -362,7 +362,7 @@ mat           : [ 10 52 1 1 1 1 ], units =
 harvest       : [ 10 52 1 1 1 1 ], units =  f 
 harvest.spwn  : [ 10 52 1 1 1 1 ], units =   
 m.spwn        : [ 10 52 1 1 1 1 ], units =   </code></pre>
-<p>we can inspect the slots, dimensions and structure. Most slots in the class (e.g. <code>catch</code> or <code>stock.n</code>) are themselves of another <strong>FLCore</strong> class, <code>FLQuant</code>. This class, the basic element used to assemble all other classes in <strong>FLR</strong>, is a 6-dimensional array that can take advantange of the powerful array algebra capabilities of R. All slots can be accessed and modified using accessors and replacement methods.</p>
+<p>we can inspect the slots, dimensions and structure. Most slots in the class (e.g. <code>catch</code> or <code>stock.n</code>) are themselves of another <strong>FLCore</strong> class, <code>FLQuant</code>. This class, the basic element used to assemble all other classes in <strong>FLR</strong>, is a 6-dimensional array that can take advantage of the powerful array algebra capabilities of R. All slots can be accessed and modified using accessors and replacement methods.</p>
 <pre class="r"><code>catch(ple4)</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 , , unit = unique, season = all, area = unique
@@ -421,8 +421,8 @@ age 1957   1958   1959   1960   1961
    year
 age 2004    2005    2006    2007    2008   
   1 1159019  714344  820006  949341  844041</code></pre>
-<p>while ensuring that the result are always valid objects of the same class. However, selecting a single element along the first dimension (<code>age</code>) did not drop that dimension from the object, in contrast with the standard behaviour in R for <code>array</code>.</p>
-<p>In addition to the <code>summary</code> method above, a common set of methods exist for each class to create new objects,</p>
+<p>while ensuring that the result are always valid objects of the same class. There are, however, necessary difference. For example, selecting a single element along the first dimension (<code>age</code>) did not drop that dimension from the object (<code>drop=FALSE</code>), in contrast with the standard behaviour in R for <code>array</code>.</p>
+<p>In addition to the <code>summary</code> method above, a creator method is available for each class</p>
 <pre class="r"><code>FLQuant(rlnorm(30), dimnames=list(age=0:5, year=2012:2017))</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 An object of class &quot;FLQuant&quot;
@@ -438,7 +438,7 @@ age 2012    2013    2014    2015    2016    2017
   5 2.09946 1.06234 0.53418 0.81529 2.49983 2.09946
 
 units:  NA </code></pre>
-<p>coerce to and from other classes,</p>
+<p>Other common methods have also been defined for all of them, for example to be able to coerce to and from other classes,</p>
 <pre class="r"><code>head(as.data.frame(ple4))</code></pre>
 <table>
 <thead>
@@ -516,7 +516,7 @@ units:  NA </code></pre>
 </tr>
 </tbody>
 </table>
-<p>and plot an object.</p>
+<p>or plot an object.</p>
 <pre class="r"><code>plot(ple4)</code></pre>
 <div class="figure" style="text-align: center">
 <img src="A_quick_introduction_to_FLR_files/figure-html/plotFLStock-1.png" alt="FLStock plot for ple4" width="672" />
@@ -538,7 +538,7 @@ age   1957   1958   1959   1960   1961
      year
 age   2004   2005   2006   2007   2008  
   all 151508 167531 173783 166061 206480</code></pre>
-<p>or the mean fishing mortality accross the fully-selected ages (<span class="math inline">\(\bar{F}\)</span>) with</p>
+<p>while the mean fishing mortality accross the fully-selected ages (<span class="math inline">\(\bar{F}\)</span>) is calculated with</p>
 <pre class="r"><code>fbar(ple4)</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 , , unit = unique, season = all, area = unique
@@ -563,6 +563,7 @@ age   2004    2005    2006    2007    2008
 </ul>
 <p>Object validity is checked not only by the class constructor, but also by the replacement methods, for example when calling</p>
 <pre class="r"><code>catch(ple4) &lt;- landings(ple4) + discards(ple4)</code></pre>
+<p>to assign a new value (the result of adding <code>landings</code> and <code>discards</code>) to a single slot (<code>catch</code>).</p>
 </div>
 </div>
 <div id="a-modelling-example-the-flsr-class" class="section level1">
@@ -587,7 +588,7 @@ residuals     : [ 1 45 1 1 1 1 ], units =  NA
 fitted        : [ 1 45 1 1 1 1 ], units =  10^3 
 
 Model:  rec ~ a * ssb * exp(-b * ssb)
-&lt;environment: 0xb0dc1a8&gt;
+&lt;environment: 0xac2a918&gt;
 Parameters: 
     params
 iter     a        b
@@ -598,9 +599,9 @@ Variance-covariance:
             a         b
   a 255.33882 1.809e-02
   b   0.01809 1.993e-06</code></pre>
-<p>The class holds together <code>FLQuant</code> slots for inputs (<code>rec</code> for recruitment in numbers and <code>ssb</code> for spawning stock biomass or any other proxy of stock reproductive potential) and outputs of the fit (<code>fitted</code> for the estimated recruitment, and <code>residuals</code> for the log residuals of the estimates). It also contains the necessary elements for the model fit to be carried out using maximum likelihood estimation:</p>
+<p>The class holds together <code>FLQuant</code> slots for inputs (<code>rec</code> for recruitment in numbers and <code>ssb</code> for spawning stock biomass or any other proxy of stock reproductive potential) and outputs of the fit (<code>params</code> for the estimated parameters, <code>fitted</code> for the estimated recruitment, and <code>residuals</code> for the log residuals). It also contains the necessary elements for the model fit to be carried out using maximum likelihood estimation:</p>
 <ul>
-<li><code>logl</code>: a function that computes the log-likehood to be passed on to <code>optim</code>,</li>
+<li><code>logl</code>: a function that computes the log-likehood from observations and parameter values, to be passed on to <code>optim</code>,</li>
 <li><code>model</code>: a formula to calculate the estimated recruitment, and</li>
 <li><code>initial</code>: a function to obtain initial parameter values for the minimization algorithm.</li>
 </ul>
@@ -612,9 +613,9 @@ Variance-covariance:
 <li><code>hessian</code>: the Hessian matrix of the fit,</li>
 </ul>
 <p>as well as some other information returned by the fitting procedure.</p>
-<p>Of course we can visualize the result of the model fit, together with n useful set of diagnostics, by simply calling the following.</p>
+<p>Of course we can visualize the result of the model fit, together with a useful set of diagnostics, by simply calling the <code>plot</code> method for the class</p>
 <pre class="r"><code>plot(nsher)</code></pre>
-<p><img src="A_quick_introduction_to_FLR_files/figure-html/plotFLSR-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="A_quick_introduction_to_FLR_files/figure-html/plotFLSR-1.png" width="672" style="display: block; margin: auto;" /><img src="A_quick_introduction_to_FLR_files/figure-html/plotFLSR-2.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="flbiol" class="section level1">
 <h1>FLBiol</h1>
@@ -636,9 +637,9 @@ Variance-covariance:
 <div id="software-versions" class="section level2">
 <h2>Software Versions</h2>
 <ul>
-<li>R version 3.3.3 (2017-03-06)</li>
-<li>FLCore: 2.6.3.9004</li>
-<li><strong>Compiled</strong>: Fri Jul 14 14:17:37 2017</li>
+<li>R version 3.4.1 (2017-06-30)</li>
+<li>FLCore: 2.6.3.9006</li>
+<li><strong>Compiled</strong>: Fri Aug 11 13:40:09 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">
@@ -674,7 +675,7 @@ $(document).ready(function () {
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

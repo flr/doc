@@ -1,8 +1,8 @@
 name: doc
 output:
-  html_document:
-    theme: yeti
-    highlight: textmate
+html_document:
+  theme: yeti
+  highlight: textmate
 output_dir: docs
 navbar:
   left:

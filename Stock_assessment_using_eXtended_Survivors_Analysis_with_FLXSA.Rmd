@@ -2,9 +2,10 @@
 title: Virtual Population analysis using eXtended Survivor Analysis
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-  github_document
-tags:
-license: Creative Commons CC-BY SA
+github_document:
+  mathjax: TRUE
+tags: [FLR]
+license: Creative Commons Attribution-ShareAlike 4.0 International Public License
 bibliography: bibliography.bib
 ---
 
