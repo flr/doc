@@ -2,8 +2,9 @@
 title: "An introduction to MSE with FLR"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-  github_document
-tags: FLR MSE
+github_document:
+  mathjax: TRUE
+tags: [FLR MSE]
 license: Creative Commons Attribution-ShareAlike 4.0 International Public License
 ---
 

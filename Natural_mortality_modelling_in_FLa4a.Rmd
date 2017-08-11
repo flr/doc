@@ -285,7 +285,7 @@ Ernesto Jardim, Colin P. Millar, Iago Mosqueira, Finlay Scott, Giacomo Chato Osi
 
 Colin P. Millar, Ernesto Jardim, Finlay Scott, Giacomo Chato Osio, Iago Mosqueira, Nekane Alzorriz; Model averaging to streamline the stock assessment process. ICES J Mar Sci 2015; 72 (1): 93-98. DOI: https://doi.org/10.1093/icesjms/fsu043
 
-Scott F, Jardim E, Millar CP, Cerviño S (2016) An Applied Framework for Incorporating Multiple Sources of Uncertainty in Fisheries Stock Assessments. PLoS ONE 11(5): e0154922. DOI: https://doi.org/10.1371/journal.pone.0154922
+Scott F, Jardim E, Millar CP, Cervino S (2016) An Applied Framework for Incorporating Multiple Sources of Uncertainty in Fisheries Stock Assessments. PLoS ONE 11(5): e0154922. DOI: https://doi.org/10.1371/journal.pone.0154922
 
 # More information
 

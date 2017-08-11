@@ -857,7 +857,7 @@ plot(FLStocks(original=stk, simulation=stks, "fit over simulation"=stks+sfit), k
 
 ## Parallel computing
 
-This is an example of how to use the ``parallel`` R package to run assessments. In this example each iteration is a dataset, including surveys, and we'll run one assessment for each iteration. Afterwards the data is pulled back together in an `FLStock` object and plotted (`r fign('wcsampar')`). Only 20 iterations are run to avoid taking too long. Also note that we're using 4 cores. This parameter depends on the computer being used. These days almost all computers have at least 2 cores.
+This is an example of how to use the **parallel** R package to run assessments. In this example each iteration is a dataset, including surveys, and we'll run one assessment for each iteration. Afterwards the data is pulled back together in an `FLStock` object and plotted (`r fign('wcsampar')`). Only 20 iterations are run to avoid taking too long. Also note that we're using 4 cores. This parameter depends on the computer being used. These days almost all computers have at least 2 cores.
 
 Finally, compare this code with the one for replicating WCSAM and note that it's exactly the same, except that we're using `mclapply()` from package ``paralell`` instead of `lapply()`.
 

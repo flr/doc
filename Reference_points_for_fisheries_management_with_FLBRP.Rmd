@@ -2,8 +2,9 @@
 title: "Reference points for fisheries management with FLBRP"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-  github_document
-tags:
+github_document:
+  mathjax: TRUE
+tags: [FLR]
 license: Creative Commons Attribution-ShareAlike 4.0 International Public License
 bibliography: bibliography.bib
 ---

@@ -9,11 +9,11 @@ PDFS = $(SOURCES:%.Rmd=docs/pdf/%.pdf)
 
 all: main clean
 
-main: $(HTMLS) $(RS) $(PDFS)
+main: $(HTMLS) $(RS)
 
 docs/%.html: %.Rmd
 	@echo "$< -> $@"
-	@R -e "rmarkdown::render_site('$<', envir=new.env())"
+	@R -e "rmarkdown::render_site('$<', envir=new.env())" -e "detach(package:FLash)"
 
 docs/pdf/%.pdf: %.Rmd
 	@echo "$< -> $@"
@@ -26,6 +26,7 @@ docs/R/%.R: %.Rmd
 clean:
 	rm -f *.html
 	rm -rf $(CACHE)
+	rm -f docs/R/ini.R
 	rm -f docs/README docs/index.md docs/Makefile
 
 cleanall: clean
