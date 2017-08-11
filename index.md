@@ -22,7 +22,7 @@ title: "FLR tutorials"
 - [Statistical catch at age models in FLa4a](Statistical_catch_at_age_models_in_FLa4a.html)
 - [Modelling growth and its uncertainty in FLa4a](Modelling_growth_and_its_uncertainty_in_FLa4a.html)
 - [Natural mortality modelling in FLa4a](Natural_mortality_modelling_in_FLa4a.html)
-- [Stock assessment using eXtended Survivors Analysis with FLXSA](Stock_assessment_using_eXtended_Srvivors_Analysis_with_FLXSA.html)
+- [Stock assessment using eXtended Survivors Analysis with FLXSA](Stock_assessment_using_eXtended_Survivors_Analysis_with_FLXSA.html)
 
 ## Management Advice
 
