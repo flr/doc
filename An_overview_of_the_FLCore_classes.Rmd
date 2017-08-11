@@ -1,5 +1,5 @@
 ---
-title: A quick introduction to FLR
+title: "An overview of the FLCore classes"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
 github_document:
