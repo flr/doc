@@ -1,0 +1,59 @@
+name: doc
+output:
+  html_document:
+    theme: yeti
+    highlight: textmate
+output_dir: docs
+navbar:
+  left:
+    - text: "FLR"
+      icon: fa-home
+      href: http://flr-project.org
+    - text: "Home"
+      icon: fa-info
+      href: index.html
+    - text: "Introduction"
+      icon: fa-gear
+      menu:
+        - text: "A quick intro"
+          href: A_quick_introduction_to_FLR.html
+        - text: "Page B"
+          href: B.html
+    - text: "Input"
+      icon: fa-gear
+      menu:
+        - text: "Page A"
+          href: A.html
+        - text: "Page B"
+          href: B.html
+    - text: "Visualization"
+      icon: fa-gear
+      menu:
+        - text: "Page A"
+          href: A.html
+        - text: "Page B"
+          href: B.html
+    - text: "Modelling"
+      icon: fa-gear
+      menu:
+        - text: "Page A"
+          href: A.html
+        - text: "Page B"
+          href: B.html
+    - text: "Advice"
+      icon: fa-gear
+      menu:
+        - text: "Page A"
+          href: A.html
+        - text: "Page B"
+          href: B.html
+    - text: "MSE"
+      icon: fa-gear
+      menu:
+        - text: "Page A"
+          href: A.html
+        - text: "Page B"
+          href: B.html
+  right:
+    - icon: fa-question fa-lg
+      href: https://example.com
