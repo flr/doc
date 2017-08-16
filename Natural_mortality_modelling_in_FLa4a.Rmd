@@ -222,8 +222,8 @@ m1
 range(m1) # no ages or years...
 m(m1)     # confirms no ages or years
 # Set the quant and year ranges
-rngquant(m1) <- c(0,7)			 # set the quant range
-rngyear(m1) <- c(2000, 2010) # set the year range
+range(m1, c('min', 'max')) <- c(0,7)			 # set the quant range
+range(m1, c('minyear', 'maxyear')) <- c(2000, 2010) # set the year range
 range(m1)
 # Show the object with the M estimates by age and year
 # (note the name of the first dimension is 'quant')
@@ -235,8 +235,8 @@ The next example has an age-based shape. As the *shape* model has 'age' as a var
 ```{r, m2}
 # Check the model and set the ranges
 m2
-rngquant(m2) <- c(0,7)
-rngyear(m2) <- c(2000, 2003)
+range(m2, c('min', 'max')) <- c(0,7)			 # set the quant range
+range(m2, c('minyear', 'maxyear')) <- c(2000, 2010) # set the year range
 range(m2)
 m(m2)
 # Note that the level value is
@@ -246,7 +246,7 @@ m(m2)["0"]
 # This is because the mbar range is currently set to "0" and "0" (see above)
 # and the mean natural mortality value over this range is given by the level model. 
 # We can change the mbar range
-rngmbar(m2)<- c(0,5)
+range(m2, c('minmbar', 'maxmbar')) <- c(0,7)			 # set the quant range
 range(m2)
 # which rescales the the natural mortality at age
 m(m2)
@@ -261,17 +261,17 @@ The next example uses a time trend for the *trend* model. We use the m3 model we
 # at least one value)
 m(m3, nao=1)
 # Set ages
-rngquant(m3) <- c(0,7)
+range(m3, c('min', 'max')) <- c(0,7)			 # set the quant range
 m(m3, nao=0)
 # With ages and years - passing in the NAO data as numeric (1,0,1,0)
-rngyear(m3) <- c(2000, 2003)
+range(m3, c('minyear', 'maxyear')) <- c(2000, 2003) # set the year range
 m(m3, nao=as.numeric(nao[,as.character(2000:2003)]))
 ```
 The final example show how `m()` can be used to make an `FLQuant` with uncertainty (see `r fign('uncertain_m')`). We use the m4 object from earlier with uncertainty on the *level* and *trend* parameters.
 
 ```{r, m4_uncertainty_m}
-rngquant(m4) <- c(0,7)
-rngyear(m4) <- c(2000, 2003)
+range(m4, c('min', 'max')) <- c(0,7)			 # set the quant range
+range(m4, c('minyear', 'maxyear')) <- c(2000, 2003)
 flq <- m(m4, nao=as.numeric(nao[,as.character(2000:2003)]))
 flq
 dim(flq)
@@ -283,7 +283,7 @@ bwplot(data~factor(age)|year, data=flq, par.settings=list(plot.symbol=list(cex=0
 
 Ernesto Jardim, Colin P. Millar, Iago Mosqueira, Finlay Scott, Giacomo Chato Osio, Marco Ferretti, Nekane Alzorriz, Alessandro Orio; What if stock assessment is as simple as a linear model? The a4a initiative. ICES J Mar Sci 2015; 72 (1): 232-236. DOI: https://doi.org/10.1093/icesjms/fsu050
 
-Kenchington, T. J. (2014), Natural mortality estimators for information-limited fisheries. Fish Fish, 15: 533–562. doi:10.1111/faf.12027. http://onlinelibrary.wiley.com/doi/10.1111/faf.12027/abstract
+Kenchington, T. J. (2014), Natural mortality estimators for information-limited fisheries. Fish Fish, 15: 533-562. doi:10.1111/faf.12027. http://onlinelibrary.wiley.com/doi/10.1111/faf.12027/abstract
 
 Colin P. Millar, Ernesto Jardim, Finlay Scott, Giacomo Chato Osio, Iago Mosqueira, Nekane Alzorriz; Model averaging to streamline the stock assessment process. ICES J Mar Sci 2015; 72 (1): 93-98. DOI: https://doi.org/10.1093/icesjms/fsu043
 
