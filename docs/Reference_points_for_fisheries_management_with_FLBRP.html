@@ -315,20 +315,23 @@ $(document).ready(function () {
 </div>
 
 
-<p>Reference points are important elements of fisheries management and the supporting scientific advisory frameworks. The World Summit on Sustainable Development <span class="citation">(WSSD 2002)</span> committed signatories to maintain or restore stocks to levels that can produce the maximum sustainable yield (MSY) by 2015. In addition, the precautionary approach <span class="citation">(FAO 1996)</span> requires the use of limit and target reference points to constrain harvesting within safe biological limits so that the major sources of uncertainty are incorporated. <span class="citation">Hauge, Nielsen, and Korsbrekke (2007)</span> reviewed the use of reference points in ICES in the framework of precautionary approach.</p>
+<p>Reference points are important for fisheries management and its supporting scientific advisory frameworks. The World Summit on Sustainable Development <span class="citation">(WSSD 2002)</span> committed signatories to maintain or restore stocks to levels that can produce the maximum sustainable yield (MSY) by 2015. In addition, the precautionary approach <span class="citation">(FAO 1996)</span> requires the use of limit and target reference points to constrain harvesting within safe biological limits while accounting for the major sources of uncertainty. <span class="citation">Hauge, Nielsen, and Korsbrekke (2007)</span> reviewed the use of reference points in ICES in the context of the precautionary approach.</p>
 <p>These agreements have been included in a variety of management acts or policies. For instance, the US Magnuson Stevens Fishery Conservation and Management Act mandates precautionary management to attain optimum yield, and the Common Fisheries Policy (CFP; REGULATION (EU) No 1380/2013) states that <em>the Union should improve the CFP by adapting exploitation rates so as to ensure that, within a reasonable time-frame, the exploitation of marine biological resources restores and maintains populations of harvested stocks above levels that can produce the maximum sustainable yield. The exploitation rates should be achieved by 2015 […] in any event no later than 2020</em>.</p>
 <p>For example, the Convention of the International Commission for the Conservation of Atlantic Tunas (ICCAT) states that <em>The Commission may, on the basis of scientific evidence, make recommendations designed to maintain the populations of tuna and tuna-like fishes that may be taken in the Convention area at levels which will permit the maximum sustainable catch</em>. In this and in many other cases, maximum sustainable catch is generally assumed to be synonymous with maximum sustainable yield (MSY). Management must also be consistent with international agreements relating to the Conservation and Management of Straddling and Highly Migratory Fish Stocks (Doulman 1995) and the Precautionary Approach <span class="citation">(FAO 1996)</span>.</p>
-<p>MSY has been criticised as not being a robust management objective since it may lead to unsustainable and/or less than optimal management because of uncertainties associated with interpretation of data and the simplifying assumptions made when modelling biological processes <span class="citation">(Rosenberg and Restrepo 1994)</span>. The precautionary approach therefore includes the following recommendations i.e. to</p>
+<p>MSY has been criticised as not being a robust management objective since it may lead to unsustainable and/or less than optimal management because of uncertainties associated with interpretation of data and the simplifying assumptions made when modelling biological processes <span class="citation">(Rosenberg and Restrepo 1994)</span>. The precautionary approach therefore includes the following recommendations:</p>
 <ul>
-<li>determine stock-specific target and limit reference points and the action to be taken if they are exceeded;</li>
-<li>be more cautious when information is uncertain, unreliable or inadequate; the absence of adequate scientific information shall not be used as a reason for postponing or failing to take conservation measures;</li>
-<li>improve decision-making for conservation and management by obtaining and sharing the best scientific information available and implementing improved techniques for dealing with risk and uncertainty</li>
+<li>to determine stock-specific target and limit reference points and the action to be taken if they are exceeded;</li>
+<li>to be more cautious when information is uncertain, unreliable or inadequate; the absence of adequate scientific information shall not be used as a reason for postponing or failing to take conservation measures;</li>
+<li>to improve decision-making for conservation and management by obtaining and sharing the best scientific information available and implementing improved techniques for dealing with risk and uncertainty</li>
 </ul>
-<p>Therefore important scientific tasks are to estimate reference points, evaluate the effect of uncertainty and use them to provide management advice.</p>
-<p>The types of questions that fisheries scientists have to answer for managers are commonly of the type * is fishing mortality too high and unsustainable in the long-term? * is biomass too low and has the stock collapsed?</p>
-<p>Biological reference points are important in answering these sorts of question as they are benchmarks against which stock assessment estimates can be compared and allow advice to be given about the current status of a stock, sustainable level of fishing effort and potential future catches.</p>
-<p><span class="citation">Halliday, Fanning, and Mohn (2001)</span> defined four main characteristics of stocks i.e. production, abundance, exploitation rate and ecosystem/environment effects. Reference points or indicators are commonly used to assess the status of stocks relative to these characteristics and there are four main types based either upon spawner per recruit, biomass, exploitation rate or size distribution. Quantities based on spatial distributions have also been proposed but to date have not been well developed. Here we consider reference points that are typically calculated from an age based analytical assessments. However reference points can also be calculated from biomass based assessments, surveys and a consideration of life history parameters alone.</p>
-<p>In the case of ICCAT this can be interpreted as maintaining the stocks at a biomass level greater than BMSY, achievable amongst other means by ensuring that the fishing mortality level is less than FMSY</p>
+<p>Therefore important scientific tasks are to: estimate reference points, evaluate the effect of uncertainty, and use them to provide management advice.</p>
+<p>The types of questions that fisheries scientists have to answer for managers are commonly of the type</p>
+<ul>
+<li>is fishing mortality too high and unsustainable in the long-term?</li>
+<li>is biomass too low and has the stock collapsed?</li>
+</ul>
+<p>Biological reference points are important for answering these sorts of question because they are benchmarks against which stock assessment estimates can be compared, and allow advice to be given about the current status of a stock, sustainable level of fishing effort and potential future catches.</p>
+<p><span class="citation">Halliday, Fanning, and Mohn (2001)</span> defined four main characteristics of stocks i.e. production, abundance, exploitation rate and ecosystem/environmental effects. Reference points or indicators are commonly used to assess the status of stocks relative to these characteristics and there are four main types based either upon spawner per recruit, biomass, exploitation rate or size distribution. Quantities based on spatial distributions have also been proposed, but to date have not been well developed. Here we consider reference points that are typically calculated from an age based analytical assessments. However reference points can also be calculated from biomass based assessments, surveys and a consideration of life history parameters alone.</p>
 <div id="required-packages" class="section level2">
 <h2>Required packages</h2>
 <p>To follow this tutorial you should have installed the following packages:</p>
@@ -336,23 +339,23 @@ $(document).ready(function () {
 <li>CRAN: <a href="https://cran.r-project.org/web/packages/ggplot2/index.html">ggplot2</a></li>
 <li>FLR: <a href="http://www.flr-project.org/FLCore/">FLCore</a>, <a href="http://www.flr-project.org/ggplotFL/">ggplotFL</a>,<a href="http://www.flr-project.org/FLBRP/">FLBRP</a></li>
 </ul>
-<p>if you are using Windows, please use 32-bit R version</p>
+<p>if you are using Windows, please use the 32-bit R version</p>
 <p>You can do so as follows,</p>
 <pre class="r"><code>install.packages(c(&quot;ggplot2&quot;))
 install.packages(c(&quot;ggplotFL&quot;), repos=&quot;http://flr-project.org/R&quot;)
 install.packages(c(&quot;FLBRP&quot;), repos=&quot;http://flr-project.org/R&quot;)</code></pre>
-<pre class="r"><code># This chunk loads all necessary packages, trims pkg messages
+<pre class="r"><code># Loads all necessary packages
 library(FLCore)
-library(ggplotFL)</code></pre>
+library(ggplotFL)
+library(FLBRP)</code></pre>
 </div>
 <div id="estimating-biological-reference-points" class="section level1">
 <h1>Estimating biological reference points</h1>
-<p>This example session intends to demonstrate the main features of the <strong>FLBRP</strong> package, and the <code>FLBRP</code> class and its methods. First of all, the package needs to be loaded</p>
-<pre class="r"><code>library(FLBRP)</code></pre>
-<p>A new object of class <code>FLBRP</code> might be created from an <code>FLStock</code> object</p>
+<p>This example session intends to demonstrate the main features of the <strong>FLBRP</strong> package, and the <code>FLBRP</code> class and its methods.</p>
+<p>A new object of class <code>FLBRP</code> can be created from an <code>FLStock</code> object.</p>
 <pre class="r"><code>data(ple4)
 brp4 &lt;- FLBRP(ple4)</code></pre>
-<p>in which case the necessary input slots will be created accordingly, from those slots related to catch, landings, discards, and stock numbers and weights. All slots named <code>*.obs</code> will contain the related time series present in the original <code>FLStock</code> object, while other slots will contain averages across the year dimension over the last <code>n</code> years, where <code>n</code> is controlled by these three arguments: <code>biol.nyears</code>, <code>fbar.nyears</code> and <code>sel.nyears</code>, as detailed in the help page for <a href="http://www.flr-project.org/FLBRP/">FLBRP</a>.</p>
+<p>The necessary input slots will be created from those slots related to catch, landings, discards, and stock numbers and weights. In the FLBRP object, all slots named <code>*.obs</code> will contain the related time series present in the original <code>FLStock</code> object, while other slots will contain averages across the year dimension over the last <code>n</code> years, where <code>n</code> is controlled by these three arguments: <code>biol.nyears</code>, <code>fbar.nyears</code> and <code>sel.nyears</code>, as detailed in the help page for <a href="http://www.flr-project.org/FLBRP/">FLBRP</a>.</p>
 <pre class="r"><code>summary(brp4)</code></pre>
 <pre><code>An object of class &quot;FLBRP&quot;
 
@@ -405,7 +408,7 @@ age   97   98   99   100  101
 <p>A stock-recruitment relationship can also be provided, either as an object of class <code>FLSR</code>, or through the <code>model</code> and <code>params</code> arguments, of class <code>formula</code> and <code>FLPar</code> respectively. The default model, if none is given, is that of mean recruitment with a value of <code>a=1</code>, useful for obtaining pre-recruit values.</p>
 <pre class="r"><code>model(brp4)</code></pre>
 <pre><code>rec ~ a
-&lt;environment: 0xc088a80&gt;</code></pre>
+&lt;environment: 0xbc21a78&gt;</code></pre>
 <pre class="r"><code>params(brp4)</code></pre>
 <pre><code>An object of class &quot;FLPar&quot;
 params
@@ -419,7 +422,7 @@ params(ple4SR)[&#39;b&#39;,] &lt;- params(ple4SR)[&#39;b&#39;,] / 100
 ple4SR &lt;- transform(ple4SR, ssb=ssb*100, rec=rec*100)
 brp4Ri &lt;- FLBRP(ple4, sr=ple4SR)</code></pre>
 <p>The process for calculating biological and economic reference points using the <code>FLBRP</code> class can now proceed. A first call to <code>brp()</code> will calculate the default reference points and return an object of class <code>FLBRP</code> where the results have been added to the <code>refpts</code> slot.</p>
-<p>The default reference points include the <a href="#virgin">virgin</a> stock, the <a href="#msy">MSY</a> level, the <a href="#crash">crash</a> exploitation, the approximation of MSY <a href="#f01"><span class="math inline">\(F_{0.1}\)</span></a>, <a href="#fmax"><span class="math inline">\(F_{max}\)</span></a> and <a href="#spr30"><span class="math inline">\(SPR_{3O}\)</span></a>.</p>
+<p>The default reference points include <a href="#virgin">virgin</a> stock, <a href="#msy">MSY</a> level, <a href="#Fcrash"><span class="math inline">\(F_{crash}\)</span></a> exploitation, and candidate MSY proxies <a href="#f01"><span class="math inline">\(F_{0.1}\)</span></a>, <a href="#fmax"><span class="math inline">\(F_{max}\)</span></a> and <a href="#spr30"><span class="math inline">\(SPR_{30}\)</span></a>.</p>
 <pre class="r"><code>brp4Ri &lt;- brp(brp4Ri)
 refpts(brp4Ri)</code></pre>
 <pre><code>An object of class &quot;FLPar&quot;
@@ -447,25 +450,23 @@ units:  NA </code></pre>
 <h2>Plots</h2>
 <p>Standard plots are available in <em>FLBRP</em>. The basic plots include the relationships between <em>SSB</em> and <em>F</em>, <em>recruitment</em> and <em>F</em>, <em>yield</em> and <em>F</em> and <em>Yield</em> and <em>SSB</em> at equilibrium. The different reference points are shown on each curve.</p>
 <pre class="r"><code>plot(brp4Ri)</code></pre>
-<p><img src="Reference_points_for_fisheries_management_with_FLBRP_files/figure-html/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Observations can easily be added to those plots</p>
+<p><img src="Reference_points_for_fisheries_management_with_FLBRP_files/figure-html/brp_ex7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Corresponding assessment estimates of SSB, recruitment and F, as well as observed landings representing “yield” can easily be added to these plots. It should be noted that the curves and associated reference points in these plots represent equilibrium states, whereas the assessment estimates and observations are non-equilibrium. Furthermore, F will always represent total catch (landings and discards), whereas the “yield” is only that portion of the catch that one would desire to optimise (i.e. landings) - so effectively one is looking for the F (total catch) that will optimise the yield (landings only) when estimating MSY reference points.</p>
 <pre class="r"><code>plot(brp4Ri,obs=T)</code></pre>
-<p><img src="Reference_points_for_fisheries_management_with_FLBRP_files/figure-html/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="Reference_points_for_fisheries_management_with_FLBRP_files/figure-html/brp_ex8-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="economic-reference-points" class="section level1">
 <h1>Economic reference points</h1>
-<p>We can add economic data to the <code>FLBRP</code> object in order to calculate the maximum economic yield <a href="#mey">MEY</a>. To do this, three variables are needed, price (at age) in keuro/ton of fish, variable costs in keuro per unit of fishing mortality <em>F</em> and fixed costs in keuro per unit of fishing mortality <em>F</em>. In this example, costs linked to the catch of plaice only are made up (because plaice is caught in mixed fisheries).</p>
+<p>We can add economic data to the <code>FLBRP</code> object in order to calculate the maximum economic yield <a href="#mey">MEY</a>. To do this, three variables are needed: price (at age) in keuro per ton of fish, variable costs in keuro per unit of fishing mortality <em>F</em>, and fixed costs in keuro per unit of fishing mortality <em>F</em>. In this example, only the costs linked to the catch of plaice are considered (i.e. this is a simplification because plaice is caught in mixed fisheries).</p>
 <pre class="r"><code># price of fish at age
-price(brp4Ri) &lt;- c(rep(1.19,3),rep(1.34,2),rep(1.57,5))
+price(brp4Ri) &lt;- c(rep(1.15,3),rep(1.3,2),rep(1.55,5))
 price(brp4Ri)@units &lt;- &quot;keuro/ton&quot;
-
 # variable costs per F 
-vcost(brp4Ri) &lt;- 62000
+vcost(brp4Ri) &lt;- 70000
 vcost(brp4Ri)@units &lt;- &quot;keuro/unit F&quot;
-
-# variable costs per F 
-fcost(brp4Ri) &lt;- 25000
+# fixed costs per F 
+fcost(brp4Ri) &lt;- 35000
 fcost(brp4Ri)@units &lt;- &quot;keuro/unit F&quot;</code></pre>
 <p>The reference points can be calculated again</p>
 <pre class="r"><code>brp4Eco &lt;- brp(brp4Ri)
@@ -479,85 +480,82 @@ refpt    harvest     yield       rec         ssb         biomass
   f0.1    8.7602e-02  5.5622e+04  4.2924e+05  8.0045e+05  8.7512e+05
   fmax    1.3538e-01  7.3551e+04  5.3700e+05  6.9910e+05  7.8893e+05
   spr.30  1.3157e-01  7.2368e+04  5.2850e+05  7.0662e+05  7.9529e+05
-  mey     2.4689e-01  9.3259e+04  7.6520e+05  5.1064e+05  6.2799e+05
+  mey     2.4178e-01  9.2893e+04  7.5601e+05  5.1818e+05  6.3457e+05
         quantity
 refpt    revenue     cost        profit     
-  virgin  0.0000e+00  2.5000e+04 -2.5000e+04
-  msy     1.3459e+05  4.3026e+04  9.1567e+04
-  crash   2.7308e-06  7.3911e+04 -7.3911e+04
-  f0.1    8.3400e+04  3.0431e+04  5.2969e+04
-  fmax    1.0889e+05  3.3394e+04  7.5500e+04
-  spr.30  1.0725e+05  3.3157e+04  7.4094e+04
-  mey     1.3405e+05  4.0307e+04  9.3740e+04
+  virgin  0.0000e+00  3.5000e+04 -3.5000e+04
+  msy     1.3170e+05  5.5351e+04  7.6353e+04
+  crash   2.6516e-06  9.0222e+04 -9.0222e+04
+  f0.1    8.1999e+04  4.1132e+04  4.0867e+04
+  fmax    1.0694e+05  4.4477e+04  6.2466e+04
+  spr.30  1.0534e+05  4.4210e+04  6.1130e+04
+  mey     1.3097e+05  5.1925e+04  7.9048e+04
 units:  NA </code></pre>
 <p>and plotted</p>
 <pre class="r"><code>plot(brp4Eco)</code></pre>
-<p><img src="Reference_points_for_fisheries_management_with_FLBRP_files/figure-html/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>On this figure we see that <span class="math inline">\(F_{MEY}\)</span> is lower than <span class="math inline">\(F_{MSY}\)</span>, meaning that the economic reference point is more sustainable than <em>MSY</em>. In rare cases when the price of smaller fish is higher than the price of older fish, <span class="math inline">\(F_{MEY}\)</span> can be higher than <span class="math inline">\(F_{MSY}\)</span>.</p>
+<p><img src="Reference_points_for_fisheries_management_with_FLBRP_files/figure-html/erp_ex3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>In this figure we see that <span class="math inline">\(F_{MEY}\)</span> is lower than <span class="math inline">\(F_{MSY}\)</span>, meaning that the economic reference point is more conservative than <em>MSY</em>. In rare cases when the price of smaller fish is higher than the price of older fish, <span class="math inline">\(F_{MEY}\)</span> can be higher than <span class="math inline">\(F_{MSY}\)</span>.</p>
 </div>
 <div id="pretty-good-yield" class="section level1">
 <h1>Pretty Good Yield</h1>
-<p>Because of the uncertainty around the <em>MSY</em> estimates, <span class="citation">Hilborn (2010)</span> introduced the concept of <em>pretty good yield</em> corresponding to at least 80% of the theoretical <em>MSY</em>. The range of <em>Fs</em> leading to the pretty good yield can be considered a confidence interval around the estimated <span class="math inline">\(F_{MSY}\)</span>. The advantage of using the pretty good yield compared to the MSY point estimates is that it is less sensitive to population’s basic life history parameters. The concept of pretty good yield has been applied to European fisheries using a 95% range <span class="citation">(Rindorf et al. 2016)</span>. The resulting F ranges could then be used in mixed fisheries management plans in an effort to reconcile the TACs of species caught together with the level of exploitation by the fleets <span class="citation">(STECF 2015)</span>.</p>
+<p>Because of the uncertainty around the <em>MSY</em> estimates, <span class="citation">Hilborn (2010)</span> introduced the concept of <em>pretty good yield</em> corresponding to at least 80% of the theoretical <em>MSY</em>. The range of <em>Fs</em> leading to the pretty good yield can be considered a region around the estimated <span class="math inline">\(F_{MSY}\)</span> that does not loose too much yield. The advantage of using the pretty good yield compared to the MSY point estimates is that it is less sensitive to populations’ basic life history parameters. The concept of pretty good yield has been applied to European fisheries using 95% of <em>MSY</em> <span class="citation">(Rindorf et al. 2016)</span>. The resulting F ranges could then be used in mixed fisheries management plans in an effort to reconcile the TACs of species caught together in mixed fisheries <span class="citation">(STECF 2015)</span>.</p>
 <p>Below is an example of calculating the pretty good yield at 95% of MSY.</p>
 <pre class="r"><code>(rge4 &lt;- msyRange(brp4Eco,range=0.05))</code></pre>
 <pre><code>An object of class &quot;FLPar&quot;
      quantity
 refpt harvest    yield      rec        ssb        biomass    revenue   
-  msy 2.9073e-01 9.4691e+04 8.3686e+05 4.4930e+05 5.7356e+05 1.3459e+05
-  min 2.1289e-01 8.9957e+04 7.0126e+05 5.6255e+05 6.7291e+05 1.3046e+05
-  max 3.7743e-01 8.9957e+04 9.3140e+05 3.4290e+05 4.7299e+05 1.2523e+05
+  msy 2.9073e-01 9.4691e+04 8.3686e+05 4.4930e+05 5.7356e+05 1.3170e+05
+  min 2.1289e-01 8.9957e+04 7.0126e+05 5.6255e+05 6.7291e+05 1.2788e+05
+  max 3.7743e-01 8.9957e+04 9.3140e+05 3.4290e+05 4.7299e+05 1.2232e+05
      quantity
 refpt cost       profit    
-  msy 4.3026e+04 9.1567e+04
-  min 3.8199e+04 9.2258e+04
-  max 4.8401e+04 7.6826e+04
+  msy 5.5351e+04 7.6353e+04
+  min 4.9902e+04 7.7982e+04
+  max 6.1420e+04 6.0896e+04
 units:  NA </code></pre>
 <p>The <em>F</em> and <em>SSB</em> ranges calculated can also be added to the plots</p>
 <pre class="r"><code>p &lt;- plot(brp4Eco,obs=T)
-
 p$data &lt;- within(p$data,{minrge &lt;- NA
                          minrge &lt;- replace(minrge,grep(&quot;v. F&quot;,pnl),rge4@.Data[&quot;min&quot;,&quot;harvest&quot;,])
                          minrge &lt;- replace(minrge,grep(&quot;v. SSB&quot;,pnl),rge4@.Data[&quot;max&quot;,&quot;ssb&quot;,])
                          maxrge &lt;- NA
                          maxrge &lt;- replace(maxrge,grep(&quot;v. F&quot;,pnl),rge4@.Data[&quot;max&quot;,&quot;harvest&quot;,])
                          maxrge &lt;- replace(maxrge,grep(&quot;v. SSB&quot;,pnl),rge4@.Data[&quot;min&quot;,&quot;ssb&quot;,])})
-
-
 p+ geom_area(aes(x = ifelse(x&gt;=minrge &amp; x&lt;=maxrge , x, NA),y=y,group=iter),fill=&quot;grey&quot;,alpha=0.5)    </code></pre>
-<p><img src="Reference_points_for_fisheries_management_with_FLBRP_files/figure-html/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="Reference_points_for_fisheries_management_with_FLBRP_files/figure-html/pgy_ex2-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="glossary" class="section level1">
 <h1>Glossary</h1>
-<div id="crash" class="section level2">
-<h2>Crash</h2>
+<div id="Fcrash" class="section level3">
+<h3><span class="math inline">\(F_{Crash}\)</span></h3>
 <p><span class="math inline">\(F_{Crash}\)</span> is the level of F that will drive the stock to extinction.</p>
 </div>
-<div id="f0.1" class="section level2">
-<h2><span class="math inline">\(F_{0.1}\)</span></h2>
+<div id="f0.1" class="section level3">
+<h3><span class="math inline">\(F_{0.1}\)</span></h3>
 <p><span class="math inline">\(F_{0.1}\)</span> is a proxy for <span class="math inline">\(F_{MSY}\)</span> and is the fishing mortality that corresponds to a point on the yield per recruit curve where the slope is 10% of that at the origin.</p>
 </div>
-<div id="fmax" class="section level2">
-<h2><span class="math inline">\(F_{Max}\)</span></h2>
+<div id="fmax" class="section level3">
+<h3><span class="math inline">\(F_{Max}\)</span></h3>
 <p><span class="math inline">\(F_{Max}\)</span> is F returning the maximum yield per recruit.</p>
 </div>
-<div id="mey" class="section level2">
-<h2><span class="math inline">\(MEY\)</span> and <span class="math inline">\(F_{MEY}\)</span></h2>
+<div id="mey" class="section level3">
+<h3><span class="math inline">\(MEY\)</span> and <span class="math inline">\(F_{MEY}\)</span></h3>
 <p><span class="math inline">\(MEY\)</span> represents the maximum economic yield, <span class="math inline">\(F_{MEY}\)</span> corresponds to the level of exploitation that provides the maximum profit. Profit is obtained as the difference between the revenue (yield multiplied by prices) and the costs (cost per unit of F multiplied by the level of exploitation).</p>
 </div>
-<div id="msy" class="section level2">
-<h2><span class="math inline">\(MSY\)</span> and <span class="math inline">\(F_{MSY}\)</span></h2>
-<p><span class="math inline">\(MSY\)</span> represents the maximum sustainable yield, <span class="math inline">\(F_{MSY}\)</span> corresponds to the level of exploitation that provides the maximum yield, derived from a spawner and yield curves combined with a stock recruitment relationship.</p>
+<div id="msy" class="section level3">
+<h3><span class="math inline">\(MSY\)</span> and <span class="math inline">\(F_{MSY}\)</span></h3>
+<p><span class="math inline">\(MSY\)</span> represents the maximum sustainable yield, <span class="math inline">\(F_{MSY}\)</span> corresponds to the level of exploitation that provides the maximum yield, derived from a yield curve that includes a stock recruitment relationship.</p>
 </div>
-<div id="spr0" class="section level2">
-<h2><span class="math inline">\(SPR_O\)</span></h2>
-<p><span class="math inline">\(SPR_O\)</span> is the spawner per recruit at virgin biomass.</p>
+<div id="spr0" class="section level3">
+<h3><span class="math inline">\(SPR_0\)</span></h3>
+<p><span class="math inline">\(SPR_0\)</span> is the spawner per recruit at virgin biomass.</p>
 </div>
-<div id="spr30" class="section level2">
-<h2><span class="math inline">\(SPR_{3O}\)</span></h2>
+<div id="spr30" class="section level3">
+<h3><span class="math inline">\(SPR_{30}\)</span></h3>
 <p><span class="math inline">\(SPR_{30}\)</span> corresponds to the point on the curve where SPR is 30% of <span class="math inline">\(SPR_0\)</span>. In these cases the biomass, ssb and yield values are derived by multiplying the per recruit values by the average recruitment.</p>
 </div>
-<div id="virgin" class="section level2">
-<h2>virgin</h2>
+<div id="virgin" class="section level3">
+<h3>virgin</h3>
 <p>virgin represents the virgin biomass without exploitation.</p>
 </div>
 </div>
@@ -576,7 +574,7 @@ p+ geom_area(aes(x = ifelse(x&gt;=minrge &amp; x&lt;=maxrge , x, NA),y=y,group=i
 <li>FLBRP: 2.5.20170307</li>
 <li>ggplotFL: 2.6.0</li>
 <li>ggplot2: 2.2.1.9000</li>
-<li><strong>Compiled</strong>: Wed Aug 16 10:18:41 2017</li>
+<li><strong>Compiled</strong>: Wed Aug 16 13:40:04 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">
