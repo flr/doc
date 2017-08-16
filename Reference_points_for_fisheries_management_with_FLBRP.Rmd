@@ -99,7 +99,7 @@ model(brp4)
 params(brp4)
 ```
 
-Alternatively, a SR model can be provided (see the tutorial on [modelling stock recruitment with FLSR](http://doc.flr-project.org/Modelling_stock_recruitment_with_FLSR.html)). For example, a Ricker stock-recruitment relationship for the `ple4` stock object could be specified. The `FLSR` object is first created and then fitted, after re-scaling the input values to help the optimizer. The parameter values are then scaled back and used to construct an `FLBRP` object where the Ricker model is to be used in the calculations
+Alternatively, a SR model can be provided (see the tutorial on [modelling stock recruitment with FLSR](Modelling_stock_recruitment_with_FLSR.html). For example, a Ricker stock-recruitment relationship for the `ple4` stock object could be specified. The `FLSR` object is first created and then fitted, after re-scaling the input values to help the optimizer. The parameter values are then scaled back and used to construct an `FLBRP` object where the Ricker model is to be used in the calculations
 
 ```{r}
 ple4SR <- transform(as.FLSR(ple4, model=ricker), ssb=ssb/100, rec=rec/100)
