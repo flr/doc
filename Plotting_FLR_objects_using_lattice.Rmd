@@ -87,7 +87,7 @@ plot(nsher)
 
 # PLOTTING FLR OBJECTS USING LATTICE
 
-To plot FLR objects with lattice, a conversion to `data.frame` is required to select column names for dims, and data from FLR objects to plot. It is useful to check what the objects look like before plotting them.
+It is useful to check what the objects look like before plotting them.
 
 ```{r, dataframe}
 head(as.data.frame(catch(ple4)))
