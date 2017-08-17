@@ -18,6 +18,5 @@ render_site("Reference_points_for_fisheries_management_with_FLBRP.Rmd")
 render_site("Modelling_growth_and_its_uncertainty_in_FLa4a.Rmd")
 render_site("Natural_mortality_modelling_in_FLa4a.Rmd")
 
-detach(package:FLash)
 
-render_site("Forecasting_on_the_Medium_Term_for_advice_using_FLasher.Rmd")
+detach(package:FLash)
