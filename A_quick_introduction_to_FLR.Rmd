@@ -31,6 +31,11 @@ install.packages(c("FLCore"), repos="http://flr-project.org/R")
 
 The *FLCore* package defines a 6D array as the basic data structure for **FLR**. This class, called *FLQuant*, is used to store most numeric inputs and output.
 
+```{r, flcore}
+library(FLCore)
+library(ggplotFL)
+```
+
 # Loading your data
 
 The first step in an analysis is to get the relevant data into the system. We will need to construct objects of certain **FLR** classes, but first data is loaded into the R session using any of the tools available in the language: `read.csv` for CSV files, `readVPA` and others for fisheries legacy file formats, ...
