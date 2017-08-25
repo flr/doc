@@ -37,7 +37,7 @@ class(catch.n)
 ## ---- readFLStock--------------------------------------------------------
 # Read a collection of VPA files, pointing to the Index file:
 # DELETE: her <- readFLStock('http://flr-project.org/doc/src/her-irlw/index.txt')
-her <- readFLStock(file.path(dir,'her-irlw','index.txt'))
+her <- readFLStock(file.path(dir, 'her-irlw', 'index.txt'))
 class(her)
 
 ## ---- readFLStock2-------------------------------------------------------

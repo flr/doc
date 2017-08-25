@@ -310,7 +310,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Reading data into FLR</h1>
-<h4 class="date"><em>16 August, 2017</em></h4>
+<h4 class="date"><em>21 August, 2017</em></h4>
 
 </div>
 
@@ -486,7 +486,7 @@ attr(,&quot;package&quot;)
 <p>Alternatively, if you have the full information for a stock in the <strong>Lowestoft VPA</strong>, <strong>Adapt</strong>, <strong>CSA</strong> or <strong>ICA</strong> format, you can read it all in together using the <code>readFLStock</code> function. Here, you point the function to the index file, with all other files in the same directory:</p>
 <pre class="r"><code># Read a collection of VPA files, pointing to the Index file:
 # DELETE: her &lt;- readFLStock(&#39;http://flr-project.org/doc/src/her-irlw/index.txt&#39;)
-her &lt;- readFLStock(file.path(dir,&#39;her-irlw&#39;,&#39;index.txt&#39;))
+her &lt;- readFLStock(file.path(dir, &#39;her-irlw&#39;, &#39;index.txt&#39;))
 class(her)</code></pre>
 <pre><code>[1] &quot;FLStock&quot;
 attr(,&quot;package&quot;)
@@ -496,7 +496,7 @@ attr(,&quot;package&quot;)
 <pre><code>An object of class &quot;FLStock&quot;
 
 Name: Herring VIa(S) VIIbc  
-Description: Imported from a VPA file. ( /tmp/Rtmp6D59T0/her-irlw/index.txt ).  We [...] 
+Description: Imported from a VPA file. ( /tmp/RtmpCoZg3i/her-irlw/index.txt ).  Mo [...] 
 Quant: age 
 Dims:  age  year    unit    season  area    iter
     7   55  1   1   1   1   
@@ -614,7 +614,7 @@ catch.n(her)       &lt;- landings.n(her)</code></pre>
 <pre><code>An object of class &quot;FLStock&quot;
 
 Name: Herring VIa(S) VIIbc  
-Description: Imported from a VPA file. ( /tmp/Rtmp6D59T0/her-irlw/index.txt ).  We [...] 
+Description: Imported from a VPA file. ( /tmp/RtmpCoZg3i/her-irlw/index.txt ).  Mo [...] 
 Quant: age 
 Dims:  age  year    unit    season  area    iter
     7   55  1   1   1   1   
@@ -643,7 +643,7 @@ m.spwn        : [ 7 55 1 1 1 1 ], units =  NA </code></pre>
 name(her) # ok</code></pre>
 <pre><code>[1] &quot;Herring VIa(S) VIIbc &quot;</code></pre>
 <pre class="r"><code>desc(her) # ok</code></pre>
-<pre><code>[1] &quot;Imported from a VPA file. ( /tmp/Rtmp6D59T0/her-irlw/index.txt ).  Wed Aug 16 13:39:33 2017&quot;</code></pre>
+<pre><code>[1] &quot;Imported from a VPA file. ( /tmp/RtmpCoZg3i/her-irlw/index.txt ).  Mon Aug 21 10:18:09 2017&quot;</code></pre>
 <pre class="r"><code># Set the Fbar range for the stock 
 range(her)[c(&#39;minfbar&#39;,&#39;maxfbar&#39;)] # ok, but can be filled with  &lt;- c(min,max)</code></pre>
 <pre><code>minfbar maxfbar 
@@ -660,7 +660,7 @@ units(harvest(her)) &lt;- &#39;f&#39;</code></pre>
 <pre><code>An object of class &quot;FLStock&quot;
 
 Name: Herring VIa(S) VIIbc  
-Description: Imported from a VPA file. ( /tmp/Rtmp6D59T0/her-irlw/index.txt ).  We [...] 
+Description: Imported from a VPA file. ( /tmp/RtmpCoZg3i/her-irlw/index.txt ).  Mo [...] 
 Quant: age 
 Dims:  age  year    unit    season  area    iter
     7   55  1   1   1   1   
@@ -935,10 +935,10 @@ names(fleets) &lt;- fl.nam</code></pre>
 <h2>Software Versions</h2>
 <ul>
 <li>R version 3.4.1 (2017-06-30)</li>
-<li>FLCore: 2.6.3.9006</li>
+<li>FLCore: 2.6.3.9008</li>
 <li>ggplotFL: 2.6.0</li>
 <li>ggplot2: 2.2.1.9000</li>
-<li><strong>Compiled</strong>: Wed Aug 16 13:39:36 2017</li>
+<li><strong>Compiled</strong>: Mon Aug 21 10:18:12 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">

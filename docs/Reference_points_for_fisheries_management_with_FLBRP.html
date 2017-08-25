@@ -310,7 +310,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Reference points for fisheries management with FLBRP</h1>
-<h4 class="date"><em>16 August, 2017</em></h4>
+<h4 class="date"><em>21 August, 2017</em></h4>
 
 </div>
 
@@ -408,14 +408,14 @@ age   97   98   99   100  101
 <p>A stock-recruitment relationship can also be provided, either as an object of class <code>FLSR</code>, or through the <code>model</code> and <code>params</code> arguments, of class <code>formula</code> and <code>FLPar</code> respectively. The default model, if none is given, is that of mean recruitment with a value of <code>a=1</code>, useful for obtaining pre-recruit values.</p>
 <pre class="r"><code>model(brp4)</code></pre>
 <pre><code>rec ~ a
-&lt;environment: 0xbc21a78&gt;</code></pre>
+&lt;environment: 0x599ebd8&gt;</code></pre>
 <pre class="r"><code>params(brp4)</code></pre>
 <pre><code>An object of class &quot;FLPar&quot;
 params
 a 
 1 
 units:  NA </code></pre>
-<p>Alternatively, a SR model can be provided (see the tutorial on <a href="Modelling_stock_recruitment_with_FLSR.html">modelling stock recruitment with FLSR</a>. For example, a Ricker stock-recruitment relationship for the <code>ple4</code> stock object could be specified. The <code>FLSR</code> object is first created and then fitted, after re-scaling the input values to help the optimizer. The parameter values are then scaled back and used to construct an <code>FLBRP</code> object where the Ricker model is to be used in the calculations</p>
+<p>Alternatively, a SR model can be provided (see the tutorial on <a href="Modelling_stock_recruitment_with_FLSR.html">modelling stock recruitment with FLSR</a>). For example, a Ricker stock-recruitment relationship for the <code>ple4</code> stock object could be specified. The <code>FLSR</code> object is first created and then fitted, after re-scaling the input values to help the optimizer. The parameter values are then scaled back and used to construct an <code>FLBRP</code> object where the Ricker model is to be used in the calculations</p>
 <pre class="r"><code>ple4SR &lt;- transform(as.FLSR(ple4, model=ricker), ssb=ssb/100, rec=rec/100)
 ple4SR &lt;- fmle(ple4SR,control=list(silent=T))
 params(ple4SR)[&#39;b&#39;,] &lt;- params(ple4SR)[&#39;b&#39;,] / 100
@@ -570,11 +570,11 @@ p+ geom_area(aes(x = ifelse(x&gt;=minrge &amp; x&lt;=maxrge , x, NA),y=y,group=i
 <h2>Software Versions</h2>
 <ul>
 <li>R version 3.4.1 (2017-06-30)</li>
-<li>FLCore: 2.6.3.9006</li>
+<li>FLCore: 2.6.3.9008</li>
 <li>FLBRP: 2.5.20170307</li>
 <li>ggplotFL: 2.6.0</li>
 <li>ggplot2: 2.2.1.9000</li>
-<li><strong>Compiled</strong>: Wed Aug 16 13:40:04 2017</li>
+<li><strong>Compiled</strong>: Mon Aug 21 10:18:45 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">

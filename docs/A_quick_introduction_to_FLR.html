@@ -310,7 +310,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">A quick introduction to FLR</h1>
-<h4 class="date"><em>18 August, 2017</em></h4>
+<h4 class="date"><em>21 August, 2017</em></h4>
 
 </div>
 
@@ -401,7 +401,7 @@ head(dat)</code></pre>
 </tr>
 </tbody>
 </table>
-<p>The <code>df</code> data.frame contains the time series of landings and discards at age, in thousands, and the corresponding mean weights-at-age, in kg, for <a href="http://standardgraphs.ices.dk/ViewCharts.aspx?key=8980">North Sea plaice</a> (<em>Pleuronectes platessa</em>, ICES ple.27.420).</p>
+<p>This data.frame contains the time series of landings and discards at age, in thousands, and the corresponding mean weights-at-age, in kg, for <a href="http://standardgraphs.ices.dk/ViewCharts.aspx?key=8980">North Sea plaice</a> (<em>Pleuronectes platessa</em>, ICES ple.27.420).</p>
 <p>We can create an object to store the landings-at-age data by subsetting it from the <em>data.frame</em></p>
 <pre class="r"><code>landn &lt;- subset(dat, slot==&quot;landings.n&quot;, select=-slot)</code></pre>
 <p>and then convert into an <em>FLQuant</em> using</p>
@@ -499,9 +499,9 @@ harvest.spwn  : [ 10 52 1 1 1 1 ], units =
 m.spwn        : [ 10 52 1 1 1 1 ], units =   </code></pre>
 <pre class="r"><code>plot(metrics(ple4, Catch=catch, Landings=landings))</code></pre>
 <p><img src="A_quick_introduction_to_FLR_files/figure-html/ple4-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div id="more-information" class="section level2">
-<h2>More information</h2>
-<p>Please see the <a href="Reading_data_into_FLR.html">Reading data into FLR</a> tutorial for more examples on how to get your into into <strong>FLR</strong>.</p>
+<div id="more-information" class="section level3">
+<h3>More information</h3>
+<p>Please see the <a href="Reading_data_into_FLR.html">Reading data into FLR</a> tutorial for more examples on how to get your data into into <strong>FLR</strong>.</p>
 </div>
 </div>
 <div id="visualizing-and-plotting" class="section level1">
@@ -516,8 +516,8 @@ m.spwn        : [ 10 52 1 1 1 1 ], units =   </code></pre>
 <div id="estimating-reference-points" class="section level1">
 <h1>Estimating reference points</h1>
 </div>
-<div id="forecasting-undr-different-scenarios" class="section level1">
-<h1>Forecasting undr different scenarios</h1>
+<div id="forecasting-under-different-scenarios" class="section level1">
+<h1>Forecasting under different scenarios</h1>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
@@ -535,7 +535,7 @@ m.spwn        : [ 10 52 1 1 1 1 ], units =   </code></pre>
 <ul>
 <li>R version 3.4.1 (2017-06-30)</li>
 <li>FLCore: 2.6.3.9008</li>
-<li><strong>Compiled</strong>: Fri Aug 18 15:42:07 2017</li>
+<li><strong>Compiled</strong>: Mon Aug 21 10:18:04 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">

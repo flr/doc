@@ -113,8 +113,8 @@ m1
 range(m1) # no ages or years...
 m(m1)     # confirms no ages or years
 # Set the quant and year ranges
-rngquant(m1) <- c(0,7)			 # set the quant range
-rngyear(m1) <- c(2000, 2010) # set the year range
+range(m1, c('min', 'max')) <- c(0,7)			 # set the quant range
+range(m1, c('minyear', 'maxyear')) <- c(2000, 2010) # set the year range
 range(m1)
 # Show the object with the M estimates by age and year
 # (note the name of the first dimension is 'quant')
@@ -123,8 +123,8 @@ m(m1)
 ## ---- m2-----------------------------------------------------------------
 # Check the model and set the ranges
 m2
-rngquant(m2) <- c(0,7)
-rngyear(m2) <- c(2000, 2003)
+range(m2, c('min', 'max')) <- c(0,7)			 # set the quant range
+range(m2, c('minyear', 'maxyear')) <- c(2000, 2010) # set the year range
 range(m2)
 m(m2)
 # Note that the level value is
@@ -134,7 +134,7 @@ m(m2)["0"]
 # This is because the mbar range is currently set to "0" and "0" (see above)
 # and the mean natural mortality value over this range is given by the level model. 
 # We can change the mbar range
-rngmbar(m2)<- c(0,5)
+range(m2, c('minmbar', 'maxmbar')) <- c(0,7)			 # set the quant range
 range(m2)
 # which rescales the the natural mortality at age
 m(m2)
@@ -146,15 +146,15 @@ quantMeans(m(m2)[as.character(0:5)])
 # at least one value)
 m(m3, nao=1)
 # Set ages
-rngquant(m3) <- c(0,7)
+range(m3, c('min', 'max')) <- c(0,7)			 # set the quant range
 m(m3, nao=0)
 # With ages and years - passing in the NAO data as numeric (1,0,1,0)
-rngyear(m3) <- c(2000, 2003)
+range(m3, c('minyear', 'maxyear')) <- c(2000, 2003) # set the year range
 m(m3, nao=as.numeric(nao[,as.character(2000:2003)]))
 
 ## ---- m4_uncertainty_m---------------------------------------------------
-rngquant(m4) <- c(0,7)
-rngyear(m4) <- c(2000, 2003)
+range(m4, c('min', 'max')) <- c(0,7)			 # set the quant range
+range(m4, c('minyear', 'maxyear')) <- c(2000, 2003)
 flq <- m(m4, nao=as.numeric(nao[,as.character(2000:2003)]))
 flq
 dim(flq)

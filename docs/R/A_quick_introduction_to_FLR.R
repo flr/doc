@@ -3,10 +3,12 @@ library(knitr)
 source("R/ini.R")
 
 ## ---- eval=FALSE---------------------------------------------------------
-## install.packages(c("FLCore"), repos="http://flr-project.org/R")
+## install.packages(c("latticeExtra", "gridExtra", "ggplot2"))
+## install.packages(c("FLCore", "ggplotFL"), repos="http://flr-project.org/R")
 
 ## ---- flcore-------------------------------------------------------------
 library(FLCore)
+library(ggplotFL)
 
 ## ---- getfiles, message=FALSE--------------------------------------------
 dir <- tempdir()
@@ -56,4 +58,15 @@ range(ple4, c("minfbar", "maxfbar")) <- c(2, 6)
 summary(ple4)
 
 plot(metrics(ple4, Catch=catch, Landings=landings))
+
+## ---- loadple4index------------------------------------------------------
+data(ple4.index)
+
+## ---- summaryple4index---------------------------------------------------
+summary(ple4.index)
+
+plot(ple4.index)
+
+## ---- ple4indexrange-----------------------------------------------------
+range(ple4.index)[c("startf", "endf")]
 

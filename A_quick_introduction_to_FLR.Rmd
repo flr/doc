@@ -21,15 +21,27 @@ FLR builds on the powerful R environment and syntax to create a [domain-specific
 
 To follow this tutorial you should have installed the following packages:
 
+- CRAN: latticeExtra, gridExtra, ggplot2
 - FLR: [FLCore](http://www.flr-project.org/FLCore/), [FLa4a](http://www.flr-project.org/FLa4a/), [ggplotFL](http://www.flr-project.org/ggplotFL/)
 
 You can do so as follows:
 
 ```{r, eval=FALSE}
-install.packages(c("FLCore"), repos="http://flr-project.org/R")
+install.packages(c("latticeExtra", "gridExtra", "ggplot2"))
+install.packages(c("FLCore", "ggplotFL"), repos="http://flr-project.org/R")
 ```
 
-The *FLCore* package defines a 6D array as the basic data structure for **FLR**. This class, called *FLQuant*, is used to store most numeric inputs and output.
+# Classes and methods
+
+The *FLCore* package defines a series of data structures that represent different elements of the fishery system. These structures are defined using R's S4 class system, while functions to operate on those classes are defined as methods. In this way function call (e.g. `plot()`) can be used on different classes and their behaviour is consistent with the class structure and content. For further information on the S4 class system, please look at the [introductory text on the **methods** package](https://stat.ethz.ch/R-manual/R-patched/library/methods/html/Introduction.html).
+
+## FLQuant
+
+The [FLQuant](http://www.flr-project.org/FLCore/reference/FLQuant.html) class is the basic data structure for **FLR**, and it is in essence a 6D array on which data and outputs can be stored, structured along dimensions related to time, space, age or length, etc. It is also able to keep track of the units of measurement employed, as a simple character vector, although various operations on these objects are aware of the units of measurements contained in them.
+
+[...]
+
+Let's first load the necessary packages in our session. The **FLCore** paxckage
 
 ```{r, flcore}
 library(FLCore)
@@ -62,7 +74,7 @@ dat <- read.csv(file.path(dir, "ple4.csv"))
 head(dat)
 ```
 
-The `df` data.frame contains the time series of landings and discards at age, in thousands, and the corresponding mean weights-at-age, in kg, for [North Sea plaice](http://standardgraphs.ices.dk/ViewCharts.aspx?key=8980) (*Pleuronectes platessa*, ICES ple.27.420).
+This data.frame contains the time series of landings and discards at age, in thousands, and the corresponding mean weights-at-age, in kg, for [North Sea plaice](http://standardgraphs.ices.dk/ViewCharts.aspx?key=8980) (*Pleuronectes platessa*, ICES ple.27.420).
 
 We can create an object to store the landings-at-age data by subsetting it from the *data.frame*
 
@@ -123,6 +135,12 @@ and then the catch slots from both landings and discards
 catch(ple4) <- computeCatch(ple4, slot="all")
 ```
 
+The mean weigth-at-age in the stock needs to be provided. In this case we will assume it is the same as the one computed from the catch sampling programme
+
+```{r, ple4stockwt}
+stock.wt(ple4) <- catch.wt(ple4)
+```
+
 We finalize by specifying the fully selected age range, used in the calculation of an overall index of fishing mortality, for example as the mean, using  `fbar()`, or as the maximum value, using `fapex()` across those ages. This information is part of the object's *range*.
 
 ```{r, ple4range}
@@ -137,19 +155,93 @@ summary(ple4)
 plot(metrics(ple4, Catch=catch, Landings=landings))
 ```
 
-## More information
+### More information
 
-Please see the [Reading data into FLR](Reading_data_into_FLR.html) tutorial for more examples on how to get your into into **FLR**.
+Please see the [Reading data into FLR](Reading_data_into_FLR.html) tutorial for more examples on how to get your data into into **FLR**.
 
 # Visualizing and plotting
 
 # Running a stock assessment
 
+An important step in providing management advice for a fish stock is the estimation of current status, past history and stock productivity through an stock assessment (SA) model. The *FLStock* object we have created contains some of the inputs required for most SA models: catches, natural mortality, and maturity. What is now needed is some indication of changes in abundance over the period of exploitation, an index of abundance, derived from either research surveys or catch-per-unit-effort of commercial fleets.
+
+## Index of abundance
+
+An index of abundance for the North Sea plaice stock, as an object of class [FLIndex](http://www.flr-project.org/FLCore/reference/FLIndex.html), is available as an example dataset in *FLCore*, and can be loaded using the *data* command
+
+```{r, loadple4index}
+data(ple4.index)
+```
+
+This time series of abundances at age, covering from `r  dims(ple4.index)$minyear` to `r  dims(ple4.index)$maxyear`, was obtained during the [ICES International Bottom Trawl Survey](http://ocean.ices.dk/Project/IBTS/), as is one of the indices used by the Working Group on the Assessment of Demersal Stocks in the North Sea and Skagerrak (WGNSSK).
+
+The *FLIndex* class is able to contain not only the index of abundance, in this case as an age-structured *FLQuant*, but also other information on variance, associated catches, effort, selectivity and catchability, which might be used by certain methods.
+
+```{r, summaryple4index}
+summary(ple4.index)
+
+plot(ple4.index)
+```
+
+The *range* slot in this class contains information about the time period over which the survey takes place, as proportions of the year, in this case from the beginning of August to the end of September.
+
+```{r, ple4indexrange}
+range(ple4.index)[c("startf", "endf")]
+```
+
+## a4a statistical catch-at-age
+
+The [FLa4a](http:flr-project.org/FLa4a) package provides an **FLR** implementation of the *a4a* model, an statistical catch-at-age model of medium complexity that has been designed to make use of the power and flexibility of R's formula-based model notation (as used for example in [lm](https://stat.ethz.ch/R-manual/R-patched/library/stats/html/lm.html)), while giving access to a solid and fast minimization algorithm implemented using [AD Model Builder](http://www.admb-project.org/).
+
+```{r, fla4apkg}
+library(FLa4a)
+```
+
+A first go at fitting this model to the *ple4* and *ple4.index* datasets requires a single line of code
+
+```{r, sca}
+fit <- sca(ple4, FLIndices(BTS=ple4.index))
+```
+
+This returns an object of class `r c(class(fit))` that contains the results fo the model fit, including the estimated catch-at-age, and the derived abundances and fishing mortality at age
+
+```{r, summarya4afit}
+summary(fit)
+```
+
+which we can use to update the *FLStock* object
+
+```{r, ple4fit}
+stk <- ple4 + fit
+plot(stk)
+```
+
+Among other methods, *FLa4a* provides a range of tools for inspecting the quality of the model fit. For example, a set of residuals, for the fits to both the index olf abundance and 
+
+
+### More information
+
+Please see the [](.html) tutorial for more examples on how to .
+
 # Exploring the stock-recruitment relationship
+
+### More information
+
+Please see the [](.html) tutorial for more examples on how to .
 
 # Estimating reference points
 
-# Forecasting undr different scenarios
+### More information
+
+Please see the [](.html) tutorial for more examples on how to .
+
+# Forecasting under different scenarios
+
+### More information
+
+Please see the [](.html) tutorial for more examples on how to .
+
+# Management Strategy Evaluation
 
 # References
 
