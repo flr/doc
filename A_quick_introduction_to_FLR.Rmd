@@ -460,6 +460,10 @@ L. T. Kell, I. Mosqueira, P. Grosjean, J-M. Fromentin, D. Garcia, R. Hillary, E.
 
 * `r version$version.string`
 * FLCore: `r packageVersion('FLCore')`
+* ggplotFL: `r packageVersion('ggplotFL')`
+* FLa4a: `r packageVersion('FLa4a')`
+* FLBRP: `r packageVersion('FLBRP')`
+* FLash: `r packageVersion('FLash')`
 * **Compiled**: `r date()`
 
 ## License
