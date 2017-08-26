@@ -22,13 +22,13 @@ FLR builds on the powerful R environment and syntax to create a [domain-specific
 To follow this tutorial you should have installed the following packages:
 
 - CRAN: latticeExtra, gridExtra, ggplot2
-- FLR: [FLCore](http://www.flr-project.org/FLCore/), [FLa4a](http://www.flr-project.org/FLa4a/), [ggplotFL](http://www.flr-project.org/ggplotFL/), [FLa4a](http://www.flr-project.org/FLa4a/)
+- FLR: [FLCore](http://www.flr-project.org/FLCore/), [FLa4a](http://www.flr-project.org/FLa4a/), [ggplotFL](http://www.flr-project.org/ggplotFL/), [FLBRP](http://www.flr-project.org/FLBRP/)
 
 You can do so as follows:
 
 ```{r, eval=FALSE}
 install.packages(c("latticeExtra", "gridExtra", "ggplot2", "triangle", "copula", "coda", "mgcv"))
-install.packages(c("FLCore", "ggplotFL", "FLa4a"), repos="http://flr-project.org/R")
+install.packages(c("FLCore", "ggplotFL", "FLa4a", "FLBRP", "FLash"), repos="http://flr-project.org/R")
 ```
 
 # Classes and methods
@@ -345,17 +345,106 @@ Please see the [Modelling stock recruitment with FLSR](Modelling_stock_recruitme
 
 # Estimating reference points
 
+To assess current and future status of a stock we need reference points which he hold to represent desirable states for the stock, usually either in terms of stock abundance, like $B_{MSY}$, the biomass expected to produce, on average and under the current exploitation pattern, the Maximum Sustainable Yield ($MSY$), or of fishing mortality, such as the fishing mortality expected to produce $MSY$, $F_{MSY}$.
+
+We can use the [FLBRP package](http://flr-project.org/FLBRP) to calculate a large set of reference points, once we have an estimate of stock status, our *FLStock* object, and of the stock-recruitment relationship, *FLSR*. We can use them both to create the necessary object, of class [FLBRP](http://www.flr-project.org/FLBRP/reference/FLBRP.html), after loading the package
+
+```{r, flrbp, warnings=FALSE}
+library(FLBRP)
+plrp <- FLBRP(stk, sr=plsr)
+summary(plrp)
+```
+
+An object of the *FLBRP* class contains a series of times series of observations on dynamics of both stock and fishery, as well as average quantities computed along an specified time period. A series of slot are designed to contain economic variables, such as `price`, variable costs (`vcost`) and fixed costs (`fcost`), which will need to be provided. When those data are available, economic reference points can also be calculated. Finally, a vector of fishing mortality values, `fbar`, has been created, by default to be of length 101 and with values going from $F=0$ to $F=4$, to be used in the calculation procedure.
+
+We can now proceed with the calculation of reference points, through the `brp` method
+
+```{r, brp}
+plrp <- brp(plrp)
+```
+
+and the extraction of the values obtained, stored in the `refpts` slot of the object
+
+```{r, refpts}
+refpts(plrp)
+```
+
+This slot contains the estimates for a series of reference points and for a number of quantities. For example, the value stored at the intersection of `msy` and `harvest` corresponds to $F_{MSY}$, while that of `virgin` and `ssb` is the estimate of virgin stock biomass. We can, for example, extract the two standard MSY-related reference points as a named vector using
+
+```{r, refptsextract}
+pmsy <- refpts(plrp)["msy", c("harvest", "ssb"), drop=TRUE]
+```
+
+to use them to visualize the status of the stock in relation to these points, for example
+
+```{r, refptplot}
+plot(ssb(stk) / pmsy["ssb"]) + geom_hline(aes(yintercept=1), linetype=2) +
+  ylab(expression(SSB / SSB[MSY]))
+```
+
 ### More information
 
-Please see the [](.html) tutorial for more examples on how to .
+For more information on *FLBRP*, please see the [Reference points for fisheries management with FLBRP](Reference_points_for_fisheries_management_with_FLBRP.html) tutorial.
 
 # Forecasting under different scenarios
 
+Our final step in this quick tour takes us to the tools in *FLR* for forecasting the future responses of the stock to alternative management decisions. This example concerns a Short Term Forecast, in which the effect of the current management, for example a maximum catch limit or TAC, on the present year is forecasted, and then a series of alternative increases or decreases in catch are applied to the object representing our current understanding of the stock status and dynamics.
+
+The [FLash package](http://flr-project.org/FLash) contains the current implementation of the forecasting mechanism in *FLR*
+
+```{r, flash}
+library(FLash)
+```
+
+The key element in the *FLash* interface is the *fwdControl* class, which allows us to specify the targets and limits that we want the stock to achieve or remain within. But first we need to make some assumptions about the future values of certain quantities, both on the biology (natural mortality, maturity) and the fishery (selectivity, proportion of discards). A common approach for this kind of forecast is to use averages over the last few years (tipycally three) for certain quantities. This can be done in *FLR* using the `stf` method in the *FLBRP* package.
+
+```{r, stf}
+proj <- FLBRP:::stf(stk)
+```
+
+Our new object extends up to 2011, and the values for certain stocks have been extended using the mean of the last three years, for example for the weight-at-age in the stock
+
+```{r, stfstockwt}
+stock.wt(proj)[, ac(2006:2011)]
+```
+
+We can now construct a `fwdControl` object that projects the stock as if catches in the current year, 2009 in this case, were those of the agreed TAC, 85,000 t, and F was then kept in 2010 and 2011 at the same levels as in 2008. The main component of a *fwdControl* object is a *data.frame* that must at least contains columns for
+
+- *year*
+- *quantity*, the quantity to be projected, for example `ssb`, `f` or `catch`
+- *val*, the actual value to be obtained
+
+```{r, fwdcontrol}
+TAC <- 85000
+Flevel <- fbar(stk)[,"2008"]
+ctrl <- fwdControl(data.frame(year=2009:2011, quantity=c("catch", "f", "f"), val=c(TAC, Flevel, Flevel)))
+```
+
+Now the `fwd` method will carry ou the projection using those three object: stock, stock-recruitment and control
+
+```{r, fwd}
+proj <- fwd(proj, control=ctrl, sr=plsr) 
+```
+
+and the results can be visualized
+
+```{r, fwdplot}
+plot(proj) + geom_vline(aes(xintercept=2008.5), linetype=2)
+```
+
 ### More information
 
-Please see the [](.html) tutorial for more examples on how to .
+Please see the [Short Term Forecasting for advice using FLash](Short_Term_Forecasting_for_advice_using_FLash.html)  and [Short Term Forecasting for advice using FLash](Short_Term_Forecasting_for_advice_using_FLash.html) tutorials for more examples on how to use the capabilitis of *FLash* to forecast population dynamics under various scenarios.
 
-# Management Strategy Evaluation
+# More on FLR
+
+Please visit [our website](http://flr-project.org) for more information on the FLR packages, tutorials and examples of use, and instructions for getting in touch if you want to report a bug, ask a question or get involved in the development of the **FLR** toolset. The project is run by a team of fisheries scientists that decided to share the R code they were writing and using so a common platform for Quantitative Fisheries Science in R could break the Babel tower spell that J. Schnute first identified
+
+"The cosmic plan for confounding software languages seems to be working remarkably
+well among the community of quantitative fishery scientists!"
+
+Schnute et al. 2007
+
 
 # References
 

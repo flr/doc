@@ -322,11 +322,11 @@ $(document).ready(function () {
 <p>To follow this tutorial you should have installed the following packages:</p>
 <ul>
 <li>CRAN: latticeExtra, gridExtra, ggplot2</li>
-<li>FLR: <a href="http://www.flr-project.org/FLCore/">FLCore</a>, <a href="http://www.flr-project.org/FLa4a/">FLa4a</a>, <a href="http://www.flr-project.org/ggplotFL/">ggplotFL</a>, <a href="http://www.flr-project.org/FLa4a/">FLa4a</a></li>
+<li>FLR: <a href="http://www.flr-project.org/FLCore/">FLCore</a>, <a href="http://www.flr-project.org/FLa4a/">FLa4a</a>, <a href="http://www.flr-project.org/ggplotFL/">ggplotFL</a>, <a href="http://www.flr-project.org/FLBRP/">FLBRP</a></li>
 </ul>
 <p>You can do so as follows:</p>
 <pre class="r"><code>install.packages(c(&quot;latticeExtra&quot;, &quot;gridExtra&quot;, &quot;ggplot2&quot;, &quot;triangle&quot;, &quot;copula&quot;, &quot;coda&quot;, &quot;mgcv&quot;))
-install.packages(c(&quot;FLCore&quot;, &quot;ggplotFL&quot;, &quot;FLa4a&quot;), repos=&quot;http://flr-project.org/R&quot;)</code></pre>
+install.packages(c(&quot;FLCore&quot;, &quot;ggplotFL&quot;, &quot;FLa4a&quot;, &quot;FLBRP&quot;, &quot;FLash&quot;), repos=&quot;http://flr-project.org/R&quot;)</code></pre>
 </div>
 <div id="classes-and-methods" class="section level1">
 <h1>Classes and methods</h1>
@@ -772,7 +772,7 @@ residuals     : [ 1 51 1 1 1 1 ], units =  NA
 fitted        : [ 1 51 1 1 1 1 ], units =  NA 
 
 Model:  list()
-&lt;environment: 0x14e2e390&gt;
+&lt;environment: 0xa7a7988&gt;
 Parameters: 
     params
 iter
@@ -819,20 +819,132 @@ units:  NA </code></pre>
 </div>
 <div id="estimating-reference-points" class="section level1">
 <h1>Estimating reference points</h1>
+<p>To assess current and future status of a stock we need reference points which he hold to represent desirable states for the stock, usually either in terms of stock abundance, like <span class="math inline">\(B_{MSY}\)</span>, the biomass expected to produce, on average and under the current exploitation pattern, the Maximum Sustainable Yield (<span class="math inline">\(MSY\)</span>), or of fishing mortality, such as the fishing mortality expected to produce <span class="math inline">\(MSY\)</span>, <span class="math inline">\(F_{MSY}\)</span>.</p>
+<p>We can use the <a href="http://flr-project.org/FLBRP">FLBRP package</a> to calculate a large set of reference points, once we have an estimate of stock status, our <em>FLStock</em> object, and of the stock-recruitment relationship, <em>FLSR</em>. We can use them both to create the necessary object, of class <a href="http://www.flr-project.org/FLBRP/reference/FLBRP.html">FLBRP</a>, after loading the package</p>
+<pre class="r"><code>library(FLBRP)
+plrp &lt;- FLBRP(stk, sr=plsr)
+summary(plrp)</code></pre>
+<pre><code>An object of class &quot;FLBRP&quot;
+
+Name:  
+Description:  
+Quant: age 
+Dims:  age  year    unit    season  area    iter
+    10  101 1   1   1   1   
+
+Range:  min max pgroup  minfbar maxfbar 
+    1   10  10  2   6   
+
+fbar          : [ 1 101 1 1 1 1 ], units =  f 
+fbar.obs      : [ 1 52 1 1 1 1 ], units =  f 
+landings.obs  : [ 1 52 1 1 1 1 ], units =  t 
+discards.obs  : [ 1 52 1 1 1 1 ], units =  t 
+rec.obs       : [ 1 52 1 1 1 1 ], units =  NA 
+ssb.obs       : [ 1 52 1 1 1 1 ], units =  NA 
+stock.obs     : [ 1 52 1 1 1 1 ], units =  NA 
+profit.obs    : [ 1 52 1 1 1 1 ], units =  NA 
+landings.sel  : [ 10 1 1 1 1 1 ], units =  f 
+discards.sel  : [ 10 1 1 1 1 1 ], units =  f 
+bycatch.harv  : [ 10 1 1 1 1 1 ], units =  f 
+stock.wt      : [ 10 1 1 1 1 1 ], units =  kg 
+landings.wt   : [ 10 1 1 1 1 1 ], units =  kg 
+discards.wt   : [ 10 1 1 1 1 1 ], units =  kg 
+bycatch.wt    : [ 10 1 1 1 1 1 ], units =  NA 
+m             : [ 10 1 1 1 1 1 ], units =  m 
+mat           : [ 10 1 1 1 1 1 ], units =   
+harvest.spwn  : [ 10 1 1 1 1 1 ], units =   
+m.spwn        : [ 10 1 1 1 1 1 ], units =   
+availability  : [ 10 1 1 1 1 1 ], units =  NA 
+price         : [ 10 1 1 1 1 1 ], units =  NA 
+vcost         : [ 1 1 1 1 1 1 ], units =  NA 
+fcost         : [ 1 1 1 1 1 1 ], units =  NA </code></pre>
+<p>An object of the <em>FLBRP</em> class contains a series of times series of observations on dynamics of both stock and fishery, as well as average quantities computed along an specified time period. A series of slot are designed to contain economic variables, such as <code>price</code>, variable costs (<code>vcost</code>) and fixed costs (<code>fcost</code>), which will need to be provided. When those data are available, economic reference points can also be calculated. Finally, a vector of fishing mortality values, <code>fbar</code>, has been created, by default to be of length 101 and with values going from <span class="math inline">\(F=0\)</span> to <span class="math inline">\(F=4\)</span>, to be used in the calculation procedure.</p>
+<p>We can now proceed with the calculation of reference points, through the <code>brp</code> method</p>
+<pre class="r"><code>plrp &lt;- brp(plrp)</code></pre>
+<p>and the extraction of the values obtained, stored in the <code>refpts</code> slot of the object</p>
+<pre class="r"><code>refpts(plrp)</code></pre>
+<pre><code>An object of class &quot;FLPar&quot;
+        quantity
+refpt    harvest    yield      rec        ssb        biomass    revenue   
+  virgin 0.0000e+00 0.0000e+00 2.3590e+05 1.0505e+06 1.0997e+06         NA
+  msy    4.0484e-01 6.7772e+04 8.8703e+05 4.0254e+05 5.3420e+05         NA
+  crash  7.9486e-01 1.6658e-06 4.1550e-05 4.5639e-06 9.4134e-06         NA
+  f0.1   1.7179e-01 4.1508e+04 4.8442e+05 7.5122e+05 8.3757e+05         NA
+  fmax   2.3096e-01 5.2519e+04 5.9202e+05 6.5573e+05 7.5616e+05         NA
+  spr.30 1.9767e-01 4.6610e+04 5.3063e+05 7.0892e+05 8.0146e+05         NA
+  mey            NA         NA         NA         NA         NA         NA
+        quantity
+refpt    cost       profit    
+  virgin         NA         NA
+  msy            NA         NA
+  crash          NA         NA
+  f0.1           NA         NA
+  fmax           NA         NA
+  spr.30         NA         NA
+  mey            NA         NA
+units:  NA </code></pre>
+<p>This slot contains the estimates for a series of reference points and for a number of quantities. For example, the value stored at the intersection of <code>msy</code> and <code>harvest</code> corresponds to <span class="math inline">\(F_{MSY}\)</span>, while that of <code>virgin</code> and <code>ssb</code> is the estimate of virgin stock biomass. We can, for example, extract the two standard MSY-related reference points as a named vector using</p>
+<pre class="r"><code>pmsy &lt;- refpts(plrp)[&quot;msy&quot;, c(&quot;harvest&quot;, &quot;ssb&quot;), drop=TRUE]</code></pre>
+<p>to use them to visualize the status of the stock in relation to these points, for example</p>
+<pre class="r"><code>plot(ssb(stk) / pmsy[&quot;ssb&quot;]) + geom_hline(aes(yintercept=1), linetype=2) +
+  ylab(expression(SSB / SSB[MSY]))</code></pre>
+<p><img src="A_quick_introduction_to_FLR_files/figure-html/refptplot-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div id="more-information-4" class="section level3">
 <h3>More information</h3>
-<p>Please see the <a href=".html"></a> tutorial for more examples on how to .</p>
+<p>For more information on <em>FLBRP</em>, please see the <a href="Reference_points_for_fisheries_management_with_FLBRP.html">Reference points for fisheries management with FLBRP</a> tutorial.</p>
 </div>
 </div>
 <div id="forecasting-under-different-scenarios" class="section level1">
 <h1>Forecasting under different scenarios</h1>
+<p>Our final step in this quick tour takes us to the tools in <em>FLR</em> for forecasting the future responses of the stock to alternative management decisions. This example concerns a Short Term Forecast, in which the effect of the current management, for example a maximum catch limit or TAC, on the present year is forecasted, and then a series of alternative increases or decreases in catch are applied to the object representing our current understanding of the stock status and dynamics.</p>
+<p>The <a href="http://flr-project.org/FLash">FLash package</a> contains the current implementation of the forecasting mechanism in <em>FLR</em></p>
+<pre class="r"><code>library(FLash)</code></pre>
+<p>The key element in the <em>FLash</em> interface is the <em>fwdControl</em> class, which allows us to specify the targets and limits that we want the stock to achieve or remain within. But first we need to make some assumptions about the future values of certain quantities, both on the biology (natural mortality, maturity) and the fishery (selectivity, proportion of discards). A common approach for this kind of forecast is to use averages over the last few years (tipycally three) for certain quantities. This can be done in <em>FLR</em> using the <code>stf</code> method in the <em>FLBRP</em> package.</p>
+<pre class="r"><code>proj &lt;- FLBRP:::stf(stk)</code></pre>
+<p>Our new object extends up to 2011, and the values for certain stocks have been extended using the mean of the last three years, for example for the weight-at-age in the stock</p>
+<pre class="r"><code>stock.wt(proj)[, ac(2006:2011)]</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+    year
+age  2006     2007     2008     2009     2010     2011    
+  1  0.062313 0.060347 0.058530 0.060397 0.060397 0.060397
+  2  0.139194 0.111512 0.122204 0.124303 0.124303 0.124303
+  3  0.210275 0.221105 0.240195 0.223858 0.223858 0.223858
+  4  0.294857 0.314374 0.320583 0.309938 0.309938 0.309938
+  5  0.385415 0.361766 0.387632 0.378271 0.378271 0.378271
+  6  0.396499 0.377003 0.434290 0.402598 0.402598 0.402598
+  7  0.439897 0.514525 0.357386 0.437270 0.437270 0.437270
+  8  0.464998 0.347238 0.460998 0.424411 0.424411 0.424411
+  9  0.532624 0.590289 0.640373 0.587762 0.587762 0.587762
+  10 0.755080 0.618717 0.636754 0.670183 0.670183 0.670183
+
+units:  kg </code></pre>
+<p>We can now construct a <code>fwdControl</code> object that projects the stock as if catches in the current year, 2009 in this case, were those of the agreed TAC, 85,000 t, and F was then kept in 2010 and 2011 at the same levels as in 2008. The main component of a <em>fwdControl</em> object is a <em>data.frame</em> that must at least contains columns for</p>
+<ul>
+<li><em>year</em></li>
+<li><em>quantity</em>, the quantity to be projected, for example <code>ssb</code>, <code>f</code> or <code>catch</code></li>
+<li><em>val</em>, the actual value to be obtained</li>
+</ul>
+<pre class="r"><code>TAC &lt;- 85000
+Flevel &lt;- fbar(stk)[,&quot;2008&quot;]
+ctrl &lt;- fwdControl(data.frame(year=2009:2011, quantity=c(&quot;catch&quot;, &quot;f&quot;, &quot;f&quot;), val=c(TAC, Flevel, Flevel)))</code></pre>
+<p>Now the <code>fwd</code> method will carry ou the projection using those three object: stock, stock-recruitment and control</p>
+<pre class="r"><code>proj &lt;- fwd(proj, control=ctrl, sr=plsr) </code></pre>
+<p>and the results can be visualized</p>
+<pre class="r"><code>plot(proj) + geom_vline(aes(xintercept=2008.5), linetype=2)</code></pre>
+<p><img src="A_quick_introduction_to_FLR_files/figure-html/fwdplot-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div id="more-information-5" class="section level3">
 <h3>More information</h3>
-<p>Please see the <a href=".html"></a> tutorial for more examples on how to .</p>
+<p>Please see the <a href="Short_Term_Forecasting_for_advice_using_FLash.html">Short Term Forecasting for advice using FLash</a> and <a href="Short_Term_Forecasting_for_advice_using_FLash.html">Short Term Forecasting for advice using FLash</a> tutorials for more examples on how to use the capabilitis of <em>FLash</em> to forecast population dynamics under various scenarios.</p>
 </div>
 </div>
-<div id="management-strategy-evaluation" class="section level1">
-<h1>Management Strategy Evaluation</h1>
+<div id="more-on-flr" class="section level1">
+<h1>More on FLR</h1>
+<p>Please visit <a href="http://flr-project.org">our website</a> for more information on the FLR packages, tutorials and examples of use, and instructions for getting in touch if you want to report a bug, ask a question or get involved in the development of the <strong>FLR</strong> toolset. The project is run by a team of fisheries scientists that decided to share the R code they were writing and using so a common platform for Quantitative Fisheries Science in R could break the Babel tower spell that J. Schnute first identified</p>
+<p>“The cosmic plan for confounding software languages seems to be working remarkably well among the community of quantitative fishery scientists!”</p>
+<p>Schnute et al. 2007</p>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
@@ -850,7 +962,7 @@ units:  NA </code></pre>
 <ul>
 <li>R version 3.4.1 (2017-06-30)</li>
 <li>FLCore: 2.6.3.9009</li>
-<li><strong>Compiled</strong>: Sat Aug 26 15:53:34 2017</li>
+<li><strong>Compiled</strong>: Sat Aug 26 23:25:02 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">

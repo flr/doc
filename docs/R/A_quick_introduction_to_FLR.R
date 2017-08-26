@@ -4,7 +4,7 @@ source("R/ini.R")
 
 ## ---- eval=FALSE---------------------------------------------------------
 ## install.packages(c("latticeExtra", "gridExtra", "ggplot2", "triangle", "copula", "coda", "mgcv"))
-## install.packages(c("FLCore", "ggplotFL", "FLa4a"), repos="http://flr-project.org/R")
+## install.packages(c("FLCore", "ggplotFL", "FLa4a", "FLBRP", "FLash"), repos="http://flr-project.org/R")
 
 ## ---- flcore-------------------------------------------------------------
 library(FLCore)
@@ -145,4 +145,42 @@ profile(plsr)
 
 ## ---- flsrpredict--------------------------------------------------------
 predict(plsr, ssb=FLQuant(rnorm(10, 25e4, sd(ssb(plsr))), dimnames=list(age=1, year=2008:2017)))
+
+## ---- flrbp, warnings=FALSE----------------------------------------------
+library(FLBRP)
+plrp <- FLBRP(stk, sr=plsr)
+summary(plrp)
+
+## ---- brp----------------------------------------------------------------
+plrp <- brp(plrp)
+
+## ---- refpts-------------------------------------------------------------
+refpts(plrp)
+
+## ---- refptsextract------------------------------------------------------
+pmsy <- refpts(plrp)["msy", c("harvest", "ssb"), drop=TRUE]
+
+## ---- refptplot----------------------------------------------------------
+plot(ssb(stk) / pmsy["ssb"]) + geom_hline(aes(yintercept=1), linetype=2) +
+  ylab(expression(SSB / SSB[MSY]))
+
+## ---- flash--------------------------------------------------------------
+library(FLash)
+
+## ---- stf----------------------------------------------------------------
+proj <- FLBRP:::stf(stk)
+
+## ---- stfstockwt---------------------------------------------------------
+stock.wt(proj)[, ac(2006:2011)]
+
+## ---- fwdcontrol---------------------------------------------------------
+TAC <- 85000
+Flevel <- fbar(stk)[,"2008"]
+ctrl <- fwdControl(data.frame(year=2009:2011, quantity=c("catch", "f", "f"), val=c(TAC, Flevel, Flevel)))
+
+## ---- fwd----------------------------------------------------------------
+proj <- fwd(proj, control=ctrl, sr=plsr) 
+
+## ---- fwdplot------------------------------------------------------------
+plot(proj) + geom_vline(aes(xintercept=2008.5), linetype=2)
 
