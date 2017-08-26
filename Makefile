@@ -13,7 +13,7 @@ main: $(HTMLS) $(RS)
 
 docs/%.html: %.Rmd
 	@echo "$< -> $@"
-	@R -e "rmarkdown::render_site('$<', envir=new.env())" -e "detach(package:FLash)"
+	@R -e "rmarkdown::render_site('$<', envir=new.env())" -e "if('FLash' %in% loadedNamespaces()) detach(package:FLash)"
 
 docs/pdf/%.pdf: %.Rmd
 	@echo "$< -> $@"
@@ -22,6 +22,9 @@ docs/pdf/%.pdf: %.Rmd
 docs/R/%.R: %.Rmd
 	@echo "$< -> $@"
 	@R -e "knitr::purl('$<', output='$@')"
+
+setup:
+	R -e "install.packages(c('captioner', 'printr'))"
 
 clean:
 	rm -f *.html

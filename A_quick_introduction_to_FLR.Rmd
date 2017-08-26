@@ -15,20 +15,20 @@ source("R/ini.R")
 
 The Fisheries Library in R (FLR) is a collection of tools for quantitative fisheries science, developed in the R language, that facilitates the construction of bio-economic simulation models of fisheries systems as well as the application of a wide range of quantitative analysis.
 
-FLR builds on the powerful R environment and syntax to create a [domain-specific language](https://en.wikipedia.org/wiki/Domain-specific_language) for the quantitative analysis of the expected risks and impacts of fisheries management decisions. The classes and methods in FLR consider uncertainty an integral part of our knowledge of fisheries system. [...]
+FLR builds on the powerful R environment and syntax to create a [domain-specific language](https://en.wikipedia.org/wiki/Domain-specific_language) for the quantitative analysis of the expected risks and impacts of fisheries management decisions. The classes and methods in FLR consider uncertainty an integral part of our knowledge of fisheries systems.
 
 ## Required packages
 
 To follow this tutorial you should have installed the following packages:
 
 - CRAN: latticeExtra, gridExtra, ggplot2
-- FLR: [FLCore](http://www.flr-project.org/FLCore/), [FLa4a](http://www.flr-project.org/FLa4a/), [ggplotFL](http://www.flr-project.org/ggplotFL/)
+- FLR: [FLCore](http://www.flr-project.org/FLCore/), [FLa4a](http://www.flr-project.org/FLa4a/), [ggplotFL](http://www.flr-project.org/ggplotFL/), [FLa4a](http://www.flr-project.org/FLa4a/)
 
 You can do so as follows:
 
 ```{r, eval=FALSE}
-install.packages(c("latticeExtra", "gridExtra", "ggplot2"))
-install.packages(c("FLCore", "ggplotFL"), repos="http://flr-project.org/R")
+install.packages(c("latticeExtra", "gridExtra", "ggplot2", "triangle", "copula", "coda", "mgcv"))
+install.packages(c("FLCore", "ggplotFL", "FLa4a"), repos="http://flr-project.org/R")
 ```
 
 # Classes and methods
@@ -39,7 +39,7 @@ The *FLCore* package defines a series of data structures that represent differen
 
 The [FLQuant](http://www.flr-project.org/FLCore/reference/FLQuant.html) class is the basic data structure for **FLR**, and it is in essence a 6D array on which data and outputs can be stored, structured along dimensions related to time, space, age or length, etc. It is also able to keep track of the units of measurement employed, as a simple character vector, although various operations on these objects are aware of the units of measurements contained in them.
 
-[...]
+We will be creating an altering *FLQuant* objects as we go along, but we can long briefly at some basic operations, as the syntax will then be used in other classes in *FLR*.
 
 Let's first load the necessary packages in our session. The **FLCore** paxckage
 
@@ -47,6 +47,67 @@ Let's first load the necessary packages in our session. The **FLCore** paxckage
 library(FLCore)
 library(ggplotFL)
 ```
+
+As it is the case for R classes, for example *data.frame*, classes in *FLR* can be constructed using a constructor method with the same name as the class, in this case `FLQuant()`.
+
+```{r, flquant}
+FLQuant(1:10)
+```
+
+The *FLQuant* constructor can take a variety of inputs, like a vector, a matrix or an array, and also allows you to specify a nuber of arguments. We will only look now at three of them, `units` for the units of measurement, `quant` for the name of the first dimension, and `dimnames` for the dimension names of the object. For example, to construct an object holding (random) data in tonnes on catches for ages 1 to 4, over a period of 6 years, one could call
+
+```{r, flquantage}
+flq <- FLQuant(rlnorm(60), dimnames=list(age=1:4, year=2012:2017), units="t")
+
+flq
+```
+
+The object has six dimensions, although some of them (`unit`, `season`, `area` and `iter`) ar not used in this case. We can inspect the object in various ways
+
+```{r, flquantinspect}
+# A summary of structure and data
+summary(flq)
+
+# dimnames
+dimnames(flq)
+
+# dims
+dim(flq)
+
+# units
+units(flq)
+```
+
+It can be also subset and modified
+
+```{r, flquantmodify}
+# Extract first year
+flq[, 1]
+
+# Extract year 2013
+flq[, "2013"]
+
+# Set catches on age 1 to zero
+flq[1,] <- 0
+flq
+```
+
+as it can be used in many operations
+
+```{r, flquantarith}
+# Product with scalar
+flq * 10
+
+# Addition with another FLQuant
+flq + (flq * 0.20)
+
+# Sum along years
+yearSums(flq)
+```
+
+### More information
+
+To learn more about the class, check the [FLQuant help page](http://www.flr-project.org/FLCore/reference/FLQuant.html).
 
 # Loading your data
 
@@ -224,6 +285,17 @@ Among other methods, *FLa4a* provides a range of tools for inspecting the qualit
 Please see the [](.html) tutorial for more examples on how to .
 
 # Exploring the stock-recruitment relationship
+
+
+```{r, flsrcreate}
+plsr <- as.FLSR(stk, model="ricker")
+```
+
+
+```{r, flsrfit, results="hide"}
+plsr <- fmle(plsr)
+```
+
 
 ### More information
 

@@ -310,24 +310,193 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">A quick introduction to FLR</h1>
-<h4 class="date"><em>21 August, 2017</em></h4>
+<h4 class="date"><em>26 agosto, 2017</em></h4>
 
 </div>
 
 
 <p>The Fisheries Library in R (FLR) is a collection of tools for quantitative fisheries science, developed in the R language, that facilitates the construction of bio-economic simulation models of fisheries systems as well as the application of a wide range of quantitative analysis.</p>
-<p>FLR builds on the powerful R environment and syntax to create a <a href="https://en.wikipedia.org/wiki/Domain-specific_language">domain-specific language</a> for the quantitative analysis of the expected risks and impacts of fisheries management decisions. The classes and methods in FLR consider uncertainty an integral part of our knowledge of fisheries system. […]</p>
+<p>FLR builds on the powerful R environment and syntax to create a <a href="https://en.wikipedia.org/wiki/Domain-specific_language">domain-specific language</a> for the quantitative analysis of the expected risks and impacts of fisheries management decisions. The classes and methods in FLR consider uncertainty an integral part of our knowledge of fisheries systems.</p>
 <div id="required-packages" class="section level2">
 <h2>Required packages</h2>
 <p>To follow this tutorial you should have installed the following packages:</p>
 <ul>
-<li>FLR: <a href="http://www.flr-project.org/FLCore/">FLCore</a>, <a href="http://www.flr-project.org/FLa4a/">FLa4a</a>, <a href="http://www.flr-project.org/ggplotFL/">ggplotFL</a></li>
+<li>CRAN: latticeExtra, gridExtra, ggplot2</li>
+<li>FLR: <a href="http://www.flr-project.org/FLCore/">FLCore</a>, <a href="http://www.flr-project.org/FLa4a/">FLa4a</a>, <a href="http://www.flr-project.org/ggplotFL/">ggplotFL</a>, <a href="http://www.flr-project.org/FLa4a/">FLa4a</a></li>
 </ul>
 <p>You can do so as follows:</p>
-<pre class="r"><code>install.packages(c(&quot;FLCore&quot;), repos=&quot;http://flr-project.org/R&quot;)</code></pre>
-<p>The <em>FLCore</em> package defines a 6D array as the basic data structure for <strong>FLR</strong>. This class, called <em>FLQuant</em>, is used to store most numeric inputs and output.</p>
+<pre class="r"><code>install.packages(c(&quot;latticeExtra&quot;, &quot;gridExtra&quot;, &quot;ggplot2&quot;, &quot;triangle&quot;, &quot;copula&quot;, &quot;coda&quot;, &quot;mgcv&quot;))
+install.packages(c(&quot;FLCore&quot;, &quot;ggplotFL&quot;, &quot;FLa4a&quot;), repos=&quot;http://flr-project.org/R&quot;)</code></pre>
+</div>
+<div id="classes-and-methods" class="section level1">
+<h1>Classes and methods</h1>
+<p>The <em>FLCore</em> package defines a series of data structures that represent different elements of the fishery system. These structures are defined using R’s S4 class system, while functions to operate on those classes are defined as methods. In this way function call (e.g. <code>plot()</code>) can be used on different classes and their behaviour is consistent with the class structure and content. For further information on the S4 class system, please look at the <a href="https://stat.ethz.ch/R-manual/R-patched/library/methods/html/Introduction.html">introductory text on the <strong>methods</strong> package</a>.</p>
+<div id="flquant" class="section level2">
+<h2>FLQuant</h2>
+<p>The <a href="http://www.flr-project.org/FLCore/reference/FLQuant.html">FLQuant</a> class is the basic data structure for <strong>FLR</strong>, and it is in essence a 6D array on which data and outputs can be stored, structured along dimensions related to time, space, age or length, etc. It is also able to keep track of the units of measurement employed, as a simple character vector, although various operations on these objects are aware of the units of measurements contained in them.</p>
+<p>We will be creating an altering <em>FLQuant</em> objects as we go along, but we can long briefly at some basic operations, as the syntax will then be used in other classes in <em>FLR</em>.</p>
+<p>Let’s first load the necessary packages in our session. The <strong>FLCore</strong> paxckage</p>
 <pre class="r"><code>library(FLCore)
 library(ggplotFL)</code></pre>
+<p>As it is the case for R classes, for example <em>data.frame</em>, classes in <em>FLR</em> can be constructed using a constructor method with the same name as the class, in this case <code>FLQuant()</code>.</p>
+<pre class="r"><code>FLQuant(1:10)</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+quant 1  2  3  4  5  6  7  8  9  10
+  all  1  2  3  4  5  6  7  8  9 10
+
+units:  NA </code></pre>
+<p>The <em>FLQuant</em> constructor can take a variety of inputs, like a vector, a matrix or an array, and also allows you to specify a nuber of arguments. We will only look now at three of them, <code>units</code> for the units of measurement, <code>quant</code> for the name of the first dimension, and <code>dimnames</code> for the dimension names of the object. For example, to construct an object holding (random) data in tonnes on catches for ages 1 to 4, over a period of 6 years, one could call</p>
+<pre class="r"><code>flq &lt;- FLQuant(rlnorm(60), dimnames=list(age=1:4, year=2012:2017), units=&quot;t&quot;)
+
+flq</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+   year
+age 2012    2013    2014    2015    2016    2017   
+  1 0.60352 0.97440 0.99065 1.68515 1.36443 5.05653
+  2 1.93833 2.09946 3.13919 0.84972 0.53418 0.69980
+  3 0.24826 1.51710 5.28007 0.61229 0.59522 1.19544
+  4 3.14748 6.16351 1.06234 0.93561 1.43151 0.81529
+
+units:  t </code></pre>
+<p>The object has six dimensions, although some of them (<code>unit</code>, <code>season</code>, <code>area</code> and <code>iter</code>) ar not used in this case. We can inspect the object in various ways</p>
+<pre class="r"><code># A summary of structure and data
+summary(flq)</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot; with:
+dim  :  4 6 1 1 1 1 
+quant:  age 
+units:  t 
+
+Min    :  0.2483 
+1st Qu.:  0.7864 
+Mean   :  1.789 
+Median :  1.129 
+3rd Qu.:  1.979 
+Max    :  6.164 
+NAs    :  0 %</code></pre>
+<pre class="r"><code># dimnames
+dimnames(flq)</code></pre>
+<pre><code>$age
+[1] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot;
+
+$year
+[1] &quot;2012&quot; &quot;2013&quot; &quot;2014&quot; &quot;2015&quot; &quot;2016&quot; &quot;2017&quot;
+
+$unit
+[1] &quot;unique&quot;
+
+$season
+[1] &quot;all&quot;
+
+$area
+[1] &quot;unique&quot;
+
+$iter
+[1] &quot;1&quot;</code></pre>
+<pre class="r"><code># dims
+dim(flq)</code></pre>
+<pre><code>[1] 4 6 1 1 1 1</code></pre>
+<pre class="r"><code># units
+units(flq)</code></pre>
+<pre><code>[1] &quot;t&quot;</code></pre>
+<p>It can be also subset and modified</p>
+<pre class="r"><code># Extract first year
+flq[, 1]</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+   year
+age 2012   
+  1 0.60352
+  2 1.93833
+  3 0.24826
+  4 3.14748
+
+units:  t </code></pre>
+<pre class="r"><code># Extract year 2013
+flq[, &quot;2013&quot;]</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+   year
+age 2013  
+  1 0.9744
+  2 2.0995
+  3 1.5171
+  4 6.1635
+
+units:  t </code></pre>
+<pre class="r"><code># Set catches on age 1 to zero
+flq[1,] &lt;- 0
+flq</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+   year
+age 2012    2013    2014    2015    2016    2017   
+  1 0.00000 0.00000 0.00000 0.00000 0.00000 0.00000
+  2 1.93833 2.09946 3.13919 0.84972 0.53418 0.69980
+  3 0.24826 1.51710 5.28007 0.61229 0.59522 1.19544
+  4 3.14748 6.16351 1.06234 0.93561 1.43151 0.81529
+
+units:  t </code></pre>
+<p>as it can be used in many operations</p>
+<pre class="r"><code># Product with scalar
+flq * 10</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+   year
+age 2012    2013    2014    2015    2016    2017   
+  1  0.0000  0.0000  0.0000  0.0000  0.0000  0.0000
+  2 19.3833 20.9946 31.3919  8.4972  5.3418  6.9980
+  3  2.4826 15.1710 52.8007  6.1229  5.9522 11.9544
+  4 31.4748 61.6351 10.6234  9.3561 14.3151  8.1529
+
+units:  t </code></pre>
+<pre class="r"><code># Addition with another FLQuant
+flq + (flq * 0.20)</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+   year
+age 2012    2013    2014    2015    2016    2017   
+  1 0.00000 0.00000 0.00000 0.00000 0.00000 0.00000
+  2 2.32600 2.51935 3.76703 1.01966 0.64102 0.83976
+  3 0.29791 1.82052 6.33608 0.73475 0.71427 1.43453
+  4 3.77698 7.39621 1.27480 1.12273 1.71781 0.97834
+
+units:  t </code></pre>
+<pre class="r"><code># Sum along years
+yearSums(flq)</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+   year
+age 1      
+  1  0.0000
+  2  9.2607
+  3  9.4484
+  4 13.5557
+
+units:  t </code></pre>
+<div id="more-information" class="section level3">
+<h3>More information</h3>
+<p>To learn more about the class, check the <a href="http://www.flr-project.org/FLCore/reference/FLQuant.html">FLQuant help page</a>.</p>
+</div>
+</div>
 </div>
 <div id="loading-your-data" class="section level1">
 <h1>Loading your data</h1>
@@ -465,6 +634,8 @@ m.spwn        : [ 10 52 1 1 1 1 ], units =   </code></pre>
 discards(ple4) &lt;- computeDiscards(ple4)</code></pre>
 <p>and then the catch slots from both landings and discards</p>
 <pre class="r"><code>catch(ple4) &lt;- computeCatch(ple4, slot=&quot;all&quot;)</code></pre>
+<p>The mean weigth-at-age in the stock needs to be provided. In this case we will assume it is the same as the one computed from the catch sampling programme</p>
+<pre class="r"><code>stock.wt(ple4) &lt;- catch.wt(ple4)</code></pre>
 <p>We finalize by specifying the fully selected age range, used in the calculation of an overall index of fishing mortality, for example as the mean, using <code>fbar()</code>, or as the maximum value, using <code>fapex()</code> across those ages. This information is part of the object’s <em>range</em>.</p>
 <pre class="r"><code>range(ple4, c(&quot;minfbar&quot;, &quot;maxfbar&quot;)) &lt;- c(2, 6)</code></pre>
 <p>If we now inspect the resulting object we can see that all calculated slots have been assigned the corresponding <em>units</em> of measurement, except for those that will hold the estimates coming from a stock assessment model: <em>stock</em>, <em>stock.n</em> and <em>stock.wt</em> for the estimates of abundance, and <em>harvest</em> for the estimates of fishing mortality at age.</p>
@@ -491,7 +662,7 @@ landings.n    : [ 10 52 1 1 1 1 ], units =  1000
 landings.wt   : [ 10 52 1 1 1 1 ], units =  kg 
 stock         : [ 1 52 1 1 1 1 ], units =  NA 
 stock.n       : [ 10 52 1 1 1 1 ], units =  NA 
-stock.wt      : [ 10 52 1 1 1 1 ], units =  NA 
+stock.wt      : [ 10 52 1 1 1 1 ], units =  kg 
 m             : [ 10 52 1 1 1 1 ], units =  m 
 mat           : [ 10 52 1 1 1 1 ], units =   
 harvest       : [ 10 52 1 1 1 1 ], units =  NA 
@@ -499,7 +670,7 @@ harvest.spwn  : [ 10 52 1 1 1 1 ], units =
 m.spwn        : [ 10 52 1 1 1 1 ], units =   </code></pre>
 <pre class="r"><code>plot(metrics(ple4, Catch=catch, Landings=landings))</code></pre>
 <p><img src="A_quick_introduction_to_FLR_files/figure-html/ple4-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div id="more-information" class="section level3">
+<div id="more-information-1" class="section level3">
 <h3>More information</h3>
 <p>Please see the <a href="Reading_data_into_FLR.html">Reading data into FLR</a> tutorial for more examples on how to get your data into into <strong>FLR</strong>.</p>
 </div>
@@ -509,21 +680,105 @@ m.spwn        : [ 10 52 1 1 1 1 ], units =   </code></pre>
 </div>
 <div id="running-a-stock-assessment" class="section level1">
 <h1>Running a stock assessment</h1>
+<p>An important step in providing management advice for a fish stock is the estimation of current status, past history and stock productivity through an stock assessment (SA) model. The <em>FLStock</em> object we have created contains some of the inputs required for most SA models: catches, natural mortality, and maturity. What is now needed is some indication of changes in abundance over the period of exploitation, an index of abundance, derived from either research surveys or catch-per-unit-effort of commercial fleets.</p>
+<div id="index-of-abundance" class="section level2">
+<h2>Index of abundance</h2>
+<p>An index of abundance for the North Sea plaice stock, as an object of class <a href="http://www.flr-project.org/FLCore/reference/FLIndex.html">FLIndex</a>, is available as an example dataset in <em>FLCore</em>, and can be loaded using the <em>data</em> command</p>
+<pre class="r"><code>data(ple4.index)</code></pre>
+<p>This time series of abundances at age, covering from 1985 to 2008, was obtained during the <a href="http://ocean.ices.dk/Project/IBTS/">ICES International Bottom Trawl Survey</a>, as is one of the indices used by the Working Group on the Assessment of Demersal Stocks in the North Sea and Skagerrak (WGNSSK).</p>
+<p>The <em>FLIndex</em> class is able to contain not only the index of abundance, in this case as an age-structured <em>FLQuant</em>, but also other information on variance, associated catches, effort, selectivity and catchability, which might be used by certain methods.</p>
+<pre class="r"><code>summary(ple4.index)</code></pre>
+<pre><code>An object of class &quot;FLIndex&quot;
+
+Name: BTS-Isis 
+Description: Plaice in IV . Imported from VPA file. 
+Type :   
+Distribution :   
+Quant: age 
+Dims:  age  year    unit    season  area    iter
+    8   24  1   1   1   1   
+
+Range:  min max pgroup  minyear maxyear startf  endf 
+    1   8   NA  1985    2008    0.66    0.75    
+
+index         : [ 8 24 1 1 1 1 ], units =  NA 
+index.var     : [ 8 24 1 1 1 1 ], units =  NA 
+catch.n       : [ 8 24 1 1 1 1 ], units =  NA 
+catch.wt      : [ 8 24 1 1 1 1 ], units =  NA 
+effort        : [ 1 24 1 1 1 1 ], units =  NA 
+sel.pattern   : [ 8 24 1 1 1 1 ], units =  NA 
+index.q       : [ 8 24 1 1 1 1 ], units =  NA </code></pre>
+<pre class="r"><code>plot(ple4.index)</code></pre>
+<p><img src="A_quick_introduction_to_FLR_files/figure-html/summaryple4index-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The <em>range</em> slot in this class contains information about the time period over which the survey takes place, as proportions of the year, in this case from the beginning of August to the end of September.</p>
+<pre class="r"><code>range(ple4.index)[c(&quot;startf&quot;, &quot;endf&quot;)]</code></pre>
+<pre><code>startf   endf 
+  0.66   0.75 </code></pre>
+</div>
+<div id="a4a-statistical-catch-at-age" class="section level2">
+<h2>a4a statistical catch-at-age</h2>
+<p>The <a href="http:flr-project.org/FLa4a">FLa4a</a> package provides an <strong>FLR</strong> implementation of the <em>a4a</em> model, an statistical catch-at-age model of medium complexity that has been designed to make use of the power and flexibility of R’s formula-based model notation (as used for example in <a href="https://stat.ethz.ch/R-manual/R-patched/library/stats/html/lm.html">lm</a>), while giving access to a solid and fast minimization algorithm implemented using <a href="http://www.admb-project.org/">AD Model Builder</a>.</p>
+<pre class="r"><code>library(FLa4a)</code></pre>
+<p>A first go at fitting this model to the <em>ple4</em> and <em>ple4.index</em> datasets requires a single line of code</p>
+<pre class="r"><code>fit &lt;- sca(ple4, FLIndices(BTS=ple4.index))</code></pre>
+<p>This returns an object of class a4aFit that contains the results fo the model fit, including the estimated catch-at-age, and the derived abundances and fishing mortality at age</p>
+<pre class="r"><code>summary(fit)</code></pre>
+<pre><code>An object of class &quot;a4aFit&quot;
+
+Name:  
+Description:  
+Quant: age 
+Dims:  age  year    unit    season  area    iter
+    10  52  1   1   1   1   
+
+Range:  min max pgroup  minyear maxyear minfbar maxfbar 
+    1   10  10  1957    2008    2   6   
+
+stock.n       : [ 10 52 1 1 1 1 ], units =  NA 
+harvest       : [ 10 52 1 1 1 1 ], units =  f 
+catch.n       : [ 10 52 1 1 1 1 ], units =  NA </code></pre>
+<p>which we can use to update the <em>FLStock</em> object</p>
+<pre class="r"><code>stk &lt;- ple4 + fit
+plot(stk)</code></pre>
+<p><img src="A_quick_introduction_to_FLR_files/figure-html/ple4fit-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Among other methods, <em>FLa4a</em> provides a range of tools for inspecting the quality of the model fit. For example, a set of residuals, for the fits to both the index olf abundance and</p>
+<div id="more-information-2" class="section level3">
+<h3>More information</h3>
+<p>Please see the <a href=".html"></a> tutorial for more examples on how to .</p>
+</div>
+</div>
 </div>
 <div id="exploring-the-stock-recruitment-relationship" class="section level1">
 <h1>Exploring the stock-recruitment relationship</h1>
+<pre class="r"><code>plsr &lt;- as.FLSR(stk, model=&quot;ricker&quot;)</code></pre>
+<pre class="r"><code>plsr &lt;- fmle(plsr)</code></pre>
+<div id="more-information-3" class="section level3">
+<h3>More information</h3>
+<p>Please see the <a href=".html"></a> tutorial for more examples on how to .</p>
+</div>
 </div>
 <div id="estimating-reference-points" class="section level1">
 <h1>Estimating reference points</h1>
+<div id="more-information-4" class="section level3">
+<h3>More information</h3>
+<p>Please see the <a href=".html"></a> tutorial for more examples on how to .</p>
+</div>
 </div>
 <div id="forecasting-under-different-scenarios" class="section level1">
 <h1>Forecasting under different scenarios</h1>
+<div id="more-information-5" class="section level3">
+<h3>More information</h3>
+<p>Please see the <a href=".html"></a> tutorial for more examples on how to .</p>
+</div>
+</div>
+<div id="management-strategy-evaluation" class="section level1">
+<h1>Management Strategy Evaluation</h1>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
 <p>L. T. Kell, I. Mosqueira, P. Grosjean, J-M. Fromentin, D. Garcia, R. Hillary, E. Jardim, S. Mardle, M. A. Pastoors, J. J. Poos, F. Scott, R. D. Scott; FLR: an open-source framework for the evaluation and development of management strategies. <em>ICES J Mar Sci</em> 2007; 64 (4): 640-646. doi: <a href="https://doi.org/10.1093/icesjms/fsm012">10.1093/icesjms/fsm012</a>.</p>
 </div>
-<div id="more-information-1" class="section level1">
+<div id="more-information-6" class="section level1">
 <h1>More information</h1>
 <ul>
 <li>You can submit bug reports, questions or suggestions on this tutorial at <a href="https://github.com/flr/doc/issues" class="uri">https://github.com/flr/doc/issues</a>.</li>
@@ -534,8 +789,8 @@ m.spwn        : [ 10 52 1 1 1 1 ], units =   </code></pre>
 <h2>Software Versions</h2>
 <ul>
 <li>R version 3.4.1 (2017-06-30)</li>
-<li>FLCore: 2.6.3.9008</li>
-<li><strong>Compiled</strong>: Mon Aug 21 10:18:04 2017</li>
+<li>FLCore: 2.6.3.9009</li>
+<li><strong>Compiled</strong>: Sat Aug 26 08:22:26 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">
