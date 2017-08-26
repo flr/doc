@@ -750,11 +750,71 @@ plot(stk)</code></pre>
 </div>
 <div id="exploring-the-stock-recruitment-relationship" class="section level1">
 <h1>Exploring the stock-recruitment relationship</h1>
-<pre class="r"><code>plsr &lt;- as.FLSR(stk, model=&quot;ricker&quot;)</code></pre>
+<p>Fitting a model for the relationship between stock abundance and expected recruitment is necessary for forecasting the future dynamics of the stock under various levels of fishing mortality, the central element of fisheries management advice. Certain stock assessment models, for example most statistical catch-at-age models, include the stock-recruitment model in the estimated parameters, but for others, like Virtual Population Analysis, this is a setup carried out once the stock of population abundace have been obtained.</p>
+<p>Both inputs and outputs for stock-recruitment models are stored in an object of the <a href="http://www.flr-project.org/FLCore/reference/FLSR.html">FLSR</a> class which we can create directly from the SA results by coertion using</p>
+<pre class="r"><code>plsr &lt;- as.FLSR(stk)</code></pre>
+<p>The resulting <em>FLSR</em> object contains the series of recruitment <code>rec</code>, the abundance of the first age, and the stock reproductive potential, in this case the spawning stock biomass <code>ssb</code>. Both series are already displaced as corresponds by the age of recruitment, 1 in this case.</p>
+<pre class="r"><code>summary(plsr)</code></pre>
+<pre><code>An object of class &quot;FLSR&quot;
+
+Name:  
+Description: &#39;rec&#39; and &#39;ssb&#39; slots obtained from a &#39;FLStock&#39; object 
+Quant: age 
+Dims:  age  year    unit    season  area    iter
+    1   51  1   1   1   1   
+
+Range:  min minyear max maxyear 
+    1   1958    1   2008    
+
+rec           : [ 1 51 1 1 1 1 ], units =  NA 
+ssb           : [ 1 51 1 1 1 1 ], units =  kg 
+residuals     : [ 1 51 1 1 1 1 ], units =  NA 
+fitted        : [ 1 51 1 1 1 1 ], units =  NA 
+
+Model:  list()
+&lt;environment: 0x14e2e390&gt;
+Parameters: 
+    params
+iter
+   1
+
+Log-likelihood:  NA(NA) 
+Variance-covariance: &lt;0 x 0 matrix&gt;</code></pre>
+<p>We now need to choose a model to fit, and <em>FLCore</em> provides a number of them already defined in terms of:</p>
+<ul>
+<li>the model formula, kept in the <code>model</code> slot</li>
+<li>a function returning the log-likelihood, to be used for minimization, in the <code>logl</code> slot</li>
+<li>a function to obtain initial values for the minimization procedure, in the <code>initial</code> slot</li>
+</ul>
+<p>See the <a href="http://www.flr-project.org/FLCore/reference/FLSR.html">SR Models</a> help page for further details of the available models.</p>
+<p>We can now assign the output of the chosen model function, in this case <code>ricker()</code> to the existing object using</p>
+<pre class="r"><code>model(plsr) &lt;- ricker()</code></pre>
+<p>The model object is ready to fit, through Maximum Likelihood Estimation (MLE), using the <code>fmle</code> method defined in <em>FLCore</em>. This makes use of R’s <code>optim</code>, but defaults to the Melder-Mead algorithm.</p>
 <pre class="r"><code>plsr &lt;- fmle(plsr)</code></pre>
+<p>Another look at the object ill show us that a number of slots now contain the results of the model fit, among them:</p>
+<ul>
+<li><code>fitted</code> for the estimated recruitment, as an <em>FLQuant</em></li>
+<li><code>residuals</code> for the residuals in log space, <em>FLQuant</em></li>
+<li><code>params</code> for the estimated parameters, as an object of class <em>FLPar</em></li>
+<li><code>vcov</code> for the variance-covariance matrix, as an <em>array</em></li>
+</ul>
+<p>The standard plot for the class shows the model fit and a series of useful diagnostics that will help us evaluating the its quality and usefulness for future projections. This can be further explored by likelihood profiling over a range of values of the estimated parameters, simply calling the <code>profile</code> method of the object</p>
+<pre class="r"><code>profile(plsr)</code></pre>
+<p><img src="A_quick_introduction_to_FLR_files/figure-html/flsrprofile-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Finally, the model can be used to predict future recruitments if provided with a set of new of values of SSB, as in</p>
+<pre class="r"><code>predict(plsr, ssb=FLQuant(rnorm(10, 25e4, sd(ssb(plsr))), dimnames=list(age=1, year=2008:2017)))</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+   year
+age 2008   2009   2010   2011   2012   2013   2014   2015   2016   2017  
+  1 941825 946690 948331 830527 948135 941482 863156 926300 929223 886520
+
+units:  NA </code></pre>
 <div id="more-information-3" class="section level3">
 <h3>More information</h3>
-<p>Please see the <a href=".html"></a> tutorial for more examples on how to .</p>
+<p>Please see the <a href="Modelling_stock_recruitment_with_FLSR.html">Modelling stock recruitment with FLSR</a> tutorial for more examples and information on the stock-recruitment model fitting capabilities of <strong>FLR</strong>.</p>
 </div>
 </div>
 <div id="estimating-reference-points" class="section level1">
@@ -790,7 +850,7 @@ plot(stk)</code></pre>
 <ul>
 <li>R version 3.4.1 (2017-06-30)</li>
 <li>FLCore: 2.6.3.9009</li>
-<li><strong>Compiled</strong>: Sat Aug 26 08:22:26 2017</li>
+<li><strong>Compiled</strong>: Sat Aug 26 15:53:34 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">

@@ -286,20 +286,62 @@ Please see the [](.html) tutorial for more examples on how to .
 
 # Exploring the stock-recruitment relationship
 
+Fitting a model for the relationship between stock abundance and expected recruitment is necessary for forecasting the future dynamics of the stock under various levels of fishing mortality, the central element of fisheries management advice. Certain stock assessment models, for example most statistical catch-at-age models, include the stock-recruitment model in the estimated parameters, but for others, like Virtual Population Analysis, this is a setup carried out once the stock of population abundace have been obtained.
+
+Both inputs and outputs for stock-recruitment models are stored in an object of the [FLSR](http://www.flr-project.org/FLCore/reference/FLSR.html) class which we can create directly from the SA results by coertion using
 
 ```{r, flsrcreate}
-plsr <- as.FLSR(stk, model="ricker")
+plsr <- as.FLSR(stk)
 ```
 
+The resulting *FLSR* object contains the series of recruitment `rec`, the abundance of the first age, and the stock reproductive potential, in this case the spawning stock biomass `ssb`. Both series are already displaced as corresponds by the age of recruitment, 1 in this case.
+
+```{r, flsrsummary}
+summary(plsr)
+```
+
+We now need to choose a model to fit, and *FLCore* provides a number of them already defined in terms of:
+
+- the model formula, kept in the `model` slot
+- a function returning the log-likelihood, to be used for minimization, in the `logl` slot
+- a function to obtain initial values for the minimization procedure, in the `initial` slot
+
+See the [SR Models](http://www.flr-project.org/FLCore/reference/FLSR.html) help page for further details of the available models.
+
+We can now assign the output of the chosen model function, in this case `ricker()` to the existing object using
+
+```{r, flsrmodel}
+model(plsr) <- ricker()
+```
+
+The model object is ready to fit, through Maximum Likelihood Estimation (MLE), using the `fmle` method defined in *FLCore*. This makes use of R's `optim`, but defaults to the Melder-Mead algorithm.
 
 ```{r, flsrfit, results="hide"}
 plsr <- fmle(plsr)
 ```
 
+Another look at the object ill show us that a number of slots now contain the results of the model fit, among them:
+
+- `fitted` for the estimated recruitment, as an *FLQuant*
+- `residuals` for the residuals in log space, *FLQuant*
+- `params` for the estimated parameters, as an object of class *FLPar*
+- `vcov` for the variance-covariance matrix, as an *array*
+
+The standard plot for the class shows the model fit and a series of useful diagnostics that will help us evaluating the its quality and usefulness for future projections. This can be further explored by likelihood profiling over a range of values of the estimated parameters, simply calling the `profile` method of the object
+
+```{r, flsrprofile}
+profile(plsr)
+```
+
+Finally, the model can be used to predict future recruitments if provided with a set of new of values of SSB, as in
+
+```{r, flsrpredict}
+predict(plsr, ssb=FLQuant(rnorm(10, 25e4, sd(ssb(plsr))), dimnames=list(age=1, year=2008:2017)))
+```
 
 ### More information
 
-Please see the [](.html) tutorial for more examples on how to .
+Please see the [Modelling stock recruitment with FLSR](Modelling_stock_recruitment_with_FLSR.html) tutorial for more examples and information on the stock-recruitment model fitting capabilities of **FLR**.
 
 # Estimating reference points
 
