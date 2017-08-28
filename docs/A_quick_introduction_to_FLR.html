@@ -772,7 +772,7 @@ residuals     : [ 1 51 1 1 1 1 ], units =  NA
 fitted        : [ 1 51 1 1 1 1 ], units =  NA 
 
 Model:  list()
-&lt;environment: 0x10569cb8&gt;
+&lt;environment: 0x115e1778&gt;
 Parameters: 
     params
 iter
@@ -885,7 +885,7 @@ refpt    cost       profit
 units:  NA </code></pre>
 <p>This slot contains the estimates for a series of reference points and for a number of quantities. For example, the value stored at the intersection of <code>msy</code> and <code>harvest</code> corresponds to <span class="math inline">\(F_{MSY}\)</span>, while that of <code>virgin</code> and <code>ssb</code> is the estimate of virgin stock biomass. We can, for example, extract the two standard MSY-related reference points as a named vector using</p>
 <pre class="r"><code>pmsy &lt;- refpts(plrp)[&quot;msy&quot;, c(&quot;harvest&quot;, &quot;ssb&quot;), drop=TRUE]</code></pre>
-<p>to use them to visualize the status of the stock in relation to these points, for example</p>
+<p>to then use them to visualize the status of the stock in relation to these points, for example</p>
 <pre class="r"><code>plot(ssb(stk) / pmsy[&quot;ssb&quot;]) + geom_hline(aes(yintercept=1), linetype=2) +
   ylab(expression(SSB / SSB[MSY]))</code></pre>
 <p><img src="A_quick_introduction_to_FLR_files/figure-html/refptplot-1.png" width="672" style="display: block; margin: auto;" /></p>
@@ -897,7 +897,7 @@ units:  NA </code></pre>
 <div id="forecasting-under-different-scenarios" class="section level1">
 <h1>Forecasting under different scenarios</h1>
 <p>Our final step in this quick tour takes us to the tools in <em>FLR</em> for forecasting the future responses of the stock to alternative management decisions. This example concerns a Short Term Forecast, in which the effect of the current management, for example a maximum catch limit or TAC, on the present year is forecasted, and then a series of alternative increases or decreases in catch are applied to the object representing our current understanding of the stock status and dynamics.</p>
-<p>The <a href="http://flr-project.org/FLash">FLash package</a> contains the current implementation of the forecasting mechanism in <em>FLR</em></p>
+<p>The <a href="http://flr-project.org/FLash">FLash package</a> contains the current implementation of the forecasting mechanism in <em>FLR</em>. Please note that FLash is currently only working on 32 bit R if using Windows. A new forecasting package, called <em>FLasher</em> is about to be released and will only work on 64 bit R.</p>
 <pre class="r"><code>library(FLash)</code></pre>
 <p>The key element in the <em>FLash</em> interface is the <em>fwdControl</em> class, which allows us to specify the targets and limits that we want the stock to achieve or remain within. But first we need to make some assumptions about the future values of certain quantities, both on the biology (natural mortality, maturity) and the fishery (selectivity, proportion of discards). A common approach for this kind of forecast is to use averages over the last few years (tipycally three) for certain quantities. This can be done in <em>FLR</em> using the <code>stf</code> method in the <em>FLBRP</em> package.</p>
 <pre class="r"><code>proj &lt;- FLBRP:::stf(stk)</code></pre>
@@ -961,12 +961,12 @@ ctrl &lt;- fwdControl(data.frame(year=2009:2011, quantity=c(&quot;catch&quot;, &
 <h2>Software Versions</h2>
 <ul>
 <li>R version 3.4.1 (2017-06-30)</li>
-<li>FLCore: 2.6.3.9008</li>
-<li>ggplotFL: 2.6.0</li>
+<li>FLCore: 2.6.4</li>
+<li>ggplotFL: 2.6.1</li>
 <li>FLa4a: 1.1.2</li>
-<li>FLBRP: 2.5.1.9000</li>
-<li>FLash: 2.5.7</li>
-<li><strong>Compiled</strong>: Mon Aug 28 09:56:37 2017</li>
+<li>FLBRP: 2.5.20170307</li>
+<li>FLash: 2.5.8</li>
+<li><strong>Compiled</strong>: Mon Aug 28 10:13:13 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">

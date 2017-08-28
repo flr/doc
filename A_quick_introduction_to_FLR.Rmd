@@ -375,7 +375,7 @@ This slot contains the estimates for a series of reference points and for a numb
 pmsy <- refpts(plrp)["msy", c("harvest", "ssb"), drop=TRUE]
 ```
 
-to use them to visualize the status of the stock in relation to these points, for example
+to then use them to visualize the status of the stock in relation to these points, for example
 
 ```{r, refptplot}
 plot(ssb(stk) / pmsy["ssb"]) + geom_hline(aes(yintercept=1), linetype=2) +
@@ -390,7 +390,7 @@ For more information on *FLBRP*, please see the [Reference points for fisheries 
 
 Our final step in this quick tour takes us to the tools in *FLR* for forecasting the future responses of the stock to alternative management decisions. This example concerns a Short Term Forecast, in which the effect of the current management, for example a maximum catch limit or TAC, on the present year is forecasted, and then a series of alternative increases or decreases in catch are applied to the object representing our current understanding of the stock status and dynamics.
 
-The [FLash package](http://flr-project.org/FLash) contains the current implementation of the forecasting mechanism in *FLR*
+The [FLash package](http://flr-project.org/FLash) contains the current implementation of the forecasting mechanism in *FLR*. Please note that FLash is currently only working on 32 bit R if using Windows. A new forecasting package, called *FLasher* is about to be released and will only work on 64 bit R.
 
 ```{r, flash}
 library(FLash)
