@@ -22,7 +22,7 @@ FLR builds on the powerful R environment and syntax to create a [domain-specific
 To follow this tutorial you should have installed the following packages:
 
 - CRAN: latticeExtra, gridExtra, ggplot2
-- FLR: [FLCore](http://www.flr-project.org/FLCore/), [FLa4a](http://www.flr-project.org/FLa4a/), [ggplotFL](http://www.flr-project.org/ggplotFL/), [FLBRP](http://www.flr-project.org/FLBRP/)
+- FLR: [FLCore](http://www.flr-project.org/FLCore/), [FLa4a](http://www.flr-project.org/FLa4a/), [ggplotFL](http://www.flr-project.org/ggplotFL/), [FLBRP](http://www.flr-project.org/FLBRP/), [FLash](http://www.flr-project.org/FLash/)
 
 You can do so as follows:
 
