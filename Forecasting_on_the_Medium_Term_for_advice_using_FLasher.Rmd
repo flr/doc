@@ -671,7 +671,7 @@ The information in the brackets is the Median Absolute Deviation, a way of summa
 We now have the recruitment residuals.
 We'll use the *ctrl_catch* control object we made earlier with decreasing catch.
 We call *fwd()* as usual, only now we have a *residuals* argument.
-This takes a little time (we have 1000 iterations).
+This takes a little time (we have 200 iterations).
 
 ```{r, res6}
 ple4_stoch_rec <- fwd(ple4_mtf, control = ctrl_catch, sr = ple4_sr, residuals = rec_residuals) 
