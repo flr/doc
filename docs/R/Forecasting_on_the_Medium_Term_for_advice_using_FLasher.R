@@ -8,11 +8,11 @@ source("R/ini.R")
 ## install.packages(c("FLAssess"), repos="http://flr-project.org/R")
 
 ## ---- pkgs---------------------------------------------------------------
-# This chunk loads all necessary packages, trims pkg messages
+# Load all necessary packages, trim pkg messages
 library(FLCore)
 library(FLasher)
 
-## ---- stf, echo=FALSE----------------------------------------------------
+## ---- stf, echo=FALSE, results='hide'------------------------------------
 setGeneric("stf", function(object,...)
 	standardGeneric("stf"))
 
@@ -121,8 +121,7 @@ data(ple4)
 
 ## ---- stf_condition------------------------------------------------------
 ple4_mtf <- stf(ple4, nyears = 10)
-
-## ---- summarymtf---------------------------------------------------------
+# Now the stock goes up to 2018
 summary(ple4_mtf)
 
 ## ---- fitSRR-------------------------------------------------------------
@@ -131,167 +130,185 @@ ple4_sr <- fmle(as.FLSR(ple4, model="bevholt"), control=list(trace=0))
 ## ---- plotSRR, fig.cap="Fitted Beverton-Holt stock-recruitment relationship for the *ple4* stock object"----
 plot(ple4_sr)
 
-## ---- feg1---------------------------------------------------------------
+## ---- ex1a---------------------------------------------------------------
 f_status_quo <- mean(fbar(ple4)[,as.character(2005:2008)])
 f_status_quo
 
-## ---- feg2---------------------------------------------------------------
+## ---- ex1b---------------------------------------------------------------
 ctrl_target <- data.frame(year = 2009:2018,
-			  quant = "f",
-			  value = f_status_quo)
+			                    quant = "f",
+			                    value = f_status_quo)
 
-## ---- feg3---------------------------------------------------------------
+## ---- ex1c---------------------------------------------------------------
 ctrl_f <- fwdControl(ctrl_target)
-
-## ---- reg31--------------------------------------------------------------
 ctrl_f
 
-## ---- feg4---------------------------------------------------------------
+## ---- ex1d---------------------------------------------------------------
 ple4_f_sq <- fwd(ple4_mtf, control = ctrl_f, sr = ple4_sr)
-
-## ---- fegplot------------------------------------------------------------
+# What just happened? We plot the stock from the year 2000.
 plot(window(ple4_f_sq, start=2000))
 
-## ---- feg5---------------------------------------------------------------
+## ---- ex1e---------------------------------------------------------------
 fbar(ple4_f_sq)[,ac(2005:2018)]
 
-## ---- feg6---------------------------------------------------------------
+## ---- ex1f---------------------------------------------------------------
 rec(ple4_f_sq)[,ac(2005:2018)]
 
-## ---- ceg1---------------------------------------------------------------
+## ---- ex2a---------------------------------------------------------------
 future_catch <- c(catch(ple4)[,"2008"]) * 0.9^(1:10)
 future_catch
 
-## ---- ceg2---------------------------------------------------------------
+## ---- ex2b---------------------------------------------------------------
 ctrl_catch <- fwdControl(
 	data.frame(
 		year=2009:2018,
 		quant = "catch",
 		value=future_catch))
-
-## ---- ceg3---------------------------------------------------------------
+# The control object has the desired catch target values
 ctrl_catch
 
-## ---- ceg4---------------------------------------------------------------
+## ---- ex2c---------------------------------------------------------------
 ple4_catch <- fwd(ple4_mtf, control = ctrl_catch, sr = ple4_sr)
-
-## ---- cegplot------------------------------------------------------------
+catch(ple4_catch)[,ac(2008:2018)]
 plot(window(ple4_catch, start=2000))
 
-## ---- seg2---------------------------------------------------------------
-future_ssb <- 250000
-ctrl_ssb <- fwdControl(data.frame(year=2008, quant = "ssb", value=future_ssb))
-ctrl_ssb
+## ---- ex3a---------------------------------------------------------------
+final_ssb <- 100000
+ctrl_ssb <- fwdControl(data.frame(year=2009, quant = "ssb_end", value=final_ssb))
 ple4_ssb <- fwd(ple4_mtf, control=ctrl_ssb, sr = ple4_sr)
+# Calculate the final SSB to check the target has been hit
+survivors <- stock.n(ple4_ssb) * exp(-harvest(ple4_ssb) - m(ple4_ssb))
+quantSums((survivors * stock.wt(ple4_ssb) * mat(ple4_ssb))[,ac(2009)])
 
-## ---- seg3---------------------------------------------------------------
-ssb(ple4_ssb)[,ac(2005:2009)]
+## ---- ex3b, warning=TRUE-------------------------------------------------
+spawn_ssb <- 100000
+ctrl_ssb <- fwdControl(data.frame(year=2009, quant = "ssb_spawn", value=spawn_ssb))
+ple4_ssb <- fwd(ple4_mtf, control=ctrl_ssb, sr = ple4_sr)
+# Using the `ssb()` method to get the SSB at the time of spawning,
+# we can see that the projection failed
+ssb(ple4_ssb)[,ac(2009)]
 
-## ---- seg4---------------------------------------------------------------
-future_ssb <- 250000
-ctrl_ssb <- fwdControl(data.frame(year=2008:2017, quant = "ssb", value=future_ssb))
+## ---- ex3c---------------------------------------------------------------
+m.spwn(ple4_mtf)[,ac(2009)] <- 0.5
+harvest.spwn(ple4_mtf)[,ac(2009)] <- 0.5
+spawn_ssb <- 100000
+ctrl_ssb <- fwdControl(data.frame(year=2009, quant = "ssb_spawn", value=spawn_ssb))
+ple4_ssb <- fwd(ple4_mtf, control=ctrl_ssb, sr = ple4_sr)
+# We hit the target
+ssb(ple4_ssb)[,ac(2009)]
+
+## ---- ex3d---------------------------------------------------------------
+srp <- 100000
+ctrl_ssb <- fwdControl(data.frame(year=2009, quant = "srp", value=srp))
+ple4_ssb <- fwd(ple4_mtf, control=ctrl_ssb, sr = ple4_sr)
+# We hit the target
+ssb(ple4_ssb)[,ac(2009)]
+
+## ---- ex3e---------------------------------------------------------------
+# Force spawning to happen half way through the year
+# and fishing to start at the beginning of the year
+m.spwn(ple4_mtf)[,ac(2009)] <- 0.5
+harvest.spwn(ple4_mtf)[,ac(2009)] <- 0.5
+flash_ssb <- 150000
+ctrl_ssb <- fwdControl(data.frame(year=2009, quant = "ssb_flash", value=flash_ssb))
+ple4_ssb <- fwd(ple4_mtf, control=ctrl_ssb, sr = ple4_sr)
+# Hit the target? Yes
+ssb(ple4_ssb)[,ac(2009)]
+
+## ---- ex3f---------------------------------------------------------------
+# Force spawning to happen at the start of the year before fishing
+m.spwn(ple4_mtf)[,ac(2009)] <- 0.0
+harvest.spwn(ple4_mtf)[,ac(2009)] <- 0.0
+flash_ssb <- 150000
+ctrl_ssb <- fwdControl(data.frame(year=2009, quant = "ssb_flash", value=flash_ssb))
+ple4_ssb <- fwd(ple4_mtf, control=ctrl_ssb, sr = ple4_sr)
+# We did hit the SSB target, but not until 2010.
+ssb(ple4_ssb)[,ac(2009:2010)]
+
+## ---- ex3g---------------------------------------------------------------
+# Force spawning to happen at the start of the year before fishing
+m.spwn(ple4_mtf)[,ac(2009)] <- 0.0
+harvest.spwn(ple4_mtf)[,ac(2009)] <- 0.0
+future_ssb <- 200000
+ctrl_ssb <- fwdControl(data.frame(year=2009:2018, quant = "ssb_flash", value=future_ssb))
 ple4_ssb <- fwd(ple4_mtf, control = ctrl_ssb, sr = ple4_sr)
 
-## ---- seg5---------------------------------------------------------------
-ssb(ple4_ssb)[,ac(2005:2018)]
+## ---- ex3h---------------------------------------------------------------
+ssb(ple4_ssb)[,ac(2009:2018)]
+fbar(ple4_ssb)[,ac(2009:2018)]
+plot(window(ple4_ssb, start=2000, end=2018))
 
-## ---- seg6---------------------------------------------------------------
-plot(window(ple4_ssb, start=2000, end=2017))
-
-## ---- rceg1--------------------------------------------------------------
+## ---- ex4a---------------------------------------------------------------
 ctrl_rel_catch <- fwdControl(
 	data.frame(year = 2009:2018,
 		   quant = "catch",
 		   value = 0.9,
 		   relYear = 2008:2017))
-
-## ---- rceg2--------------------------------------------------------------
+# The relative year appears in the control object summary
 ctrl_rel_catch
 
-## ---- rceg3--------------------------------------------------------------
+## ---- ex4b---------------------------------------------------------------
 ple4_rel_catch <- fwd(ple4_mtf, control = ctrl_rel_catch, sr = ple4_sr)
-
-## ---- rceg4--------------------------------------------------------------
 catch(ple4_rel_catch)
 catch(ple4_rel_catch)[,ac(2008:2018)] / catch(ple4_rel_catch)[,ac(2007:2017)]
 
-## ---- plotrelC, fig.cap="Relative catch example"-------------------------
+## ---- ex4c, fig.cap="Relative catch example"-----------------------------
 plot(window(ple4_rel_catch, start = 2001, end = 2018))
 
-## ---- meg1---------------------------------------------------------------
+## ---- ex5a---------------------------------------------------------------
 f01 <- 0.1
 
-## ---- meg2---------------------------------------------------------------
+## ---- ex5b---------------------------------------------------------------
 min_catch <- mean(catch(ple4_mtf)[,as.character(2006:2008)])
 min_catch
 
-## ---- meg3---------------------------------------------------------------
-ctrl_target <- rbind(
-    f_df <- data.frame(
-        year = 2009:2018,
-        quant = "f",
-        value = f01,
-        min = NA),
-    catch_df <- data.frame(
-        year = 2009:2018,
-        quant = "catch",
-        value = NA,
-        min = min_catch)
-)
+## ---- ex5c---------------------------------------------------------------
+df <- data.frame(
+    year = rep(2009:2018, each=2),
+    quant = c("f","catch"),
+    value = c(f01, NA),
+    min = c(NA, min_catch))
 
-## ---- meg5---------------------------------------------------------------
-ctrl_min_catch <- fwdControl(ctrl_target)
-
-## ---- meg6---------------------------------------------------------------
+## ---- ex5d---------------------------------------------------------------
+ctrl_min_catch <- fwdControl(df)
 ctrl_min_catch
 
-## ---- meg7---------------------------------------------------------------
+## ---- ex5e---------------------------------------------------------------
 ple4_min_catch <- fwd(ple4_mtf, control = ctrl_min_catch, sr = ple4_sr)
+fbar(ple4_min_catch)[,ac(2008:2018)]
+catch(ple4_min_catch)[,ac(2008:2018)]
 
-## ---- megc---------------------------------------------------------------
-#catch(ple4_min_catch)[,ac(2008:2018)]
-#fbar(ple4_min_catch)[,ac(2008:2018)]
-
-## ---- meg8, fig.cap="Example with a minimum catch bound and constant F target"----
+## ---- ex5f, fig.cap="Example with a minimum catch bound and constant F target"----
 plot(window(ple4_min_catch, start = 2001, end = 2018))
 
-## ---- rtbeg1-------------------------------------------------------------
+## ---- ex6a---------------------------------------------------------------
 current_fbar <- c(fbar(ple4)[,"2008"])
 f_target <- c(seq(from = current_fbar, to = f01, length = 8)[-1], rep(f01, 3))
 f_target
 
-## ---- rtbeg2-------------------------------------------------------------
+## ---- ex6b---------------------------------------------------------------
 rel_catch_bound <- 0.10
 
-## ---- rtbeg3-------------------------------------------------------------
-ctrl_target <- rbind(
-    f_df <- data.frame(
-        year = 2009:2018,
-        relYear = NA,
-        quant = "f",
-        value = f_target,
-        max = NA,
-        min = NA),
-    catch_df <- data.frame(
-        year = 2009:2018,
-        relYear = 2008:2017,
-        quant = "catch",
-        value = NA,
-        max = 1 + rel_catch_bound,
-        min = 1 - rel_catch_bound)
-)
+## ---- ex6c---------------------------------------------------------------
+df <- data.frame(
+    year = rep(2009:2018, 2),
+    relYear =c(rep(NA,10), 2008:2017),
+    quant = c(rep("f",10), rep("catch",10)),
+    value = c(f_target, rep(NA,10)),
+    max = c(rep(NA,10), rep(1+rel_catch_bound, 10)),
+    min = c(rep(NA,10), rep(1-rel_catch_bound, 10)))
 
-## ---- rtbeg5-------------------------------------------------------------
-ctrl_rel_min_max_catch <- fwdControl(ctrl_target)
+## ---- ex6d---------------------------------------------------------------
+ctrl_rel_min_max_catch <- fwdControl(df)
 ctrl_rel_min_max_catch
 
-## ---- rtbeg6-------------------------------------------------------------
+## ---- ex6e---------------------------------------------------------------
 recovery<-fwd(ple4_mtf, control=ctrl_rel_min_max_catch, sr=ple4_sr)
 
-## ---- rtbeg7-------------------------------------------------------------
+## ---- ex6f---------------------------------------------------------------
 plot(window(recovery, start = 2001, end = 2018))
 
-## ---- rtbeg8-------------------------------------------------------------
+## ---- ex6g---------------------------------------------------------------
 catch(recovery)[,ac(2009:2018)] / catch(recovery)[,ac(2008:2017)]
 
 ## ---- niter--------------------------------------------------------------
@@ -303,7 +320,7 @@ ple4_mtf <- propagate(ple4_mtf, niters)
 summary(ple4_mtf)
 
 ## ---- res----------------------------------------------------------------
-multi_rec_residuals <- FLQuant(NA, dimnames = list(year=2009:2018, iter=1:niters))
+rec_residuals <- FLQuant(NA, dimnames = list(year=2009:2018, iter=1:niters))
 
 ## ---- res2---------------------------------------------------------------
 residuals(ple4_sr)
@@ -312,20 +329,13 @@ residuals(ple4_sr)
 sample_years <- sample(dimnames(residuals(ple4_sr))$year, niters * 10, replace = TRUE)
 
 ## ---- res4---------------------------------------------------------------
-multi_rec_residuals[] <- exp(residuals(ple4_sr)[,sample_years])
+rec_residuals[] <- exp(residuals(ple4_sr)[,sample_years])
 
 ## ---- res5---------------------------------------------------------------
-multi_rec_residuals
-
-## ---- res_hack-----------------------------------------------------------
-dim(multi_rec_residuals)
-dim(stock(ple4_mtf))
-yrs <- range(as.numeric(dimnames(stock(ple4_mtf))$year))
-multi_rec_residuals <- window(multi_rec_residuals, start=yrs[1], end=yrs[2])
+rec_residuals
 
 ## ---- res6---------------------------------------------------------------
-#ple4_stoch_rec <- fwd(ple4_mtf, control = ctrl_catch, sr = ple4_sr, residuals = multi_rec_residuals, sr_residuals_mult = TRUE)
-ple4_stoch_rec <- fwd(ple4_mtf, control = ctrl_catch, sr = ple4_sr, residuals = multi_rec_residuals) 
+ple4_stoch_rec <- fwd(ple4_mtf, control = ctrl_catch, sr = ple4_sr, residuals = rec_residuals) 
 
 ## ---- res7, fig.cap="Example projection with stochasticity in the recruitment residuals"----
 plot(window(ple4_stoch_rec, start = 2001, end = 2018))
@@ -378,7 +388,7 @@ catch(ple4_catch_iters)[,ac(2008:2018)]
 rec(ple4_catch_iters)[,ac(2008:2018)]
 
 ## ---- stv14--------------------------------------------------------------
-ple4_catch_iters <- fwd(ple4_mtf, control=ctrl_catch_iters, sr = ple4_sr, residuals = multi_rec_residuals)
+ple4_catch_iters <- fwd(ple4_mtf, control=ctrl_catch_iters, sr = ple4_sr, residuals = rec_residuals)
 
 ## ---- stv15--------------------------------------------------------------
 plot(window(ple4_catch_iters, start = 2001, end = 2018))

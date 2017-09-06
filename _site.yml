@@ -1,8 +1,8 @@
 name: doc
 output:
-  html_document:
-    theme: yeti
-    highlight: textmate
+html_document:
+  theme: yeti
+  highlight: textmate
 output_dir: docs
 navbar:
   left:
@@ -15,8 +15,8 @@ navbar:
     - text: "Introduction"
       icon: fa-gear
       menu:
-        - text: "Page A"
-          href: A.html
+        - text: "A quick intro"
+          href: A_quick_introduction_to_FLR.html
         - text: "Page B"
           href: B.html
     - text: "Input"

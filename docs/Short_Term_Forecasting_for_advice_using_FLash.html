@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -15,12 +15,12 @@
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-1.1/highlight.js"></script>
 <link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
 
@@ -98,34 +98,34 @@ button.code-folding-btn:focus {
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
-  padding-top: 45px;
+  padding-top: 51px;
   padding-bottom: 40px;
 }
 /* offset scroll position for anchor links (for fixed navbar)  */
 .section h1 {
-  padding-top: 50px;
-  margin-top: -50px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 
 .section h2 {
-  padding-top: 50px;
-  margin-top: -50px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 .section h3 {
-  padding-top: 50px;
-  margin-top: -50px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 .section h4 {
-  padding-top: 50px;
-  margin-top: -50px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 .section h5 {
-  padding-top: 50px;
-  margin-top: -50px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 .section h6 {
-  padding-top: 50px;
-  margin-top: -50px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 </style>
 
@@ -200,7 +200,7 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="A.html">Page A</a>
+      <a href="A_quick_introduction_to_FLR.html">A quick intro</a>
     </li>
     <li>
       <a href="B.html">Page B</a>
@@ -310,12 +310,17 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Short Term Forecasting for advice using FLash</h1>
-<h4 class="date"><em>08 March, 2017</em></h4>
+<h4 class="date"><em>16 August, 2017</em></h4>
 
 </div>
 
 
-<p>Short term forecasts help projecting the stock to forecast the implications of different management choices over a limited number of years. There are three necessary ingredients when projecting in FLR: a stock object - that you will forecast and about which you have made some assumptions about what will happen in the future, a stock-recruitment relationship, a projection control - specify what targets and when to hit them.</p>
+<p>Short term forecasts help projecting the stock to forecast the implications of different management choices over a limited number of years. There are three necessary ingredients when projecting in FLR:</p>
+<ul>
+<li>a stock object that you will forecast and about which you have made some assumptions regarding what will happen in the future,</li>
+<li>a stock-recruitment relationship,</li>
+<li>a projection control specifying what the targets are and when to hit them.</li>
+</ul>
 <p>In FLR, the method for short term forecasts is called <code>fwd()</code>, which takes an <code>FLStock</code>, <code>FLSR</code>, and <code>fwdControl</code>.</p>
 <div id="required-packages" class="section level2">
 <h2>Required packages</h2>
@@ -324,14 +329,16 @@ $(document).ready(function () {
 <li>CRAN: <a href="https://cran.r-project.org/web/packages/ggplot2/index.html">ggplot2</a></li>
 <li>FLR: <a href="http://www.flr-project.org/FLCore/">FLCore</a>, <a href="http://www.flr-project.org/FLash/">FLash</a>, <a href="http://www.flr-project.org/FLAssess/">FLAssess</a>, <a href="http://www.flr-project.org/FLBRP/">FLBRP</a>, <a href="http://www.flr-project.org/ggplotFL/">ggplotFL</a></li>
 </ul>
-<p>if you are using Windows, please use 32-bit R version</p>
+<p>if you are using Windows, please use the 32-bit R version</p>
 <p>You can do so as follows,</p>
 <pre class="r"><code>install.packages(c(&quot;FLAssess&quot;,&quot;FLBRP&quot;,&quot;ggplotFL&quot;), repos=&quot;http://flr-project.org/R&quot;)</code></pre>
-<p>The example used here is for the ple4 data that is available in FLR. This needs to be loaded first</p>
-<pre class="r"><code>library(FLAssess)
+<p>The example used here is for the ple4 data that is available in FLR. This needs to be loaded first.</p>
+<pre class="r"><code># Load the required packages
+library(FLAssess)
 library(FLash)
 library(ggplotFL)
 library(FLBRP)
+# Load the data
 data(ple4)
 summary(ple4)</code></pre>
 <pre><code>An object of class &quot;FLStock&quot;
@@ -358,26 +365,25 @@ stock         : [ 1 52 1 1 1 1 ], units =  t
 stock.n       : [ 10 52 1 1 1 1 ], units =  10^3 
 stock.wt      : [ 10 52 1 1 1 1 ], units =  kg 
 m             : [ 10 52 1 1 1 1 ], units =  m 
-mat           : [ 10 52 1 1 1 1 ], units =  NA 
+mat           : [ 10 52 1 1 1 1 ], units =   
 harvest       : [ 10 52 1 1 1 1 ], units =  f 
-harvest.spwn  : [ 10 52 1 1 1 1 ], units =  NA 
-m.spwn        : [ 10 52 1 1 1 1 ], units =  NA </code></pre>
+harvest.spwn  : [ 10 52 1 1 1 1 ], units =   
+m.spwn        : [ 10 52 1 1 1 1 ], units =   </code></pre>
 </div>
 <div id="extending-the-stock-object-for-the-projections" class="section level1">
 <h1>Extending the stock object for the projections</h1>
-<p>Our ple4 stock goes up to 2008, and in this example we want to make a 3 year projection, so we need to extend the stock by 3 years (<code>nyears</code>).</p>
-<p>The projection will predict abundances in the future, but what will the future stock weights, maturity, natural mortality, etc. be like? The assumptions on those will affect the outcome of the projection. Rather than using <code>window()</code> or <code>trim()</code> that makes all future data <em>NA</em>, we use the <code>stf()</code> function (short term forecast) that has several options that allow to control the assumptions about the future stock parameters.</p>
-<p>These assumptions specify how many years you want to average over to set future values For example, <code>wts.nyears</code> is the number of years over which to calculate the <code>*.wt</code>, <code>*.spwn</code>, <code>mat</code> and <code>m</code> slots. By default this is set to 3 years. This is a fairly standard assumption for STFs, i.e. the future mean weights at age will be the same as the mean of the last 3 years. Hence, What is going to happen in the next few years is probably similar to what happened in the last few years.</p>
-<p>A simple 3 year forecast for the weights, natural mortality, etc. assuming these are equal to their averages over the last 3 years is done by</p>
-<pre class="r"><code>ple4_stf &lt;- stf(ple4,nyears=3,wts.nyears=3, na.rm=TRUE)</code></pre>
-<p>Previously, the stock went up to 2008. Now the stock goes up to 2011 and the future weights are equal to the means of the last three observed years, as can be observed from the last six years of the stock weights of the ple4_stf object.</p>
+<p>Our ple4 stock goes up to 2008, and in this example we want to make a 3-year projection, so we need to extend the stock by 3 years (<code>nyears</code>).</p>
+<p>The projection will predict abundances in the future, but what will the future stock weights, maturity, natural mortality, etc. be like? The assumptions about these will affect the outcome of the projection. Rather than using <code>window()</code> or <code>trim()</code> that make all future data <em>NA</em>, we use the <code>stf()</code> function (short term forecast) that has several options that allow one to control the assumptions about the future stock parameters.</p>
+<p>These assumptions specify how many years you want to average over to set future values. For example, <code>wts.nyears</code> is the number of years over which to calculate the <code>*.wt</code>, <code>*.spwn</code>, <code>mat</code> and <code>m</code> slots. By default this is set to 3 years. This is a fairly standard assumption for short term forecasts, i.e. the future weights at age will be the same as the average of the last 3 years. This assumes that what is going to happen in the next few years will be similar to what happened in the last few years.</p>
+<p>A simple 3-year forecast for the weights, natural mortality, etc., assuming these are equal to their averages over the last 3 years, is done by:</p>
 <pre class="r"><code>maxyr_stk &lt;- range(ple4)[[&quot;maxyear&quot;]]
-
-range(ple4_stf)</code></pre>
+ple4_stf &lt;- stf(ple4,nyears=3,wts.nyears=3, na.rm=TRUE)
+maxyr_stf &lt;- range(ple4_stf)[[&quot;maxyear&quot;]]</code></pre>
+<p>Previously, the stock went up to 2008. Now the stock goes up to 2011 and the future weights are equal to the average of the last three observed years, as can be observed from the last six years of the stock weights of the ple4_stf object.</p>
+<pre class="r"><code>range(ple4_stf)</code></pre>
 <pre><code>      min       max plusgroup   minyear   maxyear   minfbar   maxfbar 
         1        10        10      1957      2011         2         6 </code></pre>
-<pre class="r"><code>maxyr_stf &lt;- range(ple4_stf)[[&quot;maxyear&quot;]]
-stock.wt(ple4_stf)[,ac((maxyr_stf-5):maxyr_stf)]</code></pre>
+<pre class="r"><code>stock.wt(ple4_stf)[,ac((maxyr_stf-5):maxyr_stf)]</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 An object of class &quot;FLQuant&quot;
 , , unit = unique, season = all, area = unique
@@ -396,7 +402,7 @@ age  2006     2007     2008     2009     2010     2011
   10 0.730673 0.548489 0.730672 0.669945 0.669945 0.669945
 
 units:  kg </code></pre>
-<p>For maturity the same assumption (of the future being the same as the average as the last 3 years) holds, but those maturities were assumed constant already.</p>
+<p>For maturity the same assumption (of the future being the same as the average of the last 3 years) holds, but those maturities were assumed constant already.</p>
 <pre class="r"><code>mat(ple4_stf)[,ac((maxyr_stf-5):maxyr_stf)]</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 An object of class &quot;FLQuant&quot;
@@ -415,11 +421,11 @@ age  2006 2007 2008 2009 2010 2011
   9  1.0  1.0  1.0  1.0  1.0  1.0 
   10 1.0  1.0  1.0  1.0  1.0  1.0 
 
-units:  NA </code></pre>
-<p>Notice that the future fishing mortality has also been set (mean of the last 3 years, by default).</p>
+units:   </code></pre>
+<p>Notice that the future fishing mortality has also been set (average of the last 3 years, by default).</p>
 <pre class="r"><code>ggplot(harvest(ple4_stf)[,ac((maxyr_stf-5):maxyr_stf)]) + geom_line(aes(x=age, y=data)) + facet_wrap(~year)</code></pre>
 <p><img src="Short_Term_Forecasting_for_advice_using_FLash_files/figure-html/figA-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>The stock numbers at age and the catch numbers at age are not forecasted yet: this is what the <code>fwd()</code> function will perform later.</p>
+<p>The stock numbers at age and the catch numbers at age are not forecast yet - this is what the <code>fwd()</code> function will perform later.</p>
 <pre class="r"><code>stock.n(ple4_stf)[,ac((maxyr_stf-5):maxyr_stf)]</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 An object of class &quot;FLQuant&quot;
@@ -439,26 +445,7 @@ age  2006     2007     2008     2009     2010     2011
   10   2854.5   3660.1   6750.3       NA       NA       NA
 
 units:  10^3 </code></pre>
-<p>Meanwhile, the landings and discards are forecasted ratios of what is discarded and what is landed over the last 3 years of data.</p>
-<pre class="r"><code>landings.n(ple4_stf)[,ac((maxyr_stf-5):maxyr_stf)]</code></pre>
-<pre><code>An object of class &quot;FLQuant&quot;
-An object of class &quot;FLQuant&quot;
-, , unit = unique, season = all, area = unique
-
-    year
-age  2006       2007       2008       2009       2010       2011      
-  1  3.5500e+02 1.2860e+03 3.8000e+02 6.9226e-03 6.9226e-03 6.9226e-03
-  2  1.8987e+04 1.9205e+04 1.0970e+04 6.8339e-02 6.8339e-02 6.8339e-02
-  3  6.7465e+04 3.7309e+04 4.2865e+04 4.2124e-01 4.2124e-01 4.2124e-01
-  4  2.5254e+04 4.7053e+04 3.7970e+04 7.9214e-01 7.9214e-01 7.9214e-01
-  5  4.2525e+04 1.4971e+04 2.9476e+04 9.2489e-01 9.2489e-01 9.2489e-01
-  6  6.5550e+03 1.7142e+04 5.7000e+03 8.5454e-01 8.5454e-01 8.5454e-01
-  7  4.9670e+03 2.4590e+03 6.7520e+03 7.4116e-01 7.4116e-01 7.4116e-01
-  8  2.0530e+03 1.8560e+03 9.1200e+02 6.4967e-01 6.4967e-01 6.4967e-01
-  9  1.2350e+03 5.4300e+02 6.7300e+02 1.0000e+00 1.0000e+00 1.0000e+00
-  10 1.3190e+03 1.2590e+03 8.9600e+02 1.0000e+00 1.0000e+00 1.0000e+00
-
-units:  10^3 </code></pre>
+<p>Meanwhile, the landings and discards are average forecast ratios (proportion of total catch) of what is discarded and what is landed over the last 3 years of data.</p>
 <pre class="r"><code>discards.n(ple4_stf)[,ac((maxyr_stf-5):maxyr_stf)]</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 An object of class &quot;FLQuant&quot;
@@ -478,25 +465,83 @@ age  2006       2007       2008       2009       2010       2011
   10 0.0000e+00 0.0000e+00 0.0000e+00 0.0000e+00 0.0000e+00 0.0000e+00
 
 units:  10^3 </code></pre>
+<pre class="r"><code>landings.n(ple4_stf)[,ac((maxyr_stf-5):maxyr_stf)]</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+    year
+age  2006       2007       2008       2009       2010       2011      
+  1  3.5500e+02 1.2860e+03 3.8000e+02 6.9226e-03 6.9226e-03 6.9226e-03
+  2  1.8987e+04 1.9205e+04 1.0970e+04 6.8339e-02 6.8339e-02 6.8339e-02
+  3  6.7465e+04 3.7309e+04 4.2865e+04 4.2124e-01 4.2124e-01 4.2124e-01
+  4  2.5254e+04 4.7053e+04 3.7970e+04 7.9214e-01 7.9214e-01 7.9214e-01
+  5  4.2525e+04 1.4971e+04 2.9476e+04 9.2489e-01 9.2489e-01 9.2489e-01
+  6  6.5550e+03 1.7142e+04 5.7000e+03 8.5454e-01 8.5454e-01 8.5454e-01
+  7  4.9670e+03 2.4590e+03 6.7520e+03 7.4116e-01 7.4116e-01 7.4116e-01
+  8  2.0530e+03 1.8560e+03 9.1200e+02 6.4967e-01 6.4967e-01 6.4967e-01
+  9  1.2350e+03 5.4300e+02 6.7300e+02 1.0000e+00 1.0000e+00 1.0000e+00
+  10 1.3190e+03 1.2590e+03 8.9600e+02 1.0000e+00 1.0000e+00 1.0000e+00
+
+units:  10^3 </code></pre>
+<pre class="r"><code># Compare above landings.n for the forecast years with
+yearMeans((landings.n(ple4)/(landings.n(ple4)+discards.n(ple4)))[,ac((maxyr_stk-2):maxyr_stk)])</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+    year
+age  1        
+  1  0.0069226
+  2  0.0683387
+  3  0.4212371
+  4  0.7921356
+  5  0.9248890
+  6  0.8545368
+  7  0.7411596
+  8  0.6496718
+  9  1.0000000
+  10 1.0000000
+
+units:  NA </code></pre>
+<pre class="r"><code># Furthermore, landings and discards proportions sum to 1
+landings.n(ple4_stf)[,ac((maxyr_stf-2):maxyr_stf)] + discards.n(ple4_stf)[,ac((maxyr_stf-2):maxyr_stf)]</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+    year
+age  2009 2010 2011
+  1  1    1    1   
+  2  1    1    1   
+  3  1    1    1   
+  4  1    1    1   
+  5  1    1    1   
+  6  1    1    1   
+  7  1    1    1   
+  8  1    1    1   
+  9  1    1    1   
+  10 1    1    1   
+
+units:  1000 </code></pre>
 </div>
 <div id="the-stock-recruitment-relationship-srr" class="section level1">
 <h1>The stock-recruitment relationship (SRR)</h1>
-<p>A short term forecast does not use a SRR, instead it generally assumes that recruitment in the future is the mean of the historic recruitments. However, we still need to have a SRR that contains the mean value, which is what we mimic for this example. First we estimate the geometic mean recruitment, that we then add to an SRR object</p>
-<pre class="r"><code>mean_rec &lt;- mean(rec(ple4))
-
+<p>A short term forecast does not use an SRR (in the traditional sense). Instead, it generally assumes that recruitment in the future is some mean (e.g. geometric mean) of the historic recruitments. However, we still need to have an SRR that contains this mean value, which is what we mimic for this example. First, we estimate the geometic mean recruitment, that we then add to an SRR object</p>
+<pre class="r"><code>mean_rec &lt;- exp(mean(log(rec(ple4))))
 ple4_sr &lt;- as.FLSR(ple4, model=&quot;geomean&quot;)
 params(ple4_sr)[&#39;a&#39;,] &lt;- mean_rec
 params(ple4_sr)</code></pre>
 <pre><code>An object of class &quot;FLPar&quot;
 params
-      a 
-1039494 
+     a 
+900370 
 units:  NA </code></pre>
 </div>
 <div id="the-control-object" class="section level1">
 <h1>The control object</h1>
-<p>The final thing we need to set up is the control object. This tells the projection what to do, i.e. what level of fishing mortality to use</p>
-<p>A standard scenario for a STF is the ‘status quo’ scenario, assuming that the future mean fishing mortality will be the same as the mean of the last X years (X depends on the stock). We will set up this scenario as a simple example using the Fbar in the last year (2008), being 0.356 per year.</p>
+<p>The final thing we need to set up is the control object. This tells the projection what to do, i.e. what level of fishing mortality to use.</p>
+<p>A standard scenario for a short term forecast is the ‘status quo’ scenario, assuming that the future mean fishing mortality will be the same as the mean of the last X years (X depending on the stock). We will set up this scenario as a simple example using the Fbar in the last year (2008), being 0.356 per year.</p>
 <pre class="r"><code>round(fbar(ple4),3)</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 , , unit = unique, season = all, area = unique
@@ -512,18 +557,18 @@ age   2004  2005  2006  2007  2008
   all 0.640 0.623 0.548 0.464 0.356</code></pre>
 <pre class="r"><code>ggplot(fbar(ple4), aes(x=year,y=data)) + geom_line()</code></pre>
 <p><img src="Short_Term_Forecasting_for_advice_using_FLash_files/figure-html/figB-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Below we define the last year of the stock and the status quo Fbar <code>fbar_SQ</code>.</p>
+<p>Below, we define the last year of the stock and the status quo Fbar <code>fbar_SQ</code>.</p>
 <pre class="r"><code>fbar_SQ &lt;- mean(fbar(ple4)[,as.character(maxyr_stk)])</code></pre>
 <p>Now we introduce the control object: <code>fwdControl()</code>. This takes 1 argument - a data.frame that sets:</p>
 <ul>
-<li>The quantity (or type) of the target (we are using Fbar but can also set catch etc. see MTF)</li>
+<li>The quantity (or type) of the target (we are using Fbar but can also set catch etc. - see medium term forecast tutorial)</li>
 <li>The value of the target, here status quo F</li>
 <li>The year the target is to be hit</li>
 <li>Some other things that we will ignore for now</li>
 </ul>
 <p>Let’s make the data.frame</p>
-<pre class="r"><code>ctrl_target &lt;- data.frame(year = 2009:2011, quantity = &quot;f&quot;, val = fbar_SQ)
-# Set the control object - year, quantity and value for the moment
+<pre class="r"><code># Set the control object - year, quantity and value for the moment
+ctrl_target &lt;- data.frame(year = 2009:2011, quantity = &quot;f&quot;, val = fbar_SQ)
 ctrl_f &lt;- fwdControl(ctrl_target)
 ctrl_f</code></pre>
 <pre><code>
@@ -538,27 +583,27 @@ Target
   1      NA 0.35631      NA
   2      NA 0.35631      NA
   3      NA 0.35631      NA</code></pre>
-<p>We see that we have what looks like our <code>ctrl_target</code>, but now it has two more columns (min and max). There is another table underneath which is for uncertainty but that we ignore in <em>STF</em>.</p>
+<p>We see that we have what looks like our <code>ctrl_target</code>, but now it has two more columns (min and max). There is another table underneath which is for uncertainty, but that we ignore here for the short term forecast examples.</p>
 </div>
 <div id="running-the-stf" class="section level1">
 <h1>Running the STF</h1>
-<p>Below we run a simple STF with ‘status quo’ future fishing mortality. Remember we had to make assumptions about the future (weights, selection pattern, discard ratio etc.).</p>
-<p>This is done using <code>fwd()</code>, which takes three objects: the stock, the control object, the SRR. It returns an updated FLStock object. This updated has forecasted stock numbers, based on the recruitment assumptions, the fishing mortality, and the natural mortality. Because we now have stock numbers, we can calculate forecasted ssb.</p>
+<p>Below we run a simple short term forecast (STF) with ‘status quo’ future fishing mortality. Remember we had to make assumptions about the future (weights, fishing mortality pattern, discard ratio, etc.).</p>
+<p>This is done using <code>fwd()</code>, which takes three objects: the stock, the control object, the SRR. It returns an updated FLStock object. This update has forecast stock numbers, based on the recruitment, fishing mortality, and natural mortality assumptions. Because we now have stock numbers, we can calculate forecast ssb.</p>
 <pre class="r"><code>ple4_sq &lt;- fwd(ple4_stf, ctrl = ctrl_f, sr = ple4_sr)</code></pre>
-<p>Below, we check if the recruitment in the forecasted stock indeed corresponds to the mean recruitment</p>
+<p>Below, we check if the recruitment in the forecast stock indeed corresponds to the mean recruitment</p>
 <pre class="r"><code>mean_rec</code></pre>
-<pre><code>[1] 1039494</code></pre>
+<pre><code>[1] 900370</code></pre>
 <pre class="r"><code>rec(ple4_sq)[,ac((maxyr_stf-5):maxyr_stf)]</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 An object of class &quot;FLQuant&quot;
 , , unit = unique, season = all, area = unique
 
    year
-age 2006    2007    2008    2009    2010    2011   
-  1  820006  949341  844041 1039494 1039494 1039494
+age 2006   2007   2008   2009   2010   2011  
+  1 820006 949341 844041 900370 900370 900370
 
 units:  NA </code></pre>
-<p>Similarly, we check if the fbar in the forecasted stock indeed corresponds to the status quo fishing mortality.</p>
+<p>Similarly, we check if the fbar in the forecast stock indeed corresponds to status quo fishing mortality.</p>
 <pre class="r"><code>round(fbar_SQ,3)</code></pre>
 <pre><code>[1] 0.356</code></pre>
 <pre class="r"><code>round(fbar(ple4_sq)[,ac((maxyr_stf-5):maxyr_stf)],3)</code></pre>
@@ -571,27 +616,27 @@ age   2006  2007  2008  2009  2010  2011
   all 0.548 0.464 0.356 0.356 0.356 0.356
 
 units:  f </code></pre>
-<p>The stock numbers are calculated using the recruitment and the future mortality</p>
+<p>The stock numbers are calculated using the recruitment and future mortality assumptions.</p>
 <pre class="r"><code>stock.n(ple4_sq)[,ac((maxyr_stf-5):maxyr_stf)]</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 An object of class &quot;FLQuant&quot;
 , , unit = unique, season = all, area = unique
 
     year
-age  2006      2007      2008      2009      2010      2011     
-  1   820006.3  949341.2  844041.2 1039494.2 1039494.2 1039494.2
-  2   554592.5  531914.3  784234.7  634556.4  802562.9  802562.9
-  3   422068.8  269655.1  267892.4  458861.8  374263.6  473354.4
-  4    88052.9  212889.2  142573.0  166055.3  280909.2  229119.3
-  5   136368.1   45514.9  137660.4   86954.4  107361.5  181619.3
-  6    17534.5   80086.2   25575.8   94351.2   57762.5   71318.6
-  7    16289.7    9240.6   49356.8   17228.2   62135.0   38039.5
-  8     4114.0    9297.5    5828.1   29788.4   11325.1   40844.9
-  9     2688.5    1585.1    5078.7    3558.4   17078.0    6492.8
-  10    2854.5    3660.1    6750.3    9212.2    8330.8   16575.1
+age  2006     2007     2008     2009     2010     2011    
+  1  820006.3 949341.2 844041.2 900369.9 900369.9 900369.9
+  2  554592.5 531914.3 784234.7 634556.4 695149.1 695149.1
+  3  422068.8 269655.1 267892.4 458861.8 374263.6 410001.4
+  4   88052.9 212889.2 142573.0 166055.3 280909.2 229119.3
+  5  136368.1  45514.9 137660.4  86954.4 107361.5 181619.3
+  6   17534.5  80086.2  25575.8  94351.2  57762.5  71318.6
+  7   16289.7   9240.6  49356.8  17228.2  62135.0  38039.5
+  8    4114.0   9297.5   5828.1  29788.4  11325.1  40844.9
+  9    2688.5   1585.1   5078.7   3558.4  17078.0   6492.8
+  10   2854.5   3660.1   6750.3   9212.2   8330.8  16575.1
 
 units:  NA </code></pre>
-<p>Note that the future harvest slot is different from the harvest from the one we set up, but that the selection pattern is the same: F at age has been multiplied by the same value to give us the target Fbar value</p>
+<p>Note that the future harvest slot is different from the harvest from the one we set up, but that the selection pattern is the same: F at age has been multiplied by a constant value to give us the target Fbar value.</p>
 <pre class="r"><code>round(harvest(ple4_stf)[,ac((maxyr_stf-2):maxyr_stf)],3)</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 An object of class &quot;FLQuant&quot;
@@ -648,8 +693,8 @@ age  2009   2010   2011
   9  1.2797 1.2797 1.2797
   10 1.2797 1.2797 1.2797
 
-units:  f </code></pre>
-<p>The catch numbers come from the predicted abundance and harvest rates using the Baranov equation. The catches are then split into landings and discards using the ratios computed by <code>stf()</code>.</p>
+units:  NA </code></pre>
+<p>The catch numbers come from the predicted abundance and harvest rates using the Baranov equation. The catches are then split into landings and discards using the average ratios computed by <code>stf()</code>.</p>
 <pre class="r"><code>landings.n(ple4_sq)[,ac((maxyr_stf-5):maxyr_stf)]</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 An object of class &quot;FLQuant&quot;
@@ -657,9 +702,9 @@ An object of class &quot;FLQuant&quot;
 
     year
 age  2006     2007     2008     2009     2010     2011    
-  1    355.00  1286.00   380.00  1006.12  1006.12  1006.12
-  2  18987.00 19205.00 10970.00 14418.91 18236.48 18236.48
-  3  67465.00 37309.00 42865.00 59684.58 48680.81 61569.64
+  1    355.00  1286.00   380.00   871.47   871.47   871.47
+  2  18987.00 19205.00 10970.00 14418.91 15795.74 15795.74
+  3  67465.00 37309.00 42865.00 59684.58 48680.81 53329.26
   4  25254.00 47053.00 37970.00 35832.72 60616.80 49441.17
   5  42525.00 14971.00 29476.00 20398.74 25186.06 42606.28
   6   6555.00 17142.00  5700.00 20939.33 12819.21 15827.72
@@ -676,9 +721,9 @@ An object of class &quot;FLQuant&quot;
 
     year
 age  2006     2007     2008     2009     2010     2011    
-  1  220473.0  77312.0 135406.0 144332.6 144332.6 144332.6
-  2  225077.0 205140.0 252629.0 196572.8 248617.9 248617.9
-  3  110215.0  69312.0  37393.0  82004.2  66885.5  84594.2
+  1  220473.0  77312.0 135406.0 125015.3 125015.3 125015.3
+  2  225077.0 205140.0 252629.0 196572.8 215343.2 215343.2
+  3  110215.0  69312.0  37393.0  82004.2  66885.5  73272.3
   4   10656.0  10735.0   6237.0   9402.9  15906.5  12973.9
   5    3000.0   1437.0   2282.0   1656.6   2045.4   3460.1
   6     410.0   7151.0    517.0   3564.4   2182.1   2694.3
@@ -701,16 +746,15 @@ units:  NA </code></pre>
 <li>year 2: fbar_status_quo * fbar_multiplier</li>
 <li>year 3: fbar_status_quo * fbar_multiplier</li>
 </ul>
-<p>Note that the fbar_multiplier is the same for years 2 and 3</p>
+<p>Note that year 1 is typically called the ‘intermediate year’ (in ICES, this would be the year the Expert Group meets to run the assessment, and status quo F for the intermediate year is a common assumption), and the fbar_multiplier is the same for years 2 and 3</p>
 <p>We are going to run several STFs with different values for the fbar_multiplier</p>
 <pre class="r"><code>fbar_multiplier &lt;- seq(from = 0, to = 2, by = 0.2)</code></pre>
-<p>Next we are going to build a data.frame that builds these scenarios. Each column in the dataframe is a year, each row is a scenario. Note that if you project for more than 3 years you will need to add more columns / years to the matrix</p>
+<p>Next we are going to build a data.frame that creates these scenarios. Each column in the dataframe is a year, each row is a scenario. Note that if you project for more than 3 years you will need to add more columns / years to the matrix</p>
 <pre class="r"><code>fbar_scenarios &lt;- cbind(rep(fbar_SQ,length(fbar_multiplier)),
                         fbar_multiplier*fbar_SQ,
                         fbar_multiplier*fbar_SQ)</code></pre>
 <p>Another scenario we are interested in is <span class="math inline">\(F_{0.1}\)</span>. We can calculate this using <a href="http://doc.flr-project.org/Reference_points_for_fisheries_management_with_FLBRP.html">FLBRP</a> (or maybe you already have a value).</p>
 <pre class="r"><code>f01 &lt;- c(refpts(brp(FLBRP(ple4)))[&quot;f0.1&quot;,&quot;harvest&quot;])
-
 # Add the F0.1 scenario as a final scenario 
 fbar_scenarios &lt;- rbind(fbar_scenarios, c(fbar_SQ,f01,f01))</code></pre>
 <pre class="r"><code># Add some names
@@ -801,7 +845,7 @@ fbar_scenarios</code></pre>
 </tr>
 </tbody>
 </table>
-<p>There are various results we want to extract from the STF, like predicted Catch, SSB and the relative change in these. First make an empty matrix in which to store the results</p>
+<p>There are various results we want to extract from the STF, like predicted Catch, SSB and the relative change in these. First, make an empty matrix in which to store the results.</p>
 <pre class="r"><code>stf_results &lt;- matrix(NA,nrow = nrow(fbar_scenarios),ncol = 8)
 # Set some column names
 colnames(stf_results) &lt;- c(&#39;Fbar&#39;,
@@ -812,21 +856,22 @@ colnames(stf_results) &lt;- c(&#39;Fbar&#39;,
     paste0(&#39;SSB&#39;,maxyr_stk+3),
     paste0(&#39;SSB_change_&#39;,maxyr_stk+2,&#39;-&#39;,maxyr_stk+3,&#39;(%)&#39;),
     paste0(&#39;Catch_change_&#39;,maxyr_stk,&#39;-&#39;,maxyr_stk+2,&#39;(%)&#39;))</code></pre>
-<pre class="r"><code># Store the resulting FLStock each time
+<pre class="r"><code># Set up an FLStocks object to store the resulting FLStock each time
 stk_stf &lt;- FLStocks()
 # Loop over the scenarios (each row in the fbar_scenarios table)
 for (scenario in 1:nrow(fbar_scenarios)) {
     cat(&quot;Scenario: &quot;, scenario, &quot;\n&quot;)
+    flush.console()
     # Make a target object with F values for that scenario
+    # Set the control object - year, quantity and value for the moment
     ctrl_target &lt;- data.frame(year = (maxyr_stf-2):maxyr_stf,
                               quantity = &quot;f&quot;,
                               val = fbar_scenarios[scenario,])
-    # Set the control object - year, quantity and value for the moment
-    ctrl_f &lt;- fwdControl(ctrl_target)
     # ctrl_target
-    # Run the forward projection. We include an additional argument, maxF.
-    # By default the value of maxF is 2.0
-    # Here we increase it to 10.0 so that F is not limited
+    ctrl_f &lt;- fwdControl(ctrl_target)
+    # Run the forward projection. We could include an additional argument, maxF.
+    # By default the value of maxF is 2.0. It could be increased to 10.0, say,
+    # so that F is less limited, and the bound is not hit (not a problem here).
     ple4_fwd &lt;- fwd(ple4_stf, ctrl = ctrl_f, sr = ple4_sr)#, maxF = 10.0)
     ## Check it has worked - uncomment out to check scenario by scenario
     # plot(ple4_fwd[,ac(2001:2011)])
@@ -843,11 +888,11 @@ for (scenario in 1:nrow(fbar_scenarios)) {
     
     # change in ssb in last two stf years
     stf_results[scenario,7] &lt;- round((ssb(ple4_fwd)[,ac(maxyr_stk+3)]-ssb(ple4_fwd)[,ac(maxyr_stk+2)])/
-                                       ssb(ple4_fwd)[,ac(maxyr_stk+2)]*100,1) 
+                                      ssb(ple4_fwd)[,ac(maxyr_stk+2)]*100,1) 
     
     # change in catch from true year, to 2nd to last stf year
     stf_results[scenario,8] &lt;- round((catch(ple4_fwd)[,ac(maxyr_stk+2)]-catch(ple4_fwd)[,ac(maxyr_stk)])/
-                                       catch(ple4_fwd)[,ac(maxyr_stk)]*100,1) 
+                                      catch(ple4_fwd)[,ac(maxyr_stk)]*100,1) 
 }
 # Give the FLStocks object some names
 names(stk_stf) &lt;- rownames(fbar_scenarios)
@@ -872,123 +917,123 @@ plot(stk_stf)</code></pre>
 <tbody>
 <tr class="odd">
 <td align="right">0.000</td>
-<td align="right">107543</td>
+<td align="right">106368</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">274322</td>
-<td align="right">427478</td>
-<td align="right">55.8</td>
+<td align="right">268307</td>
+<td align="right">410158</td>
+<td align="right">52.9</td>
 <td align="right">-100.0</td>
 </tr>
 <tr class="even">
 <td align="right">0.071</td>
-<td align="right">107543</td>
-<td align="right">27670</td>
-<td align="right">39016</td>
-<td align="right">274322</td>
-<td align="right">399470</td>
-<td align="right">45.6</td>
-<td align="right">-71.2</td>
+<td align="right">106368</td>
+<td align="right">26377</td>
+<td align="right">36153</td>
+<td align="right">268307</td>
+<td align="right">383213</td>
+<td align="right">42.8</td>
+<td align="right">-72.5</td>
 </tr>
 <tr class="odd">
 <td align="right">0.143</td>
-<td align="right">107543</td>
-<td align="right">53457</td>
-<td align="right">70819</td>
-<td align="right">274322</td>
-<td align="right">373394</td>
-<td align="right">36.1</td>
-<td align="right">-44.3</td>
+<td align="right">106368</td>
+<td align="right">50963</td>
+<td align="right">65598</td>
+<td align="right">268307</td>
+<td align="right">358124</td>
+<td align="right">33.5</td>
+<td align="right">-46.9</td>
 </tr>
 <tr class="even">
 <td align="right">0.214</td>
-<td align="right">107543</td>
-<td align="right">77495</td>
-<td align="right">96520</td>
-<td align="right">274322</td>
-<td align="right">349112</td>
-<td align="right">27.3</td>
-<td align="right">-19.3</td>
+<td align="right">106368</td>
+<td align="right">73885</td>
+<td align="right">89367</td>
+<td align="right">268307</td>
+<td align="right">334758</td>
+<td align="right">24.8</td>
+<td align="right">-23.1</td>
 </tr>
 <tr class="odd">
 <td align="right">0.285</td>
-<td align="right">107543</td>
-<td align="right">99907</td>
-<td align="right">117069</td>
-<td align="right">274322</td>
-<td align="right">326496</td>
-<td align="right">19.0</td>
-<td align="right">4.0</td>
+<td align="right">106368</td>
+<td align="right">95259</td>
+<td align="right">108345</td>
+<td align="right">268307</td>
+<td align="right">312995</td>
+<td align="right">16.7</td>
+<td align="right">-0.8</td>
 </tr>
 <tr class="even">
 <td align="right">0.356</td>
-<td align="right">107543</td>
-<td align="right">120809</td>
-<td align="right">133278</td>
-<td align="right">274322</td>
-<td align="right">305429</td>
-<td align="right">11.3</td>
-<td align="right">25.8</td>
+<td align="right">106368</td>
+<td align="right">115195</td>
+<td align="right">123285</td>
+<td align="right">268307</td>
+<td align="right">292719</td>
+<td align="right">9.1</td>
+<td align="right">19.9</td>
 </tr>
 <tr class="odd">
 <td align="right">0.428</td>
-<td align="right">107543</td>
-<td align="right">140308</td>
-<td align="right">145840</td>
-<td align="right">274322</td>
-<td align="right">285800</td>
-<td align="right">4.2</td>
-<td align="right">46.1</td>
+<td align="right">106368</td>
+<td align="right">133794</td>
+<td align="right">134831</td>
+<td align="right">268307</td>
+<td align="right">273827</td>
+<td align="right">2.1</td>
+<td align="right">39.3</td>
 </tr>
 <tr class="even">
 <td align="right">0.499</td>
-<td align="right">107543</td>
-<td align="right">158502</td>
-<td align="right">155345</td>
-<td align="right">274322</td>
-<td align="right">267507</td>
-<td align="right">-2.5</td>
-<td align="right">65.0</td>
+<td align="right">106368</td>
+<td align="right">151151</td>
+<td align="right">143535</td>
+<td align="right">268307</td>
+<td align="right">256221</td>
+<td align="right">-4.5</td>
+<td align="right">57.4</td>
 </tr>
 <tr class="odd">
 <td align="right">0.570</td>
-<td align="right">107543</td>
-<td align="right">175484</td>
-<td align="right">162298</td>
-<td align="right">274322</td>
-<td align="right">250458</td>
-<td align="right">-8.7</td>
-<td align="right">82.7</td>
+<td align="right">106368</td>
+<td align="right">167352</td>
+<td align="right">149864</td>
+<td align="right">268307</td>
+<td align="right">239810</td>
+<td align="right">-10.6</td>
+<td align="right">74.3</td>
 </tr>
 <tr class="even">
 <td align="right">0.641</td>
-<td align="right">107543</td>
-<td align="right">191338</td>
-<td align="right">167127</td>
-<td align="right">274322</td>
-<td align="right">234562</td>
-<td align="right">-14.5</td>
-<td align="right">99.2</td>
+<td align="right">106368</td>
+<td align="right">182478</td>
+<td align="right">154218</td>
+<td align="right">268307</td>
+<td align="right">224511</td>
+<td align="right">-16.3</td>
+<td align="right">90.0</td>
 </tr>
 <tr class="odd">
 <td align="right">0.713</td>
-<td align="right">107543</td>
-<td align="right">206143</td>
-<td align="right">170197</td>
-<td align="right">274322</td>
-<td align="right">219741</td>
-<td align="right">-19.9</td>
-<td align="right">114.6</td>
+<td align="right">106368</td>
+<td align="right">196604</td>
+<td align="right">156937</td>
+<td align="right">268307</td>
+<td align="right">210245</td>
+<td align="right">-21.6</td>
+<td align="right">104.7</td>
 </tr>
 <tr class="even">
 <td align="right">0.088</td>
-<td align="right">107543</td>
-<td align="right">33744</td>
-<td align="right">46903</td>
-<td align="right">274322</td>
-<td align="right">393326</td>
-<td align="right">43.4</td>
-<td align="right">-64.9</td>
+<td align="right">106368</td>
+<td align="right">32168</td>
+<td align="right">43457</td>
+<td align="right">268307</td>
+<td align="right">377302</td>
+<td align="right">40.6</td>
+<td align="right">-66.5</td>
 </tr>
 </tbody>
 </table>
@@ -1003,14 +1048,14 @@ plot(stk_stf)</code></pre>
 <div id="software-versions" class="section level2">
 <h2>Software Versions</h2>
 <ul>
-<li>R version 3.3.2 (2016-10-31)</li>
-<li>FLCore: 2.6.0.20170228</li>
-<li>FLAssess: 2.5.20150717</li>
+<li>R version 3.4.1 (2017-06-30)</li>
+<li>FLCore: 2.6.3.9006</li>
+<li>FLAssess: 2.6.1</li>
 <li>FLash: 2.5.7</li>
-<li>ggplotFL: 2.5.9.9000</li>
-<li>ggplot2: 2.2.1</li>
-<li>FLBRP: 2.5.20170228</li>
-<li><strong>Compiled</strong>: Wed Mar 8 13:50:34 2017</li>
+<li>ggplotFL: 2.6.0</li>
+<li>ggplot2: 2.2.1.9000</li>
+<li>FLBRP: 2.5.20170307</li>
+<li><strong>Compiled</strong>: Wed Aug 16 13:40:18 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">
@@ -1047,7 +1092,7 @@ $(document).ready(function () {
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

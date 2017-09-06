@@ -1,12 +1,11 @@
 ---
-title: The a4a Stock Assessment Modelling Framework
-subtitle: Assessment for All initiative(a4a)
+title: "The a4a Stock Assessment Modelling Framework"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
 github_document:
- mathjax: TRUE
-tags:
-license: Creative Commons CC-BY SA
+  mathjax: TRUE
+tags: [FLR a4a FLa4a]
+license: Creative Commons Attribution-ShareAlike 4.0 International Public License
 ---
 
 ```{r, ini, echo=FALSE, results='hide', message=FALSE, warnings=FALSE, cache=FALSE}
@@ -14,7 +13,7 @@ library(knitr)
 source("R/ini.R")
 ```
  
-This document presents the statistical catch-at-age stock assessment model developed in the JRC Assessment For All (a4a) initiative. The stock assessment model framework is a non-linear catch-at-age model implemented in R (http://www.r-project.org/) / FLR (http://www.flr-project.org/) / ADMB (http://www.admb-project.org/) that can be applied rapidly to a wide range of situations with low parametrization requirements. The model structure is defined by submodels, which are the different parts that require structural assumptions. There are 5 submodels in operation: a model for F-at-age, a model for the initial age structure, a model for recruitment, a (list) of model(s) for abundance indices catchability-at-age, and a list of models for the observation variance of catch-at-age and abundance indices. The submodels form use linear models. This opens the possibility of using the linear modelling tools available in R: see for example the mgcv (http://cran.r-project.org/web/packages/mgcv/index.html) gam formulas, or factorial design formulas using. Detailed model formulas, several diagnostic tools and a large set of models are presented in the document. Additionaly, advanced features like external weighting of the likelihood components and MCMC fits are also described. The target audience for this document are readers with some experience in R and some background on stock assessment. The document explains the approach being developed by a4a for fish stock assessment and scientific advice. It presents a mixture of text and code, where the first explains the concepts behind the methods, while the last shows how these can be run with the software provided.
+This document presents the statistical catch-at-age stock assessment model developed as part of the Assessment For All (a4a) initiative of the European Commission Joint Research Centre. The stock assessment model framework is a non-linear catch-at-age model implemented in [R](http://www.r-project.org/) and [FLR](http://www.flr-project.org/), and using [ADMB](http://www.admb-project.org/) that can be applied rapidly to a wide range of situations with low parametrization requirements. The model structure is defined by submodels, which are the different parts that require structural assumptions. There are 5 submodels in operation: a model for F-at-age, a model for the initial age structure, a model for recruitment, a (list) of model(s) for abundance indices catchability-at-age, and a list of models for the observation variance of catch-at-age and abundance indices. The submodels form use linear models. This opens the possibility of using the linear modelling tools available in R: see for example the mgcv (http://cran.r-project.org/web/packages/mgcv/index.html) gam formulas, or factorial design formulas using. Detailed model formulas, several diagnostic tools and a large set of models are presented in the document. Additionaly, advanced features like external weighting of the likelihood components and MCMC fits are also described. The target audience for this document are readers with some experience in R and some background on stock assessment. The document explains the approach being developed by a4a for fish stock assessment and scientific advice. It presents a mixture of text and code, where the first explains the concepts behind the methods, while the last shows how these can be run with the software provided.
 
 ## Required packages
 
@@ -35,7 +34,7 @@ install.packages(c("FLCore", "FLa4a"), repos="http://flr-project.org/R")
 ```
 
 ```{r, pkgs}
-# This chunk loads all necessary packages, trims pkg messages
+# This chunk loads all necessary packages
 library(FLa4a)
 library(latticeExtra)
 # datasets
@@ -858,7 +857,7 @@ plot(FLStocks(original=stk, simulation=stks, "fit over simulation"=stks+sfit), k
 
 ## Parallel computing
 
-This is an example of how to use the ``parallel`` R package to run assessments. In this example each iteration is a dataset, including surveys, and we'll run one assessment for each iteration. Afterwards the data is pulled back together in an `FLStock` object and plotted (`r fign('wcsampar')`). Only 20 iterations are run to avoid taking too long. Also note that we're using 4 cores. This parameter depends on the computer being used. These days almost all computers have at least 2 cores.
+This is an example of how to use the **parallel** R package to run assessments. In this example each iteration is a dataset, including surveys, and we'll run one assessment for each iteration. Afterwards the data is pulled back together in an `FLStock` object and plotted (`r fign('wcsampar')`). Only 20 iterations are run to avoid taking too long. Also note that we're using 4 cores. This parameter depends on the computer being used. These days almost all computers have at least 2 cores.
 
 Finally, compare this code with the one for replicating WCSAM and note that it's exactly the same, except that we're using `mclapply()` from package ``paralell`` instead of `lapply()`.
 

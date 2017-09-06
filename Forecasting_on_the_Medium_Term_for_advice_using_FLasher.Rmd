@@ -2,9 +2,10 @@
 title: "Forecasting on the Medium Term for advice using **FLasher**"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-  github_document
-tags:
-license: Creative Commons CC-BY SA
+github_document:
+  mathjax: TRUE
+tags: [FLR]
+license: Creative Commons Attribution-ShareAlike 4.0 International Public License
 ---
  
 ```{r, ini, echo=FALSE, results='hide', message=FALSE, warnings=FALSE, cache=FALSE}
@@ -603,7 +604,7 @@ As you can probably imagine, this can quickly become very complicated so we'll j
 
 To perform a stochastic projection you need a stock object with multiple iterations.
 If you are using the output of a stock assessment method, such as *a4a*, then you may have one already.
-Here we use the *propagate()* method to expand the ple4 stock object to have 1000 iterations.
+Here we use the *propagate()* method to expand the ple4 stock object to have 200 iterations.
 We'll use the ten year projection as before (remember that we probably should change the assumptions that come with the *stf()* method).
 
 ```{r, niter}
@@ -612,7 +613,7 @@ ple4_mtf <- stf(ple4, nyears = 10)
 ple4_mtf <- propagate(ple4_mtf, niters)
 ```
 
-You can see that the 6th dimension, iterations, now has length 1000:
+You can see that the 6th dimension, iterations, now has length 200:
 
 ```{r, prop}
 summary(ple4_mtf)
@@ -666,7 +667,7 @@ rec_residuals
 ```
 
 It's an **FLQuant** of SRR residuals but what do those brackets mean?
-The information in the brackets is the Median Absolute Deviation, a way of summarising the iterations. We have 1000 iterations but don't want to see all of them - just a summary.
+The information in the brackets is the Median Absolute Deviation, a way of summarising the iterations. We have 200 iterations but don't want to see all of them - just a summary.
 
 We now have the recruitment residuals.
 We'll use the *ctrl_catch* control object we made earlier with decreasing catch.
@@ -730,7 +731,7 @@ Each row of the *iters* slot corresponds to a row in the control **data.frame** 
 Here we set 10 targets (one for each year in the projection), so the first dimension of *iters* has length 10.
 The second dimension always has length 3 (for *min*, *value* and *max* columns).
 The third dimension is where the iterations are stored.
-This is currently length 1. We have 1000 iterations and therefore we need to expand *iters* along the iter dimension so it can store the 200 iterations.
+This is currently length 1. We have 200 iterations and therefore we need to expand *iters* along the iter dimension so it can store the 200 iterations.
 
 One way of doing this is to make a new array with the right dimensions.
 Note that we need to put in dimnames.
@@ -842,7 +843,6 @@ SOMETHING ON FWD WINDOW
 * `r version$version.string`
 * FLCore: `r packageVersion('FLCore')`
 * FLasher: `r packageVersion('FLasher')`
-* FLAssess: `r packageVersion('FLAssess')`
 * **Compiled**: `r date()`
 
 ## License

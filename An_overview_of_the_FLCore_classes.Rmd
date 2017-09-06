@@ -1,11 +1,11 @@
 ---
-title: A quick introduction to FLR
+title: "An overview of the FLCore classes"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
 github_document:
   mathjax: TRUE
 tags: FLR FLCore introduction
-license: Creative Commons CC-BY SA
+license: Creative Commons Attribution-ShareAlike 4.0 International Public License
 ---
  
 ```{r, ini, echo=FALSE, results='hide', message=FALSE, warnings=FALSE, cache=FALSE}

@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -15,12 +15,12 @@
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-1.1/highlight.js"></script>
 <link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
 
@@ -98,34 +98,34 @@ button.code-folding-btn:focus {
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
-  padding-top: 45px;
+  padding-top: 51px;
   padding-bottom: 40px;
 }
 /* offset scroll position for anchor links (for fixed navbar)  */
 .section h1 {
-  padding-top: 50px;
-  margin-top: -50px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 
 .section h2 {
-  padding-top: 50px;
-  margin-top: -50px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 .section h3 {
-  padding-top: 50px;
-  margin-top: -50px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 .section h4 {
-  padding-top: 50px;
-  margin-top: -50px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 .section h5 {
-  padding-top: 50px;
-  margin-top: -50px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 .section h6 {
-  padding-top: 50px;
-  margin-top: -50px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 </style>
 
@@ -200,7 +200,7 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="A.html">Page A</a>
+      <a href="A_quick_introduction_to_FLR.html">A quick intro</a>
     </li>
     <li>
       <a href="B.html">Page B</a>
@@ -310,13 +310,13 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Natural Mortality Modelling</h1>
-<h3 class="subtitle"><em>Assessment for All initiative(a4a)</em></h3>
-<h4 class="date"><em>08 March, 2017</em></h4>
+<h3 class="subtitle"><em>Assessment for All initiative (a4a)</em></h3>
+<h4 class="date"><em>21 August, 2017</em></h4>
 
 </div>
 
 
-<p>The document explains the approach being developed by a4a to integrate uncertainty in natural mortality into stock assessment and advice. It presents a mixture of text and code, where the first explains the concepts behind the methods, while the last shows how these can be run with the software provided.</p>
+<p>The document explains the approach being developed by a4a to integrate uncertainty in natural mortality into stock assessment and advice. It presents a mixture of text and code, where the former explains the concepts behind the methods, while the latter shows how these can be run with the software provided.</p>
 <div id="required-packages" class="section level2">
 <h2>Required packages</h2>
 <p>To follow this tutorial you should have installed the following packages:</p>
@@ -328,12 +328,11 @@ $(document).ready(function () {
 <pre class="r"><code>install.packages(c(&quot;copula&quot;,&quot;triangle&quot;, &quot;coda&quot;, &quot;XML&quot;, &quot;reshape2&quot;, &quot;latticeExtra&quot;))
 # from FLR
 install.packages(c(&quot;FLCore&quot;, &quot;FLa4a&quot;), repos=&quot;http://flr-project.org/R&quot;)</code></pre>
-<pre class="r"><code># This chunk loads all necessary packages, trims pkg messages
+<pre class="r"><code># Load all necessary packages and datasets, trim pkg messages
 library(FLa4a)
 library(XML)
 library(reshape2)
 library(latticeExtra)
-# datasets
 data(ple4)
 data(ple4.indices)
 data(ple4.index)
@@ -341,8 +340,8 @@ data(rfLen)</code></pre>
 </div>
 <div id="background" class="section level1">
 <h1>Background</h1>
-<p>In the a4a natural mortality is dealt with as an external parameter to the stock assessment model. The rationale to modelling natural mortality is similar to that of growth: one should be able to grab information from a range of sources and feed it into the assessment.</p>
-<p>The mechanism used by a4a is to build an interface that makes it transparent, flexible and hopefully easy to explore different options. In relation to natural mortality it means that the analyst should be able to use distinct models like Gislasson’s, Charnov’s, Pauly’s, etc in a coherent framework making it possible to compare the outcomes of the assessment.</p>
+<p>In a4a, natural mortality is dealt with as an external parameter to the stock assessment model. The rationale for modelling natural mortality is similar to that for growth: one should be able to obtain information from a range of sources and feed it into the assessment.</p>
+<p>The mechanism used by a4a is to build an interface that is transparent and flexible, and makes it easy to explore different options. In relation to natural mortality, it means that the analyst should be able to use distinct models like Gislasson’s, Charnov’s, Pauly’s, etc., in a coherent framework, making it possible to compare the outcomes of the assessment.</p>
 <p>Within the a4a framework, the general method for inserting natural mortality in the stock assessment is to:</p>
 <ul>
 <li>Create an object of class <code>a4aM</code> which holds the natural mortality model and parameters.</li>
@@ -355,7 +354,7 @@ data(rfLen)</code></pre>
 </div>
 <div id="a4am---the-m-class" class="section level1">
 <h1><code>a4aM</code> - The M class</h1>
-<p>Natural mortality is implemented in a class named <code>a4aM</code>. This class is made up of three objects of the class <code>FLModelSim</code>. Each object is a model that represents one effect: an age or length effect, a scaling (level) effect and a time trend, named <code>shape</code>, <code>level</code> and <code>trend</code>, respectively. The impact of the models is multiplicative, i.e. the overal natural mortality is given by <code>shape</code> x <code>level</code> x <code>trend</code>. Check the help files for more information.</p>
+<p>Natural mortality is implemented in a class named <code>a4aM</code>. This class is made up of three objects of the class <code>FLModelSim</code>. Each object is a model that represents one effect: an age or length effect, a scaling (level) effect and a time trend, named <em>shape</em>, <em>level</em> and <em>trend</em>, respectively. The impact of the models is multiplicative, i.e. the overal natural mortality is given by <em>shape</em> x <em>level</em> x <em>trend</em>. Check the help files for more information.</p>
 <pre class="r"><code>showClass(&quot;a4aM&quot;)</code></pre>
 <pre><code>Class &quot;a4aM&quot; [package &quot;FLa4a&quot;]
 
@@ -366,7 +365,7 @@ Class: FLModelSim FLModelSim FLModelSim  character  character    numeric
 
 Extends: &quot;FLComp&quot;</code></pre>
 <p>The <code>a4aM</code> constructor requires that the models and parameters are provided. The default method will build each of these models as a constant value of 1.</p>
-<p>As a simple example, the usual “0.2” guessestimate could be set up by setting the <code>level</code> model to have a single parameter with a fixed value, while the other two models, <code>shape</code> and <code>trend</code>, have a default value of 1 (meaning that they have no effect).</p>
+<p>As a simple example, the usual “0.2” guesstimate could be set up by setting the <em>level</em> model to have a single parameter with a fixed value, while the other two models, <em>shape</em> and <em>trend</em>, have a default value of 1 (meaning that they have no effect).</p>
 <pre class="r"><code>mod02 &lt;- FLModelSim(model=~a, params=FLPar(a=0.2))
 m1 &lt;- a4aM(level=mod02)
 m1</code></pre>
@@ -374,7 +373,7 @@ m1</code></pre>
   shape: ~1
   level: ~a
   trend: ~1</code></pre>
-<p>More interesting natural mortality shapes can be set up using biological knowledge. The following example uses an exponential decay over ages (implying that the resulting <code>FLQuant</code> generated by the <code>m()</code> method will be age based). We also use Jensen’s second estimator <a href="Kenshington,%202013"></a> as a scaling <code>level</code> model, which is based on the von Bertalanffy <span class="math inline">\(K\)</span> parameter, <span class="math inline">\(M=1.5K\)</span>.</p>
+<p>More interesting natural mortality shapes can be set up using biological knowledge. The following example uses an exponential decay over ages (implying that the resulting <code>FLQuant</code> generated by the <code>m()</code> method will be age based). We also use Jensen’s second estimator <a href="http://onlinelibrary.wiley.com/doi/10.1111/faf.12027/abstract">Kenchington, 2013</a> as a scaling <em>level</em> model, which is based on the von Bertalanffy <span class="math inline">\(k\)</span> parameter, <span class="math inline">\(M=1.5k\)</span>.</p>
 <pre class="r"><code>shape2 &lt;- FLModelSim(model=~exp(-age-0.5))
 level2 &lt;- FLModelSim(model=~1.5*k, params=FLPar(k=0.4))
 m2 &lt;- a4aM(shape=shape2, level=level2)
@@ -383,18 +382,18 @@ m2</code></pre>
   shape: ~exp(-age - 0.5)
   level: ~1.5 * k
   trend: ~1</code></pre>
-<p>Note that the <code>shape</code> model has <code>age</code> as a parameter of the model but is not set using the <code>params</code> argument.</p>
-<p>The <code>shape</code> model does not have to be age-based. For example, here we set up a <code>shape</code> model using Gislason’s second estimator (<a href="Kenshington,%202013"></a>): <span class="math inline">\(M_l=K(\frac{L_{\inf}}{l})^{1.5}\)</span>. We use the default <code>level</code> and <code>trend</code> models. % Current m() method is not ideal for length based methods as you cannot specify length range and half-widths to make compatible with FLStockLen</p>
-<pre class="r"><code>shape_len &lt;- FLModelSim(model=~K*(linf/len)^1.5, params=FLPar(linf=60, K=0.4))
+<p>Note that the <em>shape</em> model has <em>age</em> as a parameter, but is not set using the <em>params</em> argument.</p>
+<p>The <em>shape</em> model does not have to be age-based. For example, here we set up a <em>shape</em> model using Gislason’s second estimator <a href="http://onlinelibrary.wiley.com/doi/10.1111/faf.12027/abstract">Kenchington, 2013</a>: <span class="math inline">\(M_l=K(\frac{L_{\inf}}{l})^{1.5}\)</span>. We use the default <em>level</em> and <em>trend</em> models. The current <code>m()</code> method is not ideal for length-based methods because you cannot specify length ranges and half-widths to make compatible with <code>FLStockLen</code></p>
+<pre class="r"><code>shape_len &lt;- FLModelSim(model=~k*(linf/len)^1.5, params=FLPar(linf=60, k=0.4))
 m_len &lt;- a4aM(shape=shape_len)</code></pre>
-<p>Another option is to model how an external factor may impact the natural mortality. This can be added through the <code>trend</code> model. Suppose natural mortality can be modelled with a dependency on the NAO index, due to some mechanism that results in having lower mortality when NAO is negative and higher when it’s positive. In this example, the impact is represented by the NAO value on the quarter before spawning, which occurs in the second quarter.</p>
-<p>We use this to make a complicated natural mortality model with an age based shape model, a level model based on <span class="math inline">\(K\)</span> and a trend model driven by NAO, where mortality increases by 50% if NAO is positive on the first quarter.</p>
+<p>Another option is to model how an external factor may impact the natural mortality. This can be added through the <em>trend</em> model. Suppose natural mortality can be modelled with a dependency on the NAO index, due to some mechanism that results in having lower mortality when NAO is negative and higher when it’s positive. In this example, the impact is represented by the NAO value in the quarter before spawning, which occurs in the second quarter.</p>
+<p>We use this to make a complicated natural mortality model with an age based <em>shape</em> model, a <em>level</em> model based on <span class="math inline">\(k\)</span> and a <em>trend</em> model driven by NAO, where mortality increases by 50% if NAO is positive in the first quarter. Note, this example needs an internet connection to access the NAO data.</p>
 <pre class="r"><code># Get NAO
 nao.orig &lt;- read.table(&quot;https://www.esrl.noaa.gov/psd/data/correlation/nao.data&quot;, skip=1, nrow=62, na.strings=&quot;-99.90&quot;)
 dnms &lt;- list(quant=&quot;nao&quot;, year=1948:2009, unit=&quot;unique&quot;, season=1:12, area=&quot;unique&quot;)
-# Build an FLQuant from the NAO data
+# Build an FLQuant from the NAO data, with the season slot representing months
 nao.flq &lt;- FLQuant(unlist(nao.orig[,-1]), dimnames=dnms, units=&quot;nao&quot;)
-# Build covar by calculating mean over the first 3 months
+# Build covar by calculating the mean over the first 3 months
 nao &lt;- seasonMeans(nao.flq[,,,1:3]) 
 # Turn into Boolean
 nao &lt;- (nao&gt;0)
@@ -411,12 +410,12 @@ m3</code></pre>
 </div>
 <div id="adding-uncertainty-to-natural-mortality-parameters-with-a-multivariate-normal-distribution" class="section level1">
 <h1>Adding uncertainty to natural mortality parameters with a multivariate normal distribution</h1>
-<p>Uncertainty on natural mortality is added through uncertainty on the parameters.</p>
-<p>In this section we’ll show how to add multivariate normal uncertainty. We make use of the class <code>FLModelSim</code> method <code>mvrnorm()</code>, which is a wrapper for the method <code>mvrnorm()</code> distributed by the package <strong>MASS</strong>.</p>
-<p>We’ll create an <code>a4aM</code> object with an exponential shape, a <code>level</code> model based on <span class="math inline">\(k\)</span> and temperature (Jensen’s third estimator), and a <code>trend</code> model driven by the NAO (as above). Afterwards a variance-covariance matrix for the <code>level</code> and <code>trend</code> models will be included. Finally, create an object with 100 iterations using the <code>mvrnorm()</code> method.</p>
-<p>Create the object:</p>
-<pre class="r"><code>shape4 &lt;- FLModelSim(model=~exp(-age-0.5))
-level4 &lt;- FLModelSim(model=~k^0.66*t^0.57, params=FLPar(k=0.4, t=10), vcov=array(c(0.002, 0.01,0.01, 1), dim=c(2,2)))
+<p>Uncertainty in natural mortality is added through uncertainty in the parameters.</p>
+<p>In this section we’ll show how to add multivariate normal uncertainty. We make use of method <code>mvrnorm()</code> from class <code>FLModelSim</code>, which is a wrapper for the method <code>mvrnorm()</code> distributed by the package <strong>MASS</strong>.</p>
+<p>We’ll create an <code>a4aM</code> object with an exponential <em>shape</em>, a <em>level</em> model based on <span class="math inline">\(k\)</span> and temperature (Jensen’s third estimator), and a <em>trend</em> model driven by the NAO (as above). Afterwards, a variance-covariance matrix for the <em>level</em> and <em>trend</em> models will be included. Finally, we create an object with 100 iterations using the <code>mvrnorm()</code> method.</p>
+<pre class="r"><code># Create the object using shape, level and trend models
+shape4 &lt;- FLModelSim(model=~exp(-age-0.5))
+level4 &lt;- FLModelSim(model=~k^0.66*t^0.57, params=FLPar(k=0.4, t=10), vcov=array(c(0.002, 0.01, 0.01, 1), dim=c(2,2)))
 trend4 &lt;- FLModelSim(model=~1+b*nao, params=FLPar(b=0.5), vcov=matrix(0.02))
 m4 &lt;- a4aM(shape=shape4, level=level4, trend=trend4)
 # Call mvrnorm()
@@ -426,12 +425,12 @@ m4</code></pre>
   shape: ~exp(-age - 0.5)
   level: ~k^0.66 * t^0.57
   trend: ~1 + b * nao</code></pre>
-<p>Inspect the level model (for example):</p>
-<pre class="r"><code>m4@level</code></pre>
+<pre class="r"><code># Inspect the models (e.g. level)
+level(m4) #can also be done with m4@level</code></pre>
 <pre><code>An object of class &quot;FLModelSim&quot;
 Slot &quot;model&quot;:
 ~k^0.66 * t^0.57
-&lt;environment: 0x20538b8&gt;
+&lt;environment: 0x34b9dd0&gt;
 
 Slot &quot;params&quot;:
 An object of class &quot;FLPar&quot;
@@ -449,8 +448,8 @@ Slot &quot;vcov&quot;:
 
 Slot &quot;distr&quot;:
 [1] &quot;norm&quot;</code></pre>
-<p>Note the variance in the parameters:</p>
-<pre class="r"><code>params(trend(m4))</code></pre>
+<pre class="r"><code># Note the variance in the parameters (e.g. trend) 
+params(trend(m4))</code></pre>
 <pre><code>An object of class &quot;FLPar&quot;
 iters:  100 
 
@@ -458,53 +457,53 @@ params
              b 
 0.50488(0.136) 
 units:  NA </code></pre>
-<p>Note the shape model has no parameters and no uncertainty:</p>
-<pre class="r"><code>params(shape(m4))</code></pre>
+<pre class="r"><code># Note the shape model has no parameters and no uncertainty
+params(shape(m4))</code></pre>
 <pre><code>An object of class &quot;FLPar&quot;
 [1] NA
 units:  NA </code></pre>
-<p>In this particular case, the <code>shape</code> model will not be randomized because it doesn’t have a variance-covariance matrix. Also note that because there is only one parameter in the <code>trend</code> model, the randomization will use a univariate normal distribution.</p>
-<p>The same model could be achieved by using <code>mnrnorm()</code> on each model component:</p>
+<p>In this particular case, the <em>shape</em> model will not be randomized because it doesn’t have a variance-covariance matrix. Also note that because there is only one parameter in the <em>trend</em> model, the randomisation will use a univariate normal distribution.</p>
+<p>The same model could be achieved by using <code>mvrnorm()</code> on each model component:</p>
 <pre class="r"><code>m4 &lt;- a4aM(shape=shape4, level=mvrnorm(100, level4), trend=mvrnorm(100, trend4))</code></pre>
 <p>%Note: How to include ageing error ???</p>
 </div>
 <div id="adding-uncertainty-to-natural-mortality-parameters-with-statistical-copulas" class="section level1">
-<h1>Adding uncertainty to natural mortality parameters with statistical copulas`</h1>
-<p>We can also use copulas to add parameter uncertainty to the natural mortality model, similar to the way we use them for the growth model. Using a <a href="http://en.wikipedia.org/wiki/Triangle_distribution">triangle distribution</a>. We use the package <a href="http://cran.r-project.org/web/packages/triangle/index.html">triangle</a>, where this distribution is parametrized using the minimum, maximum and median values. This can be very attractive if the analyst needs to scrape information from the web or literature and perform some kind of meta-analysis. As stated above these processes make use of the methods implemented for the <code>FLModelSim</code> class.</p>
-<p>% EXPAND…</p>
-<p>In the following example we’ll use again Gislason’s second estimator, <span class="math inline">\(M_l=K(\frac{L_{\inf}}{l})^{1.5}\)</span> and a triangle copula to model parameter uncertainty. The method <code>mvrtriangle()</code> is used to create 1000 iterations.</p>
+<h1>Adding uncertainty to natural mortality parameters with statistical copulas</h1>
+<p>We can also use copulas to add parameter uncertainty to the natural mortality model, similar to the way we use them for the growth model. Using a <a href="http://en.wikipedia.org/wiki/Triangle_distribution">triangle distribution</a>. We use the package <a href="http://cran.r-project.org/web/packages/triangle/index.html">triangle</a>, where this distribution is parametrized using the minimum, maximum and median values. This can be very attractive if the analyst needs to, for example, obtain information from the web or literature and perform a meta-analysis. As stated above, these processes make use of the methods implemented for the <code>FLModelSim</code> class.</p>
+<p>In the following example, we’ll use Gislason’s second estimator, <span class="math inline">\(M_l=K(\frac{L_{\inf}}{l})^{1.5}\)</span>, and a triangle copula to model parameter uncertainty. The method <code>mvrtriangle()</code> is used to create 1000 iterations.</p>
 <pre class="r"><code>linf &lt;- 60
 k &lt;- 0.4
 # vcov matrix (make up some values)
 mm &lt;- matrix(NA, ncol=2, nrow=2)
-# 10% cv
+# calculate variances assuming a 10% cv
 diag(mm) &lt;- c((linf*0.1)^2, (k*0.1)^2)
-# 0.2 correlation
-mm[upper.tri(mm)] &lt;- mm[lower.tri(mm)] &lt;- c(0.05)
+# calculate covariances assuming a correlation of 0.2
+mm[upper.tri(mm)] &lt;- mm[lower.tri(mm)] &lt;- sqrt(prod(diag(mm)))*0.2
 # a good way to check is using cov2cor
 cov2cor(mm)</code></pre>
 <table>
 <tbody>
 <tr class="odd">
-<td align="right">1.0000</td>
-<td align="right">0.2083</td>
+<td align="right">1.0</td>
+<td align="right">0.2</td>
 </tr>
 <tr class="even">
-<td align="right">0.2083</td>
-<td align="right">1.0000</td>
+<td align="right">0.2</td>
+<td align="right">1.0</td>
 </tr>
 </tbody>
 </table>
-<pre class="r"><code># create object
+<pre class="r"><code># create the FLModelSim object
 mgis2 &lt;- FLModelSim(model=~k*(linf/len)^1.5, params=FLPar(linf=linf, k=k), vcov=mm)
-# set the lower, upper and (optionally) centre of the parameters (without the centre, the triangle is symmetrical)
+# set the lower (a), upper (b) and (optionally) centre (c) of the parameters linf and k (note, without the centre, the triangle is symmetrical)
 pars &lt;- list(list(a=55,b=65), list(a=0.3, b=0.6, c=0.35))
+# generate 1000 sample sets using mvrtriangle
 mgis2 &lt;- mvrtriangle(1000, mgis2, paramMargins=pars)
 mgis2</code></pre>
 <pre><code>An object of class &quot;FLModelSim&quot;
 Slot &quot;model&quot;:
 ~k * (linf/len)^1.5
-&lt;environment: 0x20538b8&gt;
+&lt;environment: 0x34b9dd0&gt;
 
 Slot &quot;params&quot;:
 An object of class &quot;FLPar&quot;
@@ -512,21 +511,21 @@ iters:  1000
 
 params
             linf                k 
-59.94225(2.1905)  0.41233(0.0751) 
+59.94387(2.1843)  0.41208(0.0749) 
 units:  NA 
 
 Slot &quot;vcov&quot;:
-      [,1]   [,2]
-[1,] 36.00 0.0500
-[2,]  0.05 0.0016
+       [,1]   [,2]
+[1,] 36.000 0.0480
+[2,]  0.048 0.0016
 
 Slot &quot;distr&quot;:
 [1] &quot;un &lt;deprecated slot&gt; triangle&quot;</code></pre>
 <p>The resulting parameter estimates and marginal distributions can be seen in Figure 1 and Figure 2.</p>
 <div class="figure" style="text-align: center">
-<img src="Natural_mortality_modelling_in_FLa4a_files/figure-html/plot_tri_gis_m-1.png" alt="Parameter estimates for Gislason's second natural mortality model from using a triangle distribution." width="672" />
+<img src="Natural_mortality_modelling_in_FLa4a_files/figure-html/plot_tri_gis_m-1.png" alt="Parameter estimates for Gislason's second natural mortality model based on a triangle distribution." width="672" />
 <p class="caption">
-Parameter estimates for Gislason’s second natural mortality model from using a triangle distribution.
+Parameter estimates for Gislason’s second natural mortality model based on a triangle distribution.
 </p>
 </div>
 <div class="figure" style="text-align: center">
@@ -535,32 +534,32 @@ Parameter estimates for Gislason’s second natural mortality model from using a
 Marginal distributions of the parameters for Gislason’s second natural mortality model using a triangle distribution.
 </p>
 </div>
-<p>We now have a new model that can be used for the <code>shape</code> model. You can use the constructor or the set method to add the new model. Note that we have a quite complex method now for M. A length based <code>shape</code> model from Gislason’s work, Jensen’s third model based on temperature <code>level</code> and a time <code>trend</code> depending on NAO. All of the component models have uncertainty in their parameters.</p>
-<pre class="r"><code>m5 &lt;- a4aM(shape=mgis2, level=level4, trend=trend4)
-# or
+<p>We now have a new model that can be used for the <em>shape</em> model. You can use the constructor or the set method to add the new model. Note that we have quite a complex method now for M. A length based <em>shape</em> model from Gislason’s work, Jensen’s third model based on temperature <em>level</em> and a time <em>trend</em> depending on an environmental index, NAO. All of the component models have uncertainty in their parameters.</p>
+<pre class="r"><code>#Using the constructor
+m5 &lt;- a4aM(shape=mgis2, level=level4, trend=trend4)
+# or the set method for shape to change m4 previously created
 m5 &lt;- m4
 shape(m5) &lt;- mgis2</code></pre>
 </div>
 <div id="computing-natural-mortality-time-series---the-m-method" class="section level1">
-<h1>Computing natural mortality time series - the “m” method`</h1>
-<p>Now that we have set up the natural mortality <code>a4aM</code> model and added parameter uncertainty to each component, we are ready to generate the <code>FLQuant</code> of natural mortality. For that we need the <code>m()</code> method.</p>
+<h1>Computing natural mortality time series - the <code>m()</code> method</h1>
+<p>Now that we have set up the natural mortality <code>a4aM</code> model and added parameter uncertainty to each component, we are ready to generate the <code>FLQuant</code> for natural mortality. For that we need the <code>m()</code> method.</p>
 <p>The <code>m()</code> method is the workhorse method for computing natural mortality. The method returns an <code>FLQuant</code> that can be inserted in an <code>FLStock</code> for usage by the assessment method.</p>
-<p>%The method uses the <code>range</code> slot to work out the dimensions of the <code>FLQuant</code> object. % Future developments will also allow for easy insertion into FLStockLen objects.</p>
-<p>The size of the <code>FLQuant</code> object is determined by the <code>min</code>, <code>max</code>, <code>minyear</code> and <code>maxyear</code> elements of the <code>range</code> slot of the <code>a4aM</code> object. By default the values of these elements are set to 0. Giving an <code>FLQuant</code> with length 1 in the <code>quant</code> and <code>year</code> dimension. The <code>range</code> slot can be set by hand, or by using the <code>rngquant()</code> and <code>rngyear()</code> methods.</p>
-<p>The name of the first dimension of the output <code>FLQuant</code> (e.g. ‘age’ or ‘len’) is determined by the parameters of the <code>shape</code> model. If it is not clear what the name should be then the name is set to ‘quant’.</p>
+<p>The method uses the <code>range</code> slot to work out the dimensions of the <code>FLQuant</code> object. % Future developments will also allow for easy insertion into FLStockLen objects.</p>
+<p>The size of the <code>FLQuant</code> object is determined by the min, max, minyear and maxyear elements of the <em>range</em> slot of the <code>a4aM</code> object. By default the values of these elements are set to 0, giving an <code>FLQuant</code> with length 1 in the <em>quant</em> and <em>year</em> dimension. The <em>range</em> slot can be set by hand, or by using the <code>rngquant()</code> and <code>rngyear()</code> methods.</p>
+<p>The name of the first dimension of the output <code>FLQuant</code> (e.g. ‘age’ or ‘len’) is determined by the parameters of the <em>shape</em> model. If it is not clear what the name should be then the name is set to ‘quant’.</p>
 <p>Here we demonstrate <code>m()</code> using the simple <code>a4aM</code> object we created above that has constant natural mortality.</p>
-<p>Start with the simplest model:</p>
-<pre class="r"><code>m1</code></pre>
+<pre class="r"><code># Start with the simplest model
+m1</code></pre>
 <pre><code>a4aM object:
   shape: ~1
   level: ~a
   trend: ~1</code></pre>
-<p>Check the range:</p>
-<pre class="r"><code>range(m1)</code></pre>
+<pre class="r"><code># Check the range
+range(m1) # no ages or years...</code></pre>
 <pre><code>      min       max plusgroup   minyear   maxyear   minmbar   maxmbar 
         0         0         0         0         0         0         0 </code></pre>
-<p>Simple - no ages or years:</p>
-<pre class="r"><code>m(m1)</code></pre>
+<pre class="r"><code>m(m1)     # confirms no ages or years</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 An object of class &quot;FLQuant&quot;
 , , unit = unique, season = all, area = unique
@@ -570,14 +569,15 @@ quant 0
     0 0.2
 
 units:  NA </code></pre>
-<p>Set the quant and year ranges:</p>
-<pre class="r"><code>rngquant(m1) &lt;- c(0,7)          # set the quant range
-rngyear(m1) &lt;- c(2000, 2010)    # set the year range
+<pre class="r"><code># Set the quant and year ranges
+range(m1, c(&#39;min&#39;, &#39;max&#39;)) &lt;- c(0,7)             # set the quant range
+range(m1, c(&#39;minyear&#39;, &#39;maxyear&#39;)) &lt;- c(2000, 2010) # set the year range
 range(m1)</code></pre>
 <pre><code>      min       max plusgroup   minyear   maxyear   minmbar   maxmbar 
         0         7         0      2000      2010         0         0 </code></pre>
-<p>Create the object with the M estimates by age and year, note the name of the first dimension is ‘quant’.</p>
-<pre class="r"><code>m(m1)</code></pre>
+<pre class="r"><code># Show the object with the M estimates by age and year
+# (note the name of the first dimension is &#39;quant&#39;)
+m(m1)</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 , , unit = unique, season = all, area = unique
 
@@ -604,88 +604,115 @@ quant 2006 2007 2008 2009 2010
     5 0.2  0.2  0.2  0.2  0.2 
     6 0.2  0.2  0.2  0.2  0.2 
     7 0.2  0.2  0.2  0.2  0.2 </code></pre>
-<p>The next example has an age-based shape. As the <code>shape</code> model has ‘age’ as a variable which is not included in the <code>FLPar</code> slot it is used as the name of the first dimension of the resulting <code>FLQuant</code>. Note that in this case the <code>mbar</code> values in the range become relevant, once that <code>mbar</code> is used to compute the mean level. This mean level will match the value given by the <code>level</code> model. The <code>mbar</code> range can be changed with the <code>rngmbar()</code> method. We illustrate this by making an <code>FLQuant</code> with age varying natural mortality.</p>
-<p>Check the model and set the ranges:</p>
-<pre class="r"><code>m2</code></pre>
+<p>The next example has an age-based shape. As the <em>shape</em> model has ‘age’ as a variable which is not included in the <code>FLPar</code> slot, it is used as the name of the first dimension of the resulting <code>FLQuant</code>. Note that in this case, the <em>mbar</em> values in the range become relevant, once that <em>mbar</em> is used to compute the mean level. This mean level will match the value given by the <em>level</em> model. The <em>mbar</em> range can be changed with the <code>rngmbar()</code> method. We illustrate this by making an <code>FLQuant</code> with age-varying natural mortality.</p>
+<pre class="r"><code># Check the model and set the ranges
+m2</code></pre>
 <pre><code>a4aM object:
   shape: ~exp(-age - 0.5)
   level: ~1.5 * k
   trend: ~1</code></pre>
-<pre class="r"><code>rngquant(m2) &lt;- c(0,7)
-rngyear(m2) &lt;- c(2000, 2003)
+<pre class="r"><code>range(m2, c(&#39;min&#39;, &#39;max&#39;)) &lt;- c(0,7)             # set the quant range
+range(m2, c(&#39;minyear&#39;, &#39;maxyear&#39;)) &lt;- c(2000, 2010) # set the year range
 range(m2)</code></pre>
 <pre><code>      min       max plusgroup   minyear   maxyear   minmbar   maxmbar 
-        0         7         0      2000      2003         0         0 </code></pre>
+        0         7         0      2000      2010         0         0 </code></pre>
 <pre class="r"><code>m(m2)</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
-An object of class &quot;FLQuant&quot;
 , , unit = unique, season = all, area = unique
 
    year
-age 2000       2001       2002       2003      
-  0 0.60000000 0.60000000 0.60000000 0.60000000
-  1 0.22072766 0.22072766 0.22072766 0.22072766
-  2 0.08120117 0.08120117 0.08120117 0.08120117
-  3 0.02987224 0.02987224 0.02987224 0.02987224
-  4 0.01098938 0.01098938 0.01098938 0.01098938
-  5 0.00404277 0.00404277 0.00404277 0.00404277
-  6 0.00148725 0.00148725 0.00148725 0.00148725
-  7 0.00054713 0.00054713 0.00054713 0.00054713
+age 2000       2001       2002       2003       2004      
+  0 0.60000000 0.60000000 0.60000000 0.60000000 0.60000000
+  1 0.22072766 0.22072766 0.22072766 0.22072766 0.22072766
+  2 0.08120117 0.08120117 0.08120117 0.08120117 0.08120117
+  3 0.02987224 0.02987224 0.02987224 0.02987224 0.02987224
+  4 0.01098938 0.01098938 0.01098938 0.01098938 0.01098938
+  5 0.00404277 0.00404277 0.00404277 0.00404277 0.00404277
+  6 0.00148725 0.00148725 0.00148725 0.00148725 0.00148725
+  7 0.00054713 0.00054713 0.00054713 0.00054713 0.00054713
 
-units:  NA </code></pre>
-<p>Note that the level value is:</p>
-<pre class="r"><code>predict(level(m2))</code></pre>
-<div id="section" class="section level2">
-<h2>1</h2>
-<p>0.6 Which is the same as:</p>
-<pre class="r"><code>m(m2)[&quot;0&quot;]</code></pre>
+      [ ...  1 years]
+
+   year
+age 2006       2007       2008       2009       2010      
+  0 0.60000000 0.60000000 0.60000000 0.60000000 0.60000000
+  1 0.22072766 0.22072766 0.22072766 0.22072766 0.22072766
+  2 0.08120117 0.08120117 0.08120117 0.08120117 0.08120117
+  3 0.02987224 0.02987224 0.02987224 0.02987224 0.02987224
+  4 0.01098938 0.01098938 0.01098938 0.01098938 0.01098938
+  5 0.00404277 0.00404277 0.00404277 0.00404277 0.00404277
+  6 0.00148725 0.00148725 0.00148725 0.00148725 0.00148725
+  7 0.00054713 0.00054713 0.00054713 0.00054713 0.00054713</code></pre>
+<pre class="r"><code># Note that the level value is
+c(predict(level(m2)))</code></pre>
+<pre><code>[1] 0.6</code></pre>
+<pre class="r"><code># which is the same as
+m(m2)[&quot;0&quot;]</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
-An object of class &quot;FLQuant&quot;
 , , unit = unique, season = all, area = unique
 
    year
-age 2000 2001 2002 2003
-  0 0.6  0.6  0.6  0.6 
+age 2000 2001 2002 2003 2004
+  0 0.6  0.6  0.6  0.6  0.6 
 
-units:  NA </code></pre>
-<p>This is because the mbar range is currently set to “0” and “0” (see above) and the mean natural mortality value over this range is given by the level model.</p>
-<p>We can change the <code>mbar</code> range:</p>
-<pre class="r"><code>rngmbar(m2)&lt;- c(0,5)
+      [ ...  1 years]
+
+   year
+age 2006 2007 2008 2009 2010
+  0 0.6  0.6  0.6  0.6  0.6 </code></pre>
+<pre class="r"><code># This is because the mbar range is currently set to &quot;0&quot; and &quot;0&quot; (see above)
+# and the mean natural mortality value over this range is given by the level model. 
+# We can change the mbar range
+range(m2, c(&#39;minmbar&#39;, &#39;maxmbar&#39;)) &lt;- c(0,7)             # set the quant range
 range(m2)</code></pre>
 <pre><code>      min       max plusgroup   minyear   maxyear   minmbar   maxmbar 
-        0         7         0      2000      2003         0         5 </code></pre>
-<p>Which rescales the the natural mortality at age:</p>
-<pre class="r"><code>m(m2)</code></pre>
+        0         7         0      2000      2010         0         7 </code></pre>
+<pre class="r"><code># which rescales the the natural mortality at age
+m(m2)</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
-An object of class &quot;FLQuant&quot;
 , , unit = unique, season = all, area = unique
 
    year
-age 2000      2001      2002      2003     
-  0 2.2812888 2.2812888 2.2812888 2.2812888
-  1 0.8392392 0.8392392 0.8392392 0.8392392
-  2 0.3087389 0.3087389 0.3087389 0.3087389
-  3 0.1135787 0.1135787 0.1135787 0.1135787
-  4 0.0417833 0.0417833 0.0417833 0.0417833
-  5 0.0153712 0.0153712 0.0153712 0.0153712
-  6 0.0056547 0.0056547 0.0056547 0.0056547
-  7 0.0020803 0.0020803 0.0020803 0.0020803
+age 2000      2001      2002      2003      2004     
+  0 3.0351969 3.0351969 3.0351969 3.0351969 3.0351969
+  1 1.1165865 1.1165865 1.1165865 1.1165865 1.1165865
+  2 0.4107692 0.4107692 0.4107692 0.4107692 0.4107692
+  3 0.1511136 0.1511136 0.1511136 0.1511136 0.1511136
+  4 0.0555916 0.0555916 0.0555916 0.0555916 0.0555916
+  5 0.0204510 0.0204510 0.0204510 0.0204510 0.0204510
+  6 0.0075235 0.0075235 0.0075235 0.0075235 0.0075235
+  7 0.0027677 0.0027677 0.0027677 0.0027677 0.0027677
 
-units:  NA </code></pre>
-<p>Check that the mortality over the mean range is the same as the level model:</p>
-<pre class="r"><code>quantMeans(m(m2)[as.character(0:5)])</code></pre>
+      [ ...  1 years]
+
+   year
+age 2006      2007      2008      2009      2010     
+  0 3.0351969 3.0351969 3.0351969 3.0351969 3.0351969
+  1 1.1165865 1.1165865 1.1165865 1.1165865 1.1165865
+  2 0.4107692 0.4107692 0.4107692 0.4107692 0.4107692
+  3 0.1511136 0.1511136 0.1511136 0.1511136 0.1511136
+  4 0.0555916 0.0555916 0.0555916 0.0555916 0.0555916
+  5 0.0204510 0.0204510 0.0204510 0.0204510 0.0204510
+  6 0.0075235 0.0075235 0.0075235 0.0075235 0.0075235
+  7 0.0027677 0.0027677 0.0027677 0.0027677 0.0027677</code></pre>
+<pre class="r"><code># Check that the mortality over the mean range is the same as the level model
+quantMeans(m(m2)[as.character(0:5)])</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
-An object of class &quot;FLQuant&quot;
 , , unit = unique, season = all, area = unique
 
      year
-age   2000 2001 2002 2003
-  all 0.6  0.6  0.6  0.6 
+age   2000    2001    2002    2003    2004   
+  all 0.79828 0.79828 0.79828 0.79828 0.79828
 
-units:  NA </code></pre>
-<p>The next example uses a time trend for the <code>trend</code> model. We use the <code>m3</code> model we made earlier. The <code>trend</code> model for this model has a covariate, ‘nao’. This needs to be passed to the <code>m()</code> method. The year range of the ‘nao’ covariate should match that of the <code>range</code> slot.</p>
-<p>Simple, pass in a single nao value (only one year):</p>
-<pre class="r"><code>m(m3, nao=1)</code></pre>
+      [ ...  1 years]
+
+     year
+age   2006    2007    2008    2009    2010   
+  all 0.79828 0.79828 0.79828 0.79828 0.79828</code></pre>
+<p>The next example uses a time trend for the <em>trend</em> model. We use the m3 model we derived earlier. The <em>trend</em> model for this model has a covariate, ‘nao’. This needs to be passed to the <code>m()</code> method. The year range of the ‘nao’ covariate should match that of the <em>range</em> slot.</p>
+<pre class="r"><code># Pass in a single nao value (only one year, because the trend model needs
+# at least one value)
+m(m3, nao=1)</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 An object of class &quot;FLQuant&quot;
 , , unit = unique, season = all, area = unique
@@ -695,8 +722,8 @@ age 0
   0 0.9
 
 units:  NA </code></pre>
-<p>Set ages:</p>
-<pre class="r"><code>rngquant(m3) &lt;- c(0,7)
+<pre class="r"><code># Set ages
+range(m3, c(&#39;min&#39;, &#39;max&#39;)) &lt;- c(0,7)             # set the quant range
 m(m3, nao=0)</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 An object of class &quot;FLQuant&quot;
@@ -714,8 +741,8 @@ age 0
   7 0.00054713
 
 units:  NA </code></pre>
-<p>With ages and years - passing in the NAO data as numeric (1,0,1,0)</p>
-<pre class="r"><code>rngyear(m3) &lt;- c(2000, 2003)
+<pre class="r"><code># With ages and years - passing in the NAO data as numeric (1,0,1,0)
+range(m3, c(&#39;minyear&#39;, &#39;maxyear&#39;)) &lt;- c(2000, 2003) # set the year range
 m(m3, nao=as.numeric(nao[,as.character(2000:2003)]))</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 An object of class &quot;FLQuant&quot;
@@ -733,9 +760,9 @@ age 2000       2001       2002       2003
   7 0.00082069 0.00054713 0.00082069 0.00054713
 
 units:  NA </code></pre>
-<p>The final example show how <code>m()</code> can be used to make an <code>FLQuant</code> with uncertainty (see Figure 3). We use the <code>m4</code> object from earlier with uncertainty on the <code>level</code> and <code>trend</code> parameters.</p>
-<pre class="r"><code>rngquant(m4) &lt;- c(0,7)
-rngyear(m4) &lt;- c(2000, 2003)
+<p>The final example show how <code>m()</code> can be used to make an <code>FLQuant</code> with uncertainty (see Figure 3). We use the m4 object from earlier with uncertainty on the <em>level</em> and <em>trend</em> parameters.</p>
+<pre class="r"><code>range(m4, c(&#39;min&#39;, &#39;max&#39;)) &lt;- c(0,7)             # set the quant range
+range(m4, c(&#39;minyear&#39;, &#39;maxyear&#39;)) &lt;- c(2000, 2003)
 flq &lt;- m(m4, nao=as.numeric(nao[,as.character(2000:2003)]))
 flq</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
@@ -775,6 +802,12 @@ Natural mortality with age and year trend.
 </p>
 </div>
 </div>
+<div id="references" class="section level1">
+<h1>References</h1>
+<p>Ernesto Jardim, Colin P. Millar, Iago Mosqueira, Finlay Scott, Giacomo Chato Osio, Marco Ferretti, Nekane Alzorriz, Alessandro Orio; What if stock assessment is as simple as a linear model? The a4a initiative. ICES J Mar Sci 2015; 72 (1): 232-236. DOI: <a href="https://doi.org/10.1093/icesjms/fsu050" class="uri">https://doi.org/10.1093/icesjms/fsu050</a></p>
+<p>Kenchington, T. J. (2014), Natural mortality estimators for information-limited fisheries. Fish Fish, 15: 533-562. <a href="doi:10.1111/faf.12027" class="uri">doi:10.1111/faf.12027</a>. <a href="http://onlinelibrary.wiley.com/doi/10.1111/faf.12027/abstract" class="uri">http://onlinelibrary.wiley.com/doi/10.1111/faf.12027/abstract</a></p>
+<p>Colin P. Millar, Ernesto Jardim, Finlay Scott, Giacomo Chato Osio, Iago Mosqueira, Nekane Alzorriz; Model averaging to streamline the stock assessment process. ICES J Mar Sci 2015; 72 (1): 93-98. DOI: <a href="https://doi.org/10.1093/icesjms/fsu043" class="uri">https://doi.org/10.1093/icesjms/fsu043</a></p>
+<p>Scott F, Jardim E, Millar CP, Cervino S (2016) An Applied Framework for Incorporating Multiple Sources of Uncertainty in Fisheries Stock Assessments. PLoS ONE 11(5): e0154922. DOI: <a href="https://doi.org/10.1371/journal.pone.0154922" class="uri">https://doi.org/10.1371/journal.pone.0154922</a></p>
 </div>
 <div id="more-information" class="section level1">
 <h1>More information</h1>
@@ -787,10 +820,10 @@ Natural mortality with age and year trend.
 <div id="software-versions" class="section level2">
 <h2>Software Versions</h2>
 <ul>
-<li>R version 3.3.2 (2016-10-31)</li>
-<li>FLCore: 2.6.0.20170228</li>
-<li>FLa4a: 1.0.0</li>
-<li><strong>Compiled</strong>: Wed Mar 8 13:49:18 2017</li>
+<li>R version 3.4.1 (2017-06-30)</li>
+<li>FLCore: 2.6.3.9008</li>
+<li>FLa4a: 1.1.2</li>
+<li><strong>Compiled</strong>: Mon Aug 21 10:18:21 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">
@@ -826,7 +859,7 @@ $(document).ready(function () {
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

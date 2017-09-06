@@ -2,11 +2,11 @@
 title: "Plotting FLR objects using *lattice*"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-  github_document
-tags:
-license: Creative Commons CC-BY SA
+github_document:
+  mathjax: TRUE
+tags: [FLR]
+license: Creative Commons Attribution-ShareAlike 4.0 International Public License
 ---
-
 
 ```{r, ini, echo=FALSE, results='hide', message=FALSE, warnings=FALSE, cache=FALSE}
 library(knitr)
@@ -29,6 +29,7 @@ install.packages(c("FLCore"), repos="http://flr-project.org/R")
 ```
 
 Load necessary packages:
+
 ```{r, pkgs}
 library(FLCore)
 library(lattice)
@@ -36,9 +37,7 @@ library(lattice)
 
 # GRAPH TYPES AVAILABLE
 
-The typical formula for lattice plots is `graphtype(formula, data=FLQuant)`
-
-where *graphtype* is selected from the list below. Formula specifies the variable(s) to display and any conditioning variables. For example  `~ data | A` means display numeric variable for each level of factor A in separate graphs. `data ~ A` means display numeric variables for each level of factor A. 
+The typical formula for lattice plots is `graphtype(formula, data=FLQuant)` where *graphtype* is selected from the table below, and *formula* specifies the variable(s) to display and any conditioning variables. For example  `~ data | A` means display numeric variables for each level of factor A in separate graphs, and `data ~ A` means display numeric variables for each level of factor A. 
 
 The following lattice graph options could be used for FLR objects: 
 
@@ -56,10 +55,9 @@ In case of lattice-based *plot* the name of the object can be simply used, e.g. 
 
 # STANDARD LATTICE BASED FLR PLOTS
 
-The standard `plot()` function in FLR returns lattice-based plots for FLR objects.  
-In the following examples, the FLStock object *ple4* and the FLSR object *nsher* are used.
+The standard `plot()` function in FLR returns lattice-based plots for FLR objects. In the following examples, the FLStock object *ple4* and the FLSR object *nsher* are used.
 
-```{r}
+```{r, datasets}
 #Read FLR examples
 data(ple4)
 data(nsher)
@@ -67,87 +65,81 @@ data(nsher)
 
 Plots of the main FLQuants of an FLStock can be generated using the `plot()` function
 
-```{r fig1}
+```{r, fig1}
 # Plot FLStock
 plot(ple4)
 ```
 
-A specific object (FLQuant) of the FLStock can be also plotted by age and year using the `plot()` function. In the following example, the `scales` argument has been used to allow different scales on the y axis of each age's plot.
+A specific object (FLQuant) of the FLStock can be also plotted by age and year using the `plot()` function. In the following example, the `scales` argument has been used to allow different scales on the y axis of the plot for each age.
 
-```{r fig2}
+```{r, fig2}
 # plot FLQuant
 plot(catch.n(ple4)/1000, ylab="Catch numbers (thousands)",
       scales = list(y = list(relation = 'free')))
 ```
 
-The `plot()` function can be also used to produce summary graphs of objects other then FLStock, such as FLSR objects.
+The `plot()` function can also be used to produce summary graphs of objects other then FLStock, such as FLSR objects.
 
-```{r fig3}
+```{r, fig3}
 # Plot FLSR
 plot(nsher)
 ```
 
 # PLOTTING FLR OBJECTS USING LATTICE
 
-To plot FLR objects with lattice a conversion to data.frame is required to select columns names for dims and FLR objects ('data') to plot. It is usefull to check how the objects look like before plotting it.
+It is useful to check what the objects look like before plotting them.
 
-```{r}
+```{r, dataframe}
 head(as.data.frame(catch(ple4)))
 ```
 
-
 ## XYPLOTS for FLR
 
-`xyplot` produces bivariate scatterplots or time-series plots for FLR objects. Standard features, e.g. division by number could be used in order to update standard FLR units of measurement if needed.
+`xyplot` produces bivariate scatterplots or time-series plots for FLR objects. Standard features, e.g. division by number, could be used in order to update standard FLR units of measurement, if needed. Lattice options from [user guide](https://cran.r-project.org/web/packages/lattice/lattice.pdf) can be used to update your graphs.
 
-Use lattice options from [user guide](https://cran.r-project.org/web/packages/lattice/lattice.pdf) to update your graphs.
-
-```{r fig4}
+```{r, fig4}
 xyplot(data/1000~year, data=catch(ple4), type='b', pch=19,
        ylab="catch (thousand tonnes)",xlab='')
-
 ```
 
-One could also group the data, e.g. by age/area or season and plot the FLQuant by age class, area or season.
+One could also group the data, e.g. by age, area or season, and plot the FLQuant by age class, area or season.
 
-```{r fig5}
+```{r, fig5}
 xyplot(data/1000~year, groups=age, data=catch.n(ple4), type='l', 
   auto.key=list(space='bottom',columns=5, cex=0.7),
   ylab='Catch numbers at age (10^6)',xlab='')
 ```
 
-Or analyse the groups by plotting them separately 
+Groups can be analysed by plotting them separately 
 
-```{r fig6}
+```{r, fig6}
 xyplot(data/1000~year|factor(age), data=catch.n(ple4), type='l',
-        scales = list(y = list(relation = 'free')), ylab='Catch numbers (10^6)',xlab='')
+  scales = list(y = list(relation = 'free')), ylab='Catch numbers (10^6)',xlab='')
 ```
 
-Methods are also available for plotting multiple FLQuants called by name using 'qname'
+Methods are also available for plotting multiple FLQuants, called by name using 'qname'
 
-```{r fig7}
-xyplot(data~year|qname, data=FLQuants(SSB=ssb(ple4), Yield=catch(ple4), Landings=landings(ple4)),xlab='',
-       type='l')
+```{r, fig7}
+xyplot(data~year|qname, data=FLQuants(SSB=ssb(ple4), Yield=catch(ple4), 
+  Landings=landings(ple4)),xlab='',type='l')
 ```
 
 ## BARCHARTS
 
-Similarly to the xyplots, barcharts also allow exploring FLQuants  
+Similar to the xyplots, barcharts also allow exploring FLQuants.
 
-```{r fig8}
+```{r, fig8}
 barchart(data/1000~factor(year), 
          data=landings(ple4),
          ylab =list(label="thousand tonnes",cex=0.8),scales=list(x=list(rot=90)),
-         type="v", main = "Total landings" 
-)
+         type="v", main = "Total landings" )
 ```
-
 
 ## BWPLOTS
 
-Boxplots can be created using `bwplot()`. In the following example some stochasticity has been added to Fbar and the resulting values per year have been plotted as boxplots.
+Boxplots can be created using `bwplot()`. In the following example, some stochasticity has been added to Fbar and the resulting values per year have been plotted as boxplots.
 
-```{r fig10}
+```{r, fig10}
 bwplot(data~year, rlnorm(200, fbar(ple4), 0.15),scales=list(x=list(rot=90)), ylab="Fbar")
 ```
 
@@ -155,52 +147,51 @@ bwplot(data~year, rlnorm(200, fbar(ple4), 0.15),scales=list(x=list(rot=90)), yla
 
 Dotplots can be used to plot FLQuants. In the following example, F at age is plotted for the available time-series and colours are used to indicate the different age classes.
 
-```{r fig11}
+```{r, fig11}
 dotplot(data~year,groups=age,harvest(ple4),
         scales=list(x=list(rot=90)), auto.key=list(space='bottom',columns=5, cex=0.7),ylab="F at age")
 ```
 
 ## HISTOGRAM
 
-Histograms can be implemented to show what percent of total entries of an FLQuant falls within a specific range of values. The following example shows how younger age classes exhibit greater variability in terms of catch numbers compared to older age classes, as they are affected more from the size of incoming cohorts.  
+Histograms can be implemented to show what percent of total entries of an FLQuant falls within a specific range of values. The following example shows how younger age classes exhibit greater variability in terms of catch numbers compared to older age classes, because they are affected more by the size of incoming cohorts.  
 
-```{r fig12}
+```{r, fig12}
 histogram(~data|age, catch.n(ple4), xlab='Catch numbers')
-
 ```
-
 
 ## WIREFRAME
 
-Three-dimensional surface plots can also be used for for plotting FLQuants. In the following example F at age by year is plotted as a three dimensional surface.  
+Three-dimensional surface plots can also be used for for plotting FLQuants. In the following example, F at age by year is plotted as a three dimensional surface.  
 
-```{r fig13}
+```{r, fig13}
 wireframe(data~age+year, data=harvest(ple4),zlab="F",drape = TRUE,
         col.regions = colorRampPalette(c("green", "red"))(100))
 ```
 
+# FLR specific plots, BUBBLES
 
-# FLR specific plots BUBBLES
+The bubble plots have been created specifically for FLR, and they are typically used to visualise data by age classes. 
 
-The bubble plots have been created specifically for FLR and they are typically used to visualise data by age classes. 
-
-```{r fig14}
+```{r, fig14}
 bubbles(age~year, data=catch.n(ple4), xlab='', bub.scale=5)
-
 ```
 
-One could also specify parts of the object of interest, e.g. select age classes between 5 and 10 as following:
+One could also specify parts of the object of interest, e.g. select age classes between 5 and 10 as in the following:
 
-```{r fig15}
+```{r, fig15}
 bubbles(age~year, data=catch.n(ple4)[5:10,], xlab='', bub.scale=10)
-
 ```
 
 # References
-[Package "lattice" user manual](https://cran.r-project.org/web/packages/lattice/lattice.pdf)  
-[Quick Lattice Graphs](http://statmethods.net/advgraphs/trellis.html)  
-[A quick introduction to FLR](http://doc.flr-project.org/A_quick_introduction_to_FLR.html)
 
+[Sarkar, D. 2008. Lattice: Multivariate Data Visualization with R. Springer-Verlag, New York, NY, 2008. ISBN 978-0-387-75968-5. 268 pp.](http://lmdvr.r-forge.r-project.org/figures/figures.html) 
+
+[Package "lattice" user manual](https://cran.r-project.org/web/packages/lattice/lattice.pdf)  
+
+[Quick Lattice Graphs](http://statmethods.net/advgraphs/trellis.html)  
+
+[A quick introduction to FLR](http://doc.flr-project.org/A_quick_introduction_to_FLR.html)
 
 # More information
 

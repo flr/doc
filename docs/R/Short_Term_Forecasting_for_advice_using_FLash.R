@@ -4,24 +4,24 @@ source("R/ini.R")
 
 ## ---- eval=FALSE---------------------------------------------------------
 ## install.packages(c("FLAssess","FLBRP","ggplotFL"), repos="http://flr-project.org/R")
-## 
 
 ## ---- eval=TRUE----------------------------------------------------------
+# Load the required packages
 library(FLAssess)
 library(FLash)
 library(ggplotFL)
 library(FLBRP)
+# Load the data
 data(ple4)
 summary(ple4)
 
 ## ---- eval=TRUE----------------------------------------------------------
+maxyr_stk <- range(ple4)[["maxyear"]]
 ple4_stf <- stf(ple4,nyears=3,wts.nyears=3, na.rm=TRUE)
+maxyr_stf <- range(ple4_stf)[["maxyear"]]
 
 ## ---- eval=TRUE----------------------------------------------------------
-maxyr_stk <- range(ple4)[["maxyear"]]
-
 range(ple4_stf)
-maxyr_stf <- range(ple4_stf)[["maxyear"]]
 stock.wt(ple4_stf)[,ac((maxyr_stf-5):maxyr_stf)]
 
 ## ---- eval=TRUE----------------------------------------------------------
@@ -34,16 +34,18 @@ ggplot(harvest(ple4_stf)[,ac((maxyr_stf-5):maxyr_stf)]) + geom_line(aes(x=age, y
 stock.n(ple4_stf)[,ac((maxyr_stf-5):maxyr_stf)]
 
 ## ---- eval=TRUE----------------------------------------------------------
-landings.n(ple4_stf)[,ac((maxyr_stf-5):maxyr_stf)]
 discards.n(ple4_stf)[,ac((maxyr_stf-5):maxyr_stf)]
+landings.n(ple4_stf)[,ac((maxyr_stf-5):maxyr_stf)]
+# Compare above landings.n for the forecast years with
+yearMeans((landings.n(ple4)/(landings.n(ple4)+discards.n(ple4)))[,ac((maxyr_stk-2):maxyr_stk)])
+# Furthermore, landings and discards proportions sum to 1
+landings.n(ple4_stf)[,ac((maxyr_stf-2):maxyr_stf)] + discards.n(ple4_stf)[,ac((maxyr_stf-2):maxyr_stf)]
 
 ## ---- eval=TRUE----------------------------------------------------------
-mean_rec <- mean(rec(ple4))
-
+mean_rec <- exp(mean(log(rec(ple4))))
 ple4_sr <- as.FLSR(ple4, model="geomean")
 params(ple4_sr)['a',] <- mean_rec
 params(ple4_sr)
-
 
 ## ----figB----------------------------------------------------------------
 round(fbar(ple4),3)
@@ -53,8 +55,8 @@ ggplot(fbar(ple4), aes(x=year,y=data)) + geom_line()
 fbar_SQ <- mean(fbar(ple4)[,as.character(maxyr_stk)])
 
 ## ---- eval=TRUE----------------------------------------------------------
-ctrl_target <- data.frame(year = 2009:2011, quantity = "f", val = fbar_SQ)
 # Set the control object - year, quantity and value for the moment
+ctrl_target <- data.frame(year = 2009:2011, quantity = "f", val = fbar_SQ)
 ctrl_f <- fwdControl(ctrl_target)
 ctrl_f
 
@@ -75,7 +77,6 @@ stock.n(ple4_sq)[,ac((maxyr_stf-5):maxyr_stf)]
 ## ---- eval=TRUE----------------------------------------------------------
 round(harvest(ple4_stf)[,ac((maxyr_stf-2):maxyr_stf)],3)
 round(harvest(ple4_sq)[,ac((maxyr_stf-2):maxyr_stf)],3)
-
 harvest(ple4_stf)[,ac((maxyr_stf-2):maxyr_stf)] / harvest(ple4_sq)[,ac((maxyr_stf-2):maxyr_stf)]
 
 ## ---- eval=TRUE----------------------------------------------------------
@@ -95,7 +96,6 @@ fbar_scenarios <- cbind(rep(fbar_SQ,length(fbar_multiplier)),
 
 ## ---- eval=TRUE----------------------------------------------------------
 f01 <- c(refpts(brp(FLBRP(ple4)))["f0.1","harvest"])
-
 # Add the F0.1 scenario as a final scenario 
 fbar_scenarios <- rbind(fbar_scenarios, c(fbar_SQ,f01,f01))
 
@@ -118,21 +118,22 @@ colnames(stf_results) <- c('Fbar',
     paste0('Catch_change_',maxyr_stk,'-',maxyr_stk+2,'(%)'))
 
 ## ---- eval=TRUE, results="hide"------------------------------------------
-# Store the resulting FLStock each time
+# Set up an FLStocks object to store the resulting FLStock each time
 stk_stf <- FLStocks()
 # Loop over the scenarios (each row in the fbar_scenarios table)
 for (scenario in 1:nrow(fbar_scenarios)) {
     cat("Scenario: ", scenario, "\n")
+    flush.console()
     # Make a target object with F values for that scenario
+    # Set the control object - year, quantity and value for the moment
     ctrl_target <- data.frame(year = (maxyr_stf-2):maxyr_stf,
                               quantity = "f",
                               val = fbar_scenarios[scenario,])
-    # Set the control object - year, quantity and value for the moment
-    ctrl_f <- fwdControl(ctrl_target)
     # ctrl_target
-    # Run the forward projection. We include an additional argument, maxF.
-    # By default the value of maxF is 2.0
-    # Here we increase it to 10.0 so that F is not limited
+    ctrl_f <- fwdControl(ctrl_target)
+    # Run the forward projection. We could include an additional argument, maxF.
+    # By default the value of maxF is 2.0. It could be increased to 10.0, say,
+    # so that F is less limited, and the bound is not hit (not a problem here).
     ple4_fwd <- fwd(ple4_stf, ctrl = ctrl_f, sr = ple4_sr)#, maxF = 10.0)
     ## Check it has worked - uncomment out to check scenario by scenario
     # plot(ple4_fwd[,ac(2001:2011)])
@@ -149,11 +150,11 @@ for (scenario in 1:nrow(fbar_scenarios)) {
     
     # change in ssb in last two stf years
     stf_results[scenario,7] <- round((ssb(ple4_fwd)[,ac(maxyr_stk+3)]-ssb(ple4_fwd)[,ac(maxyr_stk+2)])/
-                                       ssb(ple4_fwd)[,ac(maxyr_stk+2)]*100,1) 
+                                      ssb(ple4_fwd)[,ac(maxyr_stk+2)]*100,1) 
     
     # change in catch from true year, to 2nd to last stf year
     stf_results[scenario,8] <- round((catch(ple4_fwd)[,ac(maxyr_stk+2)]-catch(ple4_fwd)[,ac(maxyr_stk)])/
-                                       catch(ple4_fwd)[,ac(maxyr_stk)]*100,1) 
+                                      catch(ple4_fwd)[,ac(maxyr_stk)]*100,1) 
 }
 # Give the FLStocks object some names
 names(stk_stf) <- rownames(fbar_scenarios)

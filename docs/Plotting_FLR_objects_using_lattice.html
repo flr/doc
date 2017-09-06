@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -15,12 +15,12 @@
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-1.1/highlight.js"></script>
 <link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
 
@@ -98,34 +98,34 @@ button.code-folding-btn:focus {
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
-  padding-top: 45px;
+  padding-top: 51px;
   padding-bottom: 40px;
 }
 /* offset scroll position for anchor links (for fixed navbar)  */
 .section h1 {
-  padding-top: 50px;
-  margin-top: -50px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 
 .section h2 {
-  padding-top: 50px;
-  margin-top: -50px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 .section h3 {
-  padding-top: 50px;
-  margin-top: -50px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 .section h4 {
-  padding-top: 50px;
-  margin-top: -50px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 .section h5 {
-  padding-top: 50px;
-  margin-top: -50px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 .section h6 {
-  padding-top: 50px;
-  margin-top: -50px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 </style>
 
@@ -200,7 +200,7 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="A.html">Page A</a>
+      <a href="A_quick_introduction_to_FLR.html">A quick intro</a>
     </li>
     <li>
       <a href="B.html">Page B</a>
@@ -310,7 +310,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Plotting FLR objects using <em>lattice</em></h1>
-<h4 class="date"><em>08 March, 2017</em></h4>
+<h4 class="date"><em>21 August, 2017</em></h4>
 
 </div>
 
@@ -332,8 +332,7 @@ library(lattice)</code></pre>
 </div>
 <div id="graph-types-available" class="section level1">
 <h1>GRAPH TYPES AVAILABLE</h1>
-<p>The typical formula for lattice plots is <code>graphtype(formula, data=FLQuant)</code></p>
-<p>where <em>graphtype</em> is selected from the list below. Formula specifies the variable(s) to display and any conditioning variables. For example <code>~ data | A</code> means display numeric variable for each level of factor A in separate graphs. <code>data ~ A</code> means display numeric variables for each level of factor A.</p>
+<p>The typical formula for lattice plots is <code>graphtype(formula, data=FLQuant)</code> where <em>graphtype</em> is selected from the table below, and <em>formula</em> specifies the variable(s) to display and any conditioning variables. For example <code>~ data | A</code> means display numeric variables for each level of factor A in separate graphs, and <code>data ~ A</code> means display numeric variables for each level of factor A.</p>
 <p>The following lattice graph options could be used for FLR objects:</p>
 <table>
 <thead>
@@ -385,8 +384,7 @@ library(lattice)</code></pre>
 </div>
 <div id="standard-lattice-based-flr-plots" class="section level1">
 <h1>STANDARD LATTICE BASED FLR PLOTS</h1>
-<p>The standard <code>plot()</code> function in FLR returns lattice-based plots for FLR objects.<br />
-In the following examples, the FLStock object <em>ple4</em> and the FLSR object <em>nsher</em> are used.</p>
+<p>The standard <code>plot()</code> function in FLR returns lattice-based plots for FLR objects. In the following examples, the FLStock object <em>ple4</em> and the FLSR object <em>nsher</em> are used.</p>
 <pre class="r"><code>#Read FLR examples
 data(ple4)
 data(nsher)</code></pre>
@@ -394,19 +392,19 @@ data(nsher)</code></pre>
 <pre class="r"><code># Plot FLStock
 plot(ple4)</code></pre>
 <p><img src="Plotting_FLR_objects_using_lattice_files/figure-html/fig1-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>A specific object (FLQuant) of the FLStock can be also plotted by age and year using the <code>plot()</code> function. In the following example, the <code>scales</code> argument has been used to allow different scales on the y axis of each age’s plot.</p>
+<p>A specific object (FLQuant) of the FLStock can be also plotted by age and year using the <code>plot()</code> function. In the following example, the <code>scales</code> argument has been used to allow different scales on the y axis of the plot for each age.</p>
 <pre class="r"><code># plot FLQuant
 plot(catch.n(ple4)/1000, ylab=&quot;Catch numbers (thousands)&quot;,
       scales = list(y = list(relation = &#39;free&#39;)))</code></pre>
 <p><img src="Plotting_FLR_objects_using_lattice_files/figure-html/fig2-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>The <code>plot()</code> function can be also used to produce summary graphs of objects other then FLStock, such as FLSR objects.</p>
+<p>The <code>plot()</code> function can also be used to produce summary graphs of objects other then FLStock, such as FLSR objects.</p>
 <pre class="r"><code># Plot FLSR
 plot(nsher)</code></pre>
 <p><img src="Plotting_FLR_objects_using_lattice_files/figure-html/fig3-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="plotting-flr-objects-using-lattice" class="section level1">
 <h1>PLOTTING FLR OBJECTS USING LATTICE</h1>
-<p>To plot FLR objects with lattice a conversion to data.frame is required to select columns names for dims and FLR objects (‘data’) to plot. It is usefull to check how the objects look like before plotting it.</p>
+<p>It is useful to check what the objects look like before plotting them.</p>
 <pre class="r"><code>head(as.data.frame(catch(ple4)))</code></pre>
 <table>
 <thead>
@@ -479,38 +477,36 @@ plot(nsher)</code></pre>
 </table>
 <div id="xyplots-for-flr" class="section level2">
 <h2>XYPLOTS for FLR</h2>
-<p><code>xyplot</code> produces bivariate scatterplots or time-series plots for FLR objects. Standard features, e.g. division by number could be used in order to update standard FLR units of measurement if needed.</p>
-<p>Use lattice options from <a href="https://cran.r-project.org/web/packages/lattice/lattice.pdf">user guide</a> to update your graphs.</p>
+<p><code>xyplot</code> produces bivariate scatterplots or time-series plots for FLR objects. Standard features, e.g. division by number, could be used in order to update standard FLR units of measurement, if needed. Lattice options from <a href="https://cran.r-project.org/web/packages/lattice/lattice.pdf">user guide</a> can be used to update your graphs.</p>
 <pre class="r"><code>xyplot(data/1000~year, data=catch(ple4), type=&#39;b&#39;, pch=19,
        ylab=&quot;catch (thousand tonnes)&quot;,xlab=&#39;&#39;)</code></pre>
 <p><img src="Plotting_FLR_objects_using_lattice_files/figure-html/fig4-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>One could also group the data, e.g. by age/area or season and plot the FLQuant by age class, area or season.</p>
+<p>One could also group the data, e.g. by age, area or season, and plot the FLQuant by age class, area or season.</p>
 <pre class="r"><code>xyplot(data/1000~year, groups=age, data=catch.n(ple4), type=&#39;l&#39;, 
   auto.key=list(space=&#39;bottom&#39;,columns=5, cex=0.7),
   ylab=&#39;Catch numbers at age (10^6)&#39;,xlab=&#39;&#39;)</code></pre>
 <p><img src="Plotting_FLR_objects_using_lattice_files/figure-html/fig5-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Or analyse the groups by plotting them separately</p>
+<p>Groups can be analysed by plotting them separately</p>
 <pre class="r"><code>xyplot(data/1000~year|factor(age), data=catch.n(ple4), type=&#39;l&#39;,
-        scales = list(y = list(relation = &#39;free&#39;)), ylab=&#39;Catch numbers (10^6)&#39;,xlab=&#39;&#39;)</code></pre>
+  scales = list(y = list(relation = &#39;free&#39;)), ylab=&#39;Catch numbers (10^6)&#39;,xlab=&#39;&#39;)</code></pre>
 <p><img src="Plotting_FLR_objects_using_lattice_files/figure-html/fig6-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Methods are also available for plotting multiple FLQuants called by name using ‘qname’</p>
-<pre class="r"><code>xyplot(data~year|qname, data=FLQuants(SSB=ssb(ple4), Yield=catch(ple4), Landings=landings(ple4)),xlab=&#39;&#39;,
-       type=&#39;l&#39;)</code></pre>
+<p>Methods are also available for plotting multiple FLQuants, called by name using ‘qname’</p>
+<pre class="r"><code>xyplot(data~year|qname, data=FLQuants(SSB=ssb(ple4), Yield=catch(ple4), 
+  Landings=landings(ple4)),xlab=&#39;&#39;,type=&#39;l&#39;)</code></pre>
 <p><img src="Plotting_FLR_objects_using_lattice_files/figure-html/fig7-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="barcharts" class="section level2">
 <h2>BARCHARTS</h2>
-<p>Similarly to the xyplots, barcharts also allow exploring FLQuants</p>
+<p>Similar to the xyplots, barcharts also allow exploring FLQuants.</p>
 <pre class="r"><code>barchart(data/1000~factor(year), 
          data=landings(ple4),
          ylab =list(label=&quot;thousand tonnes&quot;,cex=0.8),scales=list(x=list(rot=90)),
-         type=&quot;v&quot;, main = &quot;Total landings&quot; 
-)</code></pre>
+         type=&quot;v&quot;, main = &quot;Total landings&quot; )</code></pre>
 <p><img src="Plotting_FLR_objects_using_lattice_files/figure-html/fig8-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="bwplots" class="section level2">
 <h2>BWPLOTS</h2>
-<p>Boxplots can be created using <code>bwplot()</code>. In the following example some stochasticity has been added to Fbar and the resulting values per year have been plotted as boxplots.</p>
+<p>Boxplots can be created using <code>bwplot()</code>. In the following example, some stochasticity has been added to Fbar and the resulting values per year have been plotted as boxplots.</p>
 <pre class="r"><code>bwplot(data~year, rlnorm(200, fbar(ple4), 0.15),scales=list(x=list(rot=90)), ylab=&quot;Fbar&quot;)</code></pre>
 <p><img src="Plotting_FLR_objects_using_lattice_files/figure-html/fig10-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
@@ -523,32 +519,33 @@ plot(nsher)</code></pre>
 </div>
 <div id="histogram" class="section level2">
 <h2>HISTOGRAM</h2>
-<p>Histograms can be implemented to show what percent of total entries of an FLQuant falls within a specific range of values. The following example shows how younger age classes exhibit greater variability in terms of catch numbers compared to older age classes, as they are affected more from the size of incoming cohorts.</p>
+<p>Histograms can be implemented to show what percent of total entries of an FLQuant falls within a specific range of values. The following example shows how younger age classes exhibit greater variability in terms of catch numbers compared to older age classes, because they are affected more by the size of incoming cohorts.</p>
 <pre class="r"><code>histogram(~data|age, catch.n(ple4), xlab=&#39;Catch numbers&#39;)</code></pre>
 <p><img src="Plotting_FLR_objects_using_lattice_files/figure-html/fig12-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="wireframe" class="section level2">
 <h2>WIREFRAME</h2>
-<p>Three-dimensional surface plots can also be used for for plotting FLQuants. In the following example F at age by year is plotted as a three dimensional surface.</p>
+<p>Three-dimensional surface plots can also be used for for plotting FLQuants. In the following example, F at age by year is plotted as a three dimensional surface.</p>
 <pre class="r"><code>wireframe(data~age+year, data=harvest(ple4),zlab=&quot;F&quot;,drape = TRUE,
         col.regions = colorRampPalette(c(&quot;green&quot;, &quot;red&quot;))(100))</code></pre>
 <p><img src="Plotting_FLR_objects_using_lattice_files/figure-html/fig13-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="flr-specific-plots-bubbles" class="section level1">
-<h1>FLR specific plots BUBBLES</h1>
-<p>The bubble plots have been created specifically for FLR and they are typically used to visualise data by age classes.</p>
+<h1>FLR specific plots, BUBBLES</h1>
+<p>The bubble plots have been created specifically for FLR, and they are typically used to visualise data by age classes.</p>
 <pre class="r"><code>bubbles(age~year, data=catch.n(ple4), xlab=&#39;&#39;, bub.scale=5)</code></pre>
 <p><img src="Plotting_FLR_objects_using_lattice_files/figure-html/fig14-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>One could also specify parts of the object of interest, e.g. select age classes between 5 and 10 as following:</p>
+<p>One could also specify parts of the object of interest, e.g. select age classes between 5 and 10 as in the following:</p>
 <pre class="r"><code>bubbles(age~year, data=catch.n(ple4)[5:10,], xlab=&#39;&#39;, bub.scale=10)</code></pre>
 <p><img src="Plotting_FLR_objects_using_lattice_files/figure-html/fig15-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
-<p><a href="https://cran.r-project.org/web/packages/lattice/lattice.pdf">Package “lattice” user manual</a><br />
-<a href="http://statmethods.net/advgraphs/trellis.html">Quick Lattice Graphs</a><br />
-<a href="http://doc.flr-project.org/A_quick_introduction_to_FLR.html">A quick introduction to FLR</a></p>
+<p><a href="http://lmdvr.r-forge.r-project.org/figures/figures.html">Sarkar, D. 2008. Lattice: Multivariate Data Visualization with R. Springer-Verlag, New York, NY, 2008. ISBN 978-0-387-75968-5. 268 pp.</a></p>
+<p><a href="https://cran.r-project.org/web/packages/lattice/lattice.pdf">Package “lattice” user manual</a></p>
+<p><a href="http://statmethods.net/advgraphs/trellis.html">Quick Lattice Graphs</a></p>
+<p><a href="http://doc.flr-project.org/A_quick_introduction_to_FLR.html">A quick introduction to FLR</a></p>
 </div>
 <div id="more-information" class="section level1">
 <h1>More information</h1>
@@ -560,10 +557,10 @@ plot(nsher)</code></pre>
 <div id="software-versions" class="section level2">
 <h2>Software Versions</h2>
 <ul>
-<li>R version 3.3.2 (2016-10-31)</li>
-<li>FLCore: 2.6.0.20170228</li>
-<li>lattice: 0.20.34</li>
-<li><strong>Compiled</strong>: Wed Mar 8 13:49:25 2017</li>
+<li>R version 3.4.1 (2017-06-30)</li>
+<li>FLCore: 2.6.3.9008</li>
+<li>lattice: 0.20.35</li>
+<li><strong>Compiled</strong>: Mon Aug 21 10:18:30 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">
@@ -600,7 +597,7 @@ $(document).ready(function () {
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

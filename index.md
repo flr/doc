@@ -2,19 +2,39 @@
 title: "FLR tutorials"
 ---
 
-- [An_introduction_to_MSE_using_FLR](An_introduction_to_MSE_using_FLR.html)
-- [An_overview_of_the_FLCore_classes](An_overview_of_the_FLCore_classes.html)
-- [A_quick_introduction_to_FLR](A_quick_introduction_to_FLR.html)
+## Introduction
+
+- [A quick introduction to FLR](A_quick_introduction_to_FLR.html)
+- [An overview of the FLCore classes](An_overview_of_the_FLCore_classes.html)
+
+## Input
+
+- [Loading your data into FLR](Loading_your_data_into_FLR.html)
+
+## Visualization
+
+- [ggplotFL plotting FLR objects with ggplot2](ggplotFL_plotting_FLR_objects_with_ggplot2.html)
+- [Plotting FLR objects using lattice](Plotting_FLR_objects_using_lattice.html)
+
+## Fisheries Modelling
+
+- [Modelling stock recruitment with FLSR](Modelling_stock_recruitment_with_FLSR.html)
+- [Statistical catch at age models in FLa4a](Statistical_catch_at_age_models_in_FLa4a.html)
+- [Modelling growth and its uncertainty in FLa4a](Modelling_growth_and_its_uncertainty_in_FLa4a.html)
+- [Natural mortality modelling in FLa4a](Natural_mortality_modelling_in_FLa4a.html)
+- [Stock assessment using eXtended Survivors Analysis with FLXSA](Stock_assessment_using_eXtended_Survivors_Analysis_with_FLXSA.html)
+
+## Management Advice
+
+- [Running Medium Term Forecasts with FLash](Running_Medium_Term_Forecasts_with_FLash.html)
+- [Short Term Forecasting for advice using FLash](Short_Term_Forecasting_for_advice_using_FLash.html)
+- [Forecasting on the Medium Term for advice using FLasher](Forecasting_on_the_Medium_Term_for_advice_using_FLasher.html)
+- [Reference points for fisheries management with FLBRP](Reference_points_for_fisheries_management_with_FLBRP.html)
+
+## Management Strategy Evaluation
+
+- [An introduction to MSE using FLR](An_introduction_to_MSE_using_FLR.html)
+
+## Internals
+
 - [Units of measurement in FLR objects](Units_of_measurement_in_FLR_objects.html)
-- [Forecasting_on_the_Medium_Term_for_advice_using_FLasher](Forecasting_on_the_Medium_Term_for_advice_using_FLasher.html)
-- [ggplotFL_plotting_FLR_objects_with_ggplot2](ggplotFL_plotting_FLR_objects_with_ggplot2.html)
-- [Loading_your_data_into_FLR](Loading_your_data_into_FLR.html)
-- [Modelling_growth_and_its_uncertainty_in_FLa4a](Modelling_growth_and_its_uncertainty_in_FLa4a.html)
-- [Modelling_stock_recruitment_with_FLSR](Modelling_stock_recruitment_with_FLSR.html)
-- [Natural_mortality_modelling_in_FLa4a](Natural_mortality_modelling_in_FLa4a.html)
-- [Plotting_FLR_objects_using_lattice](Plotting_FLR_objects_using_lattice.html)
-- [Reference_points_for_fisheries_management_with_FLBRP](Reference_points_for_fisheries_management_with_FLBRP.html)
-- [Running_Medium_Term_Forecasts_with_Flash](Running_Medium_Term_Forecasts_with_Flash.html)
-- [Short_Term_Forecasting_for_advice_using_FLash](Short_Term_Forecasting_for_advice_using_FLash.html)
-- [Statistical_catch_at_age_models_in_FLa4a](Statistical_catch_at_age_models_in_FLa4a.html)
-- [Stock_assessment_using_eXtended_Survivors_Analysis_with_FLXSA](Stock_assessment_using_eXtended_Survivors_Analysis_with_FLXSA.html)

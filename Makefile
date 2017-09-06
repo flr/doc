@@ -1,17 +1,19 @@
 SOURCES := $(wildcard *.Rmd)
 FILES = $(SOURCES:%.Rmd=docs/%_files) $(SOURCES:%.Rmd=docs/pdf/%_files)
 CACHE = $(SOURCES:%.Rmd=%_cache) $(SOURCES:%.Rmd=%_files)
-TARGETS = $(SOURCES:%.Rmd=docs/%.html) $(SOURCES:%.Rmd=docs/R/%.R) $(SOURCES:%.Rmd=docs/pdf/%.pdf)
+HTMLS = $(SOURCES:%.Rmd=docs/%.html) 
+RS = $(SOURCES:%.Rmd=docs/R/%.R)
+PDFS = $(SOURCES:%.Rmd=docs/pdf/%.pdf)
 
 .PHONY: all clean
 
-all: main
+all: main clean
 
-main: $(TARGETS)
+main: $(HTMLS) $(RS)
 
 docs/%.html: %.Rmd
 	@echo "$< -> $@"
-	@R -e "rmarkdown::render_site('$<', envir=new.env())"
+	@R -e "rmarkdown::render_site('$<', envir=new.env())" -e "if('FLash' %in% loadedNamespaces()) detach(package:FLash)"
 
 docs/pdf/%.pdf: %.Rmd
 	@echo "$< -> $@"
@@ -21,10 +23,14 @@ docs/R/%.R: %.Rmd
 	@echo "$< -> $@"
 	@R -e "knitr::purl('$<', output='$@')"
 
-default: $(TARGETS)
+setup:
+	R -e "install.packages(c('captioner', 'printr'))"
 
 clean:
-	rm -rf $(TARGETS)
+	rm -f *.html
+	rm -rf $(CACHE)
+	rm -f docs/R/ini.R
+	rm -f docs/README docs/index.md docs/Makefile
 
-cleanall:
-	rm -rf $(TARGETS) $(FILES) $(CACHE)
+cleanall: clean
+	rm -rf $(FILES) $(HTMLS) $(RS) $(PDFS)

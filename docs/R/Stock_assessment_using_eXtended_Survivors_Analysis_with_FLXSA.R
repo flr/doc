@@ -131,13 +131,12 @@ ple4.fbar <- fbar(ple4.new)
 
 ## ----echo=TRUE, eval=TRUE------------------------------------------------
  names(ple4.xsa@index.res) <- names(ple4.indices)
- pfun <- function(x, y, ...) {
+ plot(xyplot(data ~ year | ac(age) + qname, data = index.res(ple4.xsa),
+     panel = function(x, y, ...) {
      panel.xyplot(x, y, ...)
      panel.loess(x, y, ...)
      panel.abline(h = 0, col = "grey", lty = 2)
- }
- plot(xyplot(data ~ year | ac(age) + qname, data = index.res(ple4.xsa),
-     panel = pfun))
+ }))
 
 ## ----echo=TRUE, eval=TRUE------------------------------------------------
  diag <- slot(ple4.xsa, "diagnostics")[is.element(slot(ple4.xsa,
