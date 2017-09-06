@@ -13,8 +13,6 @@ library(knitr)
 source("R/ini.R")
 ```
 
-*THE FWD FUNCTION IS NOT WORKING IN THIS TUTORIAL*
-
 This tutorial describes how Medium-Term Forecasts (MTF) can be performed using FLR. It uses the `FLasher` package for running projections, an updated version of `FLash`.
 
 MTFs use the same engine as Short-Term Forecasts (STFs). However, there are some key differences between them.
@@ -179,18 +177,13 @@ The first step is to condition the projection by making assumptions about the st
 
 ## Making the future stock
 
-SOMETHING ON FWD WINDOW and STF
-
-We initially use `stf()`, which makes a lot of assumptions, to set up a future stock, (see the STF tutorial). We may want to change some of these assumptions, but for the moment we will use the defaults.
+We use the `stf()` function to set up our stock into the future. 'stf()' makes a lot of assumptions to set up a future stock. We may want to change some of these assumptions, but for the moment we will use the defaults.
 
 ```{r, stf_condition}
 ple4_mtf <- stf(ple4, nyears = 10)
 # Now the stock goes up to 2018
 summary(ple4_mtf)
 ```
-
-MORE ON ASSUMPTIONS AND CONDITIONING
-
 ## The stock-recruitment relationship
 
 In these examples we use a Beverton-Holt model (see the tutorial on fitting SRRs for more detail). The resulting SRR fit can be seen in `r fign("plotSRR")`.
@@ -219,9 +212,6 @@ ctrl_target <- data.frame(year = 2009:2018,
 			                    quant = "f",
 			                    value = f_status_quo)
 ```
-
-BUG IN FWD: f_status_quo NEEDS TO BE MULTIPLIED BY 10 TO GET THE DESIRED RESULT 
-
 
 Make the `fwdControl` object from the control `data.frame`
 
@@ -279,9 +269,6 @@ ctrl_catch <- fwdControl(
 # The control object has the desired catch target values
 ctrl_catch
 ```
-
-BUG IN FWD: future_catch NEEDS TO BE MULTIPLIED BY 10 TO GET THE DESIRED RESULT 
-
 We call `fwd()` with the stock, the control object and the SRR, and look at the results
 
 ```{r, ex2c}
@@ -414,14 +401,12 @@ ctrl_ssb <- fwdControl(data.frame(year=2009:2018, quant = "ssb_flash", value=fut
 ple4_ssb <- fwd(ple4_mtf, control = ctrl_ssb, sr = ple4_sr)
 ```
 
-BUG IN FWD: DO NOT HIT future_ssb TARGET, BUT ONE TENTH OF IT
-
 We get a warning about running out of room. This is because future stock object, *ple4_mtf*, goes up to 2018. When we set the SSB target for 2018, it tries to hit the final year target in 2019. The targets that were set for 2009 to 2017 have been hit in 2010 to 2018. However, we cannot hit the target that was set for 2018. This means that the returned value of F in 2018 needs to be discounted.
 
 ```{r, ex3h}
 ssb(ple4_ssb)[,ac(2009:2018)]
 fbar(ple4_ssb)[,ac(2009:2018)]
-plot(window(ple4_ssb, start=2000, end=2018))
+plot(window(ple4_ssb, start=2000, end=2017))
 ```
 
 # Example 4:  Relative catch target
@@ -441,8 +426,6 @@ ctrl_rel_catch <- fwdControl(
 # The relative year appears in the control object summary
 ctrl_rel_catch
 ```
-BUG HERE WITH VALUE IN THE RELATIVE CALC (ORDER OF MAGNITUDE OUT, SO VALUE=0.9 DOES NOT DO AS INTENDED AND NEEDS TO BE SET TO VALUE=9)
-
 We run the projection as normal
 
 ```{r, ex4b}
@@ -487,8 +470,6 @@ df <- data.frame(
     value = c(f01, NA),
     min = c(NA, min_catch))
 ```
-
-ANOTHER BUG HERE WITH VALUE AND MIN - THESE NEED TO BE MULTIPLIED BY 20 TO GIVE THE DESIRED RESULT!!!
 
 It is also important that when running the projection, the bounding targets (the *min* and the *max*) are processed after the non-bounding targets. This should be sorted out by the `fwdControl` constructor.
 
@@ -547,8 +528,6 @@ df <- data.frame(
     max = c(rep(NA,10), rep(1+rel_catch_bound, 10)),
     min = c(rep(NA,10), rep(1-rel_catch_bound, 10)))
 ```
-
-BUG IN FWD: DON'T KNOW WHAT THIS IS DOING, BUT IT IS NOT THE DESIRED RESULT.
 
 Make the control object. The *min* and *max* columns now both have data
 
