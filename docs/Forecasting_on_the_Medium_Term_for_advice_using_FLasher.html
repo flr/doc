@@ -310,12 +310,11 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Forecasting on the Medium Term for advice using <strong>FLasher</strong></h1>
-<h4 class="date"><em>11 August, 2017</em></h4>
+<h4 class="date"><em>07 September, 2017</em></h4>
 
 </div>
 
 
-<p><em>THE FWD FUNCTION IS NOT WORKING IN THIS TUTORIAL</em></p>
 <p>This tutorial describes how Medium-Term Forecasts (MTF) can be performed using FLR. It uses the <code>FLasher</code> package for running projections, an updated version of <code>FLash</code>.</p>
 <p>MTFs use the same engine as Short-Term Forecasts (STFs). However, there are some key differences between them.</p>
 <ul>
@@ -328,12 +327,12 @@ $(document).ready(function () {
 <h2>Required packages</h2>
 <p>To follow this tutorial you should have installed the following packages:</p>
 <ul>
-<li>FLR: <a href="http://www.flr-project.org/FLCore/">FLCore</a>, <a href="http://www.flr-project.org/FLash/">FLasher</a>, <a href="http://www.flr-project.org/FLAssess/">FLAssess</a></li>
+<li>FLR: <a href="http://www.flr-project.org/FLCore/">FLCore</a>, <a href="http://www.flr-project.org/FLash/">FLasher</a>, <a href="http://www.flr-project.org/FLFishery/">FLFishery</a></li>
 </ul>
 <p>You can do so as follows,</p>
 <pre class="r"><code>install.packages(c(&quot;FLCore&quot;), repos=&quot;http://flr-project.org/R&quot;)
 install.packages(c(&quot;FLasher&quot;), repos=&quot;http://flr-project.org/R&quot;)
-install.packages(c(&quot;FLAssess&quot;), repos=&quot;http://flr-project.org/R&quot;)</code></pre>
+install.packages(c(&quot;FLFishery&quot;), repos=&quot;http://flr-project.org/R&quot;)</code></pre>
 <pre class="r"><code># Load all necessary packages, trim pkg messages
 library(FLCore)
 library(FLasher)</code></pre>
@@ -362,8 +361,7 @@ library(FLasher)</code></pre>
 <p>The first step is to condition the projection by making assumptions about the stock in the future, and to fit the SRR.</p>
 <div id="making-the-future-stock" class="section level2">
 <h2>Making the future stock</h2>
-<p>SOMETHING ON FWD WINDOW and STF</p>
-<p>We initially use <code>stf()</code>, which makes a lot of assumptions, to set up a future stock, (see the STF tutorial). We may want to change some of these assumptions, but for the moment we will use the defaults.</p>
+<p>We use the <code>stf()</code> function to set up our stock into the future. ‘stf()’ makes a lot of assumptions to set up a future stock. We may want to change some of these assumptions, but for the moment we will use the defaults.</p>
 <pre class="r"><code>ple4_mtf &lt;- stf(ple4, nyears = 10)
 # Now the stock goes up to 2018
 summary(ple4_mtf)</code></pre>
@@ -395,7 +393,6 @@ mat           : [ 10 62 1 1 1 1 ], units =
 harvest       : [ 10 62 1 1 1 1 ], units =  f 
 harvest.spwn  : [ 10 62 1 1 1 1 ], units =   
 m.spwn        : [ 10 62 1 1 1 1 ], units =   </code></pre>
-<p>MORE ON ASSUMPTIONS AND CONDITIONING</p>
 </div>
 <div id="the-stock-recruitment-relationship" class="section level2">
 <h2>The stock-recruitment relationship</h2>
@@ -421,7 +418,6 @@ f_status_quo</code></pre>
 <pre class="r"><code>ctrl_target &lt;- data.frame(year = 2009:2018,
                                 quant = &quot;f&quot;,
                                 value = f_status_quo)</code></pre>
-<p>BUG IN FWD: f_status_quo NEEDS TO BE MULTIPLIED BY 10 TO GET THE DESIRED RESULT</p>
 <p>Make the <code>fwdControl</code> object from the control <code>data.frame</code></p>
 <pre class="r"><code>ctrl_f &lt;- fwdControl(ctrl_target)
 ctrl_f</code></pre>
@@ -448,14 +444,14 @@ plot(window(ple4_f_sq, start=2000))</code></pre>
 , , unit = unique, season = all, area = unique
 
      year
-age   2005     2006     2007     2008     2009    
-  all 0.623429 0.547641 0.463918 0.356312 0.049783
+age   2005    2006    2007    2008    2009   
+  all 0.62343 0.54764 0.46392 0.35631 0.49783
 
       [ ...  4 years]
 
      year
-age   2014     2015     2016     2017     2018    
-  all 0.049783 0.049783 0.049783 0.049783 0.049783</code></pre>
+age   2014    2015    2016    2017    2018   
+  all 0.49783 0.49783 0.49783 0.49783 0.49783</code></pre>
 <p>What about recruitment? Remember we are now using a Beverton-Holt model.</p>
 <pre class="r"><code>rec(ple4_f_sq)[,ac(2005:2018)]</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
@@ -469,7 +465,7 @@ age 2005   2006   2007   2008   2009
 
    year
 age 2014   2015   2016   2017   2018  
-  1 934963 936665 937847 938724 939363</code></pre>
+  1 906070 905709 905388 905275 905160</code></pre>
 <p>The recruitment is not constant but it is not changing very much. That’s because the fitted model looks flat (Figure 1).</p>
 </div>
 <div id="ex2" class="section level1">
@@ -504,7 +500,6 @@ ctrl_catch</code></pre>
       8 2016 catch  NA 41342.264  NA
       9 2017 catch  NA 37208.038  NA
      10 2018 catch  NA 33487.234  NA</code></pre>
-<p>BUG IN FWD: future_catch NEEDS TO BE MULTIPLIED BY 10 TO GET THE DESIRED RESULT</p>
 <p>We call <code>fwd()</code> with the stock, the control object and the SRR, and look at the results</p>
 <pre class="r"><code>ple4_catch &lt;- fwd(ple4_mtf, control = ctrl_catch, sr = ple4_sr)
 catch(ple4_catch)[,ac(2008:2018)]</code></pre>
@@ -512,14 +507,14 @@ catch(ple4_catch)[,ac(2008:2018)]</code></pre>
 , , unit = unique, season = all, area = unique
 
      year
-age   2008    2009    2010    2011    2012   
-  all 96040.4  8643.6  7779.3  7001.3  6301.2
+age   2008  2009  2010  2011  2012 
+  all 96040 86436 77793 70013 63012
 
       [ ...  1 years]
 
      year
-age   2014   2015   2016   2017   2018  
-  all 5104.0 4593.6 4134.2 3720.8 3348.7</code></pre>
+age   2014  2015  2016  2017  2018 
+  all 51040 45936 41342 37208 33487</code></pre>
 <pre class="r"><code>plot(window(ple4_catch, start=2000))</code></pre>
 <p><img src="Forecasting_on_the_Medium_Term_for_advice_using_FLasher_files/figure-html/ex2c-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>The decreasing catch targets have been hit. Note that F has to be similarly reduced to hit the catch targets, resulting in a surge in SSB.</p>
@@ -669,7 +664,6 @@ harvest.spwn(ple4_mtf)[,ac(2009)] &lt;- 0.0
 future_ssb &lt;- 200000
 ctrl_ssb &lt;- fwdControl(data.frame(year=2009:2018, quant = &quot;ssb_flash&quot;, value=future_ssb))
 ple4_ssb &lt;- fwd(ple4_mtf, control = ctrl_ssb, sr = ple4_sr)</code></pre>
-<p>BUG IN FWD: DO NOT HIT future_ssb TARGET, BUT ONE TENTH OF IT</p>
 <p>We get a warning about running out of room. This is because future stock object, <em>ple4_mtf</em>, goes up to 2018. When we set the SSB target for 2018, it tries to hit the final year target in 2019. The targets that were set for 2009 to 2017 have been hit in 2010 to 2018. However, we cannot hit the target that was set for 2018. This means that the returned value of F in 2018 needs to be discounted.</p>
 <pre class="r"><code>ssb(ple4_ssb)[,ac(2009:2018)]</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
@@ -678,10 +672,10 @@ An object of class &quot;FLQuant&quot;
 
      year
 age   2009   2010   2011   2012   2013   2014   2015   2016   2017  
-  all 231522  48646  22971  20000  20000  20000  20000  20000  20000
+  all 231522 200000 200000 200000 200000 200000 200000 200000 200000
      year
 age   2018  
-  all  20000
+  all 200000
 
 units:  t </code></pre>
 <pre class="r"><code>fbar(ple4_ssb)[,ac(2009:2018)]</code></pre>
@@ -691,13 +685,13 @@ An object of class &quot;FLQuant&quot;
 
      year
 age   2009    2010    2011    2012    2013    2014    2015    2016   
-  all 2.27978 2.27978 2.01670 1.75120 1.70882 1.70938 1.70864 1.70866
+  all 0.66844 0.49965 0.51120 0.52245 0.51927 0.51772 0.52075 0.51900
      year
 age   2017    2018   
-  all 1.70865 0.45596
+  all 0.51921 0.45596
 
 units:  f </code></pre>
-<pre class="r"><code>plot(window(ple4_ssb, start=2000, end=2018))</code></pre>
+<pre class="r"><code>plot(window(ple4_ssb, start=2000, end=2017))</code></pre>
 <p><img src="Forecasting_on_the_Medium_Term_for_advice_using_FLasher_files/figure-html/ex3h-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
@@ -725,7 +719,6 @@ ctrl_rel_catch</code></pre>
       8 2016 catch    2015  NA 0.900  NA
       9 2017 catch    2016  NA 0.900  NA
      10 2018 catch    2017  NA 0.900  NA</code></pre>
-<p>BUG HERE WITH VALUE IN THE RELATIVE CALC (ORDER OF MAGNITUDE OUT, SO VALUE=0.9 DOES NOT DO AS INTENDED AND NEEDS TO BE SET TO VALUE=9)</p>
 <p>We run the projection as normal</p>
 <pre class="r"><code>ple4_rel_catch &lt;- fwd(ple4_mtf, control = ctrl_rel_catch, sr = ple4_sr)
 catch(ple4_rel_catch)</code></pre>
@@ -739,21 +732,21 @@ age   1957   1958   1959   1960   1961
       [ ...  52 years]
 
      year
-age   2014    2015    2016    2017    2018   
-  all 0.59471 0.68944 0.78712 0.87743 0.96267</code></pre>
+age   2014  2015  2016  2017  2018 
+  all 51040 45936 41342 37208 33487</code></pre>
 <pre class="r"><code>catch(ple4_rel_catch)[,ac(2008:2018)] / catch(ple4_rel_catch)[,ac(2007:2017)]</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 , , unit = unique, season = all, area = unique
 
      year
 age   2008   2009   2010   2011   2012  
-  all 1.0638 0.0900 0.0900 0.0900 0.0900
+  all 1.0638 0.9000 0.9000 0.9000 0.9000
 
       [ ...  1 years]
 
      year
-age   2014   2015   2016   2017   2018  
-  all 1.0487 1.1593 1.1417 1.1147 1.0971</code></pre>
+age   2014 2015 2016 2017 2018
+  all 0.9  0.9  0.9  0.9  0.9 </code></pre>
 <pre class="r"><code>plot(window(ple4_rel_catch, start = 2001, end = 2018))</code></pre>
 <div class="figure" style="text-align: center">
 <img src="Forecasting_on_the_Medium_Term_for_advice_using_FLasher_files/figure-html/ex4c-1.png" alt="Relative catch example" width="672" />
@@ -783,7 +776,6 @@ min_catch</code></pre>
     quant = c(&quot;f&quot;,&quot;catch&quot;),
     value = c(f01, NA),
     min = c(NA, min_catch))</code></pre>
-<p>ANOTHER BUG HERE WITH VALUE AND MIN - THESE NEED TO BE MULTIPLIED BY 20 TO GIVE THE DESIRED RESULT!!!</p>
 <p>It is also important that when running the projection, the bounding targets (the <em>min</em> and the <em>max</em>) are processed after the non-bounding targets. This should be sorted out by the <code>fwdControl</code> constructor.</p>
 <p>Make the control object</p>
 <pre class="r"><code>ctrl_min_catch &lt;- fwdControl(df)
@@ -817,27 +809,27 @@ fbar(ple4_min_catch)[,ac(2008:2018)]</code></pre>
 , , unit = unique, season = all, area = unique
 
      year
-age   2008      2009      2010      2011      2012     
-  all 0.3563124 0.0145298 0.0099717 0.0073226 0.0057974
-
-      [ ...  1 years]
-
-     year
-age   2014  2015  2016  2017  2018 
-  all 0.005 0.005 0.005 0.005 0.005</code></pre>
-<pre class="r"><code>catch(ple4_min_catch)[,ac(2008:2018)]</code></pre>
-<pre><code>An object of class &quot;FLQuant&quot;
-, , unit = unique, season = all, area = unique
-
-     year
 age   2008    2009    2010    2011    2012   
-  all 96040.4  5125.5  5125.5  5125.5  5125.5
+  all 0.35631 0.34056 0.30514 0.26839 0.23888
 
       [ ...  1 years]
 
      year
 age   2014    2015    2016    2017    2018   
-  all  6409.6  7408.7  8431.9  9372.6 10257.0</code></pre>
+  all 0.18829 0.16898 0.15188 0.13752 0.12523</code></pre>
+<pre class="r"><code>catch(ple4_min_catch)[,ac(2008:2018)]</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+age   2008   2009   2010   2011   2012  
+  all  96040 102510 102510 102510 102510
+
+      [ ...  1 years]
+
+     year
+age   2014   2015   2016   2017   2018  
+  all 102510 102510 102510 102510 102510</code></pre>
 <p>What happens? The catch constraint is hit in every year of the projection. The projected F decreases but never hits the target F because the minimum catch constraint prevents it from dropping further.</p>
 <pre class="r"><code>plot(window(ple4_min_catch, start = 2001, end = 2018))</code></pre>
 <div class="figure" style="text-align: center">
@@ -867,7 +859,6 @@ f_target</code></pre>
     value = c(f_target, rep(NA,10)),
     max = c(rep(NA,10), rep(1+rel_catch_bound, 10)),
     min = c(rep(NA,10), rep(1-rel_catch_bound, 10)))</code></pre>
-<p>BUG IN FWD: DON’T KNOW WHAT THIS IS DOING, BUT IT IS NOT THE DESIRED RESULT.</p>
 <p>Make the control object. The <em>min</em> and <em>max</em> columns now both have data</p>
 <pre class="r"><code>ctrl_rel_min_max_catch &lt;- fwdControl(df)
 ctrl_rel_min_max_catch</code></pre>
@@ -906,10 +897,10 @@ An object of class &quot;FLQuant&quot;
 
      year
 age   2009    2010    2011    2012    2013    2014    2015    2016   
-  all 0.05500 0.05500 0.05500 0.05500 0.05500 0.18518 0.84816 1.14106
+  all 1.01188 1.00637 1.00410 0.97043 0.94868 0.91367 0.90000 1.07802
      year
 age   2017    2018   
-  all 1.11413 1.09665
+  all 1.10000 1.10000
 
 units:   </code></pre>
 </div>
@@ -1035,19 +1026,19 @@ iters:  200
 
    year
 age 2008           2009           2010           2011          
-  1 844041(     0) 836074(385110) 857335(325390) 887686(436802)
+  1 844041(     0) 836074(385110) 857335(325390) 881970(432963)
    year
 age 2012          
-  1 878669(420702)
+  1 872054(418206)
 
       [ ...  1 years]
 
    year
 age 2014           2015           2016           2017          
-  1 844041(     0) 836074(385110) 857335(325390) 887686(436802)
+  1 844041(     0) 836074(385110) 857335(325390) 881970(432963)
    year
 age 2018          
-  1 878669(420702)</code></pre>
+  1 872054(418206)</code></pre>
 <pre class="r"><code>fbar(ple4_stoch_rec)[,ac(2008:2018)]</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 iters:  200 
@@ -1055,20 +1046,20 @@ iters:  200
 , , unit = unique, season = all, area = unique
 
      year
-age   2008                2009                2010               
-  all 0.3563124(0.000000) 0.0247499(0.000717) 0.0155325(0.001642)
+age   2008            2009            2010            2011           
+  all 0.35631(0.0000) 0.28059(0.0100) 0.21405(0.0300) 0.15290(0.0373)
      year
-age   2011                2012               
-  all 0.0101654(0.001703) 0.0070636(0.001330)
+age   2012           
+  all 0.11049(0.0297)
 
       [ ...  1 years]
 
      year
-age   2014                2015                2016               
-  all 0.3563124(0.000000) 0.0247499(0.000717) 0.0155325(0.001642)
+age   2014            2015            2016            2017           
+  all 0.35631(0.0000) 0.28059(0.0100) 0.21405(0.0300) 0.15290(0.0373)
      year
-age   2017                2018               
-  all 0.0101654(0.001703) 0.0070636(0.001330)</code></pre>
+age   2018           
+  all 0.11049(0.0297)</code></pre>
 <pre class="r"><code>ssb(ple4_stoch_rec)[,ac(2008:2018)]</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 iters:  200 
@@ -1076,20 +1067,20 @@ iters:  200
 , , unit = unique, season = all, area = unique
 
      year
-age   2008           2009           2010           2011          
-  all 206480(     0) 231522(     0) 365845( 19552) 536842( 44085)
+age   2008          2009          2010          2011         
+  all 206480(    0) 231522(    0) 285544(19908) 355350(45295)
      year
-age   2012          
-  all 742402(106896)
+age   2012         
+  all 451938(98260)
 
       [ ...  1 years]
 
      year
-age   2014           2015           2016           2017          
-  all 206480(     0) 231522(     0) 365845( 19552) 536842( 44085)
+age   2014          2015          2016          2017         
+  all 206480(    0) 231522(    0) 285544(19908) 355350(45295)
      year
-age   2018          
-  all 742402(106896)</code></pre>
+age   2018         
+  all 451938(98260)</code></pre>
 </div>
 <div id="example-8-stochastic-target-values" class="section level2">
 <h2>Example 8: stochastic target values</h2>
@@ -1174,20 +1165,14 @@ iters:  200
 , , unit = unique, season = all, area = unique
 
      year
-age   2008          2009          2010          2011         
-  all 96040.4(   0)  8410.9(2382)  8053.3(2343)  7084.5(2079)
-     year
-age   2012         
-  all  6186.1(1891)
+age   2008         2009         2010         2011         2012        
+  all 96040(    0) 84109(23820) 80533(23428) 70845(20788) 61861(18907)
 
       [ ...  1 years]
 
      year
-age   2014          2015          2016          2017         
-  all 96040.4(   0)  8410.9(2382)  8053.3(2343)  7084.5(2079)
-     year
-age   2018         
-  all  6186.1(1891)</code></pre>
+age   2014         2015         2016         2017         2018        
+  all 96040(    0) 84109(23820) 80533(23428) 70845(20788) 61861(18907)</code></pre>
 </div>
 <div id="example-9-a-projection-with-stochastic-catch-and-recruiment" class="section level2">
 <h2>Example 9: A projection with stochastic catch and recruiment</h2>
@@ -1199,14 +1184,14 @@ iters:  200
 , , unit = unique, season = all, area = unique
 
    year
-age 2008        2009        2010        2011        2012       
-  1 844041(  0) 903372(  0) 907749(  0) 921498(156) 928963(128)
+age 2008         2009         2010         2011         2012        
+  1 844041(   0) 903372(   0) 907749(   0) 915265(2469) 920593(2761)
 
       [ ...  1 years]
 
    year
-age 2014        2015        2016        2017        2018       
-  1 844041(  0) 903372(  0) 907749(  0) 921498(156) 928963(128)</code></pre>
+age 2014         2015         2016         2017         2018        
+  1 844041(   0) 903372(   0) 907749(   0) 915265(2469) 920593(2761)</code></pre>
 <p>Remember that here recruitment is not being driven by random residuals, it is only be driven by SSB. The recruitment in year Y is a result of the SSB in year Y-1. The SSB in year Y-1 is a result of the catch in year Y-2. So if catch is stochastic in 2009, we don’t see the impact of the stochasticity on the recruitment until 2011. Even then the impact is small. This seems unlikely so we can also put in recruitment residuals (we already made them for Example 7).</p>
 <pre class="r"><code>ple4_catch_iters &lt;- fwd(ple4_mtf, control=ctrl_catch_iters, sr = ple4_sr, residuals = rec_residuals)</code></pre>
 <p>What happened?</p>
@@ -1220,20 +1205,14 @@ iters:  200
 , , unit = unique, season = all, area = unique
 
      year
-age   2008          2009          2010          2011         
-  all 96040.4(   0)  8410.9(2382)  8053.3(2343)  7084.5(2079)
-     year
-age   2012         
-  all  6186.1(1891)
+age   2008         2009         2010         2011         2012        
+  all 96040(    0) 84109(23820) 80533(23428) 70845(20788) 61861(18907)
 
       [ ...  1 years]
 
      year
-age   2014          2015          2016          2017         
-  all 96040.4(   0)  8410.9(2382)  8053.3(2343)  7084.5(2079)
-     year
-age   2018         
-  all  6186.1(1891)</code></pre>
+age   2014         2015         2016         2017         2018        
+  all 96040(    0) 84109(23820) 80533(23428) 70845(20788) 61861(18907)</code></pre>
 <pre class="r"><code>rec(ple4_catch_iters)[,ac(2008:2018)]</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 iters:  200 
@@ -1242,19 +1221,19 @@ iters:  200
 
    year
 age 2008           2009           2010           2011          
-  1 844041(     0) 836074(385110) 857335(325390) 887743(436549)
+  1 844041(     0) 836074(385110) 857335(325390) 880963(433424)
    year
 age 2012          
-  1 878383(420295)
+  1 870721(416835)
 
       [ ...  1 years]
 
    year
 age 2014           2015           2016           2017          
-  1 844041(     0) 836074(385110) 857335(325390) 887743(436549)
+  1 844041(     0) 836074(385110) 857335(325390) 880963(433424)
    year
 age 2018          
-  1 878383(420295)</code></pre>
+  1 870721(416835)</code></pre>
 </div>
 </div>
 <div id="to-do" class="section level1">
@@ -1282,9 +1261,9 @@ age 2018
 <h2>Software Versions</h2>
 <ul>
 <li>R version 3.4.1 (2017-06-30)</li>
-<li>FLCore: 2.6.3.9006</li>
-<li>FLasher: 0.0.2.9006</li>
-<li><strong>Compiled</strong>: Fri Aug 11 16:42:35 2017</li>
+<li>FLCore: 2.6.4</li>
+<li>FLasher: 0.0.2.9008</li>
+<li><strong>Compiled</strong>: Thu Sep 7 09:19:26 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">
