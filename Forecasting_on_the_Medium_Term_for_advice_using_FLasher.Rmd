@@ -495,13 +495,10 @@ summary(ple4_mtf)
 
 ## Example 7: Stochastic recruitment
 
-There are two arguments to *fwd()* that we haven't used yet:
-
-1. *sr.residuals*
-2. *sr.residuals.mult*
+There is an argument to *fwd()* that we haven't used yet: *residuals*
    
-These are used for specifying the recruitment residuals (*sr.residuals*) which are multiplicative.
-In this example we'll use multiplicative residuals i.e. the recruitment values in projection = deterministic recruitment predicted by the SRR model * residuals.
+This is used for specifying the recruitment residuals (*residuals*) which are multiplicative.
+In this example we'll use the residuals so that the predicted recruitment values in the projection = deterministic recruitment predicted by the SRR model * residuals.
 The residuals are passed in as an **FLQuant** with years and iterations.
 Here we make an empty **FLQuant** that will be filled with residuals.
 
