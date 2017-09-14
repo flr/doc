@@ -225,6 +225,56 @@ Please see the [Reading data into FLR](Reading_data_into_FLR.html) tutorial for 
 
 # Visualizing and plotting
 
+As already shown, **FLR** classes have always a `plot` methods defined that provide a basic visual exploration of the object contents. But you are not limited to those plots, and other methods are available to allow you to build the plots you need.
+
+The *FLCore* package provides a set of those plot methods based on R's [lattice package](https://cran.r-project.org/web/packages/lattice/index.html), as well as versions of lattice's methods that work directly on **FLR** objects, for example `xyplot`
+
+```{r, xyplot}
+xyplot(data~year|age, harvest(ple4), xlab="", ylab="", type="b", cex=0.5, pch=19)
+```
+
+But the *ggplotFL* package, which we have already loaded, provides a new set of plot methods based on [ggplot2](http://ggplot2.tidyverse.org/), from which all the plots shown so far in this tutorial have been generated.
+
+One important advantage of *ggplot2* is that plots are returned as objects that can be modified and extended. For example, the basic plot for the abundances at age *FLQuant* using *ggplotFL* would be this one
+
+```{r, plotstockn}
+plot(stock.n(ple4))
+```
+
+in which each age is shown in a different horizontal panel (*facet*). Now we can modify this plot in various ways by adding extra *ggplot2* commands to it, for example by adding a label to the `y` axis, shading a certain period of interest
+
+```{r, plotstocknplus}
+plot(stock.n(ple4)) +
+  # Add y label
+  ylab("Biomass (t)") +
+  # Draw rectangle between years 1990 and 2000
+  annotate("rect", xmin = 1990, xmax = 2000, ymin = 0, ymax = Inf,
+    # in semi-transparent red
+    alpha = .2, fill='red')
+```
+
+The basic method in *ggplot2* taking a data input, `ggplot`, has also been defined for some *FLCore* class, which simpliefies constructing plots based on objects of those classes from scratch. For example, we can plot our catch-at-age matrix from *ple4* to show the signal of strong cohorts in the data using
+
+```{r, plotcatchn}
+ggplot(data=catch.n(ple4), aes(x=year, y=data, group=age)) +
+  geom_line(aes(colour=as.factor(age))) +
+  ylab("Total catch (t)") + xlab("") + theme(legend.position="none")
+```
+
+*ggplotFL* deals with multiple iterations in **FLR** objects by calculating quantiles along the *iter* dimension and plotting them as areas and lines. For example, an object with random lognormal noise around the catch time series would look like this
+
+```{r, plotcatch}
+plot(rlnorm(250, log(catch(ple4)), 0.5))
+```
+
+where the 50% and 95% intervals are shown as a red region and a dotted line respectively, while the median value is shown as a black line.
+
+Note that plot methods on both *FLCore* and *ggplotFL* work by converting various **FLR** objects to a class that *lattice* and **gplot2** can understand, *data.frame*s. Coercing a 6D array like an *FLQuant* to a 2D *data.frame* requires generating one column per dimension, named as those, plus an extra column for the values stored in the object. This column is named `data`, thus the use of `data` in various plot formulas above. For classes with multiple slots, like *FLStock*, an extra column is necessary, which will be called `slots`. Please check [this help page](http://www.flr-project.org/FLCore/reference/coerce-methods.html) to know more about the coertion methods for **FLR** objects.
+
+### More information
+
+For further explanations on the use of the two plotting platforms available for **FLR** classes, please refer to the [ggplotFL plotting FLR objects with ggplot2](http://www.flr-project.org/doc/ggplotFL_plotting_FLR_objects_with_ggplot2.html) and [Plotting FLR objects using lattice](http://www.flr-project.org/doc/Plotting_FLR_objects_using_lattice.html) tutorials.
+
 # Running a stock assessment
 
 An important step in providing management advice for a fish stock is the estimation of current status, past history and stock productivity through an stock assessment (SA) model. The *FLStock* object we have created contains some of the inputs required for most SA models: catches, natural mortality, and maturity. What is now needed is some indication of changes in abundance over the period of exploitation, an index of abundance, derived from either research surveys or catch-per-unit-effort of commercial fleets.

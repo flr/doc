@@ -104,6 +104,29 @@ summary(ple4)
 
 plot(metrics(ple4, Catch=catch, Landings=landings))
 
+## ---- xyplot-------------------------------------------------------------
+xyplot(data~year|age, harvest(ple4), xlab="", ylab="", type="b", cex=0.5, pch=19)
+
+## ---- plotstockn---------------------------------------------------------
+plot(stock.n(ple4))
+
+## ---- plotstocknplus-----------------------------------------------------
+plot(stock.n(ple4)) +
+  # Add y label
+  ylab("Biomass (t)") +
+  # Draw rectangle between years 1990 and 2000
+  annotate("rect", xmin = 1990, xmax = 2000, ymin = 0, ymax = Inf,
+    # in semi-transparent red
+    alpha = .2, fill='red')
+
+## ---- plotcatch----------------------------------------------------------
+ggplot(data=catch.n(ple4), aes(x=year, y=data, group=age)) +
+  geom_line(aes(colour=as.factor(age))) +
+  ylab("Total catch (t)") + xlab("") + theme(legend.position="none")
+
+## ---- plotssb------------------------------------------------------------
+plot(rlnorm(250, log(catch(ple4)), 0.5))
+
 ## ---- loadple4index------------------------------------------------------
 data(ple4.index)
 

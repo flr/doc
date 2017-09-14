@@ -310,7 +310,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">A quick introduction to FLR</h1>
-<h4 class="date"><em>12 September, 2017</em></h4>
+<h4 class="date"><em>14 September, 2017</em></h4>
 
 </div>
 
@@ -677,6 +677,37 @@ m.spwn        : [ 10 52 1 1 1 1 ], units =   </code></pre>
 </div>
 <div id="visualizing-and-plotting" class="section level1">
 <h1>Visualizing and plotting</h1>
+<p>As already shown, <strong>FLR</strong> classes have always a <code>plot</code> methods defined that provide a basic visual exploration of the object contents. But you are not limited to those plots, and other methods are available to allow you to build the plots you need.</p>
+<p>The <em>FLCore</em> package provides a set of those plot methods based on R’s <a href="https://cran.r-project.org/web/packages/lattice/index.html">lattice package</a>, as well as versions of lattice’s methods that work directly on <strong>FLR</strong> objects, for example <code>xyplot</code></p>
+<pre class="r"><code>xyplot(data~year|age, harvest(ple4), xlab=&quot;&quot;, ylab=&quot;&quot;, type=&quot;b&quot;, cex=0.5, pch=19)</code></pre>
+<p><img src="A_quick_introduction_to_FLR_files/figure-html/xyplot-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>But the <em>ggplotFL</em> package, which we have already loaded, provides a new set of plot methods based on <a href="http://ggplot2.tidyverse.org/">ggplot2</a>, from which all the plots shown so far in this tutorial have been generated.</p>
+<p>One important advantage of <em>ggplot2</em> is that plots are returned as objects that can be modified and extended. For example, the basic plot for the abundances at age <em>FLQuant</em> using <em>ggplotFL</em> would be this one</p>
+<pre class="r"><code>plot(stock.n(ple4))</code></pre>
+<p><img src="A_quick_introduction_to_FLR_files/figure-html/plotstockn-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>in which each age is shown in a different horizontal panel (<em>facet</em>). Now we can modify this plot in various ways by adding extra <em>ggplot2</em> commands to it, for example by adding a label to the <code>y</code> axis, shading a certain period of interest</p>
+<pre class="r"><code>plot(stock.n(ple4)) +
+  # Add y label
+  ylab(&quot;Biomass (t)&quot;) +
+  # Draw rectangle between years 1990 and 2000
+  annotate(&quot;rect&quot;, xmin = 1990, xmax = 2000, ymin = 0, ymax = Inf,
+    # in semi-transparent red
+    alpha = .2, fill=&#39;red&#39;)</code></pre>
+<p><img src="A_quick_introduction_to_FLR_files/figure-html/plotstocknplus-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The basic method in <em>ggplot2</em> taking a data input, <code>ggplot</code>, has also been defined for some <em>FLCore</em> class, which simpliefies constructing plots based on objects of those classes from scratch. For example, we can plot our catch-at-age matrix from <em>ple4</em> to show the signal of strong cohorts in the data using</p>
+<pre class="r"><code>ggplot(data=catch.n(ple4), aes(x=year, y=data, group=age)) +
+  geom_line(aes(colour=as.factor(age))) +
+  ylab(&quot;Total catch (t)&quot;) + xlab(&quot;&quot;) + theme(legend.position=&quot;none&quot;)</code></pre>
+<p><img src="A_quick_introduction_to_FLR_files/figure-html/plotcatch-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><em>ggplotFL</em> deals with multiple iterations in <strong>FLR</strong> objects by calculating quantiles along the <em>iter</em> dimension and plotting them as areas and lines. For example, an object with random lognormal noise around the catch time series would look like this</p>
+<pre class="r"><code>plot(rlnorm(250, log(catch(ple4)), 0.5))</code></pre>
+<p><img src="A_quick_introduction_to_FLR_files/figure-html/plotssb-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>where the 50% and 95% intervals are shown as a red region and a dotted line respectively, while the median value is shown as a black line.</p>
+<p>Note that plot methods on both <em>FLCore</em> and <em>ggplotFL</em> work by converting various <strong>FLR</strong> objects to a class that <em>lattice</em> and <strong>gplot2</strong> can understand, <em>data.frame</em>s. Coercing a 6D array like an <em>FLQuant</em> to a 2D <em>data.frame</em> requires generating one column per dimension, named as those, plus an extra column for the values stored in the object. This column is named <code>data</code>, thus the use of <code>data</code> in various plot formulas above. For classes with multiple slots, like <em>FLStock</em>, an extra column is necessary, which will be called <code>slots</code>. Please check <a href="http://www.flr-project.org/FLCore/reference/coerce-methods.html">this help page</a> to know more about the coertion methods for <strong>FLR</strong> objects.</p>
+<div id="more-information-2" class="section level3">
+<h3>More information</h3>
+<p>For further explanations on the use of the two plotting platforms available for <strong>FLR</strong> classes, please refer to the <a href="http://www.flr-project.org/doc/ggplotFL_plotting_FLR_objects_with_ggplot2.html">ggplotFL plotting FLR objects with ggplot2</a> and <a href="http://www.flr-project.org/doc/Plotting_FLR_objects_using_lattice.html">Plotting FLR objects using lattice</a> tutorials.</p>
+</div>
 </div>
 <div id="running-a-stock-assessment" class="section level1">
 <h1>Running a stock assessment</h1>
@@ -734,15 +765,15 @@ Dims:  age  year    unit    season  area    iter
 Range:  min max pgroup  minyear maxyear minfbar maxfbar 
     1   10  10  1957    2008    2   6   
 
-stock.n       : [ 10 52 1 1 1 1 ], units =  NA 
+stock.n       : [ 10 52 1 1 1 1 ], units =  1000 
 harvest       : [ 10 52 1 1 1 1 ], units =  f 
-catch.n       : [ 10 52 1 1 1 1 ], units =  NA </code></pre>
+catch.n       : [ 10 52 1 1 1 1 ], units =  1000 </code></pre>
 <p>which we can use to update the <em>FLStock</em> object</p>
 <pre class="r"><code>stk &lt;- ple4 + fit
 plot(stk)</code></pre>
 <p><img src="A_quick_introduction_to_FLR_files/figure-html/ple4fit-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Among other methods, <em>FLa4a</em> provides a range of tools for inspecting the quality of the model fit. For example, a set of residuals, for the fits to both the index olf abundance and</p>
-<div id="more-information-2" class="section level3">
+<div id="more-information-3" class="section level3">
 <h3>More information</h3>
 <p>Please see the <a href=".html"></a> tutorial for more examples on how to .</p>
 </div>
@@ -766,18 +797,16 @@ Dims:  age  year    unit    season  area    iter
 Range:  min minyear max maxyear 
     1   1958    1   2008    
 
-rec           : [ 1 51 1 1 1 1 ], units =  NA 
+rec           : [ 1 51 1 1 1 1 ], units =  1000 
 ssb           : [ 1 51 1 1 1 1 ], units =  kg 
 residuals     : [ 1 51 1 1 1 1 ], units =  NA 
-fitted        : [ 1 51 1 1 1 1 ], units =  NA 
+fitted        : [ 1 51 1 1 1 1 ], units =  1000 
 
 Model:  list()
-&lt;environment: 0xd408928&gt;
 Parameters: 
     params
 iter
    1
-
 Log-likelihood:  NA(NA) 
 Variance-covariance: &lt;0 x 0 matrix&gt;</code></pre>
 <p>We now need to choose a model to fit, and <em>FLCore</em> provides a number of them already defined in terms of:</p>
@@ -809,10 +838,10 @@ An object of class &quot;FLQuant&quot;
 
    year
 age 2008   2009   2010   2011   2012   2013   2014   2015   2016   2017  
-  1 941825 946690 948331 830527 948135 941482 863156 926300 929223 886520
+  1 949982 918951 943288 932477 918357 946336 894682 940465 920933 948483
 
 units:  NA </code></pre>
-<div id="more-information-3" class="section level3">
+<div id="more-information-4" class="section level3">
 <h3>More information</h3>
 <p>Please see the <a href="Modelling_stock_recruitment_with_FLSR.html">Modelling stock recruitment with FLSR</a> tutorial for more examples and information on the stock-recruitment model fitting capabilities of <strong>FLR</strong>.</p>
 </div>
@@ -839,9 +868,9 @@ fbar          : [ 1 101 1 1 1 1 ], units =  f
 fbar.obs      : [ 1 52 1 1 1 1 ], units =  f 
 landings.obs  : [ 1 52 1 1 1 1 ], units =  t 
 discards.obs  : [ 1 52 1 1 1 1 ], units =  t 
-rec.obs       : [ 1 52 1 1 1 1 ], units =  NA 
-ssb.obs       : [ 1 52 1 1 1 1 ], units =  NA 
-stock.obs     : [ 1 52 1 1 1 1 ], units =  NA 
+rec.obs       : [ 1 52 1 1 1 1 ], units =  1000 
+ssb.obs       : [ 1 52 1 1 1 1 ], units =  t 
+stock.obs     : [ 1 52 1 1 1 1 ], units =  t 
 profit.obs    : [ 1 52 1 1 1 1 ], units =  NA 
 landings.sel  : [ 10 1 1 1 1 1 ], units =  f 
 discards.sel  : [ 10 1 1 1 1 1 ], units =  f 
@@ -865,23 +894,23 @@ fcost         : [ 1 1 1 1 1 1 ], units =  NA </code></pre>
 <pre class="r"><code>refpts(plrp)</code></pre>
 <pre><code>An object of class &quot;FLPar&quot;
         quantity
-refpt    harvest    yield      rec        ssb        biomass    revenue   
-  virgin 0.0000e+00 0.0000e+00 2.3590e+05 1.0505e+06 1.0997e+06         NA
-  msy    4.0484e-01 6.7772e+04 8.8703e+05 4.0254e+05 5.3420e+05         NA
-  crash  7.9486e-01 1.6658e-06 4.1550e-05 4.5639e-06 9.4134e-06         NA
-  f0.1   1.7179e-01 4.1508e+04 4.8442e+05 7.5122e+05 8.3757e+05         NA
-  fmax   2.3096e-01 5.2519e+04 5.9202e+05 6.5573e+05 7.5616e+05         NA
-  spr.30 1.9767e-01 4.6610e+04 5.3063e+05 7.0892e+05 8.0146e+05         NA
-  mey            NA         NA         NA         NA         NA         NA
+refpt    harvest  yield    rec      ssb      biomass  revenue  cost    
+  virgin 0.00e+00 0.00e+00 2.36e+05 1.05e+06 1.10e+06       NA       NA
+  msy    4.05e-01 6.78e+04 8.87e+05 4.03e+05 5.34e+05       NA       NA
+  crash  7.95e-01 1.67e-06 4.15e-05 4.56e-06 9.41e-06       NA       NA
+  f0.1   1.72e-01 4.15e+04 4.84e+05 7.51e+05 8.38e+05       NA       NA
+  fmax   2.31e-01 5.25e+04 5.92e+05 6.56e+05 7.56e+05       NA       NA
+  spr.30 1.98e-01 4.66e+04 5.31e+05 7.09e+05 8.01e+05       NA       NA
+  mey          NA       NA       NA       NA       NA       NA       NA
         quantity
-refpt    cost       profit    
-  virgin         NA         NA
-  msy            NA         NA
-  crash          NA         NA
-  f0.1           NA         NA
-  fmax           NA         NA
-  spr.30         NA         NA
-  mey            NA         NA
+refpt    profit  
+  virgin       NA
+  msy          NA
+  crash        NA
+  f0.1         NA
+  fmax         NA
+  spr.30       NA
+  mey          NA
 units:  NA </code></pre>
 <p>This slot contains the estimates for a series of reference points and for a number of quantities. For example, the value stored at the intersection of <code>msy</code> and <code>harvest</code> corresponds to <span class="math inline">\(F_{MSY}\)</span>, while that of <code>virgin</code> and <code>ssb</code> is the estimate of virgin stock biomass. We can, for example, extract the two standard MSY-related reference points as a named vector using</p>
 <pre class="r"><code>pmsy &lt;- refpts(plrp)[&quot;msy&quot;, c(&quot;harvest&quot;, &quot;ssb&quot;), drop=TRUE]</code></pre>
@@ -889,7 +918,7 @@ units:  NA </code></pre>
 <pre class="r"><code>plot(ssb(stk) / pmsy[&quot;ssb&quot;]) + geom_hline(aes(yintercept=1), linetype=2) +
   ylab(expression(SSB / SSB[MSY]))</code></pre>
 <p><img src="A_quick_introduction_to_FLR_files/figure-html/refptplot-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div id="more-information-4" class="section level3">
+<div id="more-information-5" class="section level3">
 <h3>More information</h3>
 <p>For more information on <em>FLBRP</em>, please see the <a href="Reference_points_for_fisheries_management_with_FLBRP.html">Reference points for fisheries management with FLBRP</a> tutorial.</p>
 </div>
@@ -935,7 +964,7 @@ ctrl &lt;- fwdControl(data.frame(year=2009:2011, quantity=c(&quot;catch&quot;, &
 <p>and the results can be visualized</p>
 <pre class="r"><code>plot(proj) + geom_vline(aes(xintercept=2008.5), linetype=2)</code></pre>
 <p><img src="A_quick_introduction_to_FLR_files/figure-html/fwdplot-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div id="more-information-5" class="section level3">
+<div id="more-information-6" class="section level3">
 <h3>More information</h3>
 <p>Please see the <a href="Short_Term_Forecasting_for_advice_using_FLash.html">Short Term Forecasting for advice using FLash</a> and <a href="Short_Term_Forecasting_for_advice_using_FLash.html">Short Term Forecasting for advice using FLash</a> tutorials for more examples on how to use the capabilitis of <em>FLash</em> to forecast population dynamics under various scenarios.</p>
 </div>
@@ -950,7 +979,7 @@ ctrl &lt;- fwdControl(data.frame(year=2009:2011, quantity=c(&quot;catch&quot;, &
 <h1>References</h1>
 <p>L. T. Kell, I. Mosqueira, P. Grosjean, J-M. Fromentin, D. Garcia, R. Hillary, E. Jardim, S. Mardle, M. A. Pastoors, J. J. Poos, F. Scott, R. D. Scott; FLR: an open-source framework for the evaluation and development of management strategies. <em>ICES J Mar Sci</em> 2007; 64 (4): 640-646. doi: <a href="https://doi.org/10.1093/icesjms/fsm012">10.1093/icesjms/fsm012</a>.</p>
 </div>
-<div id="more-information-6" class="section level1">
+<div id="more-information-7" class="section level1">
 <h1>More information</h1>
 <ul>
 <li>You can submit bug reports, questions or suggestions on this tutorial at <a href="https://github.com/flr/doc/issues" class="uri">https://github.com/flr/doc/issues</a>.</li>
@@ -961,12 +990,12 @@ ctrl &lt;- fwdControl(data.frame(year=2009:2011, quantity=c(&quot;catch&quot;, &
 <h2>Software Versions</h2>
 <ul>
 <li>R version 3.4.1 (2017-06-30)</li>
-<li>FLCore: 2.6.4.9002</li>
+<li>FLCore: 2.6.5</li>
 <li>ggplotFL: 2.6.1</li>
-<li>FLa4a: 1.1.0</li>
-<li>FLBRP: 2.5.1.9000</li>
-<li>FLash: 2.5.7</li>
-<li><strong>Compiled</strong>: Tue Sep 12 10:47:50 2017</li>
+<li>FLa4a: 1.1.3</li>
+<li>FLBRP: 2.5.2</li>
+<li>FLash: 2.5.8</li>
+<li><strong>Compiled</strong>: Thu Sep 14 15:36:39 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">
