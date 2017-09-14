@@ -1,10 +1,13 @@
 ﻿---
 title: Modelling Stock-Recruitment with FLSR
 date: "`r format(Sys.time(), '%d %B, %Y')`"
+tags: [FLR]
 output:
 github_document:
   mathjax: TRUE
-tags: [FLR]
+pdf_document:
+  fig_width: 6 
+  fig_height: 4 
 license: Creative Commons Attribution-ShareAlike 4.0 International Public License
 ---
 
@@ -44,7 +47,7 @@ The user can load and visualize the results of an assessment (VPA) already perfo
 data(ple4)
 ```
 
-```{r figA}
+```{r figA, fig.margin=FALSE}
 # Plot the assesment output
 plot(ple4)
 ```
@@ -55,7 +58,8 @@ Given that recruitment and spawning stock biomass (SSB) are provided as an outpu
 
 ```{r figB}
 # Plot the SSB-Recruits graph
-ggplot(aes(ssb,rec), data=model.frame(FLQuants(ple4, "ssb", "rec")))+geom_point()+geom_smooth()
+ggplot(aes(ssb, rec), data=model.frame(FLQuants(ple4, "ssb", "rec"))) +
+  geom_point() + geom_smooth(method="loess")
 ```
 
 ## Working with `FLSR` objects
@@ -193,7 +197,7 @@ print(paste0('Ricker: ',round(BIC(nsher_ri),4),' ',
 
 Additionally, a profiling of the model parameters can be visualised for each fitted model.
 
-```{r, figD}
+```{r, figD, fig.width=6, fig.height=3}
 # Profile the likelihood to check the fit
 par(mfrow=c(1,3))
 profile(nsher_ri, main="Ricker")

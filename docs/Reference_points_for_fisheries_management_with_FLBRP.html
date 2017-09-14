@@ -310,7 +310,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Reference points for fisheries management with FLBRP</h1>
-<h4 class="date"><em>21 August, 2017</em></h4>
+<h4 class="date"><em>13 September, 2017</em></h4>
 
 </div>
 
@@ -408,7 +408,7 @@ age   97   98   99   100  101
 <p>A stock-recruitment relationship can also be provided, either as an object of class <code>FLSR</code>, or through the <code>model</code> and <code>params</code> arguments, of class <code>formula</code> and <code>FLPar</code> respectively. The default model, if none is given, is that of mean recruitment with a value of <code>a=1</code>, useful for obtaining pre-recruit values.</p>
 <pre class="r"><code>model(brp4)</code></pre>
 <pre><code>rec ~ a
-&lt;environment: 0x599ebd8&gt;</code></pre>
+&lt;environment: 0xa460a38&gt;</code></pre>
 <pre class="r"><code>params(brp4)</code></pre>
 <pre><code>An object of class &quot;FLPar&quot;
 params
@@ -427,23 +427,23 @@ brp4Ri &lt;- FLBRP(ple4, sr=ple4SR)</code></pre>
 refpts(brp4Ri)</code></pre>
 <pre><code>An object of class &quot;FLPar&quot;
         quantity
-refpt    harvest    yield      rec        ssb        biomass    revenue   
-  virgin 0.0000e+00 0.0000e+00 2.3474e+05 1.0462e+06 1.0902e+06         NA
-  msy    2.9073e-01 9.4691e+04 8.3686e+05 4.4930e+05 5.7356e+05         NA
-  crash  7.8888e-01 2.1098e-06 4.5263e-05 4.9400e-06 9.9043e-06         NA
-  f0.1   8.7602e-02 5.5622e+04 4.2924e+05 8.0045e+05 8.7512e+05         NA
-  fmax   1.3538e-01 7.3551e+04 5.3700e+05 6.9910e+05 7.8893e+05         NA
-  spr.30 1.3157e-01 7.2368e+04 5.2850e+05 7.0662e+05 7.9529e+05         NA
-  mey            NA         NA         NA         NA         NA         NA
+refpt    harvest  yield    rec      ssb      biomass  revenue  cost    
+  virgin 0.00e+00 0.00e+00 2.35e+05 1.05e+06 1.09e+06       NA       NA
+  msy    2.91e-01 9.47e+04 8.37e+05 4.49e+05 5.74e+05       NA       NA
+  crash  7.89e-01 2.11e-06 4.53e-05 4.94e-06 9.90e-06       NA       NA
+  f0.1   8.76e-02 5.56e+04 4.29e+05 8.00e+05 8.75e+05       NA       NA
+  fmax   1.35e-01 7.36e+04 5.37e+05 6.99e+05 7.89e+05       NA       NA
+  spr.30 1.32e-01 7.24e+04 5.29e+05 7.07e+05 7.95e+05       NA       NA
+  mey          NA       NA       NA       NA       NA       NA       NA
         quantity
-refpt    cost       profit    
-  virgin         NA         NA
-  msy            NA         NA
-  crash          NA         NA
-  f0.1           NA         NA
-  fmax           NA         NA
-  spr.30         NA         NA
-  mey            NA         NA
+refpt    profit  
+  virgin       NA
+  msy          NA
+  crash        NA
+  f0.1         NA
+  fmax         NA
+  spr.30       NA
+  mey          NA
 units:  NA </code></pre>
 <p>In this case no information on prices (<code>price</code>), variable costs (<code>vcost</code>) and fixed costs (<code>fcost</code>) were provided, so the calculation of economic reference points was not possible. We will see later how to add that information, not present in an <code>FLStock</code> object.</p>
 <div id="plots" class="section level2">
@@ -473,23 +473,23 @@ fcost(brp4Ri)@units &lt;- &quot;keuro/unit F&quot;</code></pre>
 refpts(brp4Eco)</code></pre>
 <pre><code>An object of class &quot;FLPar&quot;
         quantity
-refpt    harvest     yield       rec         ssb         biomass    
-  virgin  0.0000e+00  0.0000e+00  2.3474e+05  1.0462e+06  1.0902e+06
-  msy     2.9073e-01  9.4691e+04  8.3686e+05  4.4930e+05  5.7356e+05
-  crash   7.8888e-01  2.1098e-06  4.5263e-05  4.9400e-06  9.9043e-06
-  f0.1    8.7602e-02  5.5622e+04  4.2924e+05  8.0045e+05  8.7512e+05
-  fmax    1.3538e-01  7.3551e+04  5.3700e+05  6.9910e+05  7.8893e+05
-  spr.30  1.3157e-01  7.2368e+04  5.2850e+05  7.0662e+05  7.9529e+05
-  mey     2.4178e-01  9.2893e+04  7.5601e+05  5.1818e+05  6.3457e+05
+refpt    harvest   yield     rec       ssb       biomass   revenue  
+  virgin  0.00e+00  0.00e+00  2.35e+05  1.05e+06  1.09e+06  0.00e+00
+  msy     2.91e-01  9.47e+04  8.37e+05  4.49e+05  5.74e+05  1.32e+05
+  crash   7.89e-01  2.11e-06  4.53e-05  4.94e-06  9.90e-06  2.65e-06
+  f0.1    8.76e-02  5.56e+04  4.29e+05  8.00e+05  8.75e+05  8.20e+04
+  fmax    1.35e-01  7.36e+04  5.37e+05  6.99e+05  7.89e+05  1.07e+05
+  spr.30  1.32e-01  7.24e+04  5.29e+05  7.07e+05  7.95e+05  1.05e+05
+  mey     2.42e-01  9.29e+04  7.56e+05  5.18e+05  6.35e+05  1.31e+05
         quantity
-refpt    revenue     cost        profit     
-  virgin  0.0000e+00  3.5000e+04 -3.5000e+04
-  msy     1.3170e+05  5.5351e+04  7.6353e+04
-  crash   2.6516e-06  9.0222e+04 -9.0222e+04
-  f0.1    8.1999e+04  4.1132e+04  4.0867e+04
-  fmax    1.0694e+05  4.4477e+04  6.2466e+04
-  spr.30  1.0534e+05  4.4210e+04  6.1130e+04
-  mey     1.3097e+05  5.1925e+04  7.9048e+04
+refpt    cost      profit   
+  virgin  3.50e+04 -3.50e+04
+  msy     5.54e+04  7.64e+04
+  crash   9.02e+04 -9.02e+04
+  f0.1    4.11e+04  4.09e+04
+  fmax    4.45e+04  6.25e+04
+  spr.30  4.42e+04  6.11e+04
+  mey     5.19e+04  7.90e+04
 units:  NA </code></pre>
 <p>and plotted</p>
 <pre class="r"><code>plot(brp4Eco)</code></pre>
@@ -503,15 +503,15 @@ units:  NA </code></pre>
 <pre class="r"><code>(rge4 &lt;- msyRange(brp4Eco,range=0.05))</code></pre>
 <pre><code>An object of class &quot;FLPar&quot;
      quantity
-refpt harvest    yield      rec        ssb        biomass    revenue   
-  msy 2.9073e-01 9.4691e+04 8.3686e+05 4.4930e+05 5.7356e+05 1.3170e+05
-  min 2.1289e-01 8.9957e+04 7.0126e+05 5.6255e+05 6.7291e+05 1.2788e+05
-  max 3.7743e-01 8.9957e+04 9.3140e+05 3.4290e+05 4.7299e+05 1.2232e+05
+refpt harvest  yield    rec      ssb      biomass  revenue  cost    
+  msy 2.91e-01 9.47e+04 8.37e+05 4.49e+05 5.74e+05 1.32e+05 5.54e+04
+  min 2.13e-01 9.00e+04 7.01e+05 5.63e+05 6.73e+05 1.28e+05 4.99e+04
+  max 3.77e-01 9.00e+04 9.31e+05 3.43e+05 4.73e+05 1.22e+05 6.14e+04
      quantity
-refpt cost       profit    
-  msy 5.5351e+04 7.6353e+04
-  min 4.9902e+04 7.7982e+04
-  max 6.1420e+04 6.0896e+04
+refpt profit  
+  msy 7.64e+04
+  min 7.80e+04
+  max 6.09e+04
 units:  NA </code></pre>
 <p>The <em>F</em> and <em>SSB</em> ranges calculated can also be added to the plots</p>
 <pre class="r"><code>p &lt;- plot(brp4Eco,obs=T)
@@ -570,11 +570,11 @@ p+ geom_area(aes(x = ifelse(x&gt;=minrge &amp; x&lt;=maxrge , x, NA),y=y,group=i
 <h2>Software Versions</h2>
 <ul>
 <li>R version 3.4.1 (2017-06-30)</li>
-<li>FLCore: 2.6.3.9008</li>
-<li>FLBRP: 2.5.20170307</li>
-<li>ggplotFL: 2.6.0</li>
-<li>ggplot2: 2.2.1.9000</li>
-<li><strong>Compiled</strong>: Mon Aug 21 10:18:45 2017</li>
+<li>FLCore: 2.6.5</li>
+<li>FLBRP: 2.5.2</li>
+<li>ggplotFL: 2.6.1</li>
+<li>ggplot2: 2.2.1</li>
+<li><strong>Compiled</strong>: Wed Sep 13 16:32:05 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">

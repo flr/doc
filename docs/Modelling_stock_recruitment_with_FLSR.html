@@ -310,7 +310,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Modelling Stock-Recruitment with FLSR</h1>
-<h4 class="date"><em>11 August, 2017</em></h4>
+<h4 class="date"><em>13 September, 2017</em></h4>
 
 </div>
 
@@ -341,7 +341,8 @@ plot(ple4)</code></pre>
 <h1>The Stock-Recruitment (SR) relationship</h1>
 <p>Given that recruitment and spawning stock biomass (SSB) are provided as an output of the assessment, their relationship can be visualized simply by ploting the recruits against the SSB.</p>
 <pre class="r"><code># Plot the SSB-Recruits graph
-ggplot(aes(ssb,rec), data=model.frame(FLQuants(ple4, &quot;ssb&quot;, &quot;rec&quot;)))+geom_point()+geom_smooth()</code></pre>
+ggplot(aes(ssb, rec), data=model.frame(FLQuants(ple4, &quot;ssb&quot;, &quot;rec&quot;))) +
+  geom_point() + geom_smooth(method=&quot;loess&quot;)</code></pre>
 <p><img src="Modelling_stock_recruitment_with_FLSR_files/figure-html/figB-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div id="working-with-flsr-objects" class="section level2">
 <h2>Working with <code>FLSR</code> objects</h2>
@@ -368,12 +369,10 @@ residuals     : [ 1 51 1 1 1 1 ], units =  NA
 fitted        : [ 1 51 1 1 1 1 ], units =  10^3 
 
 Model:  list()
-&lt;environment: 0xd3f9960&gt;
 Parameters: 
     params
 iter
    1
-
 Log-likelihood:  NA(NA) 
 Variance-covariance: &lt;0 x 0 matrix&gt;</code></pre>
 <p>In the case of the <code>ple4</code> <code>FLStock</code> object, recruits are fish of age=1. Hence, the lag between ssb and rec is 1 year. The starting year for SSB is 1957, whereas for recruits it is 1958.</p>
@@ -451,7 +450,7 @@ initial(p4sr)</code></pre>
     res &lt;- coefficients(lm(log(c(rec)/c(ssb)) ~ c(ssb)))
     return(FLPar(a = max(exp(res[1])), b = -max(res[2])))
 }
-&lt;environment: 0xce14248&gt;
+&lt;environment: 0xd5193e8&gt;
 attr(,&quot;lower&quot;)
 [1] -Inf -Inf
 attr(,&quot;upper&quot;)
@@ -486,12 +485,10 @@ residuals     : [ 1 45 1 1 1 1 ], units =  NA
 fitted        : [ 1 45 1 1 1 1 ], units =  10^3 
 
 Model:  rec ~ a * ssb * exp(-b * ssb)
-&lt;environment: 0x9a9b4c0&gt;
 Parameters: 
     params
-iter     a        b
-   1 119.4 0.009451
-
+iter   a       b
+   1 119 0.00945
 Log-likelihood:  15.862(0) 
 Variance-covariance:    
             a         b
@@ -532,7 +529,7 @@ par(mfrow=c(1,3))
 profile(nsher_ri, main=&quot;Ricker&quot;)
 profile(nsher_bh, main=&quot;Beverton-Holt&quot;)
 profile(nsher_cs, main=&quot;Cushing&quot;)</code></pre>
-<p><img src="Modelling_stock_recruitment_with_FLSR_files/figure-html/figD-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="Modelling_stock_recruitment_with_FLSR_files/figure-html/figD-1.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="advanced-topics" class="section level1">
@@ -549,8 +546,8 @@ plot(p4sr)</code></pre>
 <pre class="r"><code>params(p4sr)</code></pre>
 <pre><code>An object of class &quot;FLPar&quot;
 params
-         s          v       spr0 
-8.0000e-01 1.4400e+05 1.6247e-01 
+       s        v     spr0 
+8.00e-01 1.44e+05 1.62e-01 
 units:  NA </code></pre>
 <p>Custom SR models can be implemented. To define a new model requires the specification of its</p>
 <ol style="list-style-type: decimal">
@@ -659,10 +656,10 @@ plot(nsherCovA)</code></pre>
 <h2>Software Versions</h2>
 <ul>
 <li>R version 3.4.1 (2017-06-30)</li>
-<li>FLCore: 2.6.3.9006</li>
-<li>ggplotFL: 2.6.0</li>
-<li>ggplot2: 2.2.1.9000</li>
-<li><strong>Compiled</strong>: Fri Aug 11 16:44:01 2017</li>
+<li>FLCore: 2.6.5</li>
+<li>ggplotFL: 2.6.1</li>
+<li>ggplot2: 2.2.1</li>
+<li><strong>Compiled</strong>: Wed Sep 13 16:31:51 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">

@@ -310,7 +310,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Forecasting on the Medium Term for advice using <strong>FLasher</strong></h1>
-<h4 class="date"><em>07 September, 2017</em></h4>
+<h4 class="date"><em>13 September, 2017</em></h4>
 
 </div>
 
@@ -960,12 +960,8 @@ m.spwn        : [ 10 62 1 1 1 200 ], units =   </code></pre>
 </div>
 <div id="example-7-stochastic-recruitment" class="section level2">
 <h2>Example 7: Stochastic recruitment</h2>
-<p>There are two arguments to <em>fwd()</em> that we haven’t used yet:</p>
-<ol style="list-style-type: decimal">
-<li><em>sr.residuals</em></li>
-<li><em>sr.residuals.mult</em></li>
-</ol>
-<p>These are used for specifying the recruitment residuals (<em>sr.residuals</em>) which are multiplicative. In this example we’ll use multiplicative residuals i.e. the recruitment values in projection = deterministic recruitment predicted by the SRR model * residuals. The residuals are passed in as an <strong>FLQuant</strong> with years and iterations. Here we make an empty <strong>FLQuant</strong> that will be filled with residuals.</p>
+<p>There is an argument to <em>fwd()</em> that we haven’t used yet: <em>residuals</em></p>
+<p>This is used for specifying the recruitment residuals (<em>residuals</em>) which are multiplicative. In this example we’ll use the residuals so that the predicted recruitment values in the projection = deterministic recruitment predicted by the SRR model * residuals. The residuals are passed in as an <strong>FLQuant</strong> with years and iterations. Here we make an empty <strong>FLQuant</strong> that will be filled with residuals.</p>
 <pre class="r"><code>rec_residuals &lt;- FLQuant(NA, dimnames = list(year=2009:2018, iter=1:niters))</code></pre>
 <p>We’re going to use residuals from the stock-recruitment relationship we fitted at the beginning. We can access these using:</p>
 <pre class="r"><code>residuals(ple4_sr)</code></pre>
@@ -1261,9 +1257,9 @@ age 2018
 <h2>Software Versions</h2>
 <ul>
 <li>R version 3.4.1 (2017-06-30)</li>
-<li>FLCore: 2.6.4</li>
+<li>FLCore: 2.6.5</li>
 <li>FLasher: 0.0.2.9008</li>
-<li><strong>Compiled</strong>: Thu Sep 7 09:19:26 2017</li>
+<li><strong>Compiled</strong>: Wed Sep 13 16:31:17 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">

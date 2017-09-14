@@ -4,6 +4,9 @@ date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
 github_document:
   mathjax: TRUE
+pdf_document:
+  fig_width: 6 
+  fig_height: 4 
 tags: FLR FLCore introduction
 license: Creative Commons Attribution-ShareAlike 4.0 International Public License
 ---

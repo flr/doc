@@ -4,12 +4,13 @@ CACHE = $(SOURCES:%.Rmd=%_cache) $(SOURCES:%.Rmd=%_files)
 HTMLS = $(SOURCES:%.Rmd=docs/%.html) 
 RS = $(SOURCES:%.Rmd=docs/R/%.R)
 PDFS = $(SOURCES:%.Rmd=docs/pdf/%.pdf)
+PDFSTYLE = "rmarkdown::pdf_document"
 
 .PHONY: all clean
 
 all: main clean
 
-main: $(HTMLS) $(RS)
+main: $(HTMLS) $(RS) $(PDFS)
 
 docs/%.html: %.Rmd
 	@echo "$< -> $@"
@@ -17,7 +18,7 @@ docs/%.html: %.Rmd
 
 docs/pdf/%.pdf: %.Rmd
 	@echo "$< -> $@"
-	@R -e "rmarkdown::render('$<', output_format='tufte::tufte_handout', output_file='$@', clean=TRUE)"
+	@R -e "knitr::opts_chunk[['set']](dev = 'pdf')" -e "rmarkdown::render('$<', output_format='$(PDFSTYLE)', output_file='$@', clean=TRUE)"
 
 docs/R/%.R: %.Rmd
 	@echo "$< -> $@"

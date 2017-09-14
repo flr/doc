@@ -15,13 +15,14 @@ library(ggplotFL)
 # Load the ple4 FLStock object 
 data(ple4)
 
-## ----figA----------------------------------------------------------------
+## ----figA, fig.margin=FALSE----------------------------------------------
 # Plot the assesment output
 plot(ple4)
 
 ## ----figB----------------------------------------------------------------
 # Plot the SSB-Recruits graph
-ggplot(aes(ssb,rec), data=model.frame(FLQuants(ple4, "ssb", "rec")))+geom_point()+geom_smooth()
+ggplot(aes(ssb, rec), data=model.frame(FLQuants(ple4, "ssb", "rec"))) +
+  geom_point() + geom_smooth(method="loess")
 
 ## ---- FLSRobject1--------------------------------------------------------
 sr1 <- FLSR()
@@ -97,7 +98,7 @@ print(paste0('Ricker: ',round(BIC(nsher_ri),4),' ',
              'Beverton-Holt: ',round(BIC(nsher_bh),4),' ',
              'Cushing: ',round(BIC(nsher_cs),4)))
 
-## ---- figD---------------------------------------------------------------
+## ---- figD, fig.width=6, fig.height=3------------------------------------
 # Profile the likelihood to check the fit
 par(mfrow=c(1,3))
 profile(nsher_ri, main="Ricker")
