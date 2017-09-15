@@ -11,11 +11,6 @@ title: "FLR tutorials"
 
 - [Loading your data into FLR](Loading_your_data_into_FLR.html)
 
-## Visualization
-
-- [ggplotFL plotting FLR objects with ggplot2](ggplotFL_plotting_FLR_objects_with_ggplot2.html)
-- [Plotting FLR objects using lattice](Plotting_FLR_objects_using_lattice.html)
-
 ## Fisheries Modelling
 
 - [Modelling stock recruitment with FLSR](Modelling_stock_recruitment_with_FLSR.html)
@@ -34,6 +29,11 @@ title: "FLR tutorials"
 ## Management Strategy Evaluation
 
 - [An introduction to MSE using FLR](An_introduction_to_MSE_using_FLR.html)
+
+## Visualization
+
+- [ggplotFL plotting FLR objects with ggplot2](ggplotFL_plotting_FLR_objects_with_ggplot2.html)
+- [Plotting FLR objects using lattice](Plotting_FLR_objects_using_lattice.html)
 
 ## Internals
 
