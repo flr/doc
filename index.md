@@ -1,5 +1,5 @@
 ---
-title: "FLR tutorials"
+title: "FLR Tutorials"
 ---
 
 ## Introduction

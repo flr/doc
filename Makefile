@@ -10,9 +10,9 @@ PDFSTYLE = "rmarkdown::pdf_document"
 
 all: main clean
 
-main: $(HTMLS) $(RS) $(PDFS)
+main: $(HTMLS) $(RS)
 
-docs/%.html: %.Rmd
+docs/%.html: %.Rmd _site.yml
 	@echo "$< -> $@"
 	@R -e "rmarkdown::render_site('$<', envir=new.env())" -e "if('FLash' %in% loadedNamespaces()) detach(package:FLash)"
 

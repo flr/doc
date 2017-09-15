@@ -119,12 +119,12 @@ plot(stock.n(ple4)) +
     # in semi-transparent red
     alpha = .2, fill='red')
 
-## ---- plotcatch----------------------------------------------------------
+## ---- plotcatchn---------------------------------------------------------
 ggplot(data=catch.n(ple4), aes(x=year, y=data, group=age)) +
   geom_line(aes(colour=as.factor(age))) +
   ylab("Total catch (t)") + xlab("") + theme(legend.position="none")
 
-## ---- plotssb------------------------------------------------------------
+## ---- plotcatch----------------------------------------------------------
 plot(rlnorm(250, log(catch(ple4)), 0.5))
 
 ## ---- loadple4index------------------------------------------------------

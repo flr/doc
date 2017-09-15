@@ -6,7 +6,9 @@ github_document:
   mathjax: TRUE
 pdf_document:
   fig_width: 6 
-  fig_height: 4 
+  fig_height: 4
+header-includes:
+  \usepackage{underscore}
 tags: [FLR]
 license: Creative Commons Attribution-ShareAlike 4.0 International Public License
 ---
@@ -57,14 +59,14 @@ The standard `ggplot` function expects a `data.frame` for its first argument, *d
 
 As an example, the `FLStock` of `ple4` is a list containing a number of elements. 
 
-```{r}
+```{r ple4}
 # summary of the FLStock
 summary(ple4)
 ```
 
 By calling `as.data.frame()` on an `FLStock`, the list is collapsed to a dataframe that than can be plotted by selecting the right dimensions in terms of slot, age, iter, etc.. : 
 
-```{r}
+```{r dfple4}
 head(as.data.frame(ple4))
 ```
 
@@ -72,7 +74,7 @@ head(as.data.frame(ple4))
 
 Passing an `FLQuant` object to ggplot, we can specify the names of the dimensions as variables in the plot, where `data` refers to the column storing the actual numeric values. For example, to plot *data* (the *catch* slot from `ple4` in this case) against year, we could use
 
-```{r }
+```{r plotflquant}
 ggplot(data = catch(ple4), aes(year, data)) + geom_point() + geom_line() + ylab("Catch (t)") + xlab("Year")
 ```
 

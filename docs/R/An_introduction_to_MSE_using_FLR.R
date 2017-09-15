@@ -192,5 +192,5 @@ boxplot(data~year,data=as.data.frame(landings(stk.tmp)),main="Landings")
 abline(h=msy,col="red")
 
 ## ----fig1, fig.cap="Results for applying an ICES MSY-like rule, comparing the operating model to the management procedure"----
-plot(FLStocks(stk.om=stk.om, stk.mp=stk.mp)) + theme(legend.position="top") + geom_vline(aes(xintercept=as.numeric(ISOdate(iy,1,1))))
+plot(FLStocks(stk.om=stk.om, stk.mp=stk.mp)) + theme(legend.position="top") + geom_vline(aes(xintercept=2009))
 

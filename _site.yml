@@ -13,19 +13,19 @@ navbar:
       icon: fa-info
       href: index.html
     - text: "Intro"
-      icon: fa-gear
+      icon: fa-play-circle-o
       menu:
         - text: "A quick introduction to FLR"
           href: A_quick_introduction_to_FLR.html
         - text: "An overview of the FLCore classes"
           href: An_overview_of_the_FLCore_classes.html
     - text: "Input"
-      icon: fa-gear
+      icon: fa-database
       menu:
         - text: "Loading your data into FLR"
           href: Loading_your_data_into_FLR.html
     - text: "Modelling"
-      icon: fa-gear
+      icon: fa-magic
       menu:
         - text: "Modelling stock recruitment with FLSR"
           href: Modelling_stock_recruitment_with_FLSR.html
@@ -38,7 +38,7 @@ navbar:
         - text: "Stock assessment using eXtended Survivors Analysis with FLXSA"
           href: Stock_assessment_using_eXtended_Survivors_Analysis_with_FLXSA.html
     - text: "Advice"
-      icon: fa-gear
+      icon: fa-tachometer
       menu:
         - text: "Running Medium Term Forecasts with FLash"
           href: Running_Medium_Term_Forecasts_with_FLash.html
@@ -49,19 +49,19 @@ navbar:
         - text: "Reference points for fisheries management with FLBRP"
           href: Reference_points_for_fisheries_management_with_FLBRP.html
     - text: "MSE"
-      icon: fa-gear
+      icon: fa-cogs
       menu:
         - text: "An introduction to MSE using FLR"
           herf: An_introduction_to_MSE_using_FLR.html
     - text: "Plotting"
-      icon: fa-gear
+      icon: fa-area-chart
       menu:
         - text: "ggplotFL, plotting FLR objects with ggplot2"
           href: ggplotFL_plotting_FLR_objects_with_ggplot2.html
         - text: "Plotting FLR objects using lattice"
           href: Plotting_FLR_objects_using_lattice.html
     - text: "Internals"
-      icon: fa-gear
+      icon: fa-puzzle-piece
       menu:
         - text: "Units of measurement in FLR objects"
           href: Units_of_measurement_in_FLR_objects.html
