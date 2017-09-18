@@ -769,7 +769,7 @@ index.q       : [ 8 24 1 1 1 1 ], units =  NA </code></pre>
 </div>
 <div id="a4a-statistical-catch-at-age" class="section level2">
 <h2>a4a statistical catch-at-age</h2>
-<p>The <a href="http:flr-project.org/FLa4a">FLa4a</a> package provides an <strong>FLR</strong> implementation of the <em>a4a</em> model, an statistical catch-at-age model of medium complexity that has been designed to make use of the power and flexibility of R’s formula-based model notation (as used for example in <a href="https://stat.ethz.ch/R-manual/R-patched/library/stats/html/lm.html">lm</a>), while giving access to a solid and fast minimization algorithm implemented using <a href="http://www.admb-project.org/">AD Model Builder</a>.</p>
+<p>The <a href="http://flr-project.org/FLa4a">FLa4a</a> package provides an <strong>FLR</strong> implementation of the <em>a4a</em> model, an statistical catch-at-age model of medium complexity that has been designed to make use of the power and flexibility of R’s formula-based model notation (as used for example in <a href="https://stat.ethz.ch/R-manual/R-patched/library/stats/html/lm.html">lm</a>), while giving access to a solid and fast minimization algorithm implemented using <a href="http://www.admb-project.org/">AD Model Builder</a>.</p>
 <pre class="r"><code>library(FLa4a)</code></pre>
 <p>A first go at fitting this model to the <em>ple4</em> and <em>ple4.index</em> datasets requires a single line of code</p>
 <pre class="r"><code>fit &lt;- sca(ple4, FLIndices(BTS=ple4.index))</code></pre>
@@ -1012,11 +1012,11 @@ ctrl &lt;- fwdControl(data.frame(year=2009:2011, quantity=c(&quot;catch&quot;, &
 <ul>
 <li>R version 3.4.1 (2017-06-30)</li>
 <li>FLCore: 2.6.5</li>
-<li>ggplotFL: 2.6.1</li>
+<li>ggplotFL: 2.6.2</li>
 <li>FLa4a: 1.1.3</li>
 <li>FLBRP: 2.5.2</li>
 <li>FLash: 2.5.8</li>
-<li><strong>Compiled</strong>: Mon Sep 18 09:46:11 2017</li>
+<li><strong>Compiled</strong>: Mon Sep 18 15:17:42 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">

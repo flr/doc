@@ -305,7 +305,7 @@ range(ple4.index)[c("startf", "endf")]
 
 ## a4a statistical catch-at-age
 
-The [FLa4a](http:flr-project.org/FLa4a) package provides an **FLR** implementation of the *a4a* model, an statistical catch-at-age model of medium complexity that has been designed to make use of the power and flexibility of R's formula-based model notation (as used for example in [lm](https://stat.ethz.ch/R-manual/R-patched/library/stats/html/lm.html)), while giving access to a solid and fast minimization algorithm implemented using [AD Model Builder](http://www.admb-project.org/).
+The [FLa4a](http://flr-project.org/FLa4a) package provides an **FLR** implementation of the *a4a* model, an statistical catch-at-age model of medium complexity that has been designed to make use of the power and flexibility of R's formula-based model notation (as used for example in [lm](https://stat.ethz.ch/R-manual/R-patched/library/stats/html/lm.html)), while giving access to a solid and fast minimization algorithm implemented using [AD Model Builder](http://www.admb-project.org/).
 
 ```{r, fla4apkg}
 library(FLa4a)
