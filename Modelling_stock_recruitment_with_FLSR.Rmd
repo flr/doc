@@ -332,13 +332,13 @@ plot(nsherCovA)
 ```
 
 # References
-Beverton, R.J.H. and Holt, S.J. (1957) On the dynamics of exploited fish populations. MAFF Fish. Invest., Ser: II 19, 533. ISBN: 1930665946
+Beverton, R.J.H. and Holt, S.J. (1957) On the dynamics of exploited fish populations. MAFF Fish. Invest., Ser: II 19, 533. ISBN: [1930665946](http://www.worldcat.org/title/on-the-dynamics-of-exploited-fish-populations/oclc/469978238)
 
-Needle, C.L. Recruitment models: diagnosis and prognosis. Reviews in Fish Biology and Fisheries 11: 95-111, 2002. DOI: https://doi.org/10.1023/A:1015208017674
+Needle, C.L. Recruitment models: diagnosis and prognosis. Reviews in Fish Biology and Fisheries 11: 95-111, 2002. doi: [10.1023/A:1015208017674](https://doi.org/10.1023/A:1015208017674)
 
-Ricker, W.E. (1954) Stock and recruitment. J. Fish. Res. Bd Can. 11, 559-623. DOI: https://doi.org/10.1139/f54-039
+Ricker, W.E. (1954) Stock and recruitment. J. Fish. Res. Bd Can. 11, 559-623. doi: [10.1139/f54-039](https://doi.org/10.1139/f54-039)
 
-Shepherd, J.G. (1982) A versatile new stock-recruitment relationship for fisheries and the construction of sustainable yield curves. J. Cons. Int. Explor. Mer 40, 67-75. DOI: https://doi.org/10.1093/icesjms/40.1.7
+Shepherd, J.G. (1982) A versatile new stock-recruitment relationship for fisheries and the construction of sustainable yield curves. J. Cons. Int. Explor. Mer 40, 67-75. doi: [10.1093/icesjms/40.1.67](https://doi.org/10.1093/icesjms/40.1.67)
 
 
 # More information
