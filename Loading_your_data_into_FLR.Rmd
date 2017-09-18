@@ -152,7 +152,7 @@ catch.wt(her)     <- landings.wt(her)
 catch.n(her)       <- landings.n(her)
 ```
 
-Functions are available to [computeLandings](http://www.flr-project.org/FLCore/reference/computeLandings.html), [computeDiscards](http://www.flr-project.org/FLCore/reference/computeDiscards.html), [computeCatch](http://www.flr-project.org/FLCore/reference/computeCatch.html) and [computeStock](http://www.flr-project.org/FLCore/reference/computeStock.html). These functions take the argument slot = 'catch', slot = 'wt' and slot = 'n' to compute the total weight, individual weight and numbers respectively, in addition to slot = 'all'. 
+Functions are available to [computeLandings](http://www.flr-project.org/FLCore/reference/compute.html), [computeDiscards](http://www.flr-project.org/FLCore/reference/compute.html), [computeCatch](http://www.flr-project.org/FLCore/reference/compute.html) and [computeStock](http://www.flr-project.org/FLCore/reference/compute.html). These functions take the argument slot = 'catch', slot = 'wt' and slot = 'n' to compute the total weight, individual weight and numbers respectively, in addition to slot = 'all'. 
 
 ## Adding a description, units, ranges etc..
 

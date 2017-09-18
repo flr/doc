@@ -517,7 +517,7 @@ attr(,&quot;package&quot;)
 <pre><code>An object of class &quot;FLStock&quot;
 
 Name: Herring VIa(S) VIIbc  
-Description: Imported from a VPA file. ( /tmp/RtmpdS63kj/her-irlw/index.txt ).  Mo [...] 
+Description: Imported from a VPA file. ( /tmp/RtmpfjY3fl/her-irlw/index.txt ).  Mo [...] 
 Quant: age 
 Dims:  age  year    unit    season  area    iter
     7   55  1   1   1   1   
@@ -625,7 +625,7 @@ discards(her)     &lt;- computeDiscards(her)
 catch(her)        &lt;- landings(her)
 catch.wt(her)     &lt;- landings.wt(her)
 catch.n(her)       &lt;- landings.n(her)</code></pre>
-<p>Functions are available to <a href="http://www.flr-project.org/FLCore/reference/computeLandings.html">computeLandings</a>, <a href="http://www.flr-project.org/FLCore/reference/computeDiscards.html">computeDiscards</a>, <a href="http://www.flr-project.org/FLCore/reference/computeCatch.html">computeCatch</a> and <a href="http://www.flr-project.org/FLCore/reference/computeStock.html">computeStock</a>. These functions take the argument slot = ‘catch’, slot = ‘wt’ and slot = ‘n’ to compute the total weight, individual weight and numbers respectively, in addition to slot = ‘all’.</p>
+<p>Functions are available to <a href="http://www.flr-project.org/FLCore/reference/compute.html">computeLandings</a>, <a href="http://www.flr-project.org/FLCore/reference/compute.html">computeDiscards</a>, <a href="http://www.flr-project.org/FLCore/reference/compute.html">computeCatch</a> and <a href="http://www.flr-project.org/FLCore/reference/compute.html">computeStock</a>. These functions take the argument slot = ‘catch’, slot = ‘wt’ and slot = ‘n’ to compute the total weight, individual weight and numbers respectively, in addition to slot = ‘all’.</p>
 </div>
 <div id="adding-a-description-units-ranges-etc.." class="section level2">
 <h2>Adding a description, units, ranges etc..</h2>
@@ -635,7 +635,7 @@ catch.n(her)       &lt;- landings.n(her)</code></pre>
 <pre><code>An object of class &quot;FLStock&quot;
 
 Name: Herring VIa(S) VIIbc  
-Description: Imported from a VPA file. ( /tmp/RtmpdS63kj/her-irlw/index.txt ).  Mo [...] 
+Description: Imported from a VPA file. ( /tmp/RtmpfjY3fl/her-irlw/index.txt ).  Mo [...] 
 Quant: age 
 Dims:  age  year    unit    season  area    iter
     7   55  1   1   1   1   
@@ -664,7 +664,7 @@ m.spwn        : [ 7 55 1 1 1 1 ], units =  NA </code></pre>
 name(her) # ok</code></pre>
 <pre><code>[1] &quot;Herring VIa(S) VIIbc &quot;</code></pre>
 <pre class="r"><code>desc(her) # ok</code></pre>
-<pre><code>[1] &quot;Imported from a VPA file. ( /tmp/RtmpdS63kj/her-irlw/index.txt ).  Mon Sep 18 09:32:47 2017&quot;</code></pre>
+<pre><code>[1] &quot;Imported from a VPA file. ( /tmp/RtmpfjY3fl/her-irlw/index.txt ).  Mon Sep 18 09:47:09 2017&quot;</code></pre>
 <pre class="r"><code># Set the Fbar range for the stock 
 range(her)[c(&#39;minfbar&#39;,&#39;maxfbar&#39;)] # ok, but can be filled with  &lt;- c(min,max)</code></pre>
 <pre><code>minfbar maxfbar 
@@ -681,7 +681,7 @@ units(harvest(her)) &lt;- &#39;f&#39;</code></pre>
 <pre><code>An object of class &quot;FLStock&quot;
 
 Name: Herring VIa(S) VIIbc  
-Description: Imported from a VPA file. ( /tmp/RtmpdS63kj/her-irlw/index.txt ).  Mo [...] 
+Description: Imported from a VPA file. ( /tmp/RtmpfjY3fl/her-irlw/index.txt ).  Mo [...] 
 Quant: age 
 Dims:  age  year    unit    season  area    iter
     7   55  1   1   1   1   
@@ -959,7 +959,7 @@ names(fleets) &lt;- fl.nam</code></pre>
 <li>FLCore: 2.6.5</li>
 <li>ggplotFL: 2.6.1</li>
 <li>ggplot2: 2.2.1</li>
-<li><strong>Compiled</strong>: Mon Sep 18 09:32:50 2017</li>
+<li><strong>Compiled</strong>: Mon Sep 18 09:47:13 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">

@@ -400,7 +400,7 @@ Please see the [Modelling stock recruitment with FLSR](Modelling_stock_recruitme
 
 To assess current and future status of a stock we need reference points which he hold to represent desirable states for the stock, usually either in terms of stock abundance, like $B_{MSY}$, the biomass expected to produce, on average and under the current exploitation pattern, the Maximum Sustainable Yield ($MSY$), or of fishing mortality, such as the fishing mortality expected to produce $MSY$, $F_{MSY}$.
 
-We can use the [FLBRP package](http://flr-project.org/FLBRP) to calculate a large set of reference points, once we have an estimate of stock status, our *FLStock* object, and of the stock-recruitment relationship, *FLSR*. We can use them both to create the necessary object, of class [FLBRP](http://www.flr-project.org/FLBRP/reference/FLBRP.html), after loading the package
+We can use the [FLBRP package](http://flr-project.org/FLBRP) to calculate a large set of reference points, once we have an estimate of stock status, our *FLStock* object, and of the stock-recruitment relationship, *FLSR*. We can use them both to create the necessary object, of class *FLBRP*, after loading the package
 
 ```{r, flrbp, warnings=FALSE}
 library(FLBRP)
