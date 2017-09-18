@@ -72,7 +72,7 @@ catch.n <- read.csv(file.path(dir,"catch_numbers.csv"), row=1)
 class(catch.n)
 ```
 
-The data are now in your R environment. Before creating an **FLQuant** object, you need to make sure it is consistent with the type of object and formatting that is needed to run the [FLQuant](http://www.flr-project.org/FLCore/FLQuant.html) method. To get information on the structure and format needed, type ?FLQuant in your R Console.
+The data are now in your R environment. Before creating an **FLQuant** object, you need to make sure it is consistent with the type of object and formatting that is needed to run the [FLQuant](http://www.flr-project.org/FLCore/reference/FLQuant.html) method. To get information on the structure and format needed, type ?FLQuant in your R Console.
 
 ## Reshaping data as a matrix 
 
@@ -83,7 +83,7 @@ catch.n.matrix <- as.matrix(catch.n)
 catch.n.matrix[,1:8]
 ```
 
-An [FLQuant](http://www.flr-project.org/FLCore/FLQuant.html) object is made of six dimensions. The name of the first dimension can be altered by the user from its default, 'quant'. This could typically be 'age' or 'length' for data related to natural populations. The only name not accepted is 'cohort', because data structured along cohort should be stored using the [FLCohort](http://www.flr-project.org/FLCore/FLCohort.html) class instead. Other dimensions are always named as follows: 'year' for the calendar year of the data point; 'unit' for any kind of division of the population, e.g. by sex; 'season' for any temporal strata shorter than year; 'area' for any kind of spatial stratification; and 'iter' for replicates obtained through bootstrap, simulation or Bayesian analysis.
+An [FLQuant](http://www.flr-project.org/FLCore/reference/FLQuant.html) object is made of six dimensions. The name of the first dimension can be altered by the user from its default, 'quant'. This could typically be 'age' or 'length' for data related to natural populations. The only name not accepted is 'cohort', because data structured along cohort should be stored using the [FLCohort](http://www.flr-project.org/FLCore/reference/FLCohort.html) class instead. Other dimensions are always named as follows: 'year' for the calendar year of the data point; 'unit' for any kind of division of the population, e.g. by sex; 'season' for any temporal strata shorter than year; 'area' for any kind of spatial stratification; and 'iter' for replicates obtained through bootstrap, simulation or Bayesian analysis.
 
 When importing catch numbers, for example, the input object needs to be formatted as such: age or length in the first dimension and year in the second dimension. If the object is not formatted in the right way, you can use the `reshape` functions from the package [reshape2](https://cran.r-project.org/web/packages/reshape2/index.html).
 

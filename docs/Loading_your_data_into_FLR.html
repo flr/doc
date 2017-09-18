@@ -377,7 +377,7 @@ unzip(file.path(dir, &quot;loading_data.zip&quot;), exdir=dir)</code></pre>
 # We have read in the data as a data.frame
 class(catch.n)</code></pre>
 <pre><code>[1] &quot;data.frame&quot;</code></pre>
-<p>The data are now in your R environment. Before creating an <strong>FLQuant</strong> object, you need to make sure it is consistent with the type of object and formatting that is needed to run the <a href="http://www.flr-project.org/FLCore/FLQuant.html">FLQuant</a> method. To get information on the structure and format needed, type ?FLQuant in your R Console.</p>
+<p>The data are now in your R environment. Before creating an <strong>FLQuant</strong> object, you need to make sure it is consistent with the type of object and formatting that is needed to run the <a href="http://www.flr-project.org/FLCore/reference/FLQuant.html">FLQuant</a> method. To get information on the structure and format needed, type ?FLQuant in your R Console.</p>
 </div>
 <div id="reshaping-data-as-a-matrix" class="section level2">
 <h2>Reshaping data as a matrix</h2>
@@ -470,7 +470,7 @@ catch.n.matrix[,1:8]</code></pre>
 </tr>
 </tbody>
 </table>
-<p>An <a href="http://www.flr-project.org/FLCore/FLQuant.html">FLQuant</a> object is made of six dimensions. The name of the first dimension can be altered by the user from its default, ‘quant’. This could typically be ‘age’ or ‘length’ for data related to natural populations. The only name not accepted is ‘cohort’, because data structured along cohort should be stored using the <a href="http://www.flr-project.org/FLCore/FLCohort.html">FLCohort</a> class instead. Other dimensions are always named as follows: ‘year’ for the calendar year of the data point; ‘unit’ for any kind of division of the population, e.g. by sex; ‘season’ for any temporal strata shorter than year; ‘area’ for any kind of spatial stratification; and ‘iter’ for replicates obtained through bootstrap, simulation or Bayesian analysis.</p>
+<p>An <a href="http://www.flr-project.org/FLCore/reference/FLQuant.html">FLQuant</a> object is made of six dimensions. The name of the first dimension can be altered by the user from its default, ‘quant’. This could typically be ‘age’ or ‘length’ for data related to natural populations. The only name not accepted is ‘cohort’, because data structured along cohort should be stored using the <a href="http://www.flr-project.org/FLCore/reference/FLCohort.html">FLCohort</a> class instead. Other dimensions are always named as follows: ‘year’ for the calendar year of the data point; ‘unit’ for any kind of division of the population, e.g. by sex; ‘season’ for any temporal strata shorter than year; ‘area’ for any kind of spatial stratification; and ‘iter’ for replicates obtained through bootstrap, simulation or Bayesian analysis.</p>
 <p>When importing catch numbers, for example, the input object needs to be formatted as such: age or length in the first dimension and year in the second dimension. If the object is not formatted in the right way, you can use the <code>reshape</code> functions from the package <a href="https://cran.r-project.org/web/packages/reshape2/index.html">reshape2</a>.</p>
 </div>
 <div id="making-an-flquant-object" class="section level2">
@@ -517,7 +517,7 @@ attr(,&quot;package&quot;)
 <pre><code>An object of class &quot;FLStock&quot;
 
 Name: Herring VIa(S) VIIbc  
-Description: Imported from a VPA file. ( /tmp/RtmpsM2jO6/her-irlw/index.txt ).  Mo [...] 
+Description: Imported from a VPA file. ( /tmp/RtmpAeBxMF/her-irlw/index.txt ).  Mo [...] 
 Quant: age 
 Dims:  age  year    unit    season  area    iter
     7   55  1   1   1   1   
@@ -635,7 +635,7 @@ catch.n(her)       &lt;- landings.n(her)</code></pre>
 <pre><code>An object of class &quot;FLStock&quot;
 
 Name: Herring VIa(S) VIIbc  
-Description: Imported from a VPA file. ( /tmp/RtmpsM2jO6/her-irlw/index.txt ).  Mo [...] 
+Description: Imported from a VPA file. ( /tmp/RtmpAeBxMF/her-irlw/index.txt ).  Mo [...] 
 Quant: age 
 Dims:  age  year    unit    season  area    iter
     7   55  1   1   1   1   
@@ -664,7 +664,7 @@ m.spwn        : [ 7 55 1 1 1 1 ], units =  NA </code></pre>
 name(her) # ok</code></pre>
 <pre><code>[1] &quot;Herring VIa(S) VIIbc &quot;</code></pre>
 <pre class="r"><code>desc(her) # ok</code></pre>
-<pre><code>[1] &quot;Imported from a VPA file. ( /tmp/RtmpsM2jO6/her-irlw/index.txt ).  Mon Sep 18 10:53:11 2017&quot;</code></pre>
+<pre><code>[1] &quot;Imported from a VPA file. ( /tmp/RtmpAeBxMF/her-irlw/index.txt ).  Mon Sep 18 11:48:14 2017&quot;</code></pre>
 <pre class="r"><code># Set the Fbar range for the stock 
 range(her)[c(&#39;minfbar&#39;,&#39;maxfbar&#39;)] # ok, but can be filled with  &lt;- c(min,max)</code></pre>
 <pre><code>minfbar maxfbar 
@@ -681,7 +681,7 @@ units(harvest(her)) &lt;- &#39;f&#39;</code></pre>
 <pre><code>An object of class &quot;FLStock&quot;
 
 Name: Herring VIa(S) VIIbc  
-Description: Imported from a VPA file. ( /tmp/RtmpsM2jO6/her-irlw/index.txt ).  Mo [...] 
+Description: Imported from a VPA file. ( /tmp/RtmpAeBxMF/her-irlw/index.txt ).  Mo [...] 
 Quant: age 
 Dims:  age  year    unit    season  area    iter
     7   55  1   1   1   1   
@@ -959,7 +959,7 @@ names(fleets) &lt;- fl.nam</code></pre>
 <li>FLCore: 2.6.5</li>
 <li>ggplotFL: 2.6.1</li>
 <li>ggplot2: 2.2.1</li>
-<li><strong>Compiled</strong>: Mon Sep 18 10:53:15 2017</li>
+<li><strong>Compiled</strong>: Mon Sep 18 11:48:18 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">
