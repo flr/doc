@@ -10,7 +10,7 @@ PDFSTYLE = "rmarkdown::pdf_document"
 
 all: main clean
 
-main: $(HTMLS) $(RS)
+main: $(HTMLS) $(RS) $(PDFS)
 
 docs/%.html: %.Rmd _site.yml
 	@echo "$< -> $@"
