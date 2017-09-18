@@ -331,7 +331,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Short Term Forecasting for advice using FLash</h1>
-<h4 class="date"><em>15 September, 2017</em></h4>
+<h4 class="date"><em>18 September, 2017</em></h4>
 
 </div>
 
@@ -774,7 +774,7 @@ units:  NA </code></pre>
 <pre class="r"><code>fbar_scenarios &lt;- cbind(rep(fbar_SQ,length(fbar_multiplier)),
                         fbar_multiplier*fbar_SQ,
                         fbar_multiplier*fbar_SQ)</code></pre>
-<p>Another scenario we are interested in is <span class="math inline">\(F_{0.1}\)</span>. We can calculate this using <a href="http://doc.flr-project.org/Reference_points_for_fisheries_management_with_FLBRP.html">FLBRP</a> (or maybe you already have a value).</p>
+<p>Another scenario we are interested in is <span class="math inline">\(F_{0.1}\)</span>. We can calculate this using <a href="http://flr-project.org/doc/Reference_points_for_fisheries_management_with_FLBRP.html">FLBRP</a> (or maybe you already have a value).</p>
 <pre class="r"><code>f01 &lt;- c(refpts(brp(FLBRP(ple4)))[&quot;f0.1&quot;,&quot;harvest&quot;])
 # Add the F0.1 scenario as a final scenario 
 fbar_scenarios &lt;- rbind(fbar_scenarios, c(fbar_SQ,f01,f01))</code></pre>
@@ -1076,7 +1076,7 @@ plot(stk_stf)</code></pre>
 <li>ggplotFL: 2.6.1</li>
 <li>ggplot2: 2.2.1</li>
 <li>FLBRP: 2.5.2</li>
-<li><strong>Compiled</strong>: Fri Sep 15 15:49:13 2017</li>
+<li><strong>Compiled</strong>: Mon Sep 18 09:24:48 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">

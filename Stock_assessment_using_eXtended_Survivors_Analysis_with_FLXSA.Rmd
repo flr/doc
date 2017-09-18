@@ -91,10 +91,7 @@ setMethod('plot', signature(x='FLXSA', y='missing'),function(x){
   up a short-term forecast (`stf`), running VPAs (`VPA` or `SepVPA`) and calculating F
   from  catches.  There  are  several  steps  to  be  completed  when  conducting  an  assessment.  This  tutorial 
   considers only the process of running `VPA` and `FLXSA` stock assessment model.  
-  Additional  tutorials are available, 
-  e.g. [A quick introduction to FLR](http://doc.flr-project.org/A_quick_introduction_to_FLR.html), 
-     [An overview of the FLCore classes](http://doc.flr-project.org/An_overview_of_the_FLCore_classes.html),
-     [Loading your data into FLR](http://doc.flr-project.org/Loading_your_data_into_FLR.html).
+  [Additional tutorials](http://flr-project.org/doc) are available that will introduce you to other parts of the **FLR** toolset.
    
 
   We will start  by importing the data sets

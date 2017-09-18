@@ -194,7 +194,7 @@ bubbles(age~year, data=catch.n(ple4)[5:10,], xlab='', bub.scale=10)
 
 [Quick Lattice Graphs](http://statmethods.net/advgraphs/trellis.html)  
 
-[A quick introduction to FLR](http://doc.flr-project.org/A_quick_introduction_to_FLR.html)
+[A quick introduction to FLR](http://flr-project.org/doc/A_quick_introduction_to_FLR.html)
 
 # More information
 

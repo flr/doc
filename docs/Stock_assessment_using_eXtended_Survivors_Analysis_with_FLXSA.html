@@ -331,7 +331,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Virtual Population analysis using eXtended Survivor Analysis</h1>
-<h4 class="date"><em>15 September, 2017</em></h4>
+<h4 class="date"><em>18 September, 2017</em></h4>
 
 </div>
 
@@ -362,7 +362,7 @@ library(FLXSA)</code></pre>
 <h2>Stock assessment methods within the FLR package structure</h2>
 <p>The package <strong>FLAssess</strong> contains the basic class for age and biomass based stock assessments. It provides a standard class, <strong>FLAssess</strong>, for data input,<br />
 stock status estimation and diagnostic inspection. The <strong>FLAssess</strong> package has a variety of uses. It can be applied within a stock assessment working group setting or, alternatively, as part of the management procedure in a formal Management Strategy Evaluation (MSE). FLAssess provides a common interface for existing stock assessment methods (e.g. XSA) allowing methods to be used interchangeably. It also includes various methods of general use such as setting up a short-term forecast (<code>stf</code>), running VPAs (<code>VPA</code> or <code>SepVPA</code>) and calculating F from catches. There are several steps to be completed when conducting an assessment. This tutorial considers only the process of running <code>VPA</code> and <code>FLXSA</code> stock assessment model.<br />
-Additional tutorials are available, e.g. <a href="http://doc.flr-project.org/A_quick_introduction_to_FLR.html">A quick introduction to FLR</a>, <a href="http://doc.flr-project.org/An_overview_of_the_FLCore_classes.html">An overview of the FLCore classes</a>, <a href="http://doc.flr-project.org/Loading_your_data_into_FLR.html">Loading your data into FLR</a>.</p>
+<a href="http://flr-project.org/doc">Additional tutorials</a> are available that will introduce you to other parts of the <strong>FLR</strong> toolset.</p>
 <p>We will start by importing the data sets for the North Sea Plaice stock and the fishery independent abundance indices. We will use these example data sets for all of the examples in this tutorial.</p>
 <pre class="r"><code>data(ple4)
 data(ple4.indices)</code></pre>
@@ -561,7 +561,7 @@ we will run a new XSA for a reduced number of ages and with only one tuning inde
 <pre class="r"><code> ple4.xsa2 &lt;- FLXSA(trim(ple4, age = 1:4), ple4.indices[[3]],
      xsa.control)
  diagnostics(ple4.xsa2, sections = c(T, T, rep(F, 6)))</code></pre>
-<pre><code>FLR XSA Diagnostics 2017-09-15 15:50:25
+<pre><code>FLR XSA Diagnostics 2017-09-18 09:21:14
 
 CPUE data from indices
 
@@ -763,7 +763,7 @@ plot(ple4.retro)</code></pre>
 <li>FLCore: 2.6.5</li>
 <li>FLXSA: 2.5.20140808</li>
 <li>FLAssess: 2.6.1</li>
-<li><strong>Compiled</strong>: Fri Sep 15 15:50:44 2017</li>
+<li><strong>Compiled</strong>: Mon Sep 18 09:21:33 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">

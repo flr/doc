@@ -221,7 +221,7 @@ plot(metrics(ple4, Catch=catch, Landings=landings))
 
 ### More information
 
-Please see the [Reading data into FLR](Reading_data_into_FLR.html) tutorial for more examples on how to get your data into into **FLR**.
+Please see the [Loading your data into FLR](Loading_your_data_into_FLR.html) tutorial for more examples on how to get your data into into **FLR**.
 
 # Visualizing and plotting
 

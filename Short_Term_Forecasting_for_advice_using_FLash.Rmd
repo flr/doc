@@ -227,7 +227,7 @@ fbar_scenarios <- cbind(rep(fbar_SQ,length(fbar_multiplier)),
                         fbar_multiplier*fbar_SQ)
 ```
 
-Another scenario we are interested in is $F_{0.1}$. We can calculate this using [FLBRP](http://doc.flr-project.org/Reference_points_for_fisheries_management_with_FLBRP.html) (or maybe you already have a value).
+Another scenario we are interested in is $F_{0.1}$. We can calculate this using [FLBRP](http://flr-project.org/doc/Reference_points_for_fisheries_management_with_FLBRP.html) (or maybe you already have a value).
 
 ```{r, eval=TRUE}
 f01 <- c(refpts(brp(FLBRP(ple4)))["f0.1","harvest"])

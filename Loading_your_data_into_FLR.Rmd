@@ -1,5 +1,5 @@
 ﻿---
-title: Reading data into FLR 
+title: Loading your data into FLR 
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
 github_document:
@@ -16,7 +16,7 @@ library(knitr)
 source("R/ini.R")
 ```
  
-This tutorial details methods for reading data in various formats into R for generating objects of the [FLStock](http://www.flr-project.org/FLCore/FLStock.html), [FLIndex](http://www.flr-project.org/FLCore/FLStock.html) and [FLFleet](http://www.flr-project.org/FLCore/FLStock.html) classes.
+This tutorial details methods for reading data in various formats into R for generating objects of the [FLStock](http://www.flr-project.org/FLCore/reference/FLStock.html), [FLIndex](http://www.flr-project.org/FLCore/reference/FLIndex.html) and [FLFleet](http://www.flr-project.org/FLFleet/reference/FLFleet.html) classes.
 
 ## Required packages
 
@@ -117,7 +117,7 @@ her <- readFLStock(file.path(dir, 'her-irlw', 'index.txt'))
 class(her)
 ```
 
-This correctly formats the data as an [FLStock](http://www.flr-project.org/FLCore/FLStock.html) object. Note: the units for the slots have not been set. We will deal with this in the next section.
+This correctly formats the data as an [FLStock](http://www.flr-project.org/FLCore/reference/FLStock.html) object. Note: the units for the slots have not been set. We will deal with this in the next section.
 
 ```{r, readFLStock2}
 summary(her)
@@ -131,7 +131,7 @@ print(stock.n(her)[,ac(2007:2011)]) # only print 2007:2011
 harvest(her) <- readVPAFile(file.path(dir,"her-irlw", "f.txt"))
 ```
 
-Now we have a fully filled [FLStock](http://www.flr-project.org/FLCore/FLStock.html) object. But let's check the data are consistent.
+Now we have a fully filled [FLStock](http://www.flr-project.org/FLCore/reference/FLStock.html) object. But let's check the data are consistent.
 
 ```{r, CheckConsistency}
 # The sum of products (SOP)
@@ -152,7 +152,7 @@ catch.wt(her)     <- landings.wt(her)
 catch.n(her)       <- landings.n(her)
 ```
 
-Functions are available to [computeLandings](http://www.flr-project.org/FLCore/computeLandings.html), [computeDiscards](http://www.flr-project.org/FLCore/computeDiscards.html), [computeCatch](http://www.flr-project.org/FLCore/computeCatch.html) and [computeStock](http://www.flr-project.org/FLCore/computeStock.html). These functions take the argument slot = 'catch', slot = 'wt' and slot = 'n' to compute the total weight, individual weight and numbers respectively, in addition to slot = 'all'. 
+Functions are available to [computeLandings](http://www.flr-project.org/FLCore/reference/computeLandings.html), [computeDiscards](http://www.flr-project.org/FLCore/reference/computeDiscards.html), [computeCatch](http://www.flr-project.org/FLCore/reference/computeCatch.html) and [computeStock](http://www.flr-project.org/FLCore/reference/computeStock.html). These functions take the argument slot = 'catch', slot = 'wt' and slot = 'n' to compute the total weight, individual weight and numbers respectively, in addition to slot = 'all'. 
 
 ## Adding a description, units, ranges etc..
 
@@ -331,7 +331,7 @@ return(fl)
 names(fleets) <- fl.nam
 ```
 
-You should now have a multilevel object with `FLFleets` containing a list of [FLFleet](http://www.flr-project.org/FLCore/FLFleet.html) objects, each which in turn contain `FLMetiers` with a list of [FLMetier](http://www.flr-project.org/FLCore/FLMetier.html) objects for the fleet, and a list of `FLCatches` containing [FLCatch](http://www.flr-project.org/FLCore/FLCatch.html) objects for each stock caught by the métier.
+You should now have a multilevel object with `FLFleets` containing a list of [FLFleet](http://www.flr-project.org/FLFleet/reference/FLFleet.html) objects, each which in turn contain `FLMetiers` with a list of [FLMetier](http://www.flr-project.org/FLFleet/reference/FLMetier.html) objects for the fleet, and a list of `FLCatches` containing [FLCatch](http://www.flr-project.org/FLFleet/reference/FLCatch.html) objects for each stock caught by the métier.
 
 # References
 

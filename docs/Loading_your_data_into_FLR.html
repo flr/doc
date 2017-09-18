@@ -11,7 +11,7 @@
 
 
 
-<title>Reading data into FLR</title>
+<title>Loading your data into FLR</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -330,13 +330,13 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Reading data into FLR</h1>
-<h4 class="date"><em>15 September, 2017</em></h4>
+<h1 class="title toc-ignore">Loading your data into FLR</h1>
+<h4 class="date"><em>18 September, 2017</em></h4>
 
 </div>
 
 
-<p>This tutorial details methods for reading data in various formats into R for generating objects of the <a href="http://www.flr-project.org/FLCore/FLStock.html">FLStock</a>, <a href="http://www.flr-project.org/FLCore/FLStock.html">FLIndex</a> and <a href="http://www.flr-project.org/FLCore/FLStock.html">FLFleet</a> classes.</p>
+<p>This tutorial details methods for reading data in various formats into R for generating objects of the <a href="http://www.flr-project.org/FLCore/reference/FLStock.html">FLStock</a>, <a href="http://www.flr-project.org/FLCore/reference/FLIndex.html">FLIndex</a> and <a href="http://www.flr-project.org/FLFleet/reference/FLFleet.html">FLFleet</a> classes.</p>
 <div id="required-packages" class="section level2">
 <h2>Required packages</h2>
 <p>To follow this tutorial you should have installed the following packages:</p>
@@ -512,12 +512,12 @@ class(her)</code></pre>
 <pre><code>[1] &quot;FLStock&quot;
 attr(,&quot;package&quot;)
 [1] &quot;FLCore&quot;</code></pre>
-<p>This correctly formats the data as an <a href="http://www.flr-project.org/FLCore/FLStock.html">FLStock</a> object. Note: the units for the slots have not been set. We will deal with this in the next section.</p>
+<p>This correctly formats the data as an <a href="http://www.flr-project.org/FLCore/reference/FLStock.html">FLStock</a> object. Note: the units for the slots have not been set. We will deal with this in the next section.</p>
 <pre class="r"><code>summary(her)</code></pre>
 <pre><code>An object of class &quot;FLStock&quot;
 
 Name: Herring VIa(S) VIIbc  
-Description: Imported from a VPA file. ( /tmp/RtmppN2laF/her-irlw/index.txt ).  Fr [...] 
+Description: Imported from a VPA file. ( /tmp/RtmpdS63kj/her-irlw/index.txt ).  Mo [...] 
 Quant: age 
 Dims:  age  year    unit    season  area    iter
     7   55  1   1   1   1   
@@ -560,7 +560,7 @@ age 2007     2008     2009     2010     2011
 
 units:  NA </code></pre>
 <pre class="r"><code>harvest(her) &lt;- readVPAFile(file.path(dir,&quot;her-irlw&quot;, &quot;f.txt&quot;))</code></pre>
-<p>Now we have a fully filled <a href="http://www.flr-project.org/FLCore/FLStock.html">FLStock</a> object. But let’s check the data are consistent.</p>
+<p>Now we have a fully filled <a href="http://www.flr-project.org/FLCore/reference/FLStock.html">FLStock</a> object. But let’s check the data are consistent.</p>
 <pre class="r"><code># The sum of products (SOP)
 apply(landings.n(her)*landings.wt(her), 2, sum)[,ac(2007:2011)]</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
@@ -625,7 +625,7 @@ discards(her)     &lt;- computeDiscards(her)
 catch(her)        &lt;- landings(her)
 catch.wt(her)     &lt;- landings.wt(her)
 catch.n(her)       &lt;- landings.n(her)</code></pre>
-<p>Functions are available to <a href="http://www.flr-project.org/FLCore/computeLandings.html">computeLandings</a>, <a href="http://www.flr-project.org/FLCore/computeDiscards.html">computeDiscards</a>, <a href="http://www.flr-project.org/FLCore/computeCatch.html">computeCatch</a> and <a href="http://www.flr-project.org/FLCore/computeStock.html">computeStock</a>. These functions take the argument slot = ‘catch’, slot = ‘wt’ and slot = ‘n’ to compute the total weight, individual weight and numbers respectively, in addition to slot = ‘all’.</p>
+<p>Functions are available to <a href="http://www.flr-project.org/FLCore/reference/computeLandings.html">computeLandings</a>, <a href="http://www.flr-project.org/FLCore/reference/computeDiscards.html">computeDiscards</a>, <a href="http://www.flr-project.org/FLCore/reference/computeCatch.html">computeCatch</a> and <a href="http://www.flr-project.org/FLCore/reference/computeStock.html">computeStock</a>. These functions take the argument slot = ‘catch’, slot = ‘wt’ and slot = ‘n’ to compute the total weight, individual weight and numbers respectively, in addition to slot = ‘all’.</p>
 </div>
 <div id="adding-a-description-units-ranges-etc.." class="section level2">
 <h2>Adding a description, units, ranges etc..</h2>
@@ -635,7 +635,7 @@ catch.n(her)       &lt;- landings.n(her)</code></pre>
 <pre><code>An object of class &quot;FLStock&quot;
 
 Name: Herring VIa(S) VIIbc  
-Description: Imported from a VPA file. ( /tmp/RtmppN2laF/her-irlw/index.txt ).  Fr [...] 
+Description: Imported from a VPA file. ( /tmp/RtmpdS63kj/her-irlw/index.txt ).  Mo [...] 
 Quant: age 
 Dims:  age  year    unit    season  area    iter
     7   55  1   1   1   1   
@@ -664,7 +664,7 @@ m.spwn        : [ 7 55 1 1 1 1 ], units =  NA </code></pre>
 name(her) # ok</code></pre>
 <pre><code>[1] &quot;Herring VIa(S) VIIbc &quot;</code></pre>
 <pre class="r"><code>desc(her) # ok</code></pre>
-<pre><code>[1] &quot;Imported from a VPA file. ( /tmp/RtmppN2laF/her-irlw/index.txt ).  Fri Sep 15 15:46:33 2017&quot;</code></pre>
+<pre><code>[1] &quot;Imported from a VPA file. ( /tmp/RtmpdS63kj/her-irlw/index.txt ).  Mon Sep 18 09:32:47 2017&quot;</code></pre>
 <pre class="r"><code># Set the Fbar range for the stock 
 range(her)[c(&#39;minfbar&#39;,&#39;maxfbar&#39;)] # ok, but can be filled with  &lt;- c(min,max)</code></pre>
 <pre><code>minfbar maxfbar 
@@ -681,7 +681,7 @@ units(harvest(her)) &lt;- &#39;f&#39;</code></pre>
 <pre><code>An object of class &quot;FLStock&quot;
 
 Name: Herring VIa(S) VIIbc  
-Description: Imported from a VPA file. ( /tmp/RtmppN2laF/her-irlw/index.txt ).  Fr [...] 
+Description: Imported from a VPA file. ( /tmp/RtmpdS63kj/her-irlw/index.txt ).  Mo [...] 
 Quant: age 
 Dims:  age  year    unit    season  area    iter
     7   55  1   1   1   1   
@@ -939,7 +939,7 @@ return(fl)
          }))
 
 names(fleets) &lt;- fl.nam</code></pre>
-<p>You should now have a multilevel object with <code>FLFleets</code> containing a list of <a href="http://www.flr-project.org/FLCore/FLFleet.html">FLFleet</a> objects, each which in turn contain <code>FLMetiers</code> with a list of <a href="http://www.flr-project.org/FLCore/FLMetier.html">FLMetier</a> objects for the fleet, and a list of <code>FLCatches</code> containing <a href="http://www.flr-project.org/FLCore/FLCatch.html">FLCatch</a> objects for each stock caught by the métier.</p>
+<p>You should now have a multilevel object with <code>FLFleets</code> containing a list of <a href="http://www.flr-project.org/FLFleet/reference/FLFleet.html">FLFleet</a> objects, each which in turn contain <code>FLMetiers</code> with a list of <a href="http://www.flr-project.org/FLFleet/reference/FLMetier.html">FLMetier</a> objects for the fleet, and a list of <code>FLCatches</code> containing <a href="http://www.flr-project.org/FLFleet/reference/FLCatch.html">FLCatch</a> objects for each stock caught by the métier.</p>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
@@ -959,7 +959,7 @@ names(fleets) &lt;- fl.nam</code></pre>
 <li>FLCore: 2.6.5</li>
 <li>ggplotFL: 2.6.1</li>
 <li>ggplot2: 2.2.1</li>
-<li><strong>Compiled</strong>: Fri Sep 15 15:46:37 2017</li>
+<li><strong>Compiled</strong>: Mon Sep 18 09:32:50 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">
