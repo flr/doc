@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Dorleta Garcia and FLBEIA team" />
+
+
+<title>FLBEIA conditioning in Data Poor Situations: BoB Stripped Mullet</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="http://flr-project.org">
+    <span class="fa fa-home"></span>
+     
+    FLR
+  </a>
+</li>
+<li>
+  <a href="index.html">
+    <span class="fa fa-info"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-play-circle-o"></span>
+     
+    Intro
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A_quick_introduction_to_FLR.html">A quick introduction to FLR</a>
+    </li>
+    <li>
+      <a href="An_overview_of_the_FLCore_classes.html">An overview of the FLCore classes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-database"></span>
+     
+    Input
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Loading_your_data_into_FLR.html">Loading your data into FLR</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-magic"></span>
+     
+    Modelling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Modelling_stock_recruitment_with_FLSR.html">Modelling stock recruitment with FLSR</a>
+    </li>
+    <li>
+      <a href="Statistical_catch_at_age_models_in_FLa4a.html">Statistical catch at age models in FLa4a</a>
+    </li>
+    <li>
+      <a href="Modelling_growth_and_its_uncertainty_in_FLa4a.html">Modelling growth and its uncertainty in FLa4a</a>
+    </li>
+    <li>
+      <a href="Natural_mortality_modelling_in_FLa4a.html">Natural mortality modelling in FLa4a</a>
+    </li>
+    <li>
+      <a href="Stock_assessment_using_eXtended_Survivors_Analysis_with_FLXSA.html">Stock assessment using eXtended Survivors Analysis with FLXSA</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-tachometer"></span>
+     
+    Advice
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Running_Medium_Term_Forecasts_with_FLash.html">Running Medium Term Forecasts with FLash</a>
+    </li>
+    <li>
+      <a href="Short_Term_Forecasting_for_advice_using_FLash.html">Short Term Forecasting for advice using FLash</a>
+    </li>
+    <li>
+      <a href="Forecasting_on_the_Medium_Term_for_advice_using_FLasher.html">Forecasting on the Medium Term for advice using FLasher</a>
+    </li>
+    <li>
+      <a href="Reference_points_for_fisheries_management_with_FLBRP.html">Reference points for fisheries management with FLBRP</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-cogs"></span>
+     
+    MSE
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">An introduction to MSE using FLR</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-area-chart"></span>
+     
+    Plotting
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="ggplotFL_plotting_FLR_objects_with_ggplot2.html">ggplotFL, plotting FLR objects with ggplot2</a>
+    </li>
+    <li>
+      <a href="Plotting_FLR_objects_using_lattice.html">Plotting FLR objects using lattice</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-puzzle-piece"></span>
+     
+    Internals
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Units_of_measurement_in_FLR_objects.html">Units of measurement in FLR objects</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="http://github.com/flr/doc/issues">
+    <span class="fa fa-question fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">FLBEIA conditioning in Data Poor Situations: BoB Stripped Mullet</h1>
+<h4 class="author"><em>Dorleta Garcia and FLBEIA team</em></h4>
+
+</div>
+
+
+<p>   </p>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>In this document we show how to:</p>
+<ol style="list-style-type: decimal">
+<li>Fit an SPiCT biomass dynamic model to the available data,</li>
+<li>Condition FLBEIA using:</li>
+</ol>
+<ul>
+<li>The output of SPiCT,</li>
+<li>Red mullet’s life-history traits,</li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li>Test the performance of different harvest control rules in <code>FLBEIA</code>.</li>
+</ol>
+<p>The first part of the tutorial deals with the analysis of the data to fit SPiCT and the process of finding an acceptable fit. It is not part of the data-poor tutorial <em>per se</em>. However we have included it in as part of the document to show how to fit the biomass dynamic model used later on to generate the initial random population.</p>
+<p>and to condition and run <code>FLBEIA</code> is shown to demonstrate how to use them. First Spict is used to obtain the best assessment possible using the data available. Then using this fit and making use of the variance-covariance matrix estimated by the model a random population is obtained to condition <code>FLBEIA</code>. Alternatively, <code>FLBEIA</code> is conditioned using life-history traints and different hypothesis about its status in the initial year of the simulation and productivity. Finally <code>FLBEIA</code> is run using different harvest control rules (HCRs).</p>
+<p>To start the R session, load SPicT, FLBEIA and the rest of the packages neccesary to run this tutorial. <code>FLCore</code> and <code>FLFLeets</code> are automatically loaded with <code>FLBEIA</code>.</p>
+<pre class="r"><code>library(spict)</code></pre>
+<pre><code>## Loading required package: TMB</code></pre>
+<pre><code>## Welcome to spict_v1.1@69450d78a0be0438599c9d115a7054d2a739342e</code></pre>
+<pre class="r"><code>library(FLBEIA)</code></pre>
+<pre><code>## Loading required package: FLCore</code></pre>
+<pre><code>## Loading required package: MASS</code></pre>
+<pre><code>## Loading required package: lattice</code></pre>
+<pre><code>## FLCore (Version 2.6.5.9001, packaged: 2017-09-22 09:02:49 UTC)</code></pre>
+<pre><code>## Loading required package: FLFleet</code></pre>
+<pre><code>## Loading required package: ggplot2</code></pre>
+<pre><code>## 
+## Attaching package: &#39;ggplot2&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:FLCore&#39;:
+## 
+##     %+%</code></pre>
+<pre class="r"><code>library(MASS)
+library(corrplot)
+library(ggplot2)
+library(gtools)
+library(fishmethods)</code></pre>
+<pre><code>## Loading required package: boot</code></pre>
+<pre><code>## 
+## Attaching package: &#39;boot&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:gtools&#39;:
+## 
+##     inv.logit, logit</code></pre>
+<pre><code>## The following object is masked from &#39;package:lattice&#39;:
+## 
+##     melanoma</code></pre>
+<pre><code>## Loading required package: bootstrap</code></pre>
+<pre><code>## 
+## Attaching package: &#39;bootstrap&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:FLCore&#39;:
+## 
+##     jackknife</code></pre>
+<pre><code>## Loading required package: lme4</code></pre>
+<pre><code>## Loading required package: Matrix</code></pre>
+<pre><code>## Loading required package: numDeriv</code></pre>
+<pre><code>## 
+## Attaching package: &#39;numDeriv&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:FLCore&#39;:
+## 
+##     hessian</code></pre>
+<pre><code>## 
+## Attaching package: &#39;fishmethods&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:FLCore&#39;:
+## 
+##     sr</code></pre>
+</div>
+<div id="the-case-study-stripped-red-mullet-in-the-bay-of-biscay" class="section level1">
+<h1>The Case Study: Stripped Red Mullet in the Bay of Biscay</h1>
+<p>Stripped Red Mullet (<em>Mullus surmuletus</em>) in Bay of Biscay has no analytical assessment and it is not subject to the European TAC and quota system. It is mainly caught by France followed by Spain. The annual total catch is around 2000 tons. The stock is assessed in WGBIE (ICSE, 2017).</p>
+<div id="data" class="section level2">
+<h2>Data</h2>
+<p>The total catch time series data used in this analysis was taken from WGBIE report (ICES, 2017) and the EVHOE abundance index time series was provide by Ifremer.</p>
+<p>Total catch data is available since 1975. In 1999 France did not report any data. As France is the main contributor to the total catch, the 1999 catch data was not included in the analysis.</p>
+<p>The abundance index is available since 1997. In provides an estimation of the biomass together with a coefficient of variation.</p>
+<p>In all the areas the catch shows an increasing trend since the begining of the series but in the last two years, 2013 and 2014, there has been a sharp decrease in the catches (see the figure below).</p>
+<div class="figure">
+<img src="Data_Poor_MSE_in_FLBEIA_files/figure-html/fig:catch-1.png" alt="Catch time series by area." width="415.748031496063" />
+<p class="caption">
+Catch time series by area.
+</p>
+</div>
+<p>The abundance index, in the figure below, does not show any clear trend. In 2001 and from 2003 to 2005 the observed values were well above the historical mean. In 2006 the index decreased sharply and in the last three years the values are among the lowest in the series.</p>
+<div class="figure">
+<img src="Data_Poor_MSE_in_FLBEIA_files/figure-html/fig:evhoe-1.png" alt="EVHOE abundance index. Shaded area corresponds with two times the annual standard deviation of the index." width="415.748031496063" />
+<p class="caption">
+EVHOE abundance index. Shaded area corresponds with two times the annual standard deviation of the index.
+</p>
+</div>
+</div>
+<div id="initial-spict-fit-to-the-data." class="section level2">
+<h2>Initial SPiCT fit to the data.</h2>
+<p>The data used is stored in two data frames, ‘catch’ and ‘evhoe’. First we used these data frames to create a list with the shape required by SPiCT. We use the ‘check.inp’ function from SPiCT library to check that the data is right.</p>
+<pre class="r"><code>murDat &lt;- list(obsC = catch[, &quot;area_total&quot;], timeC = catch[, &quot;year&quot;], obsI = evhoe[, 
+    &quot;biomass&quot;], timeI = evhoe[, &quot;year&quot;])
+
+murInp &lt;- check.inp(murDat)
+
+murInp</code></pre>
+<p>Fit SPiCT model using the default settings and show the numeric output.</p>
+<pre class="r"><code>mur_spict &lt;- fit.spict(murInp)
+capture.output(summary(mur_spict))</code></pre>
+<p>Plot the estimated biomass, absolute and relative, using the functions available in the package. Until the late 1990 the estimated biomass was very low. Then it started increasing until reaching the maximum in 2004. Afterwards it showed a decreasing trend. The biomass has been above Bmsy only in five years around 2004.</p>
+<pre class="r"><code>par(mfrow = c(1, 2))
+plotspict.bbmsy(mur_spict, qlegend = FALSE)
+plotspict.biomass(mur_spict, qlegend = FALSE)</code></pre>
+<div class="figure">
+<img src="Data_Poor_MSE_in_FLBEIA_files/figure-html/fig:est_bio-1.png" alt="Relative and Absolute  Biomasses estimated by SPiCT. Horizontal line correspond with the biomass level at MSY." width="604.724409448819" />
+<p class="caption">
+Relative and Absolute Biomasses estimated by SPiCT. Horizontal line correspond with the biomass level at MSY.
+</p>
+</div>
+<p>Now plot the fishing mortality using the <code>plotspict</code> function. The fishing mortality has been above Fmsy in the whole time series. In the begining of the series the fishing mortality level was very high.</p>
+<pre class="r"><code>par(mfrow = c(1, 2))
+plotspict.f(mur_spict, qlegend = FALSE)
+plotspict.ffmsy(mur_spict, qlegend = FALSE)</code></pre>
+<div class="figure">
+<img src="Data_Poor_MSE_in_FLBEIA_files/figure-html/fig:est_f-1.png" alt="Relative and Absolute  fishing mortalities estimated by SPiCT. Horizontal line correspond with the MSY fishing mortality level." width="604.724409448819" />
+<p class="caption">
+Relative and Absolute fishing mortalities estimated by SPiCT. Horizontal line correspond with the MSY fishing mortality level.
+</p>
+</div>
+<p>The uncertainty estimated by the model around the catch is very small.</p>
+<pre class="r"><code>plotspict.catch(mur_spict, qlegend = FALSE)</code></pre>
+<div class="figure">
+<img src="Data_Poor_MSE_in_FLBEIA_files/figure-html/fig:est_catch-1.png" alt="Catch estimated by SPiCT. The horizontal line corresponds with the MSY." width="302.362204724409" />
+<p class="caption">
+Catch estimated by SPiCT. The horizontal line corresponds with the MSY.
+</p>
+</div>
+<p>A sensitivity analysis to the starting values was performed. The results converged to two different data sets with more or less the same probability. The one shown above and an alternative case which had very wide confidence intervals. Another excercise was done fixing some of the paramters to the values obtained in the fit above and the model was not able to reproduce the same estimates. The results obtained indicated a problem in adjusting the initial part of the series.In fact, in this part the only data available is the catch data and it may not be very accurate. Hence it was decided to use the data since 1994 when evhoe abundance index was first available.</p>
+</div>
+<div id="final-assessment." class="section level2">
+<h2>Final Assessment.</h2>
+<p>The same analysis was conducted with the shortened series and the results were more robust. All the starting values converged to the same estimates (as in the initial fit there were many iterations that did not converged) and when the initial parameters were fixed to the estimated ones or sliglthly modified the results were practically the same. This robustness allows us to obtain a random population using as a base the variance-covariance matrix estimated by SPiCT.</p>
+<p>Shorten the time series and fit SPiCT to the new data.</p>
+<pre class="r"><code>murDat$obsC &lt;- murDat$obsC[23:40]
+murDat$timeC &lt;- murDat$timeC[23:40]
+mur_spict &lt;- fit.spict(murDat)</code></pre>
+<p>Updated time series of biomass. The absolute values and trends obtained are quite similar to those obtained with the longer time series.</p>
+<pre class="r"><code>par(mfrow = c(1, 2))
+plotspict.bbmsy(mur_spict)
+plotspict.biomass(mur_spict, qlegend = FALSE, stamp = F)</code></pre>
+<div class="figure">
+<img src="Data_Poor_MSE_in_FLBEIA_files/figure-html/ff%20biomass-1.png" alt="Relative Biomass estimated by SPiCT with shortened time series." width="604.724409448819" />
+<p class="caption">
+Relative Biomass estimated by SPiCT with shortened time series.
+</p>
+</div>
+<p>For fishing mortality the same happens. The resulting time series are almost identical to those obtained in the initial fit.</p>
+<pre class="r"><code>par(mfrow = c(1, 2))
+plotspict.f(mur_spict, qlegend = FALSE)
+plotspict.ffmsy(mur_spict, qlegend = FALSE)</code></pre>
+<div class="figure">
+<img src="Data_Poor_MSE_in_FLBEIA_files/figure-html/ff%20f-1.png" alt="Absolute fishing mortality estimated by SPiCT." width="604.724409448819" />
+<p class="caption">
+Absolute fishing mortality estimated by SPiCT.
+</p>
+</div>
+<p>The uncertainty around catch is low with the new fit too.</p>
+<pre class="r"><code>plotspict.catch(mur_spict, qlegend = FALSE)</code></pre>
+<div class="figure">
+<img src="Data_Poor_MSE_in_FLBEIA_files/figure-html/ff%20catch-1.png" alt="Catch estimated by SPiCT using the shortened time series. The horizontal line corresponds with the MSY." width="529.133858267717" />
+<p class="caption">
+Catch estimated by SPiCT using the shortened time series. The horizontal line corresponds with the MSY.
+</p>
+</div>
+<p>According to the fit the production of the stock has been at its maximum in most of the series (see the Kobe plot below). However in the last years (2011, 2012 and 2015) the production has decreased as a result of a decrease in biomass.The productions has been high in the whole time series but the harvest rate has been also very high. As it can be shown in the Kobe plot the stock has been the over-exploited in most of the series and it is currently in the worst shape.</p>
+<pre class="r"><code>par(mfrow = c(1, 2))
+plotspict.production(mur_spict)
+plotspict.fb(mur_spict)</code></pre>
+<div class="figure">
+<img src="Data_Poor_MSE_in_FLBEIA_files/figure-html/fig:kobe-1.png" alt="Production curve estimated by SPiCT using the shortened time series." width="604.724409448819" />
+<p class="caption">
+Production curve estimated by SPiCT using the shortened time series.
+</p>
+</div>
+</div>
+</div>
+<div id="initial-random-population" class="section level1">
+<h1>Initial Random population</h1>
+<div id="based-on-spict-fit" class="section level2">
+<h2>Based on SPiCT Fit</h2>
+<p>In order to assess the performance of different management strategies for the stock, and later on for the whole fishery, under a management strategy evaluation (MSE) approach we need to generate a set of random starting values. The objective is to account for the uncertainty related to the fit of the model. The variance-covariance matrix estimated by SPiCT represents the uncertainty associated to the estimated parameters along with their correlation structure.</p>
+<p>First, we extract the parameters and the variance-covariance matrix estimated by SPiCT. Using the ‘cov2cor’ function we transform the matrix into a correlation matrix that is easier to interpret. The values in the correlation matrix range from -1 to 1, absolute correlation values close to 1 indicate strong correlations and those close to 0 indicate no correlation. The sign of the correlation indicates the direction of the relationship.</p>
+<pre class="r"><code>varcov &lt;- (mur_spict$cov.fixed)
+params &lt;- mur_spict$par.fixed
+cor &lt;- cov2cor(mur_spict$cov.fixed)</code></pre>
+<p>In the plot below the direction of the ellipses indicates the direction of the correlation between the parameters and the colour the strength. The strongest correlation occurs between K and the other two parameters that determine the shape of the production model curve, ‘m’ and ‘n’, and the catchability of the abundance index, ‘q’. These strong correlations are usual in production model fits. The correlation regarding the rest of the parameters, standard deviations of the biomass, the fishing mortality, the index and the catch are low.</p>
+<pre class="r"><code>corrplot(cor, method = &quot;ellipse&quot;)</code></pre>
+<div class="figure">
+<img src="Data_Poor_MSE_in_FLBEIA_files/figure-html/fig:vcov-1.png" alt="Graphical representation of the correlation matrix obtained in the final SPiCT fit." width="302.362204724409" />
+<p class="caption">
+Graphical representation of the correlation matrix obtained in the final SPiCT fit.
+</p>
+</div>
+<p>As the parameters are log-normally distributed, we can generate a set of random parameters sampling from a normal distribution using the log-estimates of the parameters and the covariance matrix. Afterwards we apply the exponential function to have the parameters in the original scale. We change the name of the parameters to prevent confusions.</p>
+<pre class="r"><code>set.seed(27)
+RandPar_SPict_log &lt;- mvrnorm(1000, params, varcov)
+RandPar_SPict &lt;- exp(RandPar_SPict_log)
+colnames(RandPar_SPict) &lt;- substr(colnames(RandPar_SPict), 4, nchar(RandPar_SPict))</code></pre>
+<p>Now we transform the parameters to use the parameterization implemented in FLBEIA for Pella-Tomlinson model. These parameters will be used to project the population forward in the simulation. In each iteration a different set of parameters will be used. Thereby, we are introducing process uncertainty in the biological operating model (BOM) of the stock.</p>
+<p>Due to the big uncertainty in the parameter estimates, in the random sampling, we obtain very large values for the growth rate parameter. These values make the simulation crashes due. Hence we remove from the samples the set of parameters with growth parameter higher than three.</p>
+<pre class="r"><code>RandPar_flbeia &lt;- matrix(NA, 1000, 3, dimnames = list(iter = 1:1000, c(&quot;r&quot;, 
+    &quot;K&quot;, &quot;p&quot;)))
+
+# Growth parameter r
+RandPar_flbeia[, 1] &lt;- (RandPar_SPict[, &quot;m&quot;] * RandPar_SPict[, &quot;n&quot;]^(RandPar_SPict[, 
+    &quot;n&quot;]/(RandPar_SPict[, &quot;n&quot;] - 1)))/RandPar_SPict[, &quot;K&quot;]
+# K
+RandPar_flbeia[, 2] &lt;- RandPar_SPict[, &quot;K&quot;]
+# p
+RandPar_flbeia[, 3] &lt;- RandPar_SPict[, &quot;n&quot;] - 1
+# Remove not viable iterations
+remiter &lt;- unique(c(which((RandPar_flbeia[, &quot;p&quot;]/RandPar_flbeia[, &quot;r&quot;]) &lt; -1), 
+    which(RandPar_flbeia[, &quot;r&quot;] &gt; 2)))
+RandPar_flbeia &lt;- RandPar_flbeia[-remiter, ]
+# Identify the valid iterations and select the first 100.
+Niter &lt;- Nit &lt;- 5
+valid_iters &lt;- as.numeric(dimnames(RandPar_flbeia)[[1]])[1:Niter]</code></pre>
+<p>The figure below shows the densitites obtained through the random sampling above, after removing the problematic iterations.</p>
+<pre class="r"><code>par(mfrow = c(2, 2))
+plot(density(RandPar_flbeia[, 1]), main = &quot;Intrinsic Growth Rate (r)&quot;, xlab = &quot;&quot;, 
+    lwd = 2)
+abline(v = median(RandPar_flbeia[, 1]), col = 2)
+plot(density(RandPar_flbeia[, 2]), main = &quot;Carrying Capacity (K)&quot;, xlab = &quot;&quot;, 
+    lwd = 2)
+abline(v = median(RandPar_flbeia[, 2]), col = 2)
+plot(density(RandPar_flbeia[, 3] + 1), main = &quot;Shape of Production Curve (n)&quot;, 
+    xlab = &quot;&quot;, lwd = 2)
+abline(v = median(RandPar_flbeia[, 3] + 1), col = 2)</code></pre>
+<div class="figure">
+<img src="Data_Poor_MSE_in_FLBEIA_files/figure-html/fig:params-1.png" alt="Density curves of the production model parameters used to condition the initial population." width="604.724409448819" />
+<p class="caption">
+Density curves of the production model parameters used to condition the initial population.
+</p>
+</div>
+<p>Now we need the stock trajectories, abundances and fishing mortalities, consistent with the parameters generated in the multivariate random sampling. So we fit a SPiCT model to each sample fixing the parameters to those obtained in the sampling. From each fit we extract the estimated abundance and catch and store them in a matrix that will be used later on to condition <code>FLBEIA</code>. To illustrate the example we use only 100 iterations but more iterations could be neccesary to obtain a good representation of the existing uncertainty.</p>
+<pre class="r"><code>Best &lt;- Cest &lt;- matrix(NA, Niter, 18, dimnames = list(iter = 1:Niter, year = 1997:2014))
+
+for (i in 1:Niter) {
+    # The data is the same use in the base fit.
+    murDat_rand &lt;- murDat
+    # Use as initial parameters those obtained in the sampling.
+    murDat_rand$ini &lt;- as.list(RandPar_SPict_log[i, 1:7])
+    # Tell SPiCT to keep fixed those parameters. We let SPiCT adjusting one of
+    # the variances because otherwise the fit crashes.
+    ph &lt;- RandPar_SPict_log[i, 1:7]
+    ph[] &lt;- -1
+    murDat_rand$phases &lt;- as.list(ph)
+    # Fit SPiCT
+    mur_rand_fit &lt;- fit.spict(murDat_rand)
+    # Extract the parameters.
+    Best[i, ] &lt;- get.par(&quot;logB&quot;, mur_rand_fit, exp = TRUE)[(0:17) * 16 + 1, 
+        2]
+    Cest[i, ] &lt;- get.par(&quot;logCpred&quot;, mur_rand_fit, exp = TRUE)[, 2]
+}</code></pre>
+<p>Time series of biomass and catch for each of the iterations obtained in the previous step are shown in next figure. Although the variability in biomass is high the trends are similar. Only one of the interations shows significant discrepancies with the others. The variability in estimated catch is also significant. Only one of the interations shows significant discrepancies with the others.</p>
+<pre class="r"><code>RandPar_flbeia &lt;- RandPar_flbeia[1:Niter, ]
+
+par(mfrow = c(2, 1))
+matplot(1997:2014, t(Best), type = &quot;l&quot;, main = &quot;Biomass&quot;, ylab = &quot;MT&quot;, xlab = &quot;&quot;, 
+    lty = 1)
+matplot(1997:2014, t(Cest), type = &quot;l&quot;, main = &quot;Catch&quot;, ylab = &quot;MT&quot;, xlab = &quot;&quot;, 
+    lty = 1)</code></pre>
+<div class="figure">
+<img src="Data_Poor_MSE_in_FLBEIA_files/figure-html/fig:randBC-1.png" alt="Time series of the biomass and catch obtained in each of the iterations." width="604.724409448819" />
+<p class="caption">
+Time series of the biomass and catch obtained in each of the iterations.
+</p>
+</div>
+</div>
+<div id="based-on-life-history-traits" class="section level2">
+<h2>Based on Life History-Traits</h2>
+<div id="productivity" class="section level3">
+<h3>Productivity</h3>
+<p>The stock productivity is defined by the stock recruitment relationship. In a data-poor stock, without a quantitative and credible assessment model available, is practically imposible to have an estimate of the stock-recruitment relatioship (SRR). However, using the parameterization of traditional SRR which use steepness, virgin biomass and spawning per recruit it is intuitive to build sensible scenarios. In this example we will implement one basic scenario from which alternative scenarios can be build.</p>
+<p>First, we need to define the parameters of the SRR. We use a steepness of 0.75. Steepness is defined as the proportion of recruits produced by 20% of the virgin spawning stock. High steepness value is indicative of a resilient population (REF SUbbey). A virgin biomass 25 times higher that the maximum catch observed and a spawning per recruit equal to 0.5.</p>
+<pre class="r"><code>steepness &lt;- 0.95
+virginBio &lt;- 15 * max(murDat$obsC, na.rm = TRUE)
+spr0 &lt;- 0.25  # contrast with an existing fit.</code></pre>
+<p>Now we use the <code>abPars</code> function to reparameterize the model with the traditional parameters of the Beverton and Holt SRR model. Then we use these parameters to build the <code>FLSRsim</code> class used in <code>FLBEIA</code> to simulate the recruitment in age structured stocks.</p>
+<pre class="r"><code>sr_params &lt;- unlist(abPars(s = steepness, v = virginBio, spr0 = spr0, model = &quot;bevholt&quot;))
+
+sr &lt;- FLSR(name = &quot;mur&quot;, params = FLPar(unlist(sr_params)), model = &quot;bevholt&quot;)
+sr@params &lt;- FLPar(unlist(sr_params))
+sr@params[2] &lt;- sr@params[2]</code></pre>
+</div>
+<div id="individual-growth" class="section level3">
+<h3>Individual Growth</h3>
+<p>The individual growth is determined by the growth in length, modelled using Von Bertalanffy, and by the weight at age relationship.</p>
+<div id="von-bertalanffy-parameters" class="section level4">
+<h4>Von Bertalanffy parameters</h4>
+<p>Von Bertalanffy parameters were taken from Mahe. We store the parameters and create a function that returns the length given the age and the model parameters.</p>
+<pre class="r"><code>Linf &lt;- 37.7
+K &lt;- 0.29
+t0 &lt;- 0
+VBert &lt;- function(age, Linf, K, t0) return(Linf * (1 - exp(-K * (age - t0))))</code></pre>
+</div>
+<div id="mean-weight-at-age-relatioship" class="section level4">
+<h4>Mean Weight at age relatioship</h4>
+<p>To model the mean weight-at-age we use the traditional length-weight relationship <span class="math inline">\(W = a\cdot L^b\)</span> where <span class="math inline">\(W\)</span> represents the weight, <span class="math inline">\(L\)</span> the length and <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> the parameters. We took these parameters, <code>lw_a</code> and <code>lw_b</code> from ICES-FishMap.</p>
+<pre class="r"><code>lw_a &lt;- 0.016
+lw_b &lt;- 2.91</code></pre>
+<p>No to calculate the mean weight-at-age, first we calculate the mean length-at-age using the Von Bertalanffy model and then we apply the length-weigth relationship to the mean lengths obtained.</p>
+<pre class="r"><code>mwa &lt;- lw_a * VBert((0:10) + 0.5, Linf, K, t0)^lw_b</code></pre>
+</div>
+</div>
+<div id="maturity" class="section level3">
+<h3>Maturity</h3>
+<p>Regarding maturity we know that the size at which 50% of the fishes are mature is 15.5 and that from 2 years old, all the fishes are mature. Using these data in a the typical logistic ogive resulted in a curve were all the fishes were mature very early. Instead we used a linear relationship between length and maturity to calculate the proportion of matures at age 1, we calculate it at the middle of the year, i.e when the fishes are one year and a half. We have to solve the sistem, <span class="math inline">\(a_1+15.5*a_2 = 0.5\)</span> and <span class="math inline">\(a_1+19.44*a_2 = 1\)</span> where 19.44 is the length of individuals of age two years and a half.</p>
+<pre class="r"><code>na &lt;- 11
+a2 &lt;- 1/7.88
+a1 &lt;- (19.44 - 15.5 * 2) * a2
+mat0 &lt;- 0
+mat1 &lt;- a1 + 13.29 * a2  # 13.29 the length at one year and half a year age.  
+mat &lt;- c(mat0, mat1, rep(1, na - 2))</code></pre>
+</div>
+<div id="natural-mortality" class="section level3">
+<h3>Natural Mortality</h3>
+<p>To calculate fishing mortality we use the <code>M.empirical</code> function from <code>fishmethods</code> package. This functions provides several methods from literature to caculate natural morarlity based on life-history parameters, sea water temperature and others. Given the data available we are able to apply si of the methods. Water temperature was taken from  and <span class="math inline">\(t_{max}\)</span> from ICES-FisMap. Roff’s method produces too hagh value so we condiser it no credible and take the mean of the other methods to condition the model.</p>
+<pre class="r"><code>Ms &lt;- M.empirical(Linf = Linf, Kl = K, T = 16, tmax = 10, tm = 0.5, method = c(1, 
+    3, 4, 5, 10, 11))
+
+Ms</code></pre>
+<pre><code>##                                    M
+## Pauly (1980) - Length Equation 0.575
+## Hoenig (1983) - Joint Equation 0.440
+## Hoenig (1983) - Fish Equation  0.421
+## Alverson and Carney (1975)     0.433
+## Roff (1984)                    5.576
+## Then et al. (2015)-tmax        0.594
+## Then et al. (2015)-growth      0.504</code></pre>
+<pre class="r"><code>M &lt;- mean(mean(Ms[-5, ]))</code></pre>
+</div>
+<div id="abundance-fishing-mortality-and-selectivity." class="section level3">
+<h3>Abundance, Fishing mortality and Selectivity.</h3>
+<p>Using the information above we are going to reconstruct the history of the population. First, we need to assume something about the initial state of the population. A simple assumption is to assume that the initial population was in its virgin biomass level. This population can be easily compute using the SRR and the exponential survival equation with the natural mortality calculated above. Other simple assumption could be to assume that the population structure is the same as the virgin structure but with lower biomass. In this case it would be enough to multiply the virgin numbers at age with the desired percentage.</p>
+<p>In order to be able to project the population from the first year we need the catch for 1999, we assume that the catch in that year was equal to the mean of the cathes in 1988 and 2000.</p>
+<pre class="r"><code>catch[25, 8] &lt;- mean(catch[26, 8], catch[24, 8])</code></pre>
+<div id="pristine-biomass." class="section level4">
+<h4>Pristine Biomass.</h4>
+<p>The asymptotic recruitment, i.e the long term mean recruitment in absence of fishing, in beverton and holt model is equal to the <span class="math inline">\(a\)</span> parameter. So to calculate the pristione biomass we apply natural mortality to this recruitment. As the natur4al mortlaity is the same for all the ages, the total natural morltaity in each age group is equal to natural mortality multiplied by the age. For the4 plusgroup, we sum up the theoretical pristine abundance from age 10 to 100.</p>
+<pre class="r"><code>pristineBio &lt;- c(prod(sr_params[1]) * exp(-(0:9) * M), sum(c(sr_params[1]) * 
+    exp(-(10:100) * M)))</code></pre>
+<p>To project the initial population we need a selectivity at age. To calculate it the only data we have is the length distribution of the catch in one 2016. We assume that the same length distribution can be applied to the whole period. We use von bertalanffy and knife-edge model to calculate age distribution from length distribution. This result in the following catch profile in weight:</p>
+<pre class="r"><code>caw_prop &lt;- c(age0 = 0, age1 = 0.194, age2 = 0.172, age3 = 0.335, age4 = 0.193, 
+    age5 = 0.031, age6 = 0.019, age7 = 0.032, age8 = 0.008, age9 = 0.006, age10 = 0.011)</code></pre>
+<p>We take the total catch in the first year, 1975, divide it by age using the profile and transform it into numbers using the mean weight at age calculated before:</p>
+<pre class="r"><code>caw75 &lt;- catch[1, 8] * caw_prop
+ca75 &lt;- caw75/(mwa/1000)</code></pre>
+<p>Now we calculate the fishing mortality at age in year 1975 using the pristine biomass, the catch at age we have just calculated and the natural mortality calculated before. The Objective function to be minimized to calculate fishing mortality at age is equal to the catch derived from the baranov catch equation minus the catch at age calculated.</p>
+<pre class="r"><code>fa75 &lt;- numeric(11)
+
+fobj &lt;- function(Fa, Ma, Na, Ca) (((Fa/(Fa + Ma)) * (1 - exp(-(Fa + Ma))) * 
+    Na) - Ca)
+
+for (a in 0:10) {
+    fa75[a + 1] &lt;- uniroot(fobj, c(0, 1e+10), Ma = M, Na = pristineBio[a + 1], 
+        Ca = ca75[a + 1])$root
+}</code></pre>
+<p>We will use all the information we have generated to construct a <code>FLStock</code>object. First we will create the <code>FLQuants</code> with the right dimension for each quantity. We will assume that the main source of uncertainty is in the selectivity along the whole period. We will use the standardized fishing mortality in 1975 as a proxy for mean selectivity and we will use dirichlet distribution with coefficient of variation equal to 30% to introduce the uncertainty.</p>
+<pre class="r"><code>mq &lt;- FLQuant(M, dim = c(11, 40, 1, 1, 1, Niter), dimnames = list(age = 0:10, 
+    year = 1975:2014, unit = &quot;unique&quot;, season = &quot;all&quot;, area = &quot;unique&quot;, iter = 1:Niter))
+matq &lt;- FLQuant(mat, dim = c(11, 40, 1, 1, 1, Niter), dimnames = list(age = 0:10, 
+    year = 1975:2014, unit = &quot;unique&quot;, season = &quot;all&quot;, area = &quot;unique&quot;, iter = 1:Niter))
+mwaq &lt;- FLQuant(mwa/1000, dim = c(11, 40, 1, 1, 1, Niter), dimnames = list(age = 0:10, 
+    year = 1975:2014, unit = &quot;unique&quot;, season = &quot;all&quot;, area = &quot;unique&quot;, iter = 1:Niter))
+hspwn &lt;- mspwn &lt;- dnq &lt;- FLQuant(0, dim = c(11, 40, 1, 1, 1, Niter), dimnames = list(age = 0:10, 
+    year = 1975:2014, unit = &quot;unique&quot;, season = &quot;all&quot;, area = &quot;unique&quot;, iter = 1:Niter))
+catch.flq &lt;- FLQuant(catch[, 8], dim = c(1, 40, 1, 1, 1, Niter), dimnames = list(quant = &quot;all&quot;, 
+    year = 1975:2014, unit = &quot;unique&quot;, season = &quot;all&quot;, area = &quot;unique&quot;, iter = 1:Niter))
+
+sel &lt;- fa75/max(fa75)
+
+# beta parameters
+alpha1 &lt;- (1 - sel[3] * (1 + 0.001^2))/0.001^2
+alphas &lt;- (alpha1/sel[3]) * sel[-(1:2)]
+sel &lt;- cbind(0, 1, (rdirichlet(Niter * 40, alphas)))
+sel &lt;- array(t(sel), c(11, 40, Niter))
+
+harvest &lt;- FLQuant(sel, dim = c(11, 40, 1, 1, 1, Niter), dimnames = list(age = 0:10, 
+    year = 1975:2014, unit = &quot;unique&quot;, season = &quot;all&quot;, area = &quot;unique&quot;, iter = 1:Niter))
+
+stk &lt;- FLStock(name = &quot;mur&quot;, mwaq, catch = catch.flq, catch.wt = mwaq, landings.wt = mwaq, 
+    discards.wt = mwaq, stock.wt = mwaq, m = mq, mat = matq, harvest.spwn = hspwn, 
+    m.spwn = mspwn, discards.n = dnq, harvest = harvest)
+
+units(harvest(stk)) &lt;- &quot;f&quot;</code></pre>
+<p>Using the information generated until now we can use the function <code>ypr</code> in <code>fishmethods</code> library to calculate <span class="math inline">\(F_{\text{max}}\)</span> and <span class="math inline">\(F_{0.1}\)</span> reference points:</p>
+<pre class="r"><code>brp_lh &lt;- ypr(age = 0:10, wgt = mwa/1000, partial = fa75/max(fa75), M = M, plus = TRUE, 
+    oldest = 10, maxF = 10, incrF = 0.01, graph = FALSE)</code></pre>
+<p>Finally we will reconstruct the history of the stock, catch, numbers and fishing mortality at age. Each year we calculate the fishing mortality multiplier that minimizes the difference between the observed total catch and then total catch derived from Baranov catch equation using the numbers at age at the start of the year, the natural mortality and the selection pattern. Then we calculate the abundance at the start of next year using the exponential survival equation with the natural mortality and the fishing mortality obtained.</p>
+<pre class="r"><code>fobj &lt;- function(fmult, sel, n0, w0, m0, c0) {
+    f0 &lt;- fmult * sel
+    z0 &lt;- f0 + m0
+    return((sum((f0/z0) * (1 - exp(-z0)) * n0 * w0) - c0))
+}
+
+stk.sc0 &lt;- stk
+stk.sc0@stock.n[, 1] &lt;- pristineBio
+
+for (i in 1:Niter) {
+    for (yr in 2:40) {
+        n0 &lt;- stk.sc0@stock.n[, yr - 1, , , , i, drop = T]
+        w0 &lt;- stk.sc0@stock.wt[, yr - 1, , , , i, drop = T]
+        m0 &lt;- stk.sc0@m[, yr - 1, , , , i, drop = T]
+        c0 &lt;- stk.sc0@catch[, yr - 1, , , , i, drop = T]
+        sel &lt;- stk.sc0@harvest[, yr - 1, , , , i]
+        stk.sc0@harvest[, yr - 1, , , , i] &lt;- sel * uniroot(fobj, c(0, 1e+100), 
+            sel, n0, w0, m0, c0)$root
+        
+        z0 &lt;- m0 + stk.sc0@harvest[, yr - 1, , , , i]
+        
+        stk.sc0@stock.n[-c(1, na), yr, , , , i] &lt;- stk.sc0@stock.n[-c(na - 1, 
+            na), yr - 1, , , , i] * exp(-z0[-c(na - 1, na), , , , ])
+        stk.sc0@stock.n[na, yr, , , , i] &lt;- stk.sc0@stock.n[na - 1, yr - 1, 
+            , , , i] * exp(-z0[na - 1, , , , , ]) + stk.sc0@stock.n[na, yr - 
+            1, , , , i] * exp(-z0[na, , , , , ])
+        stk.sc0@stock.n[1, yr, , , , i] &lt;- ssb(stk.sc0)[, yr - 1, , , , i, drop = T] * 
+            sr_params[1]/(ssb(stk.sc0)[, yr - 1, , , , i, drop = T] + sr_params[2])
+        stk.sc0@catch.n[, yr - 1, , , , i] &lt;- (stk.sc0@harvest[, yr - 1, , , 
+            , i]/z0) * (1 - exp(-z0)) * stk.sc0@stock.n[, yr - 1, , , , i]
+        
+    }
+}</code></pre>
+<p>Expand the object to the right year dimension for the simulation:</p>
+<pre class="r"><code>stk.sc0 &lt;- (window(stk.sc0, 1978, 2028))</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div id="flbeia-conditioning" class="section level1">
+<h1>FLBEIA conditioning</h1>
+<p>In this section we will show how to create the arguments neccesary to run FLBEIA. We can see the name of the objects needed to run it using the function <code>args</code>. We can obtain further information on the objects using the FLBEIA help page (<code>?FLBEIA</code>).</p>
+<p>For the operating model (OM) we will generate two sets of objects, one derived from the SPiCT fit and a second one from the life-history traits. The first one will be structured in biomass and the second one in age. These two hypothesis about the reality of the stock will allow us to incorporate <em>structural uncertainty</em> into the analysis.</p>
+<div id="data-objects" class="section level2">
+<h2>Data Objects</h2>
+<p>First we create four empty ‘FLQuant’ objects (the basic FLR data structure) with the dimensions of the case study to help in the conditioning process. Two of them have no age dimension and the other two do.</p>
+<pre class="r"><code>flq &lt;- FLQuant(1, dim = c(1, 51, 1, 1, 1, Niter), dimnames = list(quant = &quot;all&quot;, 
+    year = 1978:2028, unit = &quot;unique&quot;, season = &quot;all&quot;, area = &quot;unique&quot;, iter = 1:Niter))
+flq0 &lt;- FLQuant(0, dim = c(1, 51, 1, 1, 1, Niter), dimnames = list(quant = &quot;all&quot;, 
+    year = 1978:2028, unit = &quot;unique&quot;, season = &quot;all&quot;, area = &quot;unique&quot;, iter = 1:Niter))
+
+flqa &lt;- FLQuant(1, dim = c(11, 51, 1, 1, 1, Niter), dimnames = list(age = 0:10, 
+    year = 1978:2028, unit = &quot;unique&quot;, season = &quot;all&quot;, area = &quot;unique&quot;, iter = 1:Niter))
+flqa0 &lt;- FLQuant(0, dim = c(11, 51, 1, 1, 1, Niter), dimnames = list(age = 0:10, 
+    year = 1978:2028, unit = &quot;unique&quot;, season = &quot;all&quot;, area = &quot;unique&quot;, iter = 1:Niter))</code></pre>
+<div id="flbdsim-object" class="section level3">
+<h3>FLBDsim object</h3>
+<p>The FLBDsim object is a class defined in FLBEIA package to store the parameters and the data necessary to simulate biomass dynamic populations. This object will be used only in the case of biomass dynamic OM. First we create an object with the correct dimensions in the FLQuant slots and then we fill in the slots with the data generated before.</p>
+<pre class="r"><code>murBD &lt;- FLBDsim(name = &quot;mur&quot;, desc = &quot;Striped Red Mullet in Bay of Biscay&quot;, 
+    biomass = flq, catch = flq, uncertainty = flq, gB = flq)
+
+murBD@biomass[, ac(1997:2014)] &lt;- t(Best)
+murBD@catch[, ac(1997:2014)] &lt;- t(Cest)
+murBD@uncertainty[, ac(2014:2028)] &lt;- rlnorm(Niter * 15, 0, RandPar_SPict[valid_iters, 
+    &quot;sdb&quot;])
+murBD@params[] &lt;- expand(FLQuant(t(RandPar_flbeia[1:Niter, c(1, 3, 2)]), dim = c(3, 
+    1, 1, 1, 1, Niter), dimnames = list(par = c(&quot;r&quot;, &quot;K&quot;, &quot;p&quot;), iter = 1:Niter)), 
+    year = 1978:2028)
+murBD@alpha &lt;- array((murBD@params[&quot;p&quot;, , , ]/murBD@params[&quot;r&quot;, , , ] + 1)^(1/murBD@params[&quot;p&quot;, 
+    , , ]), dim = c(51, 1, Niter))</code></pre>
+<p>In some iterations it happen that the estimated catch in 2014 is higher than the sum of the biomass at the start of the years and the growth of the population along this year. To avoid the problem we decrease the catch to 90% of the sum of biomass and growth.</p>
+<pre class="r"><code># Correct the catches in 2014 so that C14 &lt; &#39;B14*catch.thres + g(B14)*unc&#39;
+r &lt;- murBD@params[&quot;r&quot;, 1, , ]
+p &lt;- murBD@params[&quot;p&quot;, 1, , ]
+K &lt;- murBD@params[&quot;K&quot;, 1, , ]
+B14 &lt;- murBD@biomass[, &quot;2014&quot;, drop = T]
+unc &lt;- murBD@uncertainty[, &quot;2014&quot;]
+gB14 &lt;- (B14 * (r/p) * (1 - (B14/K)^p) * unc)[drop = T]
+C14 &lt;- murBD@catch[, &quot;2014&quot;, drop = T]
+if (any((B14 + gB14)/C14 &lt; 1)) flag &lt;- &quot;TRUE&quot;
+C14 &lt;- ifelse((B14 + gB14)/C14 &lt; 1, (B14 + gB14) * 0.9, C14)
+
+murBD@gB[, ac(2014)] &lt;- gB14
+murBD@catch[, ac(2014)] &lt;- C14</code></pre>
+</div>
+<div id="flsrsim-object" class="section level3">
+<h3><code>FLSRsim</code> object</h3>
+<p>The <code>FLSRsim</code> object is a class defined in FLBEIA package to store the parameters and the data necessary to simulate recruitment in age structured populations. This object will be used only in the case of age structured BOM. First we create an object with the correct dimensions in the FLQuant slots and then we fill in the slots with the data generated before.</p>
+<pre class="r"><code>murSR &lt;- FLSRsim(name = &quot;mur&quot;, desc = &quot;Striped Red Mullet in Bay of Biscay&quot;, 
+    ssb = flq, model = &quot;bevholt&quot;)
+
+murSR@ssb[] &lt;- ssb(stk.sc0)
+murSR@rec[] &lt;- stk.sc0@stock.n[1, ]
+murSR@uncertainty[] &lt;- rlnorm(Niter * 51, 0, 0.3)
+murSR@params[] &lt;- sr@params</code></pre>
+</div>
+<div id="flbiols-object" class="section level3">
+<h3><code>FLBiols</code> object</h3>
+<p>The <code>FLBiols</code> object is a named list of <code>FLBiol</code> objects with the name of the stocks represented by each of the elements. The FLBiol object represent the populations simulated in the BOM, i.e, the data contained there correspond with the ‘true’ population of the MSE simulations.</p>
+<p>In the case of biomass dynamic populations the only relevant information is stored in <code>n</code> slot. <code>wt</code> slot can be used to store the mean weight of the individuals and have in this way an estimate of the number of fishes in the population. We fill all the slots in order to avoid problems with the NA-s along the simulation and in the processing of the results.</p>
+<pre class="r"><code>biols.bd &lt;- FLBiols(mur = FLBiol(name = &quot;mur&quot;, desc = &quot;Striped Red Mullet in Bay of Biscay&quot;, 
+    range = c(min = 1, max = 1, plusgroup = 1, minyear = 1978, maxyear = 2028, 
+        minfbar = 1, maxfbar = 1), n = murBD@biomass, wt = flq, fec = predictModel(mat = flq, 
+        model = ~mat), mat = predictModel(mat = flq, model = ~mat), m = flq))</code></pre>
+<p>In the case of age structured populations all the information is relevant.</p>
+<pre class="r"><code>biols.age &lt;- FLBiols(mur = FLBiol(name = &quot;mur&quot;, desc = &quot;Striped Red Mullet in Bay of Biscay&quot;, 
+    range = c(min = 0, max = 10, plusgroup = 10, minyear = 1978, maxyear = 2028, 
+        minfbar = 1, maxfbar = 2), n = stk.sc0@stock.n, wt = stk.sc0@stock.wt, 
+    fec = predictModel(mat = stk.sc0@mat, model = ~mat), mat = predictModel(mat = stk.sc0@mat, 
+        model = ~mat), m = stk.sc0@m, spwn = flqa0))
+
+m(biols.age[[1]])[, ac(2015:2028)] &lt;- m(biols.age[[1]])[, ac(2014)]
+fec(biols.age[[1]])[, ac(2015:2028)] &lt;- fec(biols.age[[1]])[, ac(2014)]
+mat(biols.age[[1]])[, ac(2015:2028)] &lt;- mat(biols.age[[1]])[, ac(2014)]
+wt(biols.age[[1]])[, ac(2015:2028)] &lt;- wt(biols.age[[1]])[, ac(2014)]</code></pre>
+</div>
+<div id="flfleetsext-object" class="section level3">
+<h3>FLFleetsExt object</h3>
+<p>FLBEIA uses an extended version of the <code>FLFleet</code> object defined in <code>FLFleet</code> package. The only difference is in the <code>FLCatch</code> object used to store stock catch data. The <code>FLCatchExt</code> object defined in FLBEIA has to extra slots, <code>alpha</code> and <code>beta</code>. Theses two slots are used to store the parameters of the catch production function. At present there is only one function to simulate the catch production of the fleets, the Cobb-Douglas model. In this case <code>alpha</code> and <code>beta</code> correspond with the elasticities of the effort and the biomass respectively. In this case as we are not using a real fleet we are not interested in the elasticity parameters and we can set them to one.</p>
+<p>We will create two different objects one for biomass dynamic population and the other for the age structured one. First we build the FLCatchExt object:</p>
+<pre class="r"><code>cc &lt;- FLCatchExt(name = &quot;mur&quot;, alpha = flq, beta = flq, landings = murBD@catch, 
+    landings.n = murBD@catch, landings.wt = flq, discards.wt = flq, landings.sel = flq, 
+    discards.sel = flq0, discards = flq0, discards.n = flq0)</code></pre>
+<p>Now we built the whole <code>FLFleetsExt</code> object:</p>
+<pre class="r"><code>fleets.bd &lt;- FLFleetsExt(fl = FLFleetExt(name = &quot;fl&quot;, effort = flq, capacity = flq * 
+    1e+12, metiers = FLMetiersExt(mt = FLMetierExt(name = &quot;mt&quot;, effshare = flq, 
+    catches = FLCatchesExt(mur = cc)))))
+fleets.bd[[1]]@metiers[[1]]@catches[[1]]@catch.q &lt;- murBD@catch/murBD@biomass
+
+fleets.bd[[1]]@metiers[[1]]@catches[[1]]@catch.q[, ac(2015:2028)] &lt;- expand(yearMeans(fleets.bd[[1]]@metiers[[1]]@catches[[1]]@catch.q[, 
+    ac(2005:2014)]), year = 2015:2028)</code></pre>
+<p>Now we create the age structured stock using the same procedure:</p>
+<pre class="r"><code>cc &lt;- FLCatchExt(name = &quot;mur&quot;, alpha = flqa, beta = flqa, landings.n = stk.sc0@catch.n, 
+    landings = stk.sc0@catch, landings.n = stk.sc0@catch.n, landings.wt = biols.age[[&quot;mur&quot;]]@wt, 
+    discards = flq0, discards.n = flqa0, discards.wt = biols.age[[&quot;mur&quot;]]@wt, 
+    landings.sel = flqa, discards.sel = flqa0)
+
+fleets.age &lt;- FLFleetsExt(fl = FLFleetExt(name = &quot;fl&quot;, effort = flq, capacity = flq * 
+    1e+12, metiers = FLMetiersExt(mt = FLMetierExt(name = &quot;mt&quot;, effshare = flq, 
+    catches = FLCatchesExt(mur = cc)))))
+
+fleets.age[[1]]@metiers[[1]]@catches[[1]]@catch.q[, ac(1978:2014)] &lt;- stk.sc0@harvest[, 
+    ac(1978:2014)]
+
+fleets.age[[1]]@metiers[[1]]@catches[[1]]@catch.q[, ac(2015:2028)] &lt;- expand(yearMeans(fleets.age[[1]]@metiers[[1]]@catches[[1]]@catch.q[, 
+    ac(2005:2014)]), year = 2015:2028)</code></pre>
+</div>
+<div id="flindices-object" class="section level3">
+<h3>FLIndices Object</h3>
+<p>The <code>FLIndices</code> Object is a list with the indices used to generate the management advice within FLBEIA. The indices can be used to feed an assessment model or as part of a model-free harvest control rule. The model implemented in FLBEIA to simulate abundance indices is the classical linear model with a multiplicative error. Nevertheless, as catchability parameter is given yearly and usually models assume it to be constant, bias in this parameter can be easily introduced. In this work we use the catchability estimated by SPiCT and for the multiplicative error we use a lognormal distribution with median equal to one and coefficient of variation equal to 30%.</p>
+<pre class="r"><code>indices &lt;- FLIndices(evhoe = FLIndex(name = &quot;mur&quot;, catch.wt = flq, effort = flq, 
+    index = flq))
+indices[[1]]@index.q[] &lt;- rep(RandPar_SPict[valid_iters[1:Niter], &quot;q&quot;], each = 51)
+indices[[1]]@index[] &lt;- indices[[1]]@index.q[] * murBD@biomass
+# 30% CV
+sigma &lt;- sqrt(log(0.3^2 + 1))
+indices[[1]]@index.var[] &lt;- rlnorm(51 * Niter, 0, sigma)</code></pre>
+<p>Both indices are in biomass but th historic biomass is different:</p>
+<pre class="r"><code>indices.age &lt;- indices
+indices.age[[1]]@index[] &lt;- indices.age[[1]]@index.q[] * quantSums(wt(biols.age[[1]]) * 
+    n(biols.age[[1]]))</code></pre>
+</div>
+<div id="advice-object." class="section level3">
+<h3>Advice object.</h3>
+<p>The advice object is a list used to store the TACs and the quota shares along fleets. In this case the quota share is an FLQuant with ones becasue there is only one fleet exploiting the stock.</p>
+<pre class="r"><code># Advice Object
+advice &lt;- list(TAC = murBD@catch, quota.share = list(mur = flq))
+dimnames(advice$TAC)[[1]] &lt;- &quot;mur&quot;
+advice$TAC[, &quot;2015&quot;] &lt;- mean(murDat$obsC[16:18])  # There is no TAC =&gt; last three year mean.
+dimnames(advice$quota.share[[1]])[[1]] &lt;- &quot;fl&quot;</code></pre>
+</div>
+</div>
+<div id="control-objects" class="section level2">
+<h2>Control Objects</h2>
+<p>The control objects are <code>R</code> lists used to store the values that control how each part of the simulation is carried out. There is one control object per data object. There are some functions in the package that facilitate the construction of the control objects.</p>
+<div id="main.ctrl" class="section level3">
+<h3>main.ctrl</h3>
+<p>The <code>main.ctrl</code> object declares the initial and final year of the simulations. These years must be within the range of the objects but could be different to the first and last year in the <code>FLQuants</code>.</p>
+<pre class="r"><code>main.ctrl &lt;- list(sim.years = c(initial = &quot;2015&quot;, final = &quot;2025&quot;))</code></pre>
+</div>
+<div id="biols.ctrl" class="section level3">
+<h3>biols.ctrl</h3>
+<p>In the <code>biol.ctrl</code> object we declare the model to be used to carry the population forward in the simulation. In his case we used <code>BDPG</code> which stands for Biomass Dynamic Populaton Growth.</p>
+<pre class="r"><code>biols.ctrl.bd &lt;- create.biols.ctrl(stksnames = &quot;mur&quot;, growth.model = &quot;BDPG&quot;)
+biols.ctrl.age &lt;- create.biols.ctrl(stksnames = &quot;mur&quot;, growth.model = &quot;ASPG&quot;)</code></pre>
+</div>
+<div id="fleets.ctrl" class="section level3">
+<h3>fleets.ctrl</h3>
+<p>The <code>fleets.ctrl</code> object controls the four processes simulated in the fleet operating model, the effort allocation, the catch production, the price formation and the capital dynamics. In the simulations carried out in this work the price and the capital dynamics are maintained fixed, the catch production is simulated using a Cobb-Douglas function and the effort allocation is simulated using <code>SMFB</code> model. This model is oriented to describe effort allocation in multistock and multi-metier scenarios. In this case as there is only one stock and one fleet with a single metier the model calculates just the effort that produces exactly the TAC advice for the stock.</p>
+<pre class="r"><code>fleets.ctrl.bd &lt;- create.fleets.ctrl(fls = &quot;fl&quot;, fls.stksnames = list(fl = &quot;mur&quot;), 
+    flq = flq, effort.models = c(fl = &quot;SMFB&quot;), n.fls.stks = c(fl = 1), capital.models = c(fl = &quot;fixedCapital&quot;), 
+    price.models = c(fl = &quot;fixedPrice&quot;), catch.models = c(&quot;CobbDouglasBio&quot;))
+
+fleets.ctrl.age &lt;- create.fleets.ctrl(fls = &quot;fl&quot;, fls.stksnames = list(fl = &quot;mur&quot;), 
+    flq = flq, effort.models = c(fl = &quot;SMFB&quot;), n.fls.stks = c(fl = 1), capital.models = c(fl = &quot;fixedCapital&quot;), 
+    price.models = c(fl = &quot;fixedPrice&quot;), catch.models = c(&quot;CobbDouglasAge&quot;))</code></pre>
+</div>
+<div id="obs.ctrl" class="section level3">
+<h3>obs.ctrl</h3>
+<p>The <code>obs.ctrl</code> object comprises the neccesary information to simulate the observed data used in the management procedure (MP) to generate the management advice. In this work we will use two different control objects, in the first one the abundance index is observed and in the second one the stock. The abundance index is generated using the <code>bioInd</code> function which updates the index slot on the object with the most recent abundance data. In turn, the stock data is generated using the <code>PerfectObs</code> function. The <code>perfectObs</code> function, as the rest of the functions available to generate stock data, builds and <code>FLStock</code> object based on the most recent abundace data. This function apart of biological and catch data, it also fills the <code>stock.n</code> and <code>harvest</code> slots in the <code>FLStock</code> object. This is not possible in the real world where these two slots are estimated by the assessments models. However, if we do not want to test the performance of the assessment model but the harvest control rule itself in isolation , it is useful to have a perfect estimate of the population.</p>
+<pre class="r"><code>obs.ctrl.ind &lt;- create.obs.ctrl(stksnames = &quot;mur&quot;, n.stks.inds = c(mur = 1), 
+    stks.indsnames = &quot;evhoe&quot;, indObs.models = c(mur = &quot;bioInd&quot;))
+obs.ctrl.ind[[&quot;mur&quot;]][[&quot;stkObs&quot;]][[&quot;stkObs.model&quot;]] &lt;- &quot;NoObsStock&quot;
+
+obs.ctrl.stk &lt;- create.obs.ctrl(stksnames = &quot;mur&quot;, n.stks.inds = c(mur = 1), 
+    stks.indsnames = &quot;evhoe&quot;, stkObs.models = c(mur = &quot;perfectObs&quot;))
+obs.ctrl.stk[[&quot;mur&quot;]][[&quot;indObs&quot;]][[&quot;evhoe&quot;]] &lt;- &quot;NoObsIndex&quot;</code></pre>
+</div>
+<div id="assess.ctrl" class="section level3">
+<h3>assess.ctrl</h3>
+<p>The assess.ctrl object declares the assessment model to be used for each of the stocks and the additional settings needed to run the models. In this case no assessment model is used.</p>
+<pre class="r"><code>assess.ctrl &lt;- create.assess.ctrl(stksnames = &quot;mur&quot;, assess.models = &quot;NoAssessment&quot;)</code></pre>
+</div>
+<div id="advice.ctrl" class="section level3">
+<h3>advice.ctrl</h3>
+<p>Create the advice control object corresponding to the HCR used by ICES for category 3 stock in the data limited framework (DLS).</p>
+<pre class="r"><code>advice.ctrl.dls3 &lt;- create.advice.ctrl(stksnames = &quot;mur&quot;, HCR.models = &quot;annexIVHCR&quot;, 
+    index = &quot;evhoe&quot;, iter = Niter)
+advice.ctrl.dls3$mur$index &lt;- &quot;evhoe&quot;</code></pre>
+<p>Now create the advice control tested in Little et al. (2011). The HCR is based on an abundance index and uses several reference points based on the historical development of the index. Furhermore, we have added an extra argument to limit the maximum catch that can be advised. In the paper they suggested to define Ctarg and Itarg equal to the values observed in an stable period of the abundance indices. However the abundace index and catches time series of the stock do not show any stable period. Instead we use the reference points estimated by Spict in the base case in order to test the performance of the HCR in conjuntion with these set of parameters. Furthermore, we define the limit abundance index reference point (Ilim) as 25% higher than the minimum observed index.</p>
+<pre class="r"><code>advice.ctrl.little &lt;- advice.ctrl.dls3
+advice.ctrl.little$mur$HCR.model &lt;- &quot;little2011HCR&quot;
+advice.ctrl.little[[&quot;mur&quot;]][[&quot;ref.pts&quot;]] &lt;- matrix(NA, 4, Niter, dimnames = list(c(&quot;Ctarg&quot;, 
+    &quot;Ilim&quot;, &quot;Itarg&quot;, &quot;Cmax&quot;), 1:Niter))
+advice.ctrl.little[[&quot;mur&quot;]][[&quot;ref.pts&quot;]][&quot;Ctarg&quot;, ] &lt;- mur_spict$report$MSY
+advice.ctrl.little[[&quot;mur&quot;]][[&quot;ref.pts&quot;]][&quot;Ilim&quot;, ] &lt;- min(murDat$obsI, na.rm = TRUE) * 
+    1.25
+advice.ctrl.little[[&quot;mur&quot;]][[&quot;ref.pts&quot;]][&quot;Itarg&quot;, ] &lt;- mur_spict$report$Bmsy * 
+    median(indices[[1]]@index.q[, 1])
+advice.ctrl.little[[&quot;mur&quot;]][[&quot;ref.pts&quot;]][&quot;Cmax&quot;, ] &lt;- mur_spict$report$MSY</code></pre>
+<p>Create the advice control object corresponding to the HCR used by ICES in the framework of MSY for data rich (category 1) stocks.</p>
+<pre class="r"><code>advice.ctrl.msy &lt;- create.advice.ctrl(stksnames = &quot;mur&quot;, HCR.models = &quot;IcesHCR&quot;, 
+    first.yr = 2014, last.yr = 2025, iter = Niter)
+advice.ctrl.msy$mur$AdvCatch &lt;- c(rep(FALSE, 38), rep(TRUE, 13))
+names(advice.ctrl.msy$mur$AdvCatch) &lt;- 1978:2028
+advice.ctrl.msy$mur$ref.pts[&quot;Blim&quot;, ] &lt;- min(get.par(&quot;logB&quot;, mur_spict, exp = TRUE)[(0:17) * 
+    16 + 1, 2])
+advice.ctrl.msy$mur$ref.pts[&quot;Btrigger&quot;, ] &lt;- min(get.par(&quot;logB&quot;, mur_spict, 
+    exp = TRUE)[(0:17) * 16 + 1, 2]) * 1.4
+advice.ctrl.msy$mur$ref.pts[&quot;Fmsy&quot;, ] &lt;- mur_spict$report$Fmsy * 0.75</code></pre>
+<pre class="r"><code>advice.ctrl.msy.pa &lt;- advice.ctrl.msy
+advice.ctrl.msy.pa$mur$ref.pts[&quot;Fmsy&quot;, ] &lt;- mur_spict$report$Fmsy/1.4
+
+advice.ctrl.little.pa &lt;- advice.ctrl.little
+advice.ctrl.little.pa[[&quot;mur&quot;]][[&quot;ref.pts&quot;]][&quot;Cmax&quot;, ] &lt;- mur_spict$report$MSY/1.4</code></pre>
+</div>
+</div>
+<div id="run-flbeia" class="section level2">
+<h2>Run FLBEIA</h2>
+<p>Run FLBEIA in 10 scenarios which differ on:</p>
+<ul>
+<li><strong>The structure of the BOM</strong>: Age or biomass structured, labeled with ‘age’ or ‘bd’ respectively.</li>
+<li><strong>The HCR used</strong>:
+<ul>
+<li>The one used by ICES in stocks with absolute estimates of abundance and fishing mortality (scenarios labeled with ‘msy’).</li>
+<li>The one used by ICES for stocks with relative estimates of abundance, survey, CPUE… (scenarios labeled with ‘dls3’).</li>
+<li>A HCR defined y Little et al. in 2011. (scenarios labeled with ‘little’)</li>
+</ul></li>
+<li>The reference points used in the HCR: More or less precautionary reference points. The precautionary scenarios are labeled with ‘pa’.</li>
+</ul>
+<pre class="r"><code>dls3.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleets = fleets.bd, 
+    covars = NULL, indices = list(mur = indices), advice = advice, main.ctrl, 
+    biols.ctrl.bd, fleets.ctrl.bd, covars.ctrl = NULL, obs.ctrl.ind, assess.ctrl, 
+    advice.ctrl.dls3)</code></pre>
+<pre><code>## Note: method with signature &#39;FLQuant#ANY#ANY&#39; chosen for function &#39;ifelse&#39;,
+##  target signature &#39;FLQuant#FLQuant#FLQuant&#39;.
+##  &quot;ANY#FLQuant#ANY&quot;, &quot;ANY#ANY#FLQuant&quot; would also be valid</code></pre>
+<pre class="r"><code>dls3.age &lt;- FLBEIA(biols = biols.age, SRs = list(mur = murSR), BDs = NULL, fleets = fleets.age, 
+    covars = NULL, indices = list(mur = indices), advice = advice, main.ctrl, 
+    biols.ctrl.age, fleets.ctrl.age, covars.ctrl = NULL, obs.ctrl.ind, assess.ctrl, 
+    advice.ctrl.dls3)
+
+# main.ctrl[[1]][2] &lt;- 2022
+
+little.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleets = fleets.bd, 
+    covars = NULL, indices = list(mur = indices), advice = advice, main.ctrl, 
+    biols.ctrl.bd, fleets.ctrl.bd, covars.ctrl = NULL, obs.ctrl.ind, assess.ctrl, 
+    advice.ctrl.little)
+
+little.age &lt;- FLBEIA(biols = biols.age, SRs = list(mur = murSR), BDs = NULL, 
+    fleets = fleets.age, covars = NULL, indices = list(mur = indices), advice = advice, 
+    main.ctrl, biols.ctrl.age, fleets.ctrl.age, covars.ctrl = NULL, obs.ctrl.ind, 
+    assess.ctrl, advice.ctrl.little)
+
+biols.bd[[1]]@range[1:3] &lt;- NA
+msy.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleets = fleets.bd, 
+    covars = NULL, indices = NULL, advice = advice, main.ctrl, biols.ctrl.bd, 
+    fleets.ctrl.bd, covars.ctrl = NULL, obs.ctrl.stk, assess.ctrl, advice.ctrl.msy)</code></pre>
+<pre><code>## Note: method with signature &#39;FLQuant#ANY#ANY&#39; chosen for function &#39;ifelse&#39;,
+##  target signature &#39;FLQuant#numeric#FLQuant&#39;.
+##  &quot;ANY#ANY#FLQuant&quot; would also be valid</code></pre>
+<pre class="r"><code>msy.age &lt;- FLBEIA(biols = biols.age, BDs = NULL, SRs = list(mur = murSR), fleets = fleets.age, 
+    covars = NULL, indices = NULL, advice = advice, main.ctrl, biols.ctrl.age, 
+    fleets.ctrl.age, covars.ctrl = NULL, obs.ctrl.stk, assess.ctrl, advice.ctrl.msy)
+
+little.pa.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), 
+    fleets = fleets.bd, covars = NULL, indices = list(mur = indices), advice = advice, 
+    main.ctrl, biols.ctrl.bd, fleets.ctrl.bd, covars.ctrl = NULL, obs.ctrl.ind, 
+    assess.ctrl, advice.ctrl.little.pa)
+
+little.pa.age &lt;- FLBEIA(biols = biols.age, SRs = list(mur = murSR), BDs = NULL, 
+    fleets = fleets.age, covars = NULL, indices = list(mur = indices), advice = advice, 
+    main.ctrl, biols.ctrl.age, fleets.ctrl.age, covars.ctrl = NULL, obs.ctrl.ind, 
+    assess.ctrl, advice.ctrl.little.pa)
+
+msy.pa.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleets = fleets.bd, 
+    covars = NULL, indices = NULL, advice = advice, main.ctrl, biols.ctrl.bd, 
+    fleets.ctrl.bd, covars.ctrl = NULL, obs.ctrl.stk, assess.ctrl, advice.ctrl.msy.pa)
+
+msy.pa.age &lt;- FLBEIA(biols = biols.age, SRs = list(mur = murSR), BDs = NULL, 
+    fleets = fleets.age, covars = NULL, indices = NULL, advice = advice, main.ctrl, 
+    biols.ctrl.age, fleets.ctrl.age, covars.ctrl = NULL, obs.ctrl.stk, assess.ctrl, 
+    advice.ctrl.msy.pa)</code></pre>
+<p>Now we use the summary functions in FLBEIA to extract the main indicators and to plot them using the <code>ggplot</code> package.</p>
+<pre class="r"><code>scenarios &lt;- c(&quot;dls3.bd&quot;, &quot;little.bd&quot;, &quot;msy.bd&quot;, &quot;little.pa.bd&quot;, &quot;msy.pa.bd&quot;, 
+    &quot;dls3.age&quot;, &quot;little.age&quot;, &quot;msy.age&quot;, &quot;little.pa.age&quot;, &quot;msy.pa.age&quot;)
+
+Blim &lt;- advice.ctrl.msy$mur$ref.pts[&quot;Blim&quot;, 1]
+Bpa &lt;- advice.ctrl.msy$mur$ref.pts[&quot;Btrigger&quot;, 1]
+
+bio &lt;- adv &lt;- risk &lt;- NULL
+
+for (sc in scenarios) {
+    res_sc &lt;- get(sc)
+    bio &lt;- rbind(bio, bioSum(res_sc, scenario = sc, years = ac(1997:2025)))
+    adv &lt;- rbind(adv, advSum(res_sc, scenario = sc, years = ac(1997:2025)))
+    risk &lt;- rbind(risk, riskSum(res_sc, scenario = sc, Bpa = c(mur = Bpa), Blim = c(mur = Blim), 
+        Prflim = c(fl = 0), years = ac(1997:2025)))
+}</code></pre>
+<p>Calculate the quantiles of the biological and advice indicators, by default the meadian and the 5% and 95% quantiles are calculated.</p>
+<pre class="r"><code>bioQ &lt;- bioSumQ(bio)
+advQ &lt;- advSumQ(adv)</code></pre>
+<p>Plot the biomass for the three scenarios. The best results are obtained with the little HCR. In this scenario the uncertainty is quite high but none of the interations fall below Blim (horizontal black line). At the start of the simulation the biomass increase but then it decrease again. The trend in msy scenario is similar to the trend in the dls3 scenario but the biomass level is lower. In fact, in this scenario the probability of being below Blim is higher than 50%. In the dls3 scenario the biomass creased below blim in the initial part of the simulations and remained quite constant in the whole period.</p>
+<pre class="r"><code>id &lt;- &quot;biomass&quot;
+
+p &lt;- ggplot(subset(bioQ, indicator == id), aes(x = year, y = q50, ymin = q05, 
+    ymax = q95, group = scenario)) + geom_ribbon(aes(fill = scenario, alpha = 0.3)) + 
+    geom_line(aes(color = scenario), lwd = 1) + ggtitle(id) + scale_y_continuous(name = &quot;tonnes&quot;) + 
+    geom_hline(yintercept = advice.ctrl.msy$mur$ref.pts[&quot;Btrigger&quot;, 1])
+print(p)</code></pre>
+<div class="figure">
+<img src="Data_Poor_MSE_in_FLBEIA_files/figure-html/unnamed-chunk-30-1.png" alt="Biomass time series obtained in each of the scenarios. The shaded area correspond with the 90% confidence interval." width="604.724409448819" />
+<p class="caption">
+Biomass time series obtained in each of the scenarios. The shaded area correspond with the 90% confidence interval.
+</p>
+</div>
+<p>The catch in the dls3 scenario decreases year by year in the whole simulation. In the other two sencearios afeter a period of zero catch the catch increased sharply. In the case of msy scenario decreased sharply again in the final years of the simulation. In the little scenario in remained constant.</p>
+<pre class="r"><code>id &lt;- &quot;catch&quot;
+
+p &lt;- ggplot(subset(bioQ, indicator == id), aes(x = year, y = q50, ymin = q05, 
+    ymax = q95, group = scenario)) + geom_ribbon(aes(fill = scenario, alpha = 0.3)) + 
+    geom_line(aes(color = scenario), lwd = 1) + ggtitle(id) + scale_y_continuous(name = &quot;tonnes&quot;) + 
+    geom_hline(yintercept = advice.ctrl.msy$mur$ref.pts[&quot;Btrigger&quot;, 1])
+print(p)</code></pre>
+<div class="figure">
+<img src="Data_Poor_MSE_in_FLBEIA_files/figure-html/unnamed-chunk-31-1.png" alt="Catch time series obtained in each of the scenarios. The shaded area correspond with the 90% confidence interval." width="604.724409448819" />
+<p class="caption">
+Catch time series obtained in each of the scenarios. The shaded area correspond with the 90% confidence interval.
+</p>
+</div>
+<pre class="r"><code>id &lt;- &quot;tac&quot;
+
+p &lt;- ggplot(subset(advQ, indicator == id), aes(x = year, y = q50, ymin = q05, 
+    ymax = q95, group = scenario)) + geom_ribbon(aes(fill = scenario, alpha = 0.3)) + 
+    geom_line(aes(color = scenario), lwd = 1) + ggtitle(id) + scale_y_continuous(name = &quot;tonnes&quot;) + 
+    geom_hline(yintercept = advice.ctrl.msy$mur$ref.pts[&quot;Btrigger&quot;, 1])
+print(p)</code></pre>
+<div class="figure">
+<img src="Data_Poor_MSE_in_FLBEIA_files/figure-html/unnamed-chunk-32-1.png" alt="TAC advice time series obtained in each of the scenarios. The shaded area correspond with the 90% confidence interval." width="604.724409448819" />
+<p class="caption">
+TAC advice time series obtained in each of the scenarios. The shaded area correspond with the 90% confidence interval.
+</p>
+</div>
+</div>
+<div id="acknowledgments" class="section level2">
+<h2>Acknowledgments</h2>
+<p>This tutorial has been built with the financial support of the DrumFish EU project and the IM17IMPAC project financed by the Basque Government.</p>
+<p>Youen Vermard and IFREMER for providing the abundance index use to fit the SPiCT model (Ifremer 2017. Indices de populations et de communauts issus des campagnes de surveillance halieutique de l’Ifremer.)</p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

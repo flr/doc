@@ -1,26 +1,18 @@
 ---
-output:
-  pdf_document: default
-  html_document: default
----
----
-title: "FLBEIA conditioing in Data Poor Situations: BoB Stripped Mullet"
+title: "FLBEIA conditioning in Data Poor Situations: BoB Stripped Mullet"
 author: "Dorleta Garcia and FLBEIA team"
 output:
- pdf_document:
-   toc: yes
-header-includes:
-  \usepackage{fancyhdr}
+github_document:
+  mathjax: TRUE
+pdf_document:
+  fig_width: 6 
+  fig_height: 4 
+  toc: yes
 ---
-\addtolength{\headheight}{1.0cm} 
-\pagestyle{fancyplain}
-\rhead{\includegraphics[height=1.2cm]{FLBEIA_logo.png}} 
-\renewcommand{\headrulewidth}{0pt} 
-
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(results = "hide", echo = TRUE, warning = FALSE, tidy = TRUE)
-#knitr::opts_knit$set(root.dir = "~/Dropbox/DrumFish/docs/mur/conditioning")
+library(knitr)
+source("R/ini.R")
 ```
 
 # Introduction
@@ -217,7 +209,7 @@ RandPar_flbeia[,3] <- RandPar_SPict[,'n'] - 1
 remiter <- unique(c(which((RandPar_flbeia[,'p']/RandPar_flbeia[,'r']) <  -1), which(RandPar_flbeia[,'r']>  2)))
 RandPar_flbeia <- RandPar_flbeia[-remiter,]
 # Identify the valid iterations and select the first 100.
-Niter <- Nit <- 100
+Niter <- Nit <- 5
 valid_iters <-  as.numeric(dimnames(RandPar_flbeia)[[1]])[1:Niter]
 ```
 
