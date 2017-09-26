@@ -23,15 +23,15 @@ In this document we show how to:
 2. Condition FLBEIA using:
   + The output of SPiCT,
   + Red mullet's life-history traits,
-3. Test the performance of different harvest control rules in ```FLBEIA```. 
+3. Test the performance of different harvest control rules in `FLBEIA`. 
 
 The first part of the tutorial deals with the analysis of the data to fit SPiCT and the process of finding an acceptable fit. It is not part of the data-poor tutorial *per se*. However we have included it in as part of the document to show how to fit the biomass dynamic model used later on to generate the initial random population.  
 
-and to condition and run ```FLBEIA``` is shown to demonstrate how to use them.  First Spict is used to obtain the best assessment possible using the data available. Then using this fit and making use of the variance-covariance matrix estimated by the model a random population is obtained to condition ```FLBEIA```. Alternatively, ```FLBEIA``` is conditioned using life-history traints and different hypothesis about its status in the initial year of the simulation and productivity. Finally ```FLBEIA``` is run using different harvest control rules (HCRs). 
+and to condition and run `FLBEIA` is shown to demonstrate how to use them.  First Spict is used to obtain the best assessment possible using the data available. Then using this fit and making use of the variance-covariance matrix estimated by the model a random population is obtained to condition `FLBEIA`. Alternatively, `FLBEIA` is conditioned using life-history traints and different hypothesis about its status in the initial year of the simulation and productivity. Finally `FLBEIA` is run using different harvest control rules (HCRs). 
 
-To start the R session, load SPicT, FLBEIA and the rest of the packages neccesary to run this tutorial. ```FLCore``` and ```FLFLeets``` are automatically loaded with ```FLBEIA```. 
+To start the R session, load SPicT, FLBEIA and the rest of the packages neccesary to run this tutorial. `FLCore` and `FLFLeets` are automatically loaded with `FLBEIA`. 
 
-```{r , include=TRUE, echo = TRUE}
+```{r , include=TRUE, echo=FALSE}
 library(spict)
 library(FLBEIA)
 library(MASS)
@@ -47,7 +47,7 @@ Stripped Red Mullet (*Mullus surmuletus*) in Bay of Biscay has no analytical ass
 
 
 ## Data
-The total catch time series data used in this analysis was taken from WGBIE report (ICES, 2017) and the EVHOE abundance index time series was provide by Ifremer. 
+The total catch time series data used in this analysis was taken from WGBIE report (ICES, 2017) and the EVHOE abundance index time series was provided by Ifremer. 
 
 Total catch data is available since 1975. In 1999 France did not report any data. As France is the main contributor to the total catch, the 1999 catch data was not included in the analysis.
 
@@ -105,7 +105,7 @@ Plot the estimated biomass, absolute and relative, using the functions available
  plotspict.biomass(mur_spict, qlegend = FALSE)
 ```
 
-Now plot the fishing mortality using the ```plotspict``` function. The fishing mortality has been above Fmsy in the whole time series. In the begining of the series the fishing mortality level was very high.
+Now plot the fishing mortality using the `plotspict` function. The fishing mortality has been above Fmsy in the whole time series. In the begining of the series the fishing mortality level was very high.
 
 ```{r fig:est_f, fig.height= 10/2.54, fig.width =  16/2.54, fig.cap = 'Relative and Absolute  fishing mortalities estimated by SPiCT. Horizontal line correspond with the MSY fishing mortality level.'}
  par(mfrow = c(1,2))
@@ -169,7 +169,7 @@ plotspict.fb(mur_spict)
 ## Based on SPiCT Fit
 In order to assess the performance of different management strategies for the stock, and later on for the whole fishery, under a management strategy evaluation (MSE) approach we need to generate a set of random starting values. The objective is to account for the uncertainty related to the fit of the model. The variance-covariance matrix estimated by SPiCT represents the uncertainty associated to the estimated parameters along with their correlation structure. 
 
-First, we extract the parameters and the variance-covariance matrix estimated by SPiCT. Using the 'cov2cor' function we transform the matrix into a correlation matrix that is easier to interpret. The values in the correlation matrix range from -1 to 1, absolute correlation values close to 1 indicate strong correlations and those close to 0 indicate no correlation. The sign of the correlation indicates the direction of the relationship.  
+First, we extract the parameters and the variance-covariance matrix estimated by SPiCT. Using the `cov2cor` function we transform the matrix into a correlation matrix that is easier to interpret. The values in the correlation matrix range from -1 to 1, absolute correlation values close to 1 indicate strong correlations and those close to 0 indicate no correlation. The sign of the correlation indicates the direction of the relationship.  
 
 ```{r varcov}
 varcov <- (mur_spict$cov.fixed)
@@ -227,7 +227,7 @@ plot(density(RandPar_flbeia[,3]+1), main = 'Shape of Production Curve (n)', xlab
 abline(v = median(RandPar_flbeia[,3]+1), col = 2)
 ```
 
-Now we need the stock trajectories, abundances and fishing mortalities, consistent with the parameters generated in the multivariate random sampling. So we fit a SPiCT model to each sample fixing the parameters to  those obtained in the sampling. From each fit we extract the estimated abundance and catch and store them in a matrix that will be used later on to condition ```FLBEIA```. To illustrate the example we use only 100 iterations but more iterations could be neccesary to obtain a good representation of the existing uncertainty.
+Now we need the stock trajectories, abundances and fishing mortalities, consistent with the parameters generated in the multivariate random sampling. So we fit a SPiCT model to each sample fixing the parameters to  those obtained in the sampling. From each fit we extract the estimated abundance and catch and store them in a matrix that will be used later on to condition `FLBEIA`. To illustrate the example we use only 100 iterations but more iterations could be neccesary to obtain a good representation of the existing uncertainty.
 
 ```{r }
 Best <- Cest <- matrix(NA, Niter, 18, dimnames = list(iter = 1:Niter, year = 1997:2014))
@@ -274,7 +274,7 @@ virginBio <- 15*max(murDat$obsC,na.rm = TRUE)
 spr0      <- 0.25 # contrast with an existing fit.
 ```
 
-Now we use the ```abPars``` function to reparameterize the model with the traditional parameters of the Beverton and Holt SRR model. Then we use these parameters to build the ```FLSRsim``` class used in ```FLBEIA``` to simulate the recruitment in age structured stocks. 
+Now we use the `abPars` function to reparameterize the model with the traditional parameters of the Beverton and Holt SRR model. Then we use these parameters to build the `FLSRsim` class used in `FLBEIA` to simulate the recruitment in age structured stocks. 
 
 ```{r FLSRsim}
 sr_params <- unlist(abPars(s = steepness, v = virginBio, spr0 = spr0, model = 'bevholt'))
@@ -299,7 +299,7 @@ VBert <- function(age, Linf, K, t0) return(Linf*(1-exp(-K*(age-t0))))
 ```
 
 #### Mean Weight at age relatioship
-To model the mean weight-at-age we use the traditional length-weight relationship $W = a\cdot L^b$ where $W$ represents the weight, $L$ the length and $a$ and $b$ the parameters. We took these parameters, ```lw_a``` and ```lw_b``` from ICES-FishMap.     
+To model the mean weight-at-age we use the traditional length-weight relationship $W = a\cdot L^b$ where $W$ represents the weight, $L$ the length and $a$ and $b$ the parameters. We took these parameters, `lw_a` and `lw_b` from ICES-FishMap.     
 
 ```{r lw_rel}
 lw_a <- 0.016
@@ -326,7 +326,7 @@ mat <- c(mat0, mat1, rep(1,na-2))
 ```
 
 ### Natural Mortality 
-To calculate fishing mortality we use the ```M.empirical``` function from ```fishmethods``` package. This functions provides several methods from literature to caculate natural morarlity based on life-history parameters, sea water temperature and others. Given the data available we are able to apply si of the methods. Water temperature was taken from  \url{http://www.watertemperature.org/Bay-of-Biscay--Geo.html} and $t_{max}$ from ICES-FisMap. Roff's method produces too hagh value so we condiser it no credible and take the mean of the other methods to condition the model.
+To calculate fishing mortality we use the `M.empirical` function from `fishmethods` package. This functions provides several methods from literature to caculate natural mortality based on life-history parameters, sea water temperature and others. Given the data available we are able to apply si of the methods. Water temperature was taken from  \url{http://www.watertemperature.org/Bay-of-Biscay--Geo.html} and $t_{max}$ from ICES-FisMap. Roff's method produces a value that is too high, so we consider it not credible and take the mean of the other methods to condition the model.
 
 ```{r natmort, results = TRUE}
 Ms <- M.empirical(Linf = Linf, 
@@ -381,7 +381,7 @@ for(a in 0:10){
 }
 ```
 
-We will use all the information we have generated to construct a ```FLStock```object. First we will create the ```FLQuants``` with the right dimension for each quantity. We will assume that the main source of uncertainty is in the selectivity along the whole period. We will use the standardized fishing mortality in 1975 as a proxy for mean selectivity and we will use dirichlet distribution with coefficient of variation equal to 30% to introduce the uncertainty.   
+We will use all the information we have generated to construct a `FLStock` object. First we will create the `FLQuants` with the right dimension for each quantity. We will assume that the main source of uncertainty is in the selectivity along the whole period. We will use the standardized fishing mortality in 1975 as a proxy for mean selectivity and we will use dirichlet distribution with coefficient of variation equal to 30% to introduce the uncertainty.   
 
 ```{r stk}
 mq <- FLQuant(M, dim = c(11,40,1,1,1,Niter),dimnames = list(age = 0:10, year = 1975:2014, unit = 'unique', season = 'all', area = 'unique', iter = 1:Niter))
@@ -405,7 +405,7 @@ stk <- FLStock(name = 'mur', mwaq, catch = catch.flq, catch.wt = mwaq, landings.
 units(harvest(stk)) <- 'f'
 ```
 
-Using the information generated until now we can use the function ```ypr``` in ```fishmethods``` library to calculate $F_{\text{max}}$ and $F_{0.1}$ reference points:
+Using the information generated until now we can use the function `ypr` in `fishmethods` library to calculate $F_{\text{max}}$ and $F_{0.1}$ reference points:
 
 ```{r brp}
 brp_lh <- ypr(age = 0:10, wgt = mwa/1000,partial = fa75/max(fa75), M = M, plus = TRUE, oldest = 10, maxF = 10, incrF = 0.01, graph = FALSE)
@@ -450,7 +450,7 @@ stk.sc0 <- (window(stk.sc0,1978,2028))
 
 # FLBEIA conditioning
 
-In this section we will show how to create the arguments neccesary to run FLBEIA. We can see the name of the objects needed to run it using the function ```args```. We can obtain further information on the objects using the FLBEIA help page (```?FLBEIA```). 
+In this section we will show how to create the arguments neccesary to run FLBEIA. We can see the name of the objects needed to run it using the function `args`. We can obtain further information on the objects using the FLBEIA help page (`?FLBEIA`). 
 
 For the operating model (OM) we will generate two sets of objects, one derived from the SPiCT fit and a second one from the life-history traits. The first one will be structured in biomass and the second one in age. These two hypothesis about the reality of the stock will allow us to incorporate *structural uncertainty* into the analysis.
 
@@ -500,9 +500,9 @@ murBD@catch[,ac(2014)] <- C14
 ```
 
 
-### ```FLSRsim``` object
+### `FLSRsim` object
 
-The ```FLSRsim``` object is a class defined in FLBEIA package to store the parameters and the data necessary to simulate recruitment in age structured populations. This object will be used only in the case of age structured BOM. First we create an object with the correct dimensions in the FLQuant slots and then we fill in the slots with the data generated before.
+The `FLSRsim` object is a class defined in FLBEIA package to store the parameters and the data necessary to simulate recruitment in age structured populations. This object will be used only in the case of age structured BOM. First we create an object with the correct dimensions in the FLQuant slots and then we fill in the slots with the data generated before.
 
 ```{r}
 murSR <- FLSRsim(name = 'mur', desc = 'Striped Red Mullet in Bay of Biscay', ssb= flq, model = 'bevholt')
@@ -512,11 +512,11 @@ murSR@rec[]      <- stk.sc0@stock.n[1,]
 murSR@uncertainty[]  <- rlnorm(Niter*51,0,.30) 
 murSR@params[]       <- sr@params 
 ```
-### ```FLBiols``` object
+### `FLBiols` object
 
-The ```FLBiols``` object is a named list of ```FLBiol``` objects with the name of the stocks represented by each of the elements. The FLBiol object represent the populations simulated in the BOM, i.e, the data contained there correspond with the 'true' population of the MSE simulations. 
+The `FLBiols` object is a named list of `FLBiol` objects with the name of the stocks represented by each of the elements. The FLBiol object represent the populations simulated in the BOM, i.e, the data contained there correspond with the 'true' population of the MSE simulations. 
 
-In the case of biomass dynamic populations the only relevant information is stored in ```n``` slot. ```wt``` slot can be used to store the mean weight of the individuals and have in this way an estimate of the number of fishes in the population. We fill all the slots in order to avoid  problems with the NA-s along the simulation and in the processing of the results. 
+In the case of biomass dynamic populations the only relevant information is stored in `n` slot. `wt` slot can be used to store the mean weight of the individuals and have in this way an estimate of the number of fishes in the population. We fill all the slots in order to avoid  problems with the NA-s along the simulation and in the processing of the results. 
 
 ```{r}
 biols.bd <- FLBiols(mur = FLBiol(name = 'mur', 
@@ -551,7 +551,7 @@ wt(biols.age[[1]])[,ac(2015:2028)]  <- wt(biols.age[[1]])[,ac(2014)]
 
 
 ### FLFleetsExt object
-FLBEIA uses an extended version of the ```FLFleet``` object defined in ```FLFleet``` package. The only difference is in the ```FLCatch``` object used to store stock catch data. The ```FLCatchExt``` object defined in FLBEIA has to extra slots, ```alpha``` and ```beta```. Theses two slots are used to store the parameters of the catch production function. At present there is only one function to simulate the catch production of the fleets, the Cobb-Douglas model. In this case  ```alpha``` and ```beta``` correspond with the elasticities of the effort and the biomass respectively. In this case as we are not using a real fleet we are not interested in the elasticity parameters and we can set them to one. 
+FLBEIA uses an extended version of the `FLFleet` object defined in `FLFleet` package. The only difference is in the `FLCatch` object used to store stock catch data. The `FLCatchExt` object defined in FLBEIA has to extra slots, `alpha` and `beta```. Theses two slots are used to store the parameters of the catch production function. At present there is only one function to simulate the catch production of the fleets, the Cobb-Douglas model. In this case  `alpha` and `beta` correspond with the elasticities of the effort and the biomass respectively. In this case as we are not using a real fleet we are not interested in the elasticity parameters and we can set them to one. 
 
 We will create two different objects one for biomass dynamic population and the other for the age structured one. First we build the FLCatchExt object:
 
@@ -560,7 +560,7 @@ cc <- FLCatchExt(name = 'mur', alpha = flq, beta = flq, landings = murBD@catch, 
            discards.wt = flq, landings.sel = flq, discards.sel = flq0, discards = flq0, discards.n = flq0)
 ```
 
-Now we built the whole ```FLFleetsExt``` object:
+Now we built the whole `FLFleetsExt` object:
 ```{r}
 fleets.bd <- FLFleetsExt(fl = FLFleetExt(name = 'fl', effort= flq, capacity = flq*1e12,
                            metiers =  FLMetiersExt(mt = FLMetierExt(name = 'mt', effshare = flq, 
@@ -592,7 +592,7 @@ fleets.age[[1]]@metiers[[1]]@catches[[1]]@catch.q[,ac(2015:2028)] <- expand(year
 
 ### FLIndices Object
 
-The ```FLIndices``` Object is a list with the indices used to generate the management advice within FLBEIA. The indices can be used to feed an assessment model or as part of a model-free harvest control rule. The model implemented in FLBEIA to simulate abundance indices is the classical linear model with a multiplicative error. Nevertheless, as catchability parameter is given yearly and usually models assume it to be constant, bias in this parameter can be easily introduced. In this work we use the catchability estimated by SPiCT and for the multiplicative error we use a lognormal distribution with median equal to one and coefficient of variation equal to 30\%. 
+The `FLIndices` Object is a list with the indices used to generate the management advice within FLBEIA. The indices can be used to feed an assessment model or as part of a model-free harvest control rule. The model implemented in FLBEIA to simulate abundance indices is the classical linear model with a multiplicative error. Nevertheless, as catchability parameter is given yearly and usually models assume it to be constant, bias in this parameter can be easily introduced. In this work we use the catchability estimated by SPiCT and for the multiplicative error we use a lognormal distribution with median equal to one and coefficient of variation equal to 30\%. 
 
 ```{r}
 indices <- FLIndices(evhoe = FLIndex(name = 'mur', catch.wt = flq, effort = flq, index = flq))
@@ -622,10 +622,10 @@ dimnames(advice$quota.share[[1]])[[1]] <- 'fl'
 
 ## Control Objects
 
-The control objects are ```R``` lists used to store the values that control how each part of the simulation is carried out. There is one control object per data object. There are some functions in the package that facilitate the construction of the control objects. 
+The control objects are `R` lists used to store the values that control how each part of the simulation is carried out. There is one control object per data object. There are some functions in the package that facilitate the construction of the control objects. 
 
 ### main.ctrl
-The ```main.ctrl``` object declares the initial and final year of the simulations. These years must be within the range of the objects but could be different to the first and last year in the ```FLQuants```.
+The `main.ctrl` object declares the initial and final year of the simulations. These years must be within the range of the objects but could be different to the first and last year in the `FLQuants```.
 
 ```{r}
 main.ctrl  <- list(sim.years = c(initial = '2015', final = '2025'))
@@ -633,14 +633,14 @@ main.ctrl  <- list(sim.years = c(initial = '2015', final = '2025'))
 
 ### biols.ctrl
 
-In the ```biol.ctrl``` object we declare the model to be used to carry the population forward in the simulation. In his case we used ```BDPG``` which stands for Biomass Dynamic Populaton Growth.
+In the `biol.ctrl` object we declare the model to be used to carry the population forward in the simulation. In his case we used `BDPG` which stands for Biomass Dynamic Populaton Growth.
 ```{r}
 biols.ctrl.bd  <- create.biols.ctrl(stksnames = 'mur', growth.model = 'BDPG')
 biols.ctrl.age <- create.biols.ctrl(stksnames = 'mur', growth.model = 'ASPG')
 ```
 
 ### fleets.ctrl
-The ```fleets.ctrl``` object controls the four processes simulated in the fleet operating model, the effort allocation, the catch production, the price formation and the capital dynamics. In the simulations carried out in this work the price and the capital dynamics are maintained fixed, the catch production is simulated using a Cobb-Douglas function and the effort allocation is simulated using ```SMFB``` model. This model is oriented to describe effort allocation in multistock and multi-metier scenarios. In this case as there is only one stock and one fleet with a single metier the model calculates just the effort that produces exactly the TAC advice for the stock.
+The `fleets.ctrl` object controls the four processes simulated in the fleet operating model, the effort allocation, the catch production, the price formation and the capital dynamics. In the simulations carried out in this work the price and the capital dynamics are maintained fixed, the catch production is simulated using a Cobb-Douglas function and the effort allocation is simulated using `SMFB` model. This model is oriented to describe effort allocation in multistock and multi-metier scenarios. In this case as there is only one stock and one fleet with a single metier the model calculates just the effort that produces exactly the TAC advice for the stock.
 
 ```{r}
 fleets.ctrl.bd <- create.fleets.ctrl(fls = 'fl', fls.stksnames = list(fl = 'mur'), flq = flq, effort.models = c(fl = 'SMFB'),
@@ -653,7 +653,7 @@ fleets.ctrl.age <- create.fleets.ctrl(fls = 'fl', fls.stksnames = list(fl = 'mur
 ```
 
 ### obs.ctrl
-The ```obs.ctrl``` object comprises the neccesary information to simulate the observed data used in the management procedure (MP) to generate the management advice. In this work we will use two different control objects, in the first one the abundance index is observed and in the second one the stock. The abundance index is generated using the ```bioInd``` function which updates the index slot on the object with the most recent abundance data. In turn, the stock data is generated using the ```PerfectObs``` function. The ```perfectObs``` function, as the rest of the functions available to generate stock data, builds and ```FLStock``` object based on the most recent abundace data. This function apart of biological and catch data, it also fills the ```stock.n``` and ```harvest``` slots in the ```FLStock``` object. This is not possible in the real world where these two slots are estimated by the assessments models. However, if we do not want to test the performance of the assessment model but the harvest control rule itself in isolation , it is useful to have a perfect estimate of the population.     
+The `obs.ctrl` object comprises the neccesary information to simulate the observed data used in the management procedure (MP) to generate the management advice. In this work we will use two different control objects, in the first one the abundance index is observed and in the second one the stock. The abundance index is generated using the `bioInd` function which updates the index slot on the object with the most recent abundance data. In turn, the stock data is generated using the `PerfectObs` function. The `perfectObs` function, as the rest of the functions available to generate stock data, builds and `FLStock` object based on the most recent abundace data. This function apart of biological and catch data, it also fills the `stock.n` and `harvest` slots in the `FLStock` object. This is not possible in the real world where these two slots are estimated by the assessments models. However, if we do not want to test the performance of the assessment model but the harvest control rule itself in isolation , it is useful to have a perfect estimate of the population.     
 
 ```{r}
 obs.ctrl.ind <- create.obs.ctrl(stksnames = 'mur', n.stks.inds = c(mur = 1), stks.indsnames = 'evhoe',indObs.models = c(mur = 'bioInd'))
@@ -769,7 +769,7 @@ msy.pa.age <- FLBEIA(biols = biols.age, SRs = list(mur = murSR), BDs = NULL, fle
 ```
 
 
-Now we use the summary functions in FLBEIA to extract the main indicators and to plot them using the ```ggplot``` package.
+Now we use the summary functions in FLBEIA to extract the main indicators and to plot them using the `ggplot` package.
 
 
 ```{r}
