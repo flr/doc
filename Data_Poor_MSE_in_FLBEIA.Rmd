@@ -161,6 +161,7 @@ According to the fit the production of the stock has been at its maximum in most
 par(mfrow = c(1,2))
 plotspict.production(mur_spict)
 plotspict.fb(mur_spict)
+par(mfrow = c(1,1))
 ```
 
 
@@ -209,7 +210,7 @@ RandPar_flbeia[,3] <- RandPar_SPict[,'n'] - 1
 remiter <- unique(c(which((RandPar_flbeia[,'p']/RandPar_flbeia[,'r']) <  -1), which(RandPar_flbeia[,'r']>  2)))
 RandPar_flbeia <- RandPar_flbeia[-remiter,]
 # Identify the valid iterations and select the first 100.
-Niter <- Nit <- 5
+Niter <- Nit <- 100
 valid_iters <-  as.numeric(dimnames(RandPar_flbeia)[[1]])[1:Niter]
 ```
 
@@ -225,6 +226,7 @@ plot(density(RandPar_flbeia[,2]), main = 'Carrying Capacity (K)', xlab = "", lwd
 abline(v = median(RandPar_flbeia[,2]), col = 2)
 plot(density(RandPar_flbeia[,3]+1), main = 'Shape of Production Curve (n)', xlab = "", lwd = 2)
 abline(v = median(RandPar_flbeia[,3]+1), col = 2)
+par(mfrow = c(1,1))
 ```
 
 Now we need the stock trajectories, abundances and fishing mortalities, consistent with the parameters generated in the multivariate random sampling. So we fit a SPiCT model to each sample fixing the parameters to  those obtained in the sampling. From each fit we extract the estimated abundance and catch and store them in a matrix that will be used later on to condition `FLBEIA`. To illustrate the example we use only 100 iterations but more iterations could be neccesary to obtain a good representation of the existing uncertainty.
@@ -551,7 +553,7 @@ wt(biols.age[[1]])[,ac(2015:2028)]  <- wt(biols.age[[1]])[,ac(2014)]
 
 
 ### FLFleetsExt object
-FLBEIA uses an extended version of the `FLFleet` object defined in `FLFleet` package. The only difference is in the `FLCatch` object used to store stock catch data. The `FLCatchExt` object defined in FLBEIA has to extra slots, `alpha` and `beta```. Theses two slots are used to store the parameters of the catch production function. At present there is only one function to simulate the catch production of the fleets, the Cobb-Douglas model. In this case  `alpha` and `beta` correspond with the elasticities of the effort and the biomass respectively. In this case as we are not using a real fleet we are not interested in the elasticity parameters and we can set them to one. 
+FLBEIA uses an extended version of the `FLFleet` object defined in `FLFleet` package. The only difference is in the `FLCatch` object used to store stock catch data. The `FLCatchExt` object defined in FLBEIA has to extra slots, `alpha` and `beta`. Theses two slots are used to store the parameters of the catch production function. At present there is only one function to simulate the catch production of the fleets, the Cobb-Douglas model. In this case  `alpha` and `beta` correspond with the elasticities of the effort and the biomass respectively. In this case as we are not using a real fleet we are not interested in the elasticity parameters and we can set them to one. 
 
 We will create two different objects one for biomass dynamic population and the other for the age structured one. First we build the FLCatchExt object:
 
@@ -625,7 +627,7 @@ dimnames(advice$quota.share[[1]])[[1]] <- 'fl'
 The control objects are `R` lists used to store the values that control how each part of the simulation is carried out. There is one control object per data object. There are some functions in the package that facilitate the construction of the control objects. 
 
 ### main.ctrl
-The `main.ctrl` object declares the initial and final year of the simulations. These years must be within the range of the objects but could be different to the first and last year in the `FLQuants```.
+The `main.ctrl` object declares the initial and final year of the simulations. These years must be within the range of the objects but could be different to the first and last year in the `FLQuants`.
 
 ```{r}
 main.ctrl  <- list(sim.years = c(initial = '2015', final = '2025'))
@@ -843,4 +845,27 @@ print(p)
 ## Acknowledgments
 This tutorial has been built with the financial support of the DrumFish EU project and the IM17IMPAC project financed by the Basque Government. 
 
-Youen Vermard and IFREMER for providing the abundance index use to fit the SPiCT model (Ifremer 2017. Indices de populations et de communauts issus des campagnes de surveillance halieutique de l'Ifremer.)
+Youen Vermard and IFREMER for providing the abundance index used to fit the SPiCT model (Ifremer 2017. Indices de populations et de communauts issus des campagnes de surveillance halieutique de l'Ifremer.)
+
+# More information
+
+* You can submit bug reports, questions or suggestions on this tutorial at <https://github.com/flr/doc/issues>.
+* Alternatively, send a pull request to <https://github.com/flr/doc/>.
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage: <http://flr-project.org>.
+
+## Software Versions
+
+* `r version$version.string`
+* FLCore: `r packageVersion('FLCore')`
+* FLBEIA: `r packageVersion('FLBEIA')`
+* spict: `r packageVersion('spict')`
+* fishmethods: `r packageVersion('fishmethods')`
+* **Compiled**: `r date()`
+
+## License
+
+This document is licensed under the [Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0) license.
+
+## Author information
+
+**Dorleta GARCIA**. AZTI Tecnalia. <https://www.azti.es>.
