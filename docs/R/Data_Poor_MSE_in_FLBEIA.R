@@ -1,8 +1,8 @@
 ## ----setup, include=FALSE------------------------------------------------
-knitr::opts_chunk$set(results = "hide", echo = TRUE, warning = FALSE, tidy = TRUE)
-#knitr::opts_knit$set(root.dir = "~/Dropbox/DrumFish/docs/mur/conditioning")
+library(knitr)
+source("R/ini.R")
 
-## ---- include=TRUE, echo = TRUE------------------------------------------
+## ---- include=TRUE, echo=FALSE-------------------------------------------
 library(spict)
 library(FLBEIA)
 library(MASS)
@@ -74,6 +74,7 @@ par(mfrow = c(1,2))
 par(mfrow = c(1,2))
 plotspict.production(mur_spict)
 plotspict.fb(mur_spict)
+par(mfrow = c(1,1))
 
 ## ----varcov--------------------------------------------------------------
 varcov <- (mur_spict$cov.fixed)
@@ -102,7 +103,7 @@ RandPar_flbeia[,3] <- RandPar_SPict[,'n'] - 1
 remiter <- unique(c(which((RandPar_flbeia[,'p']/RandPar_flbeia[,'r']) <  -1), which(RandPar_flbeia[,'r']>  2)))
 RandPar_flbeia <- RandPar_flbeia[-remiter,]
 # Identify the valid iterations and select the first 100.
-Niter <- Nit <- 5
+Niter <- Nit <- 100
 valid_iters <-  as.numeric(dimnames(RandPar_flbeia)[[1]])[1:Niter]
 
 ## ----fig:params, fig.height= 14/2.54, fig.width =  16/2.54, fig.cap = 'Density curves of the production model parameters used to condition the initial population.'----
@@ -113,6 +114,7 @@ plot(density(RandPar_flbeia[,2]), main = 'Carrying Capacity (K)', xlab = "", lwd
 abline(v = median(RandPar_flbeia[,2]), col = 2)
 plot(density(RandPar_flbeia[,3]+1), main = 'Shape of Production Curve (n)', xlab = "", lwd = 2)
 abline(v = median(RandPar_flbeia[,3]+1), col = 2)
+par(mfrow = c(1,1))
 
 ## ------------------------------------------------------------------------
 Best <- Cest <- matrix(NA, Niter, 18, dimnames = list(iter = 1:Niter, year = 1997:2014))
