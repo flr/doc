@@ -1,19 +1,24 @@
 ---
-title: "A simple example with multiple dimensions in FLBEIA "
-author: "Marga Andres and FLBEIA team"
+title: FLBEIA - TUTORIAL THREE.
+
+
+        Multi example.
+date: "`r format(Sys.time(), '%d %b, %Y')`"
 output:
-github_document:
+  html_document:
+    toc: true
+    theme: united
+    toc_float: true
+    collapsed: false
+    number_sections: true
+  github_document:
   mathjax: TRUE
-pdf_document:
-  fig_width: 6 
-  fig_height: 4 
-  toc: yes
+tags:
+license: Creative Commons Attribution-ShareAlike 4.0 International Public License
+bibliography: bibliography.bib
 ---
 
-```{r setup, include=FALSE}
-library(knitr)
-source("R/ini.R")
-```
+<img src="//172.21.10.13/comun$/AZTIMAR/FLBEIA/logo/FLBEIA-1000px.transparente_SMall.png" >
 
 
 ```{r, ini, echo=FALSE, results='hide', message=FALSE}
@@ -27,7 +32,7 @@ set.seed(1423)
 
 # Aim 
 
-***FLBEIA*** provides a battery of tutorials for learning how to use this software. In this tutorial an example, named ***multi*** is run in ```FLBEIA```. Then, the outputs of ```FLBEIA``` are explored, summarized and plotted. Once the user has understood the structure and outputs of ```FLBEIA```, let's start playing! Several scenarios are run changing and adjusting several data and functions that ```FLBEIA``` provides. Scenarios are compared in order to visualize the effects of the changes done in each scenario. In the current tutorial, the scenarios will be related to the economic issues of the model.
+***FLBEIA*** provides a battery of tutorials for learning how to use this software. In this tutorial an example, named ***multi***  is run in ```FLBEIA```. Then, the outputs of ```FLBEIA``` are explored, summarized and plotted. Once the user has understood the structure and outputs of ```FLBEIA```, let's start playing! Several scenarios are run changing and adjusting several data and functions that ```FLBEIA``` provides. Scenarios are compared in order to visualize the effects of the changes done in each scenario. In the current tutorial, the scenarios will be related to the economic issues of the model.
 
 
 # Required packages to run this tutorial
@@ -186,7 +191,6 @@ You can plot the ```FLBiol``` object within ```biols``` and the ```FLStock``` ob
 ```{r echo=TRUE, eval=TRUE, fig.width = 3.5, fig.height = 3.5}
 #plot(SM$biols[[1]]) # There are too much data to display them correctly.
 plot(SM$stocks[[1]])
-#plot(SM$stocks[[2]]) # Error: Recently FLCore has changed its code, FLBEIA will update its code to solve this issue.
 ```
 
 Additionally you can plot objects using  ```plotFLBiols```, ```plotFLFleets``` and ```plotCatchFl```. The plots will be load in your working directory by default.
@@ -349,8 +353,6 @@ Plot price and income to see the impact that the price dynamics have on the resu
 SM_1_fltStk <- fltStkSum(SM_1, scenario ='elasticPrice') 
 SM_x <- rbind(SM_fltStk, SM_1_fltStk)
 
-#subset(SM_x, indicator == 'price' & fleet == 'fl1' & stock == 'stk2')
-SM_x <-  subset(SM_x, value > 0) # Error en el indicador, no s? porqu? sale
 
 inds <- c('price', 'catch')
 d <- rbind(subset(SM_x,indicator  %in% inds & fleet == 'fl1' & stock == 'stk2'))
@@ -373,7 +375,6 @@ print(p)
 SM_1_flt <- fltSum(SM_1, scenario ='elasticPrice') 
 SM_x <- rbind(SM_flt, SM_1_flt)
 SM_x <- subset(SM_x, fleet == 'fl1')
-#subset(SM_x, indicator == 'price' & fleet == 'fl1' & stock == 'stk2')
 
 inds <- c('capacity','costs','income','profits')
 d <- rbind(subset(SM_x,indicator  %in% inds ))
@@ -429,7 +430,7 @@ print(p)
 
 
 ### Variable Costs
-Variable costs decreases a 50% for ```fl2``` and  for metiers ```met1``` and ```met2```. How affects that to the economic results?
+Variable costs decreases a 50% for ```fl2``` and  for metiers ```met1``` and ```met2```. How does this affect to the economic results?
 ```{r echo=TRUE, , results = "hide"}
 multiFl_3 <- multiFl
 multiFl_3$fl2@metiers$met1@vcost <- multiFl_3$fl2@metiers$met1@vcost*(1-0.5)
@@ -465,7 +466,7 @@ print(p)
 
 ### Crewshare
 
-Now, imagine that the crew share remuneration system changes. Now the crew share is 20% - 25%. Imaging that the system has changed for ``fl1```` and now the percentage is 50%. 
+Now, imagine that the crew share remuneration system changes for ``fl1```` and now the percentage is 50%. 
 ```{r echo=TRUE, results = "hide"}
 multiFl_4 <- multiFl
 multiFl_4$fl1@crewshare[] <- 0.5
@@ -501,9 +502,10 @@ print(p)
 
 ### Capital dynamics
 
-The current capital function in ```fixedCapital``, where the capacity and catchability are given as input data and are unchanged within the simulation. Now change the capital function and implement the ```SCD```function. In this simple function catchability is not updated, it is an input parameter, and only capacity is updated depending on some economic indicators. For more detailed information of this function, see the page 20 of the  [Manual](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf).
-[more explanatioin about capital dynamics]
-Define neccessary variables.:
+The current capital function in ```fixedCapital```, where the capacity and catchability are given as input data and are unchanged within the simulation. Now change the capital function and implement the ```SCD```function. In this simple function catchability is not updated, it is an input parameter, and only capacity is updated depending on some economic indicators. For more detailed information of this function, see the page 20 of the  [Manual](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf).
+
+
+Firstly define neccessary variables.:
 
 ```{r echo=TRUE, eval=TRUE, results = "hide"}
 # fl1 is fixed effort
@@ -548,16 +550,12 @@ p <- ggplot( data=d, aes(x=year, y=value, color=scenario)) +
 print(p)
 ```
 
-There are no  variation between scenarios because in SCD investment in new vessels will only occur if the operational days of existing vessels is equal to maximum days.
-```{r echo=TRUE, eval=TRUE}
-SM_5$fleets$fl2@effort
-SM_5$fleets$fl2@capacity
+There are no differences between scenarios because in SCD investment in new vessels will only occur if the operational days of existing vessels is equal to maximum days. Additionally, data of this example is not real and there are some extrange results due to the conditioning.
 
-```
 
 ## Visualizing results with flbeiaApp
 
-Currently is under development, but soon you will be able to run the ```flbeiaApp``` to built an interactive web applications for visualizing data. Currently this a preliminary version or beta versi?n of the ```flbeiaApp```.
+Currently is under development, but soon you will be able to run the ```flbeiaApp``` to built an interactive web applications for visualizing data. Currently this a preliminary version or beta versión of the ```flbeiaApp```.
 
 
 ```{r echo=TRUE,  eval=FALSE}
