@@ -1,5 +1,5 @@
 ---
-title: "FLBEIA conditioning in Data Poor Situations: BoB Stripped Mullet"
+title: "Conditioning FLBEIA in Data Limited Situations: BoB Stripped Mullet"
 author: "Dorleta Garcia and FLBEIA team"
 output:
 github_document:
@@ -231,7 +231,7 @@ par(mfrow = c(1,1))
 
 Now we need the stock trajectories, abundances and fishing mortalities, consistent with the parameters generated in the multivariate random sampling. So we fit a SPiCT model to each sample fixing the parameters to  those obtained in the sampling. From each fit we extract the estimated abundance and catch and store them in a matrix that will be used later on to condition `FLBEIA`. To illustrate the example we use only 100 iterations but more iterations could be neccesary to obtain a good representation of the existing uncertainty.
 
-```{r }
+```{r, message=FALSE }
 Best <- Cest <- matrix(NA, Niter, 18, dimnames = list(iter = 1:Niter, year = 1997:2014))
 
 for(i in 1:Niter){
@@ -725,7 +725,7 @@ Run FLBEIA in 10 scenarios which differ on:
 
 
 
-```{r}
+```{r, message =FALSE}
 dls3.bd <- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleets = fleets.bd, covars = NULL, 
           indices = list(mur = indices), advice = advice, main.ctrl, biols.ctrl.bd, fleets.ctrl.bd, 
           covars.ctrl = NULL, obs.ctrl.ind, assess.ctrl, advice.ctrl.dls3) 
