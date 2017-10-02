@@ -64,7 +64,7 @@ navbar:
           href: FLBEIA_A_Simple_Example.html
         - text: "A simple example with multiple dimensions in FLBEIA"
           href: FLBEIA_An_Example_with_multiple_dimensions.html
-        - text: "Using Stock Assessment models in the Managemnt procedure of FLBEIA"
+        - text: "Using Stock Assessment models in the Management procedure of FLBEIA"
           href: Using_Assessment_models_in_the_MP_FLBEIA.html
         - text: "Testing different Management Strategies in FLBEIA"
           href: Testing_Management_Strategies_in_FLBEIA.html
