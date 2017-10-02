@@ -8,6 +8,7 @@ pdf_document:
   fig_width: 6 
   fig_height: 4 
   toc: yes
+bibliography: bibliography.bib
 ---
 
 ```{r, ini, echo=FALSE, results='hide', message=FALSE}

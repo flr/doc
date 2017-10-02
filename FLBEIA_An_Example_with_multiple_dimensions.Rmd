@@ -1,38 +1,34 @@
 ---
-title: FLBEIA - TUTORIAL THREE.
-
-
-        Multi example.
+title: FLBEIA - TUTORIAL THREE. Multi example.
 date: "`r format(Sys.time(), '%d %b, %Y')`"
 output:
-  html_document:
-    toc: true
-    theme: united
-    toc_float: true
-    collapsed: false
-    number_sections: true
-  github_document:
+github_document:
   mathjax: TRUE
-tags:
+pdf_document:
+  fig_width: 6 
+  fig_height: 4 
+  toc: yes
 license: Creative Commons Attribution-ShareAlike 4.0 International Public License
 bibliography: bibliography.bib
 ---
 
-<img src="//172.21.10.13/comun$/AZTIMAR/FLBEIA/logo/FLBEIA-1000px.transparente_SMall.png" >
-
-
 ```{r, ini, echo=FALSE, results='hide', message=FALSE}
 # This chunk set the document environment, so it is hidden
 library(knitr)
+source("R/ini.R")
 knitr::opts_chunk$set(fig.align='center',
   message=FALSE, warning=FALSE, echo=TRUE, cache=FALSE)
 options(width=50)
 set.seed(1423)
 ```
 
+```{r echo=FALSE, out.width='20%'}
+include_graphics('images/FLBEIA_logo.png')
+```
+
 # Aim 
 
-***FLBEIA*** provides a battery of tutorials for learning how to use this software. In this tutorial an example, named ***multi***  is run in ```FLBEIA```. Then, the outputs of ```FLBEIA``` are explored, summarized and plotted. Once the user has understood the structure and outputs of ```FLBEIA```, let's start playing! Several scenarios are run changing and adjusting several data and functions that ```FLBEIA``` provides. Scenarios are compared in order to visualize the effects of the changes done in each scenario. In the current tutorial, the scenarios will be related to the economic issues of the model.
+**FLBEIA** provides a battery of tutorials for learning how to use this software. In this tutorial an example, named **multi**  is run in `FLBEIA`. Then, the outputs of `FLBEIA` are explored, summarized and plotted. Once the user has understood the structure and outputs of `FLBEIA`, let's start playing! Several scenarios are run changing and adjusting several data and functions that `FLBEIA` provides. Scenarios are compared in order to visualize the effects of the changes done in each scenario. In the current tutorial, the scenarios will be related to the economic issues of the model.
 
 
 # Required packages to run this tutorial
@@ -58,7 +54,6 @@ library(FLBEIA)
 library(FLXSA)
 library(FLash)
 library(ggplotFL)
-library(FLBEIAShiny) # This is a beta version.
 ```
 
 
@@ -68,7 +63,7 @@ This dataset has 2 stocks, one stk1 is age structured and the second one stk2 is
 
 * Historic data 1990-2008 and projection 2009-2025.
 * Operating model: Population dynamics 
-    + stk1: Age Structured Population Growth. Beverthon and Holt.
+    + stk1: Age Structured Population Growth. Beverton and Holt.
     + stk2: Biomass Dynamic Population Growth. Pella-Tomlinson.
   
 * Management Procedure
@@ -84,12 +79,13 @@ This dataset has 2 stocks, one stk1 is age structured and the second one stk2 is
 
     
 ## Load data
+
 ```{r echo=TRUE, eval=TRUE}
 rm(list=ls())
 data(multi)
 ```
 
-With the ```ls()``` command we can see the objects stored in ```multi```, which are those need to call to ```FLBEIA```. 
+With the `ls()` command we can see the objects stored in `multi`, which are those need to call to `FLBEIA`. 
 
 ```{r echo=TRUE, eval=TRUE}
 ls()
@@ -119,6 +115,7 @@ SM <- FLBEIA(biols = multiBio,       # FLBiols object with 2 FLBiol element for 
 ```
 
 FLBEIA returns a list with several objects, let's print the names of the objects and its class
+
 ```{r echo=TRUE, eval=TRUE}
 names(SM)
 ```
@@ -126,15 +123,16 @@ names(SM)
 
 ## Summarizing results
 
-```FLBEIA``` has predeterminated functions to create summary data frames (biological, economic, and catch), in two formats:
+`FLBEIA` has predeterminated functions to create summary data frames (biological, economic, and catch), in two formats:
 
 * Long format: where all the indicators are in the same column.There is one column, indicator, for the name of the indicator and a second one  for the numeric value of the indicator. 
 * Wide format: where each column correspond with one indicator. 
 The long format it is recommendable to work with ggplot2 functions while the wide format it is more efficient for memory allocation and speed of computations. 
 
-Note that in this example the ```covars``` object contents information on costs.
+Note that in this example the `covars` object contents information on costs.
 
 ### Long format.
+
 ```{r echo=TRUE, eval=TRUE, results = "hide"}
 SM_bio    <- bioSum(SM)             # Data frame (DF) with the biological indicators.
 SM_adv    <- advSum(SM)             # DF with the indicators related with the management advice (TAC). 
@@ -163,6 +161,7 @@ head(SM_risk); unique(SM_risk$indicator)
 ```
 
 ### Wide format.
+
 ```{r echo=TRUE, eval=TRUE, results = "hide"}
 SM_bio_l    <- bioSum(SM, long = FALSE)            
 SM_adv_l    <- advSum(SM, long = FALSE)             
@@ -187,13 +186,15 @@ head(SM_vesselStk_l, 2)
 
 ###  Plotting results
 
-You can plot the ```FLBiol``` object within ```biols``` and the ```FLStock``` object within ```stock``` using the default plots in **FLCore** package.
+You can plot the `FLBiol` object within `biols` and the `FLStock` object within `stock` using the default plots in **FLCore** package.
+
 ```{r echo=TRUE, eval=TRUE, fig.width = 3.5, fig.height = 3.5}
 #plot(SM$biols[[1]]) # There are too much data to display them correctly.
 plot(SM$stocks[[1]])
 ```
 
-Additionally you can plot objects using  ```plotFLBiols```, ```plotFLFleets``` and ```plotCatchFl```. The plots will be load in your working directory by default.
+Additionally you can plot objects using  `plotFLBiols`, `plotFLFleets` and `plotCatchFl`. The plots will be load in your working directory by default.
+
 ```{r echo=TRUE, eval=TRUE, results = "hide"}
 # set your own working directory.
 # myWD <- "My working directory")
@@ -205,7 +206,8 @@ plotEco(SM, pdfnm ='SM')
 ```
 
 
-You can also desing your own plot using the function ```ggplot```. In the current example we will plot the economic related outputs.
+You can also desing your own plot using the function `ggplot`. In the current example we will plot the economic related outputs.
+
 ```{r echo=TRUE, fig.cex = 0.5 , eval=TRUE}
 inds <- c('capacity','costs','income','profits')
 d <- rbind(subset(SM_flt,indicator  %in% inds ))
@@ -225,7 +227,7 @@ print(p)
 ```
 
 
-## LET`S PLAY
+## LET'S PLAY
 
 In this example the economic information is available. The play will focus on economic variables, processess and indicators.
 
@@ -244,6 +246,7 @@ for (i in names(multiFl)) {
 ```
 
 As this example is not a real case study, there are some values that are not coherent. We solve this situations re- condicioning this values.  
+
 ```{r echo=TRUE, results = "hide"}
 # Adjusting some values.
 multiFl$fl2@capacity # There is a fixed capacity from 2009 onwards, then, the number of vessels and the maxdays will be fixed in the simulation period.
@@ -252,6 +255,7 @@ multiCv$NumbVessels[2,,,] <- multiFl$fl2@capacity/multiCv$MaxDays[2,,,,]
 ```
 
 Run FLBEIA and generate the base case scenario.
+
 ```{r echo=TRUE, results = "hide"}
 SM <- FLBEIA(biols = multiBio,   SRs = multiSR,  BDs = multiBD, fleets = multiFl, covars = multiCv,
              indices = NULL,advice = multiAdv, main.ctrl = multiMainC, biols.ctrl = multiBioC,
@@ -261,6 +265,7 @@ SM <- FLBEIA(biols = multiBio,   SRs = multiSR,  BDs = multiBD, fleets = multiFl
 
 
 #### Summary the results
+
 ```{r echo=TRUE, fig.cex = 0.5 , eval=TRUE}
 SM_bio    <- bioSum(SM)             # Data frame (DF) with the biological indicators.
 SM_adv    <- advSum(SM)             # DF with the indicators related with the management advice (TAC). 
@@ -278,6 +283,7 @@ SM_risk <- riskSum(SM, stknms = names(SM$biols), Bpa= c(stk1= 135000, stk2 = 124
 
 
 ####  Plots
+
 ```{r echo=TRUE, fig.cex = 0.5 , eval=TRUE}
 plotFLBiols(SM$biols, pdfnm = "SM_pricex1000")
 plotFLFleets(SM$fleets, pdfnm ="SM_pricex1000")
@@ -306,9 +312,9 @@ Now profits are positive, this simulation will be the base case.
 
 ### Price Dynamics
 
-The current price function is ```fixedprice```: prices are given as input data and are unchanged within the simulation. 
-Now change we will change the price dynamics: we will implement an ```elasticPrice``` model in one fleet ```fl1``` and stock ```stk2```.  For a detailed description of this function see page 19 of the  [Manual](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf ).
-The dynamics price function implemented in FLBEIA is described in Kraak et al. [2004]. This function uses a base price and base landings to calculate the new price using an elasticity parameter. If the base landings are bigger than current landings the price is increased and decreased if the contrary occurs. Although price is stored at metier and stock level in ```FLFleetsExt```,this function assumes that is common to all metiers within a fleet and it is calculated at fleet level.
+The current price function is `fixedprice`: prices are given as input data and are unchanged within the simulation. 
+Now change we will change the price dynamics: we will implement an `elasticPrice` model in one fleet `fl1` and stock `stk2`.  For a detailed description of this function see page 19 of the  [Manual](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf ).
+The dynamics price function implemented in FLBEIA is described in Kraak et al. [2004]. This function uses a base price and base landings to calculate the new price using an elasticity parameter. If the base landings are bigger than current landings the price is increased and decreased if the contrary occurs. Although price is stored at metier and stock level in `FLFleetsExt`,this function assumes that is common to all metiers within a fleet and it is calculated at fleet level.
 
 ```{r echo=TRUE, results = "hide"}
 # Describe the price function
@@ -344,11 +350,11 @@ SM_1 <- FLBEIA(biols = multiBio, SRs = multiSR, BDs = multiBD, fleets = multiFl_
                covars = multiCv, indices = NULL, advice = multiAdv, main.ctrl = multiMainC,
                biols.ctrl = multiBioC, fleets.ctrl = multiFlC_1, covars.ctrl = multiCvC,
                obs.ctrl = multiObsC, assess.ctrl = multiAssC, advice.ctrl = multiAdvC)
-
 ```
 
 
 Plot price and income to see the impact that the price dynamics have on the results.
+
 ```{r echo=TRUE, eval=TRUE}
 SM_1_fltStk <- fltStkSum(SM_1, scenario ='elasticPrice') 
 SM_x <- rbind(SM_fltStk, SM_1_fltStk)
@@ -393,10 +399,9 @@ p <- ggplot( data=d, aes(x=year, y=value, color=scenario)) +
 print(p)
 ```
 
-
-
 ### Fixed Costs
-In this example the economic information is available. Fixed costs (repair, maintenance and other) of ```fl1``` decreases a 80%. How does this impact the economic results? 
+In this example the economic information is available. Fixed costs (repair, maintenance and other) of `fl1` decreases a 80%. How does this impact the economic results? 
+
 ```{r echo=TRUE, eval=TRUE, results = "hide"}
 multiFl_2 <- multiFl
 multiFl_2$fl1@fcost <- multiFl_2$fl1@fcost*(1-0.8)
@@ -407,6 +412,7 @@ SM_2 <- FLBEIA(biols = multiBio, SRs = multiSR, BDs = multiBD, fleets = multiFl_
 ```
 
 We can visualize the results of both simulations (SM aganist SM_2) using ggplot.
+
 ```{r echo=TRUE, eval=TRUE, fig.width =7, fig.height = 7}
 SM_2_flt    <- fltSum(SM_2, scenario = 'SM_2')
 SM_x <- rbind(SM_flt, SM_2_flt)
@@ -430,7 +436,8 @@ print(p)
 
 
 ### Variable Costs
-Variable costs decreases a 50% for ```fl2``` and  for metiers ```met1``` and ```met2```. How does this affect to the economic results?
+Variable costs decreases a 50% for `fl2` and  for metiers `met1` and `met2`. How does this affect to the economic results?
+
 ```{r echo=TRUE, , results = "hide"}
 multiFl_3 <- multiFl
 multiFl_3$fl2@metiers$met1@vcost <- multiFl_3$fl2@metiers$met1@vcost*(1-0.5)
@@ -443,6 +450,7 @@ SM_3 <- FLBEIA(biols = multiBio, SRs = multiSR, BDs = multiBD, fleets = multiFl_
 ```
 
 Compare results aganist base case scenario.
+
 ```{r echo=TRUE, eval=TRUE, fig.width = 7, fig.height = 7, eval=TRUE}
 SM_3_flt    <- fltSum(SM_3, scenario = 'SM_3')
 
@@ -466,7 +474,8 @@ print(p)
 
 ### Crewshare
 
-Now, imagine that the crew share remuneration system changes for ``fl1```` and now the percentage is 50%. 
+Now, imagine that the crew share remuneration system changes for ``fl1`` and now the percentage is 50%. 
+
 ```{r echo=TRUE, results = "hide"}
 multiFl_4 <- multiFl
 multiFl_4$fl1@crewshare[] <- 0.5
@@ -478,6 +487,7 @@ SM_4 <- FLBEIA(biols = multiBio, SRs = multiSR, BDs = multiBD, fleets = multiFl_
 ```
 
 Compare results aganist base case scenario.
+
 ```{r echo=TRUE, eval=TRUE, fig.width = 7, fig.height = 7, eval=TRUE}
 SM_4_flt    <- fltSum(SM_4, scenario = 'SM_4')
 
@@ -502,7 +512,7 @@ print(p)
 
 ### Capital dynamics
 
-The current capital function in ```fixedCapital```, where the capacity and catchability are given as input data and are unchanged within the simulation. Now change the capital function and implement the ```SCD```function. In this simple function catchability is not updated, it is an input parameter, and only capacity is updated depending on some economic indicators. For more detailed information of this function, see the page 20 of the  [Manual](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf).
+The current capital function in `fixedCapital`, where the capacity and catchability are given as input data and are unchanged within the simulation. Now change the capital function and implement the `SCD` function. In this simple function catchability is not updated, it is an input parameter, and only capacity is updated depending on some economic indicators. For more detailed information of this function, see the page 20 of the  [Manual](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf).
 
 
 Firstly define neccessary variables.:
@@ -522,12 +532,11 @@ SM_5 <- FLBEIA(biols = multiBio, SRs = multiSR, BDs = multiBD, fleets = multiFl_
                 covars = multiCv_5, indices = NULL, advice = multiAdv, main.ctrl = multiMainC,
                 biols.ctrl = multiBioC, fleets.ctrl = multiFlC_5, covars.ctrl = multiCvC,
                 obs.ctrl = multiObsC, assess.ctrl = multiAssC, advice.ctrl = multiAdvC)
-
-
 ```
 
 
 Now, compare resutls aganist base case scenario.
+
 ```{r echo=TRUE, eval=TRUE}
 SM_5_flt    <- fltSum(SM_5, scenario = 'SM_5')
 SM_x <- rbind( SM_flt, SM_5_flt )
@@ -555,8 +564,7 @@ There are no differences between scenarios because in SCD investment in new vess
 
 ## Visualizing results with flbeiaApp
 
-Currently is under development, but soon you will be able to run the ```flbeiaApp``` to built an interactive web applications for visualizing data. Currently this a preliminary version or beta versión of the ```flbeiaApp```.
-
+Currently is under development, but soon you will be able to run the `flbeiaApp` to built an interactive web applications for visualizing data. Currently this a preliminary version or beta versión of the `flbeiaApp`.
 
 ```{r echo=TRUE,  eval=FALSE}
 multi_simul <- list(SM, SM_1, SM_2, SM_3, SM_4, SM_5)
