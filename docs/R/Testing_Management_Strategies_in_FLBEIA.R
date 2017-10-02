@@ -1,14 +1,14 @@
-## ----setup, include=FALSE------------------------------------------------
-library(knitr)
-source("R/ini.R")
-
 ## ---- ini, echo=FALSE, results='hide', message=FALSE---------------------
 # This chunk set the document environment, so it is hidden
 library(knitr)
+source("R/ini.R")
 knitr::opts_chunk$set(fig.align='center',
                       message=FALSE, warning=FALSE, echo=TRUE, cache=FALSE)
 options(width=50)
 set.seed(1423)
+
+## ----echo=FALSE, out.width='20%'-----------------------------------------
+include_graphics('images/FLBEIA_logo.png')
 
 ## ---- eval=FALSE---------------------------------------------------------
 ## data(package='FLBEIA')
@@ -634,7 +634,7 @@ print(p)
 ## # - Set the selectivity at age:
 ## #   50% of the catch is discarded at ages 1-2
 ## #   25% of the catch is discarded at age 3
-## oneItFl3b[['fl1']]@metiers[['met1']]@catches[['stk1']]@landings.sel # 100% catch : landing
+## oneItFl3b[['fl1']]@metiers[['met1']]@catches[['stk1']]@landings.sel # 00% catch : landing
 ## oneItFl3b[['fl1']]@metiers[['met1']]@catches[['stk1']]@discards.sel #   0% catch : discard
 ## oneItFl3b[['fl1']]@metiers[['met1']]@catches[['stk1']]@landings.sel[1:2,sim.yrs,] <- 0.5
 ## oneItFl3b[['fl1']]@metiers[['met1']]@catches[['stk1']]@discards.sel[1:2,sim.yrs,] <- 0.5

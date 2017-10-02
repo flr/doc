@@ -285,6 +285,24 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-cogs"></span>
+     
+    FLBEIA
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">An introduction to MSE using FLR</li>
+    <li class="dropdown-header">Conditioning FLBEIA using Smart Conditioning Functions</li>
+    <li class="dropdown-header">A simple example on how to use FLBEIA</li>
+    <li class="dropdown-header">A simple example with multiple dimensions in FLBEIA</li>
+    <li class="dropdown-header">Using Stock Assessment models in the Managemnt procedure of FLBEIA</li>
+    <li class="dropdown-header">Testing different Management Strategies in FLBEIA</li>
+    <li class="dropdown-header">Data Limited MSE in FLBEIA</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     <span class="fa fa-area-chart"></span>
      
     Plotting
@@ -337,6 +355,7 @@ $(document).ready(function () {
 </div>
 
 
+<p><img src="images/FLBEIA_logo.png" width="20%" style="display: block; margin: auto;" /></p>
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
 <p>In this document we show how to:</p>
@@ -575,7 +594,7 @@ RandPar_flbeia[,3] &lt;- RandPar_SPict[,&#39;n&#39;] - 1
 remiter &lt;- unique(c(which((RandPar_flbeia[,&#39;p&#39;]/RandPar_flbeia[,&#39;r&#39;]) &lt;  -1), which(RandPar_flbeia[,&#39;r&#39;]&gt;  2)))
 RandPar_flbeia &lt;- RandPar_flbeia[-remiter,]
 # Identify the valid iterations and select the first 100.
-Niter &lt;- Nit &lt;- 100
+Niter &lt;- Nit &lt;- 20
 valid_iters &lt;-  as.numeric(dimnames(RandPar_flbeia)[[1]])[1:Niter]</code></pre>
 <p>The figure below shows the densitites obtained through the random sampling above, after removing the problematic iterations.</p>
 <pre class="r"><code>par(mfrow = c(2,2))
@@ -612,86 +631,6 @@ for(i in 1:Niter){
   Cest[i,]  &lt;- get.par(&quot;logCpred&quot;, mur_rand_fit, exp = TRUE)[,2]
 }</code></pre>
 <pre><code>Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
-Removing zero, negative, and NAs in  C  series    
 Removing zero, negative, and NAs in  C  series    
 Removing zero, negative, and NAs in  C  series    
 Removing zero, negative, and NAs in  C  series    
@@ -1426,7 +1365,6 @@ advice.ctrl.little.pa[[&#39;mur&#39;]][[&#39;ref.pts&#39;]][&#39;Cmax&#39;,]  &l
 [1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  23 
 [1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;****************************** CAPITAL ******************************&quot;
@@ -1447,10 +1385,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  23
 [1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  43 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  56 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  70 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  86 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  14 
 [1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;****************************** CAPITAL ******************************&quot;
@@ -1471,16 +1406,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  86
 [1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  7 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  13 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  33 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  36 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  38 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  49 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  58 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  69 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  73 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  74 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  14 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  16 
 [1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;****************************** CAPITAL ******************************&quot;
@@ -1501,17 +1428,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  74
 [1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  7 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  11 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  2 
 Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  15 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  27 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  35 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  38 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  43 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  46 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  50 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  69 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  70 
 [1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;****************************** CAPITAL ******************************&quot;
@@ -1532,13 +1450,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  70
 [1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  13 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  18 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  46 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  58 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  59 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  64 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  86 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  15 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  16 
 [1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;****************************** CAPITAL ******************************&quot;
@@ -1559,15 +1472,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  86
 [1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  2 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  6 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  27 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  38 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  41 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  77 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  87 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  93 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  96 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  8 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  16 
 [1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;****************************** CAPITAL ******************************&quot;
@@ -1588,19 +1494,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  96
 [1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  1 
 Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  2 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  12 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  13 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  18 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  27 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  30 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  36 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  54 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  64 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  69 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  75 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  83 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  8 
 [1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;****************************** CAPITAL ******************************&quot;
@@ -1631,7 +1526,7 @@ little.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fl
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 0 808.9 0 0 49.03 0 624.9 647.4 423.4 39.78 218.1 41.34 0 157.4 193.9 1176 1425 1.359 409.4 0 192.4 0 0 572.7 262.3 840.9 0 268.5 0 105.3 10.61 0 0 32.95 0 656.6 377.4 0 235.8 603 191.3 316 0 0 72.12 986.9 502.2 465.8 18.62 0 0 158.3 0 5.623 589.8 0 519.6 0 0 10.91 0 0 0 0 385.8 161.8 64.11 0 316.4 0 0 0 4.682 0 402.2 1767 0 921 0 41.94 13.4 63.06 0 390.2 19.45 1065 0 1235 740.7 0 645.2 794.1 0 473.7 0 596.7 443.9 73.92 377.4 1104 ............
+.......... 0 797.7 0 0 0 0 449.9 518.4 481.1 0 194.1 0 0 0 516.6 1160 1715 62.78 703.7 0 ............
 ############################################################
 -                   Year:  39 , Season:  1 
 ############################################################
@@ -1652,7 +1547,7 @@ little.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fl
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 0 1214 0 0 0 0 413.4 929 720.2 47.37 63.28 0 0 115.5 117.5 1552 2556 0 646.7 0 73.57 0 0 1045 542 1755 0 513.9 0 0 0 0 0 0 25.77 847.5 542.7 0 942.4 2053 51.25 422.5 0 0 0 2116 1428 1129 0 0 0 398.1 0 0 929.7 0 1145 0 0 0 0 0 0 0 1023 225.8 0 324.6 390.8 0 0 0 0 0 412.4 2556 0 1735 0 0 0 0 0 333.9 136.4 1106 0 2109 815 0 1381 1395 0 1068 0 867.5 672.5 0 1131 2556 ............
+.......... 0 2144 0 0 0 0 235.9 1036 846.8 0 363.5 0 0 0 607.4 2214 2556 0 1970 0 ............
 ############################################################
 -                   Year:  40 , Season:  1 
 ############################################################
@@ -1673,7 +1568,7 @@ little.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fl
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 0 2383 0 0 0 0 0 1420 1019 1003 7.193 0 0 0 1507 1612 2556 0 2556 0 0 0 0 2270 1315 2556 0 1095 0 0 0 0 0 0 276.1 1846 1577 0 2556 2556 0 1138 0 0 0 2556 2556 2556 0 0 0 1121 0 0 2556 0 2442 0 0 0 0 0 0 0 2556 478.7 0 646.5 531.8 0 0 0 0 0 976 2556 0 2556 0 0 0 0 0 0 386 2556 0 2556 2262 0 2224 2556 0 2556 0 1960 1334 0 2556 2556 ............
+.......... 0 2556 0 0 0 0 0 1707 2144 0 873.3 0 0 94.02 984.7 2556 2556 0 2556 0 ............
 ############################################################
 -                   Year:  41 , Season:  1 
 ############################################################
@@ -1694,7 +1589,7 @@ little.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fl
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 0 2556 0 0 0 0 0 2556 2556 2556 460.2 0 0 662.7 2556 2556 2556 0 2556 0 455.1 0 352.8 2556 2556 2556 1098 2556 0 0 1522 0 475.3 413.3 1234 2556 2556 53.32 2556 2556 764.5 2556 0 0 1319 2556 2556 2556 199.2 0 0 2556 0 964.8 2556 363.6 2556 0 0 0 0 252.6 0 0 2556 1849 0 2435 1102 0 0 0 1229 0 1759 2556 0 2556 0 135.5 0 1036 0 0 2556 2556 639.1 2556 2556 100.7 2556 2556 342.2 2556 2411 2556 1357 1629 2556 2556 ............
+.......... 240.4 2556 243 0 0 0 0 2556 2556 335.5 2556 0 0 2071 2556 2556 2556 0 2556 0 ............
 ############################################################
 -                   Year:  42 , Season:  1 
 ############################################################
@@ -1715,7 +1610,7 @@ little.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fl
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 1390 2556 1570 173.7 376.5 1752 466.5 2556 2556 2556 2543 406.4 0 1379 2556 2556 2556 1015 2556 87.69 2556 566.2 2556 2556 2556 2556 2556 2556 1095 0 2556 398.3 2374 2556 2556 2556 2556 1737 2556 2556 2556 2556 2556 1296 2556 2556 2556 2556 2556 2556 955.1 2556 0 2556 2556 2556 2556 450.1 857.1 0 785.3 740.8 152.7 1240 2556 2556 744.9 2556 2540 0 772.2 1073 2556 472.7 2556 2556 677.6 2556 0 1256 1336 2353 999.7 652.7 2556 2556 1901 2556 2556 2261 2556 2556 2281 2556 2556 2556 1943 2556 2556 2556 ............
+.......... 2353 2556 2206 530.4 525.8 372.8 878.3 2556 2556 1256 2556 918.9 0 2556 2556 2556 2556 186.9 2556 0 ............
 ############################################################
 -                   Year:  43 , Season:  1 
 ############################################################
@@ -1736,7 +1631,7 @@ little.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fl
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 2556 2556 2556 2524 1072 2556 1746 2556 2556 2556 2556 2348 469.6 2556 2556 2556 2556 2556 2556 1372 2556 2556 2556 2556 2556 2556 2556 2556 2556 0 2556 1802 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2333 2556 0 2556 2556 2556 2556 1759 1739 1882 2556 2556 1928 2556 2556 2556 2556 2556 2556 1126 2282 2556 2556 1663 2556 2556 2556 2556 225.8 2310 2556 2556 2556 1707 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 ............
+.......... 2556 2556 2556 1731 2482 1703 1761 2556 2556 2556 2556 2060 0 2556 2556 2556 2556 2008 2556 0 ............
 ############################################################
 -                   Year:  44 , Season:  1 
 ############################################################
@@ -1757,7 +1652,7 @@ little.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fl
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 1863 2556 2556 2556 2556 2556 2267 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 1769 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 214.9 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 1160 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 ............
+.......... 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 1498 2556 2556 2556 2556 2556 2556 1723 ............
 ############################################################
 -                   Year:  45 , Season:  1 
 ############################################################
@@ -1778,7 +1673,7 @@ little.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fl
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 1933 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2495 2556 2556 2556 2556 2389 1116 2556 2556 2556 2485 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2302 2556 2556 2556 2556 2556 2556 2556 2556 2556 1533 2556 2556 2326 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2277 2556 ............
+.......... 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2168 2556 2556 2556 ............
 ############################################################
 -                   Year:  46 , Season:  1 
 ############################################################
@@ -1799,7 +1694,7 @@ little.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fl
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2462 2556 2556 2556 2556 2556 2312 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2131 2556 2556 2556 2556 2556 2556 1500 2556 2556 2311 2556 1032 2196 2556 2556 2556 2486 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2114 2556 2556 2556 2556 2556 2556 2556 2556 2556 1325 2556 2556 2556 2556 2556 2144 2021 2556 2459 2556 2423 2556 2556 860.9 2556 ............
+.......... 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2492 2556 2556 2556 ............
 ############################################################
 -                   Year:  47 , Season:  1 
 ############################################################
@@ -1820,7 +1715,7 @@ little.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fl
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 2556 2556 2556 2556 2140 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2420 2556 2556 2556 2556 2556 1797 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2171 2556 2556 2556 2556 1749 2556 2556 2036 2556 0 2556 2556 2556 2556 1620 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 550.3 2556 2556 2556 2556 2556 2323 756.3 2556 2556 2023 2556 2556 2556 1504 2556 ............
+.......... 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 1842 2556 1961 2556 ............
 ############################################################
 -                   Year:  48 , Season:  1 
 ############################################################
@@ -1859,7 +1754,7 @@ little.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fl
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 ............
+.......... 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 ............
 ############################################################
 -                   Year:  39 , Season:  1 
 ############################################################
@@ -1880,7 +1775,7 @@ little.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fl
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 ............
+.......... 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 ............
 ############################################################
 -                   Year:  40 , Season:  1 
 ############################################################
@@ -1901,7 +1796,7 @@ little.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fl
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 ............
+.......... 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 ............
 ############################################################
 -                   Year:  41 , Season:  1 
 ############################################################
@@ -1922,7 +1817,7 @@ little.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fl
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 ............
+.......... 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 ............
 ############################################################
 -                   Year:  42 , Season:  1 
 ############################################################
@@ -1943,7 +1838,7 @@ little.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fl
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 ............
+.......... 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 ............
 ############################################################
 -                   Year:  43 , Season:  1 
 ############################################################
@@ -1964,7 +1859,7 @@ little.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fl
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 ............
+.......... 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 ............
 ############################################################
 -                   Year:  44 , Season:  1 
 ############################################################
@@ -1975,7 +1870,8 @@ little.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fl
 [1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  94 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  17 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  20 
 [1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;****************************** CAPITAL ******************************&quot;
@@ -1986,7 +1882,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  94
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 ............
+.......... 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 ............
 ############################################################
 -                   Year:  45 , Season:  1 
 ############################################################
@@ -1997,6 +1893,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  94
 [1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  2 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  20 
 [1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;****************************** CAPITAL ******************************&quot;
@@ -2007,7 +1905,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  94
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 ............
+.......... 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 ............
 ############################################################
 -                   Year:  46 , Season:  1 
 ############################################################
@@ -2028,7 +1926,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  94
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 ............
+.......... 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 ............
 ############################################################
 -                   Year:  47 , Season:  1 
 ############################################################
@@ -2039,9 +1937,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  94
 [1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  7 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  23 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  86 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  20 
 [1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;****************************** CAPITAL ******************************&quot;
@@ -2052,7 +1948,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  86
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 ............
+.......... 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 2556 ............
 ############################################################
 -                   Year:  48 , Season:  1 
 ############################################################
@@ -2063,8 +1959,6 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  86
 [1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  79 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  93 
 [1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;****************************** CAPITAL ******************************&quot;
@@ -2094,16 +1988,8 @@ msy.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleet
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 0.8164 0.8749 0.0000 0.7730 1.0462 0.0000 1.0462 0.9846 1.0462 0.7768
- [11] 0.9495 0.9373 0.7651 0.8167 1.0462 1.0462 1.0462 0.8086 0.0000 0.7782
- [21] 0.0000 0.0000 0.0000 1.0462 0.0000 1.0462 0.0000 0.7949 0.0000 0.0000
- [31] 0.0000 0.0000 0.0000 0.0000 0.0000 0.9455 0.9370 0.0000 0.8176 0.8417
- [41] 0.0000 1.0462 0.8044 0.0000 0.0000 0.0000 0.7512 0.8687 0.0000 0.0000
- [51] 0.0000 0.0000 0.0000 0.0000 0.9652 0.0000 0.9275 0.0000 0.9040 0.0000
- [61] 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 1.0462 0.0000 1.0462 0.8048
- [71] 0.0000 0.0000 0.0000 0.0000 1.0462 1.0462 0.0000 1.0462 0.0000 1.0462
- [81] 0.8432 0.0000 0.0000 1.0462 0.0000 1.0462 1.0462 1.0462 1.0462 0.0000
- [91] 1.0410 1.0462 0.0000 1.0462 0.0000 1.0462 1.0462 0.0000 1.0462 0.9153
+ [1] 0.8164 0.8749 0.0000 0.7730 1.0462 0.0000 1.0462 0.9846 1.0462 0.7768
+[11] 0.9495 0.9373 0.7651 0.8167 1.0462 1.0462 1.0462 0.8086 0.0000 0.7782
 ############################################################
 -                   Year:  39 , Season:  1 
 ############################################################
@@ -2124,16 +2010,8 @@ msy.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleet
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 0.7686 1.0462 0.0000 0.0000 0.8327 0.0000 1.0462 1.0462 1.0462 0.7670
- [11] 0.8576 0.0000 0.0000 0.0000 1.0462 1.0462 1.0462 0.0000 1.0462 0.0000
- [21] 0.0000 0.0000 0.0000 1.0462 1.0462 1.0462 0.0000 1.0462 0.0000 0.0000
- [31] 0.0000 0.0000 0.0000 0.0000 0.7816 1.0462 1.0462 0.0000 1.0462 1.0462
- [41] 0.0000 1.0462 0.0000 0.0000 0.0000 1.0462 1.0462 1.0462 0.0000 0.0000
- [51] 0.0000 1.0462 0.0000 0.0000 1.0462 0.0000 1.0462 0.0000 0.0000 0.0000
- [61] 0.0000 0.0000 0.0000 0.0000 1.0462 0.9820 0.9102 0.7669 1.0462 0.0000
- [71] 0.0000 0.0000 0.0000 0.0000 1.0462 1.0462 0.0000 1.0462 0.0000 1.0462
- [81] 0.0000 0.0000 0.0000 1.0462 0.0000 1.0462 1.0462 1.0462 1.0462 0.0000
- [91] 1.0462 1.0462 0.0000 1.0462 0.0000 1.0462 1.0462 0.0000 1.0462 1.0462
+ [1] 0.7513 1.0462 0.0000 0.0000 0.8734 0.0000 1.0462 1.0462 1.0462 0.0000
+[11] 1.0462 0.0000 0.0000 0.9411 1.0462 1.0462 1.0462 0.0000 1.0462 0.0000
 ############################################################
 -                   Year:  40 , Season:  1 
 ############################################################
@@ -2154,16 +2032,8 @@ msy.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleet
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 0.0000 1.0462 0.0000 0.0000 0.0000 0.0000 0.7629 1.0462 1.0462 1.0462
- [11] 0.0000 0.0000 0.0000 0.0000 1.0462 1.0462 1.0462 0.0000 1.0462 0.0000
- [21] 0.0000 0.0000 0.0000 1.0462 1.0462 1.0462 0.0000 1.0462 0.0000 0.0000
- [31] 0.0000 0.0000 0.0000 0.0000 0.9618 1.0462 1.0462 0.0000 1.0462 1.0462
- [41] 0.0000 1.0462 0.0000 0.0000 0.0000 1.0462 1.0462 1.0462 0.0000 0.0000
- [51] 0.0000 1.0462 0.0000 0.0000 1.0462 0.0000 1.0462 0.0000 0.0000 0.0000
- [61] 0.0000 0.0000 0.0000 0.0000 1.0462 1.0462 0.0000 1.0462 1.0462 0.0000
- [71] 0.0000 0.0000 0.0000 0.0000 1.0462 1.0462 0.0000 1.0462 0.0000 0.0000
- [81] 0.0000 0.0000 0.0000 0.0000 0.8206 1.0462 1.0267 1.0462 1.0462 0.0000
- [91] 1.0462 1.0462 0.0000 1.0462 0.0000 1.0462 1.0462 0.0000 1.0462 1.0462
+ [1] 0.000 1.046 0.000 0.000 0.000 0.000 0.000 1.046 1.046 0.000 1.046
+[12] 0.000 0.000 1.046 1.046 1.046 1.046 0.000 1.046 0.000
 ############################################################
 -                   Year:  41 , Season:  1 
 ############################################################
@@ -2184,16 +2054,8 @@ msy.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleet
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 1.0462 1.0462 0.0000 0.0000 0.0000 1.0462 0.9040 1.0462 1.0462 1.0462
- [11] 1.0462 0.9613 0.0000 1.0462 1.0462 1.0462 1.0462 0.9655 1.0462 0.0000
- [21] 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 0.0000
- [31] 1.0462 0.8231 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462
- [41] 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462
- [51] 1.0462 1.0462 0.0000 1.0462 1.0462 1.0462 1.0462 0.8219 0.8470 0.0000
- [61] 0.8431 1.0462 0.0000 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 0.0000
- [71] 0.8353 0.9111 1.0462 0.0000 1.0462 1.0462 1.0462 1.0462 0.0000 1.0462
- [81] 1.0462 1.0462 0.0000 0.9850 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462
- [91] 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462
+ [1] 1.046 1.046 1.046 0.000 0.000 1.046 0.000 1.046 1.046 1.046 1.046
+[12] 1.046 0.000 1.046 1.046 1.046 1.046 0.000 1.046 0.000
 ############################################################
 -                   Year:  42 , Season:  1 
 ############################################################
@@ -2214,16 +2076,8 @@ msy.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleet
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462
- [11] 1.0462 1.0462 0.0000 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 0.8206
- [21] 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462
- [31] 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462
- [41] 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462
- [51] 1.0462 1.0462 0.0000 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 0.8466
- [61] 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 0.0000
- [71] 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462
- [81] 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462
- [91] 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462
+ [1] 1.046 1.046 1.046 1.046 1.046 1.046 0.000 1.046 1.046 1.046 1.046
+[12] 1.046 0.000 1.046 1.046 1.046 1.046 1.046 1.046 0.000
 ############################################################
 -                   Year:  43 , Season:  1 
 ############################################################
@@ -2244,16 +2098,8 @@ msy.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleet
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0457 1.0462 1.0462
- [11] 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 0.8432 1.0462
- [21] 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 0.9665 1.0462 1.0462
- [31] 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0415 1.0462 1.0462 1.0462
- [41] 1.0462 1.0462 1.0462 1.0462 1.0462 0.0000 0.8931 0.9790 1.0462 1.0462
- [51] 1.0462 0.8844 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462
- [61] 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462
- [71] 1.0462 1.0462 1.0462 1.0462 1.0462 0.9092 1.0462 0.0000 1.0462 1.0462
- [81] 1.0462 1.0462 1.0462 1.0462 0.0000 1.0462 1.0462 1.0462 0.9957 1.0462
- [91] 1.0462 0.8145 1.0462 1.0462 1.0462 1.0119 1.0462 1.0462 0.8961 0.9392
+ [1] 1.0462 1.0462 1.0462 1.0462 1.0462 1.0462 0.0000 0.8909 1.0462 1.0462
+[11] 1.0462 1.0462 0.9545 0.9506 1.0462 1.0462 1.0462 1.0462 0.8734 0.0000
 ############################################################
 -                   Year:  44 , Season:  1 
 ############################################################
@@ -2274,16 +2120,8 @@ msy.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleet
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 1.0462 0.0000 1.0462 1.0462 1.0462 1.0462 1.0462 0.0000 1.0462 0.8639
- [11] 1.0462 1.0462 1.0462 1.0462 0.9428 1.0462 0.0000 1.0462 0.0000 1.0462
- [21] 1.0462 1.0462 0.9674 0.0000 0.0000 0.0000 1.0462 0.0000 1.0462 1.0462
- [31] 0.0000 1.0462 1.0462 0.9050 0.8936 1.0462 0.0000 1.0462 0.0000 0.0000
- [41] 1.0462 0.0000 1.0462 1.0462 1.0462 0.0000 0.0000 0.0000 1.0462 0.9161
- [51] 1.0462 0.0000 1.0462 1.0462 0.0000 1.0462 0.0000 1.0462 1.0462 1.0462
- [61] 1.0462 1.0462 1.0462 1.0462 0.0000 0.9477 1.0462 0.8485 1.0462 1.0462
- [71] 1.0462 1.0462 0.9047 1.0462 0.0000 0.0000 1.0462 0.0000 1.0462 1.0462
- [81] 1.0462 1.0324 1.0462 1.0462 0.0000 0.0000 1.0462 0.0000 0.0000 1.0462
- [91] 0.0000 0.0000 1.0157 0.0000 1.0462 0.9528 1.0462 0.9423 0.0000 0.0000
+ [1] 1.0462 0.0000 1.0462 1.0462 1.0462 1.0462 0.8524 0.0000 1.0462 1.0462
+[11] 0.0000 1.0462 1.0462 0.0000 0.8799 1.0462 1.0462 1.0462 0.0000 0.0000
 ############################################################
 -                   Year:  45 , Season:  1 
 ############################################################
@@ -2304,16 +2142,8 @@ msy.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleet
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 0.7996 0.0000 1.0462 1.0462 1.0462 1.0462 1.0462 0.0000 1.0462 0.0000
- [11] 0.0000 0.8642 1.0462 0.8677 0.0000 0.0000 0.0000 1.0462 0.0000 1.0462
- [21] 0.0000 0.9047 0.0000 0.0000 0.0000 0.0000 0.9190 0.0000 0.0000 1.0032
- [31] 0.0000 0.8545 1.0462 0.0000 0.0000 1.0462 0.0000 1.0339 0.0000 1.0049
- [41] 1.0370 0.0000 0.9405 0.9980 0.7921 0.0000 1.0462 0.0000 1.0462 0.0000
- [51] 1.0462 0.0000 1.0462 0.0000 0.0000 0.9006 0.0000 1.0462 1.0462 1.0462
- [61] 1.0462 1.0462 1.0462 1.0462 0.0000 0.0000 1.0462 0.0000 1.0462 1.0462
- [71] 1.0462 1.0462 0.0000 1.0462 0.0000 0.0000 1.0462 0.0000 1.0462 1.0100
- [81] 0.9815 0.0000 1.0462 1.0462 0.0000 0.0000 1.0462 0.0000 0.0000 1.0462
- [91] 0.0000 0.0000 0.0000 0.0000 0.0000 1.0462 1.0462 0.0000 0.0000 0.0000
+ [1] 0.8378 0.0000 0.0000 1.0462 1.0462 0.8656 1.0462 0.0000 1.0462 0.0000
+[11] 0.0000 0.9945 1.0462 0.0000 0.0000 1.0462 1.0462 1.0462 1.0462 1.0462
 ############################################################
 -                   Year:  46 , Season:  1 
 ############################################################
@@ -2334,16 +2164,8 @@ msy.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleet
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 0.0000 0.0000 0.0000 1.0462 1.0462 0.0000 1.0462 0.0000 1.0462 0.0000
- [11] 0.0000 0.0000 1.0462 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 1.0462
- [21] 0.0000 0.8770 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000
- [31] 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000
- [41] 0.0000 0.0000 0.0000 0.0000 0.0000 1.0462 1.0462 1.0462 0.0000 0.0000
- [51] 0.0000 0.0000 1.0462 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.8791
- [61] 1.0462 1.0462 0.9136 0.0000 0.0000 0.0000 0.0000 0.0000 1.0462 1.0462
- [71] 0.0000 1.0462 0.0000 1.0462 0.0000 1.0462 0.0000 1.0462 1.0462 0.0000
- [81] 0.0000 0.0000 0.8079 0.0000 1.0462 0.0000 1.0462 0.9601 0.0000 0.0000
- [91] 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 1.0462 0.0000 0.0000 0.0000
+ [1] 0.000 0.000 0.000 1.046 1.015 1.046 1.046 0.000 1.046 0.000 0.000
+[12] 0.000 1.046 0.957 0.000 1.046 1.046 1.046 1.046 1.046
 ############################################################
 -                   Year:  47 , Season:  1 
 ############################################################
@@ -2364,16 +2186,8 @@ msy.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleet
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 0.000 1.046 0.000 0.000 0.000 0.000 1.046 1.046 1.046 1.046 0.000
- [12] 0.000 1.046 0.000 1.046 0.000 1.046 0.000 1.046 1.046 0.000 0.000
- [23] 0.000 1.046 1.046 1.046 0.000 1.046 0.000 0.000 1.046 0.000 0.000
- [34] 0.000 1.046 1.046 1.046 0.000 1.046 1.046 0.000 1.046 0.000 0.000
- [45] 0.000 1.046 1.046 1.046 0.000 0.000 0.000 1.046 1.046 0.000 1.046
- [56] 0.000 1.046 0.000 0.000 0.000 1.046 1.046 0.000 0.000 1.046 1.046
- [67] 0.000 1.046 1.046 1.046 0.000 1.046 0.000 1.046 1.046 1.046 0.000
- [78] 1.046 0.000 0.000 0.000 0.000 0.000 0.000 1.046 1.046 1.046 1.046
- [89] 1.046 0.000 1.046 1.046 0.000 1.046 0.000 1.046 1.046 0.000 1.046
-[100] 1.046
+ [1] 0.000 1.046 1.046 0.000 0.000 1.046 1.046 1.046 1.046 0.000 1.046
+[12] 0.000 1.046 1.046 1.046 1.046 1.046 0.000 1.046 1.046
 ############################################################
 -                   Year:  48 , Season:  1 
 ############################################################
@@ -2412,16 +2226,8 @@ msy.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleet
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [12] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [23] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [34] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [45] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [56] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [67] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [78] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [89] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
-[100] 1.046
+ [1] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
+[12] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
 ############################################################
 -                   Year:  39 , Season:  1 
 ############################################################
@@ -2442,16 +2248,8 @@ msy.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleet
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [12] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [23] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [34] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [45] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [56] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [67] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [78] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [89] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
-[100] 1.046
+ [1] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
+[12] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
 ############################################################
 -                   Year:  40 , Season:  1 
 ############################################################
@@ -2462,19 +2260,9 @@ msy.bd &lt;- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleet
 [1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  4 
 Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  6 
 Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  10 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  18 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  19 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  26 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  27 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  30 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  31 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  33 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  68 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  86 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  99 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  11 
 [1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;****************************** CAPITAL ******************************&quot;
@@ -2485,16 +2273,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  99
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [12] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [23] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [34] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [45] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [56] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [67] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [78] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [89] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
-[100] 1.046
+ [1] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
+[12] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
 ############################################################
 -                   Year:  41 , Season:  1 
 ############################################################
@@ -2505,12 +2285,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  99
 [1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  5 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  18 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  29 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  31 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  42 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  56 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  7 
 [1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;****************************** CAPITAL ******************************&quot;
@@ -2521,16 +2296,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  56
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [12] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [23] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [34] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [45] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [56] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [67] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [78] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [89] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
-[100] 1.046
+ [1] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
+[12] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
 ############################################################
 -                   Year:  42 , Season:  1 
 ############################################################
@@ -2541,7 +2308,9 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  56
 [1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  72 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  3 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  10 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  20 
 [1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;****************************** CAPITAL ******************************&quot;
@@ -2552,16 +2321,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  72
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [12] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [23] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [34] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [45] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [56] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [67] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [78] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [89] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
-[100] 1.046
+ [1] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
+[12] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
 ############################################################
 -                   Year:  43 , Season:  1 
 ############################################################
@@ -2572,10 +2333,6 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  72
 [1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  3 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  68 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  86 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  93 
 [1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;****************************** CAPITAL ******************************&quot;
@@ -2586,16 +2343,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  93
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [12] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [23] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [34] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [45] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [56] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [67] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [78] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [89] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
-[100] 1.046
+ [1] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
+[12] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
 ############################################################
 -                   Year:  44 , Season:  1 
 ############################################################
@@ -2606,18 +2355,9 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  93
 [1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  13 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  14 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  19 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  26 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  37 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  49 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  53 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  68 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  70 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  72 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  86 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  94 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  5 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  11 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  20 
 [1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;****************************** CAPITAL ******************************&quot;
@@ -2628,16 +2368,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  94
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [12] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [23] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [34] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [45] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [56] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [67] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [78] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [89] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
-[100] 1.046
+ [1] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
+[12] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
 ############################################################
 -                   Year:  45 , Season:  1 
 ############################################################
@@ -2648,18 +2380,6 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  94
 [1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  1 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  7 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  29 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  32 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  35 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  42 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  43 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  55 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  61 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  67 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  90 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  96 
 [1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;****************************** CAPITAL ******************************&quot;
@@ -2670,16 +2390,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  96
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [12] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [23] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [34] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [45] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [56] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [67] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [78] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [89] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
-[100] 1.046
+ [1] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
+[12] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
 ############################################################
 -                   Year:  46 , Season:  1 
 ############################################################
@@ -2690,20 +2402,10 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  96
 [1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  5 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  4 
 Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  7 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  10 
 Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  18 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  31 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  32 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  42 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  64 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  72 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  81 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  82 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  86 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  93 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  94 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  98 
 [1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;****************************** CAPITAL ******************************&quot;
@@ -2714,16 +2416,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  98
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [12] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [23] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [34] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [45] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [56] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [67] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [78] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [89] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
-[100] 1.046
+ [1] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
+[12] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
 ############################################################
 -                   Year:  47 , Season:  1 
 ############################################################
@@ -2734,21 +2428,11 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  98
 [1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  3 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  5 
 Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  7 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  10 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  17 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  14 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  16 
 Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  20 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  28 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  31 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  37 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  39 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  57 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  59 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  61 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  65 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  86 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  93 
 [1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;****************************** CAPITAL ******************************&quot;
@@ -2759,16 +2443,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  93
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [12] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [23] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [34] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [45] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [56] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [67] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [78] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
- [89] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
-[100] 1.046
+ [1] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
+[12] 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046
 ############################################################
 -                   Year:  48 , Season:  1 
 ############################################################
@@ -2779,28 +2455,9 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  93
 [1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  1 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  5 
 Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  7 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  9 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  18 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  19 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  26 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  31 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  34 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  40 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  41 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  42 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  46 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  57 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  68 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  70 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  73 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  81 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  82 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  86 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  90 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  93 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  14 
 [1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;****************************** CAPITAL ******************************&quot;
@@ -2829,7 +2486,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 0 808.9 0 0 49.03 0 624.9 647.4 423.4 39.78 218.1 41.34 0 157.4 193.9 1176 1425 1.359 409.4 0 192.4 0 0 572.7 262.3 840.9 0 268.5 0 105.3 10.61 0 0 32.95 0 656.6 377.4 0 235.8 603 191.3 316 0 0 72.12 986.9 502.2 465.8 18.62 0 0 158.3 0 5.623 589.8 0 519.6 0 0 10.91 0 0 0 0 385.8 161.8 64.11 0 316.4 0 0 0 4.682 0 402.2 1767 0 921 0 41.94 13.4 63.06 0 390.2 19.45 1065 0 1235 740.7 0 645.2 794.1 0 473.7 0 596.7 443.9 73.92 377.4 1104 ............
+.......... 0 797.7 0 0 0 0 449.9 518.4 481.1 0 194.1 0 0 0 516.6 1160 1715 62.78 703.7 0 ............
 ############################################################
 -                   Year:  39 , Season:  1 
 ############################################################
@@ -2850,7 +2507,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 0 1214 0 0 0 0 413.4 929 720.2 47.37 63.28 0 0 115.5 117.5 1552 1826 0 646.7 0 73.57 0 0 1045 542 1755 0 513.9 0 0 0 0 0 0 25.77 847.5 542.7 0 942.4 1826 51.25 422.5 0 0 0 1826 1428 1129 0 0 0 398.1 0 0 929.7 0 1145 0 0 0 0 0 0 0 1023 225.8 0 324.6 390.8 0 0 0 0 0 412.4 1826 0 1735 0 0 0 0 0 333.9 136.4 1106 0 1826 815 0 1381 1395 0 1068 0 867.5 672.5 0 1131 1826 ............
+.......... 0 1826 0 0 0 0 235.9 1036 846.8 0 363.5 0 0 0 607.4 1826 1826 0 1826 0 ............
 ############################################################
 -                   Year:  40 , Season:  1 
 ############################################################
@@ -2871,7 +2528,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 0 1826 0 0 0 0 0 1420 1019 1003 7.193 0 0 0 1507 1612 1826 0 1826 0 0 0 0 1826 1315 1826 0 1095 0 0 0 0 0 0 276.1 1826 1577 0 1826 1826 0 1138 0 0 0 1826 1826 1826 0 0 0 1121 0 0 1826 0 1826 0 0 0 0 0 0 0 1826 478.7 0 646.5 531.8 0 0 0 0 0 976 1826 0 1826 0 0 0 0 0 0 386 1826 0 1826 1826 0 1826 1826 0 1826 0 1826 1334 0 1826 1826 ............
+.......... 0 1826 0 0 0 0 0 1707 1826 0 873.3 0 0 94.02 984.7 1826 1826 0 1826 0 ............
 ############################################################
 -                   Year:  41 , Season:  1 
 ############################################################
@@ -2892,7 +2549,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 0 1826 0 0 0 0 0 1826 1826 1826 460.2 0 0 662.7 1826 1826 1826 0 1826 0 455.1 0 352.8 1826 1826 1826 1098 1826 0 0 1522 0 475.3 413.3 1234 1826 1826 53.32 1826 1826 764.5 1826 0 0 1319 1826 1826 1826 199.2 0 0 1826 0 964.8 1826 363.6 1826 0 0 0 0 252.6 0 0 1826 1826 0 1826 1102 0 0 0 1229 0 1759 1826 0 1826 0 135.5 0 1036 0 0 1826 1826 639.1 1826 1826 100.7 1826 1826 342.2 1826 1826 1826 1357 1629 1826 1826 ............
+.......... 240.4 1826 243 0 0 0 0 1826 1826 335.5 1826 0 0 1826 1826 1826 1826 0 1826 0 ............
 ############################################################
 -                   Year:  42 , Season:  1 
 ############################################################
@@ -2913,7 +2570,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 1390 1826 1570 173.7 376.5 1752 466.5 1826 1826 1826 1826 406.4 0 1379 1826 1826 1826 1015 1826 87.69 1826 566.2 1826 1826 1826 1826 1826 1826 1095 0 1826 398.3 1826 1826 1826 1826 1826 1737 1826 1826 1826 1826 1826 1296 1826 1826 1826 1826 1826 1826 955.1 1826 0 1826 1826 1826 1826 450.1 857.1 0 785.3 740.8 152.7 1240 1826 1826 744.9 1826 1826 0 772.2 1073 1826 472.7 1826 1826 677.6 1826 0 1256 1336 1826 999.7 652.7 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 ............
+.......... 1826 1826 1826 530.4 525.8 372.8 878.3 1826 1826 1256 1826 918.9 0 1826 1826 1826 1826 186.9 1826 0 ............
 ############################################################
 -                   Year:  43 , Season:  1 
 ############################################################
@@ -2934,7 +2591,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 1826 1826 1826 1826 1072 1826 1746 1826 1826 1826 1826 1826 469.6 1826 1826 1826 1826 1826 1826 1372 1826 1826 1826 1826 1826 1826 1826 1826 1826 0 1826 1802 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 0 1826 1826 1826 1826 1759 1739 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1126 1826 1826 1826 1663 1826 1826 1826 1826 225.8 1826 1826 1826 1826 1707 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 ............
+.......... 1826 1826 1826 1731 1826 1703 1761 1826 1826 1826 1826 1826 0 1826 1826 1826 1826 1826 1826 0 ............
 ############################################################
 -                   Year:  44 , Season:  1 
 ############################################################
@@ -2955,7 +2612,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1769 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 214.9 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1160 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 ............
+.......... 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1498 1826 1826 1826 1826 1826 1826 1723 ............
 ############################################################
 -                   Year:  45 , Season:  1 
 ############################################################
@@ -2976,7 +2633,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1116 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 ............
+.......... 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 ............
 ############################################################
 -                   Year:  46 , Season:  1 
 ############################################################
@@ -2997,7 +2654,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 ............
+.......... 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 ............
 ############################################################
 -                   Year:  47 , Season:  1 
 ############################################################
@@ -3018,7 +2675,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 ............
+.......... 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 ............
 ############################################################
 -                   Year:  48 , Season:  1 
 ############################################################
@@ -3057,7 +2714,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 ............
+.......... 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 ............
 ############################################################
 -                   Year:  39 , Season:  1 
 ############################################################
@@ -3078,7 +2735,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 ............
+.......... 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 ............
 ############################################################
 -                   Year:  40 , Season:  1 
 ############################################################
@@ -3099,7 +2756,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 ............
+.......... 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 ............
 ############################################################
 -                   Year:  41 , Season:  1 
 ############################################################
@@ -3120,7 +2777,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 ............
+.......... 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 ............
 ############################################################
 -                   Year:  42 , Season:  1 
 ############################################################
@@ -3141,7 +2798,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 ............
+.......... 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 ............
 ############################################################
 -                   Year:  43 , Season:  1 
 ############################################################
@@ -3162,7 +2819,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 ............
+.......... 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 ............
 ############################################################
 -                   Year:  44 , Season:  1 
 ############################################################
@@ -3183,7 +2840,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 ............
+.......... 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 ............
 ############################################################
 -                   Year:  45 , Season:  1 
 ############################################################
@@ -3204,7 +2861,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 ............
+.......... 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 ............
 ############################################################
 -                   Year:  46 , Season:  1 
 ############################################################
@@ -3225,7 +2882,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 ............
+.......... 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 ............
 ############################################################
 -                   Year:  47 , Season:  1 
 ############################################################
@@ -3246,7 +2903,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-.......... 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 ............
+.......... 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 1826 ............
 ############################################################
 -                   Year:  48 , Season:  1 
 ############################################################
@@ -3285,16 +2942,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 0.7775 0.8332 0.0000 0.7362 0.9964 0.0000 0.9964 0.9377 0.9964 0.7398
- [11] 0.9043 0.8926 0.7287 0.7778 0.9964 0.9964 0.9964 0.7701 0.0000 0.7412
- [21] 0.0000 0.0000 0.0000 0.9964 0.0000 0.9964 0.0000 0.7571 0.0000 0.0000
- [31] 0.0000 0.0000 0.0000 0.0000 0.0000 0.9005 0.8924 0.0000 0.7787 0.8017
- [41] 0.0000 0.9964 0.7661 0.0000 0.0000 0.0000 0.7154 0.8273 0.0000 0.0000
- [51] 0.0000 0.0000 0.0000 0.0000 0.9193 0.0000 0.8834 0.0000 0.8609 0.0000
- [61] 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.9964 0.0000 0.9964 0.7665
- [71] 0.0000 0.0000 0.0000 0.0000 0.9964 0.9964 0.0000 0.9964 0.0000 0.9964
- [81] 0.8030 0.0000 0.0000 0.9964 0.0000 0.9964 0.9964 0.9964 0.9964 0.0000
- [91] 0.9915 0.9964 0.0000 0.9964 0.0000 0.9964 0.9964 0.0000 0.9964 0.8717
+ [1] 0.7775 0.8332 0.0000 0.7362 0.9964 0.0000 0.9964 0.9377 0.9964 0.7398
+[11] 0.9043 0.8926 0.7287 0.7778 0.9964 0.9964 0.9964 0.7701 0.0000 0.7412
 ############################################################
 -                   Year:  39 , Season:  1 
 ############################################################
@@ -3315,16 +2964,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 0.7320 0.9964 0.0000 0.0000 0.7931 0.0000 0.9964 0.9964 0.9964 0.7305
- [11] 0.8168 0.0000 0.0000 0.0000 0.9964 0.9964 0.9964 0.0000 0.9964 0.0000
- [21] 0.0000 0.0000 0.0000 0.9964 0.9964 0.9964 0.0000 0.9964 0.0000 0.0000
- [31] 0.0000 0.0000 0.0000 0.0000 0.7444 0.9964 0.9964 0.0000 0.9964 0.9964
- [41] 0.0000 0.9964 0.0000 0.0000 0.0000 0.9964 0.9964 0.9964 0.0000 0.0000
- [51] 0.0000 0.9964 0.0000 0.0000 0.9964 0.0000 0.9964 0.0000 0.0000 0.0000
- [61] 0.0000 0.0000 0.0000 0.0000 0.9964 0.9352 0.8669 0.7304 0.9964 0.0000
- [71] 0.0000 0.0000 0.0000 0.0000 0.9964 0.9964 0.0000 0.9964 0.0000 0.9964
- [81] 0.0000 0.0000 0.0000 0.9964 0.0000 0.9964 0.9964 0.9964 0.9964 0.0000
- [91] 0.9964 0.9964 0.0000 0.9964 0.0000 0.9964 0.9964 0.0000 0.9964 0.9964
+ [1] 0.7155 0.9964 0.0000 0.0000 0.8318 0.0000 0.9964 0.9964 0.9964 0.0000
+[11] 0.9964 0.0000 0.0000 0.8963 0.9964 0.9964 0.9964 0.0000 0.9964 0.0000
 ############################################################
 -                   Year:  40 , Season:  1 
 ############################################################
@@ -3345,16 +2986,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 0.0000 0.9964 0.0000 0.0000 0.0000 0.0000 0.7266 0.9964 0.9964 0.9964
- [11] 0.0000 0.0000 0.0000 0.0000 0.9964 0.9964 0.9964 0.0000 0.9964 0.0000
- [21] 0.0000 0.0000 0.0000 0.9964 0.9964 0.9964 0.0000 0.9964 0.0000 0.0000
- [31] 0.0000 0.0000 0.0000 0.0000 0.9160 0.9964 0.9964 0.0000 0.9964 0.9964
- [41] 0.0000 0.9964 0.0000 0.0000 0.0000 0.9964 0.9964 0.9964 0.0000 0.0000
- [51] 0.0000 0.9964 0.0000 0.0000 0.9964 0.0000 0.9964 0.0000 0.0000 0.0000
- [61] 0.0000 0.0000 0.0000 0.0000 0.9964 0.9964 0.0000 0.9964 0.9964 0.0000
- [71] 0.0000 0.0000 0.0000 0.0000 0.9964 0.9964 0.0000 0.9964 0.0000 0.0000
- [81] 0.0000 0.0000 0.0000 0.0000 0.7815 0.9964 0.9778 0.9964 0.9964 0.0000
- [91] 0.9964 0.9964 0.0000 0.9964 0.0000 0.9964 0.9964 0.0000 0.9964 0.9964
+ [1] 0.0000 0.9964 0.0000 0.0000 0.0000 0.0000 0.0000 0.9964 0.9964 0.0000
+[11] 0.9964 0.0000 0.0000 0.9964 0.9964 0.9964 0.9964 0.0000 0.9964 0.0000
 ############################################################
 -                   Year:  41 , Season:  1 
 ############################################################
@@ -3375,16 +3008,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 0.9964 0.9964 0.0000 0.0000 0.0000 0.9964 0.9340 0.9964 0.9964 0.9964
- [11] 0.9964 0.9272 0.0000 0.9964 0.9964 0.9964 0.9964 0.9283 0.9964 0.0000
- [21] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.0000
- [31] 0.9964 0.7839 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [41] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [51] 0.9964 0.9964 0.0000 0.9964 0.9964 0.9964 0.9964 0.7828 0.8167 0.0000
- [61] 0.8029 0.9964 0.0000 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.0000
- [71] 0.7955 0.8677 0.9964 0.0000 0.9964 0.9964 0.9964 0.9964 0.0000 0.9964
- [81] 0.9964 0.9964 0.0000 0.9666 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [91] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
+ [1] 0.9964 0.9964 0.9964 0.0000 0.0000 0.9964 0.0000 0.9964 0.9964 0.9964
+[11] 0.9964 0.9964 0.0000 0.9964 0.9964 0.9964 0.9964 0.0000 0.9964 0.0000
 ############################################################
 -                   Year:  42 , Season:  1 
 ############################################################
@@ -3405,16 +3030,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [11] 0.9964 0.9964 0.0000 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.8205
- [21] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [31] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [41] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [51] 0.9964 0.9964 0.0000 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.8063
- [61] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.0000
- [71] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [81] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [91] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
+ [1] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.0000 0.9964 0.9964 0.9964
+[11] 0.9964 0.9964 0.0000 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.0000
 ############################################################
 -                   Year:  43 , Season:  1 
 ############################################################
@@ -3435,16 +3052,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9940 0.9964 0.9964
- [11] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.8011 0.9964
- [21] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9194 0.9964 0.9964
- [31] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9909 0.9964 0.9964 0.9964
- [41] 0.9964 0.9964 0.9964 0.9964 0.9964 0.7206 0.8500 0.9312 0.9964 0.9964
- [51] 0.9964 0.8421 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [61] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [71] 0.9964 0.9964 0.9964 0.9964 0.9964 0.8796 0.9964 0.7152 0.9964 0.9964
- [81] 0.9964 0.9964 0.9964 0.9964 0.0000 0.9964 0.9964 0.9964 0.9477 0.9964
- [91] 0.9964 0.7881 0.9964 0.9964 0.9964 0.9614 0.9964 0.9964 0.8588 0.8971
+ [1] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.0000 0.8448 0.9964 0.9964
+[11] 0.9964 0.9964 0.9964 0.9068 0.9964 0.9964 0.9964 0.9964 0.8310 0.0000
 ############################################################
 -                   Year:  44 , Season:  1 
 ############################################################
@@ -3465,16 +3074,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 0.9964 0.0000 0.9964 0.9964 0.9964 0.9964 0.9964 0.0000 0.9964 0.8814
- [11] 0.9964 0.9964 0.9964 0.9964 0.9647 0.9964 0.7932 0.9964 0.0000 0.9964
- [21] 0.9964 0.9964 0.9213 0.0000 0.0000 0.0000 0.9964 0.0000 0.9964 0.9964
- [31] 0.0000 0.9964 0.9964 0.8619 0.8905 0.9964 0.0000 0.9964 0.0000 0.0000
- [41] 0.9964 0.7196 0.9964 0.9964 0.9964 0.0000 0.0000 0.0000 0.9964 0.8725
- [51] 0.9964 0.0000 0.9964 0.9964 0.0000 0.9964 0.0000 0.9964 0.9964 0.9964
- [61] 0.9964 0.9964 0.9964 0.9964 0.0000 0.9539 0.9964 0.8551 0.9964 0.9964
- [71] 0.9964 0.9964 0.8616 0.9964 0.0000 0.0000 0.9964 0.0000 0.9964 0.9964
- [81] 0.9964 0.9833 0.9964 0.9964 0.0000 0.7405 0.9964 0.0000 0.0000 0.9964
- [91] 0.0000 0.0000 0.9673 0.0000 0.9964 0.9062 0.9964 0.8974 0.0000 0.0000
+ [1] 0.9964 0.0000 0.9964 0.9964 0.9964 0.9964 0.8258 0.0000 0.9964 0.9964
+[11] 0.0000 0.9964 0.9964 0.0000 0.8984 0.9964 0.9964 0.9964 0.0000 0.0000
 ############################################################
 -                   Year:  45 , Season:  1 
 ############################################################
@@ -3495,16 +3096,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 0.8133 0.0000 0.9964 0.9964 0.9964 0.9964 0.9964 0.0000 0.9964 0.0000
- [11] 0.7199 0.8511 0.9964 0.8916 0.0000 0.0000 0.8729 0.9964 0.0000 0.9964
- [21] 0.0000 0.9090 0.0000 0.0000 0.0000 0.0000 0.9254 0.0000 0.0000 0.9964
- [31] 0.0000 0.8464 0.9964 0.0000 0.0000 0.9964 0.0000 0.9964 0.0000 0.9964
- [41] 0.9964 0.0000 0.9324 0.9876 0.8211 0.0000 0.9964 0.0000 0.9964 0.0000
- [51] 0.9964 0.0000 0.9964 0.0000 0.0000 0.9024 0.0000 0.9964 0.9964 0.9964
- [61] 0.9964 0.9964 0.9964 0.9964 0.0000 0.0000 0.9964 0.0000 0.9964 0.9964
- [71] 0.9964 0.9964 0.0000 0.9964 0.0000 0.0000 0.9964 0.9290 0.9964 0.9964
- [81] 0.9759 0.0000 0.9964 0.9964 0.0000 0.0000 0.9964 0.0000 0.0000 0.9964
- [91] 0.0000 0.0000 0.0000 0.0000 0.0000 0.9964 0.9964 0.0000 0.0000 0.0000
+ [1] 0.8460 0.0000 0.7726 0.9964 0.9964 0.9964 0.9964 0.0000 0.9964 0.0000
+[11] 0.0000 0.9894 0.9964 0.0000 0.0000 0.9964 0.9964 0.9964 0.9964 0.9964
 ############################################################
 -                   Year:  46 , Season:  1 
 ############################################################
@@ -3525,16 +3118,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 0.0000 0.0000 0.0000 0.9964 0.9964 0.0000 0.9964 0.0000 0.9964 0.0000
- [11] 0.0000 0.0000 0.9964 0.0000 0.0000 0.0000 0.9964 0.0000 0.0000 0.9964
- [21] 0.0000 0.9634 0.0000 0.0000 0.0000 0.0000 0.0000 0.7580 0.0000 0.0000
- [31] 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000
- [41] 0.0000 0.0000 0.0000 0.0000 0.0000 0.9964 0.9964 0.9964 0.0000 0.0000
- [51] 0.0000 0.0000 0.9964 0.0000 0.0000 0.0000 0.0000 0.9964 0.0000 0.8661
- [61] 0.9964 0.9964 0.9209 0.0000 0.0000 0.0000 0.0000 0.0000 0.9964 0.9964
- [71] 0.9964 0.9964 0.0000 0.9964 0.0000 0.9964 0.0000 0.9964 0.9964 0.0000
- [81] 0.0000 0.0000 0.8301 0.0000 0.9964 0.0000 0.9964 0.9964 0.0000 0.0000
- [91] 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.9964 0.0000 0.0000 0.0000
+ [1] 0.0000 0.0000 0.0000 0.9964 0.9964 0.9964 0.9964 0.7125 0.9964 0.0000
+[11] 0.0000 0.0000 0.9964 0.9712 0.0000 0.9964 0.9964 0.9964 0.9964 0.9964
 ############################################################
 -                   Year:  47 , Season:  1 
 ############################################################
@@ -3555,16 +3140,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 0.0000 0.9964 0.0000 0.0000 0.0000 0.0000 0.9964 0.9964 0.9964 0.9964
- [11] 0.0000 0.0000 0.9964 0.0000 0.9964 0.0000 0.9964 0.0000 0.9964 0.9964
- [21] 0.0000 0.0000 0.0000 0.9964 0.9964 0.9964 0.0000 0.9964 0.0000 0.0000
- [31] 0.9964 0.0000 0.0000 0.0000 0.9964 0.9964 0.9964 0.0000 0.9964 0.9964
- [41] 0.0000 0.9964 0.0000 0.0000 0.0000 0.9964 0.9964 0.9964 0.0000 0.0000
- [51] 0.0000 0.9964 0.9964 0.0000 0.9964 0.0000 0.9964 0.0000 0.0000 0.0000
- [61] 0.9964 0.9964 0.0000 0.0000 0.9964 0.8897 0.0000 0.9964 0.9964 0.9964
- [71] 0.9964 0.9964 0.0000 0.9964 0.9964 0.9964 0.0000 0.9964 0.9964 0.0000
- [81] 0.0000 0.0000 0.0000 0.0000 0.9964 0.9964 0.9964 0.9964 0.9964 0.0000
- [91] 0.9964 0.9964 0.0000 0.9964 0.0000 0.9964 0.9964 0.0000 0.9964 0.9964
+ [1] 0.0000 0.9964 0.9964 0.0000 0.0000 0.9964 0.9964 0.9964 0.9964 0.0000
+[11] 0.9964 0.0000 0.9964 0.9964 0.9964 0.9964 0.9964 0.0000 0.9964 0.9964
 ############################################################
 -                   Year:  48 , Season:  1 
 ############################################################
@@ -3603,16 +3180,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [11] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [21] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [31] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [41] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [51] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [61] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [71] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [81] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [91] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
+ [1] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
+[11] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
 ############################################################
 -                   Year:  39 , Season:  1 
 ############################################################
@@ -3633,16 +3202,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [11] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [21] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [31] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [41] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [51] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [61] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [71] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [81] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [91] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
+ [1] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
+[11] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
 ############################################################
 -                   Year:  40 , Season:  1 
 ############################################################
@@ -3653,17 +3214,10 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 [1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  6 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  19 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  22 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  31 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  44 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  49 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  68 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  78 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  86 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  87 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  99 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  9 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  10 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  11 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  12 
 [1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;****************************** CAPITAL ******************************&quot;
@@ -3674,16 +3228,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  99
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [11] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [21] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [31] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [41] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [51] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [61] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [71] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [81] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [91] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
+ [1] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
+[11] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
 ############################################################
 -                   Year:  41 , Season:  1 
 ############################################################
@@ -3694,12 +3240,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  99
 [1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  5 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  18 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  29 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  31 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  42 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  56 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  7 
 [1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;****************************** CAPITAL ******************************&quot;
@@ -3710,16 +3251,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  56
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [11] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [21] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [31] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [41] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [51] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [61] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [71] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [81] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [91] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
+ [1] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
+[11] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
 ############################################################
 -                   Year:  42 , Season:  1 
 ############################################################
@@ -3730,10 +3263,6 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  56
 [1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  7 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  63 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  77 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95 
 [1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;****************************** CAPITAL ******************************&quot;
@@ -3744,16 +3273,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [11] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [21] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [31] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [41] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [51] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [61] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [71] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [81] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [91] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
+ [1] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
+[11] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
 ############################################################
 -                   Year:  43 , Season:  1 
 ############################################################
@@ -3764,13 +3285,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95
 [1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  7 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  31 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  41 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  42 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  56 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  65 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  94 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  20 
 [1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;****************************** CAPITAL ******************************&quot;
@@ -3781,16 +3296,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  94
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [11] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [21] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [31] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [41] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [51] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [61] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [71] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [81] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [91] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
+ [1] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
+[11] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
 ############################################################
 -                   Year:  44 , Season:  1 
 ############################################################
@@ -3801,14 +3308,6 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  94
 [1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  1 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  3 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  7 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  52 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  58 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  63 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  86 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  93 
 [1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;****************************** CAPITAL ******************************&quot;
@@ -3819,16 +3318,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  93
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [11] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [21] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [31] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [41] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [51] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [61] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [71] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [81] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [91] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
+ [1] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
+[11] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
 ############################################################
 -                   Year:  45 , Season:  1 
 ############################################################
@@ -3839,17 +3330,6 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  93
 [1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  7 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  8 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  10 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  11 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  16 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  39 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  56 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  64 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  67 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  68 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  93 
 [1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;****************************** CAPITAL ******************************&quot;
@@ -3860,16 +3340,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  93
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [11] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [21] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [31] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [41] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [51] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [61] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [71] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [81] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [91] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
+ [1] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
+[11] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
 ############################################################
 -                   Year:  46 , Season:  1 
 ############################################################
@@ -3881,13 +3353,7 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  93
 [1] &quot;fl&quot;
 [1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
 Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  7 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  26 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  41 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  43 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  82 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  84 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  89 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  93 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  14 
 [1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;****************************** CAPITAL ******************************&quot;
@@ -3898,16 +3364,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  93
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [11] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [21] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [31] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [41] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [51] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [61] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [71] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [81] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [91] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
+ [1] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
+[11] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
 ############################################################
 -                   Year:  47 , Season:  1 
 ############################################################
@@ -3918,21 +3376,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  93
 [1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  7 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  9 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  22 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  23 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  31 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  37 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  48 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  51 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  54 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  61 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  65 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  66 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  69 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  86 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  93 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  13 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  14 
 [1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;****************************** CAPITAL ******************************&quot;
@@ -3943,16 +3388,8 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  93
 ------------ ASSESSMENT MODEL ------------
 ----------------- ADVICE -----------------
 -----------------  mur  -----------------
-  [1] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [11] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [21] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [31] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [41] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [51] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [61] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [71] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [81] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
- [91] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
+ [1] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
+[11] 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964 0.9964
 ############################################################
 -                   Year:  48 , Season:  1 
 ############################################################
@@ -3963,28 +3400,10 @@ Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  93
 [1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  1 
 Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  2 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  5 
 Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  7 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  11 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  17 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  31 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  43 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  45 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  48 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  53 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  61 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  63 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  68 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  69 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  73 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  79 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  82 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  84 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  92 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  93 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  94 
-Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  95 
+Ba*cth &lt; Ca, for some &quot;a&quot; in stock mur , and iteration  20 
 [1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
 [1] &quot;fl&quot;
 [1] &quot;****************************** CAPITAL ******************************&quot;
@@ -4019,7 +3438,7 @@ p &lt;- ggplot(subset(bioQ, indicator == id), aes(x=year, y=q50, ymin=q05, ymax=
   geom_hline(yintercept= advice.ctrl.msy$mur$ref.pts[&#39;Btrigger&#39;,1]) 
 print(p)</code></pre>
 <div class="figure" style="text-align: center">
-<img src="Data_Poor_MSE_in_FLBEIA_files/figure-html/unnamed-chunk-30-1.png" alt="Biomass time series obtained in each of the scenarios. The shaded area correspond with the 90% confidence interval." width="604.724409448819" />
+<img src="Data_Poor_MSE_in_FLBEIA_files/figure-html/unnamed-chunk-31-1.png" alt="Biomass time series obtained in each of the scenarios. The shaded area correspond with the 90% confidence interval." width="604.724409448819" />
 <p class="caption">
 Biomass time series obtained in each of the scenarios. The shaded area correspond with the 90% confidence interval.
 </p>
@@ -4035,7 +3454,7 @@ p &lt;- ggplot(subset(bioQ, indicator == id), aes(x=year, y=q50, ymin=q05, ymax=
   geom_hline(yintercept= advice.ctrl.msy$mur$ref.pts[&#39;Btrigger&#39;,1]) 
 print(p)</code></pre>
 <div class="figure" style="text-align: center">
-<img src="Data_Poor_MSE_in_FLBEIA_files/figure-html/unnamed-chunk-31-1.png" alt="Catch time series obtained in each of the scenarios. The shaded area correspond with the 90% confidence interval." width="604.724409448819" />
+<img src="Data_Poor_MSE_in_FLBEIA_files/figure-html/unnamed-chunk-32-1.png" alt="Catch time series obtained in each of the scenarios. The shaded area correspond with the 90% confidence interval." width="604.724409448819" />
 <p class="caption">
 Catch time series obtained in each of the scenarios. The shaded area correspond with the 90% confidence interval.
 </p>
@@ -4050,7 +3469,7 @@ p &lt;- ggplot(subset(advQ, indicator == id), aes(x=year, y=q50, ymin=q05, ymax=
   geom_hline(yintercept= advice.ctrl.msy$mur$ref.pts[&#39;Btrigger&#39;,1]) 
 print(p)</code></pre>
 <div class="figure" style="text-align: center">
-<img src="Data_Poor_MSE_in_FLBEIA_files/figure-html/unnamed-chunk-32-1.png" alt="TAC advice time series obtained in each of the scenarios. The shaded area correspond with the 90% confidence interval." width="604.724409448819" />
+<img src="Data_Poor_MSE_in_FLBEIA_files/figure-html/unnamed-chunk-33-1.png" alt="TAC advice time series obtained in each of the scenarios. The shaded area correspond with the 90% confidence interval." width="604.724409448819" />
 <p class="caption">
 TAC advice time series obtained in each of the scenarios. The shaded area correspond with the 90% confidence interval.
 </p>
@@ -4077,7 +3496,7 @@ TAC advice time series obtained in each of the scenarios. The shaded area corres
 <li>FLBEIA: 1.15.1</li>
 <li>spict: 1.1</li>
 <li>fishmethods: 1.10.3</li>
-<li><strong>Compiled</strong>: Mon Oct 2 11:01:10 2017</li>
+<li><strong>Compiled</strong>: Mon Oct 2 13:26:44 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">

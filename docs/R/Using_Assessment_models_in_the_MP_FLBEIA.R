@@ -7,7 +7,7 @@ knitr::opts_chunk$set(fig.align='center',
 options(width=50)
 set.seed(1423)
 
-## ----echo=FALSE, out.width='10%'-----------------------------------------
+## ----echo=FALSE, out.width='20%'-----------------------------------------
 include_graphics('images/FLBEIA_logo.png')
 
 ## ---- eval=FALSE---------------------------------------------------------

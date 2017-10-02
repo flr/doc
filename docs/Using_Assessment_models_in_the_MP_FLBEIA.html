@@ -285,6 +285,24 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-cogs"></span>
+     
+    FLBEIA
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">An introduction to MSE using FLR</li>
+    <li class="dropdown-header">Conditioning FLBEIA using Smart Conditioning Functions</li>
+    <li class="dropdown-header">A simple example on how to use FLBEIA</li>
+    <li class="dropdown-header">A simple example with multiple dimensions in FLBEIA</li>
+    <li class="dropdown-header">Using Stock Assessment models in the Managemnt procedure of FLBEIA</li>
+    <li class="dropdown-header">Testing different Management Strategies in FLBEIA</li>
+    <li class="dropdown-header">Data Limited MSE in FLBEIA</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     <span class="fa fa-area-chart"></span>
      
     Plotting
@@ -337,10 +355,10 @@ $(document).ready(function () {
 </div>
 
 
-<p><img src="images/FLBEIA_logo.png" width="10%" style="display: block; margin: auto;" /></p>
+<p><img src="images/FLBEIA_logo.png" width="20%" style="display: block; margin: auto;" /></p>
 <div id="aim" class="section level1">
 <h1>Aim</h1>
-<p><strong>FLBEIA</strong> <span class="citation">[@garcia2017]</span> provides a battery of tutorials for learning how to use this software. This is the thirth tutorial of <strong>FLBEIA</strong> and it is a practical guide about how to implement different assessment models within <strong>FLBEIA</strong>.</p>
+<p><strong>FLBEIA</strong> <span class="citation">(Garcia et al. 2017)</span> provides a battery of tutorials for learning how to use this software. This is the thirth tutorial of <strong>FLBEIA</strong> and it is a practical guide about how to implement different assessment models within <strong>FLBEIA</strong>.</p>
 <p>In this tutorial they are presented some examples on how to include different assessment models in the management procedure to generate the observed population.</p>
 <p>The Management Procedure Model (MPM) is divided into 3 components: the observation, the assessment and the management advice. The observation component produces the required data to run the assessment. Then, the assessment component is applied to those data to obtain the observed populations. Finally, the management advice component produces a management advice based on the observed populations. MPM procedure is applied yearly in the appropriate season of the year. Not necessarily in the last season, for example, it can be simulated as in the case of anchovy in the Bay of Biscay, where management is applied from the mid-season of one year to the mid-season of the next year. Simulations with multi-annual advice is also possible.</p>
 <p>The exact way to define the objects used to set the simulation is described in the <strong>FLBEIA</strong> manual. This manual can be downloaded from <a href="https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf">GitHub</a>, within the ‘doc’ folder of the package installation or typing <code>help(package = FLBEIA)</code> in the R console. Nevertheless, the objects to set the simulation doesn’t need to be defined for the following examples, as the dataset <code>one</code> from the FLBEIA package will be used. For details on these objects, see tutorial on FLBEIA - Simple example. <!-- [FLBEIA tutorial 2]+++LINK+++. --></p>
@@ -408,7 +426,7 @@ library(ggplotFL)</code></pre>
 <div id="description" class="section level2">
 <h2>Description</h2>
 <p>This example represents a simulation without assessment in the Management Procedure (MP).</p>
-<p>In this case, the Operating Model (OM) runs annually and it is formed by a single age-structured stock and an unique fleet which activity is performed in an unique metier. In the Management Procedure (MP), the fleet dynamics is assumed to be a Simple Mixed Fisheries behaviour (for details, see information on SMFB function in the <a href="https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf"><strong>FLBEIA</strong> manual</a>, the stock is observed without error, there is not assessment carried out and the ICES HCR <span class="citation">[@ices2009]</span> is used to set the TAC yearly.</p>
+<p>In this case, the Operating Model (OM) runs annually and it is formed by a single age-structured stock and an unique fleet which activity is performed in an unique metier. In the Management Procedure (MP), the fleet dynamics is assumed to be a Simple Mixed Fisheries behaviour (for details, see information on SMFB function in the <a href="https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf"><strong>FLBEIA</strong> manual</a>, the stock is observed without error, there is not assessment carried out and the ICES HCR <span class="citation">(ICES 2009)</span> is used to set the TAC yearly.</p>
 <p>All the objects have 3 iterations and uncertainty in the projections comes exclusively from the generation of the new incoming recruitments.</p>
 <ul>
 <li>Operating model:
@@ -471,7 +489,7 @@ plot( FLStocks(real=stk1.om0, obs=stk1.mp0)) + theme(legend.position=&quot;top&q
 <h1>Example 1: SPiCT assessment</h1>
 <div id="description-1" class="section level2">
 <h2>Description</h2>
-<p>This example shows how to use SPiCT assessment <span class="citation">[@pedersen2016]</span> to obtain the observed populations in the Management Procedure (MP).</p>
+<p>This example shows how to use SPiCT assessment <span class="citation">(Pedersen and Berg 2016)</span> to obtain the observed populations in the Management Procedure (MP).</p>
 <p>Currently there is an R package called <strong>spict</strong> that provides the framework to fit a surplus production model in R using fisheries catch and biomass index data, specifically the model is a Stochastic suplus Production model in Continuous-Time (SPiCT).</p>
 <p><code>fit.spict</code> is the function to fit a contiunuous-time surplus production model to data using the TMB package. Following arguments are required:</p>
 <ul>
@@ -591,7 +609,7 @@ print(p)</code></pre>
 <h1>Example 2: Statistical Catch-at-Age assessment</h1>
 <div id="description-2" class="section level2">
 <h2>Description</h2>
-<p>This example shows how to carry out an assessment using an Statistical Catch-at-Age method <span class="citation">[@millar2015]</span> to obtain the observed populations in the Management Procedure (MP).</p>
+<p>This example shows how to carry out an assessment using an Statistical Catch-at-Age method <span class="citation">(Millar and Jardim 2015)</span> to obtain the observed populations in the Management Procedure (MP).</p>
 <p>Currently there is an R package called <strong>FLa4a</strong> that provides a simple and robust statistical Catch at Age model that is specifically designed for stocks with intermediate levels of data quantity and quality. ???sca??? is the User interface to the statistical catch-at-age method of the a4a stock assessment framework. Following arguments are required: * stock : An FLStock object to be used for the analysis * indices: An FLIndices object holding the indices of abundance to consider in the model * fmodel : A formula object depicting the model for log fishing mortality at age * qmodel : A list of formula objects depicting the models for log survey catchability at age * srmodel: A formula object depicting the model for log recruitment * fit : Character with type of fit: ‘MP’ or ‘assessment’; the former does not require the hessian to be computed, while the latter does.</p>
 <p>For more details, type ``<code>?sca</code> in the R console.</p>
 <p>Within <strong>FLBEIA</strong> these arguments are given to the function through the assess.ctrl object, which is a named list with the names of the stocks and the following components for each stock: * assess.model: character with the name of the assessment model or ‘NoAssessment’. To do the call to <code>sca```, this argument has to be set to</code>sca2flbeia<code>,     wich is an FLBEIA function that links the inputs and outputs of `sca` function     with **FLBEIA** and calls to `sca` function. * control: control object, which depends on the selected assessment model.     That is a list with the controls required for sca assessment, these are `fmod</code>, <code>qmod</code> and <code>srmod</code>.</p>
@@ -705,7 +723,7 @@ $idAge$indObs.model
 <h1>Example 3: XSA assessment</h1>
 <div id="description-3" class="section level2">
 <h2>Description</h2>
-<p>This example shows how to use XSA assessment <span class="citation">[@darby1994,@shepherd1997,@shepherd1999]</span> to obtain the observed populations in the Management Procedure (MP).</p>
+<p>This example shows how to use XSA assessment <span class="citation">(Darby, Flatman, and Research 1994,<span class="citation">J. G. Shepherd (1997)</span>,<span class="citation">J. Shepherd (1999)</span>)</span> to obtain the observed populations in the Management Procedure (MP).</p>
 <p>Currently there is an R package called <strong>FLXSA</strong> that provides the framework to perform eXtended Survivor Analysis in FLR. ???FLXSA??? is the function to run an XSA analysis and creates an FLXSA object used to analyse its results. Following arguments are required: * stock : An FLStock object to be used for the analysis * indices: An FLIndices object holding the indices of abundance to consider in the model * control: An FLXSA.control object giving parameters of the model (see FLXSA.control) * desc : A short description of this analysis For more details, type <code>?FLXSA</code> in the R console.</p>
 <p>Within <strong>FLBEIA</strong> these arguments are given to the function through the assess.ctrl object, which is a named list with the names of the stocks and the following components for each stock: * assess.model: character with the name of the assessment model or ‘NoAssessment’. To do the call to <code>FLXSA</code>, this argument has to be set to <code>FLXSA2flbeia</code>, wich is an FLBEIA function that links the inputs and outputs of <code>FLXSA</code> function with <strong>FLBEIA</strong> and calls to <code>FLXSA</code> function. * control: control object, which depends on the selected assessment model. That is FLXSA.control() for XSA assessment. The FLXSA.control function creates a new control object required by XSA model. For more details see the FLR tutorial on Stock assessment using eXtended Survivors Analysis with FLXSA (<a href="http://www.flr-project.org/doc/Stock_assessment_using_eXtended_Survivors_Analysis_with_FLXSA.html">link</a>) . In this case, the default parameter values will be used.</p>
 <p>We load the FLXSA library.</p>
@@ -821,7 +839,7 @@ plot( FLStocks(real=stk1.om3, obs=stk1.mp3)) + theme(legend.position=&quot;top&q
 <li>FLXSA: 2.5.20140808</li>
 <li>ggplotFL: 2.6.2</li>
 <li>ggplot2: 2.2.1</li>
-<li><strong>Compiled</strong>: Mon Oct 2 11:13:30 2017</li>
+<li><strong>Compiled</strong>: Mon Oct 2 11:50:02 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">
@@ -831,6 +849,29 @@ plot( FLStocks(real=stk1.om3, obs=stk1.mp3)) + theme(legend.position=&quot;top&q
 <div id="author-information" class="section level2">
 <h2>Author information</h2>
 <p><strong>FLBEIA team</strong>. AZTI. Marine Reserach Unit. Txatxarramendi Ugartea z/g, 48395, Sukarrieta, Basque Country, Spain. <strong>Mail</strong> <a href="mailto:flbeia@azti.es">flbeia@azti.es</a></p>
+<div id="refs" class="references">
+<div id="ref-darby1994">
+<p>Darby, C.D., S. Flatman, and Great Britain. Directorate of Fisheries Research. 1994. <em>Virtual Population Analysis: Version 3.1 (Windows/Dos) User Guide</em>. Info. Tech. Ser. Lowestoft: Great Britain, Ministry of Agriculture, Fisheries; Food, Directorate of Fisheries Research.</p>
+</div>
+<div id="ref-garcia2017">
+<p>Garcia, Dorleta, Sonia Sánchez, Raúl Prellezo, Agurtzane Urtizberea, and Marga Andrés. 2017. “FLBEIA: A Simulation Model to Conduct Bio-Economic Evaluation of Fisheries Management Strategies.” <em>SoftwareX</em> 6: 141–47.</p>
+</div>
+<div id="ref-ices2009">
+<p>ICES. 2009. “Chair’s Report of the Workshop on the Form of Advice (Wkform).” ICES CM 2009/ACOM:53.</p>
+</div>
+<div id="ref-millar2015">
+<p>Millar, Colin, and Ernesto Jardim. 2015. “A4a: A Flexible and Robust Stock Assessment Framework. R Package Version 0.700.2.”</p>
+</div>
+<div id="ref-pedersen2016">
+<p>Pedersen, Martin W., and Casper W. Berg. 2016. “A Stochastic Surplus Production Model in Continuous Time.” <em>Fish and Fisheries</em>.</p>
+</div>
+<div id="ref-shepherd1997">
+<p>Shepherd, J. G. 1997. “Prediction of Year-Class Strength by Calibration Regression Analysis of Multiple Recruit Index Series.” <em>ICES Journal of Marine Science</em> 54 (5): 741–52.</p>
+</div>
+<div id="ref-shepherd1999">
+<p>Shepherd, J.G. 1999. “Extended Survivors Analysis: An Improved Method for the Analysis of Catch-at-Age Data and Abundance Indices.” <em>ICES Journal of Marine Science</em> 56: 584–91.</p>
+</div>
+</div>
 </div>
 </div>
 

@@ -1,10 +1,14 @@
 ## ---- ini, echo=FALSE, results='hide', message=FALSE---------------------
 # This chunk set the document environment, so it is hidden
 library(knitr)
+source("R/ini.R")
 knitr::opts_chunk$set(fig.align='center',
   message=FALSE, warning=FALSE, echo=TRUE, cache=FALSE)
 options(width=50)
 set.seed(1423)
+
+## ----echo=FALSE, out.width='20%'-----------------------------------------
+include_graphics('images/FLBEIA_logo.png')
 
 ## ---- eval=FALSE---------------------------------------------------------
 ## library(devtools)
@@ -16,7 +20,6 @@ library(FLBEIA)
 library(FLXSA)
 library(FLash)
 library(ggplotFL)
-library(FLBEIAShiny) # This is a beta version.
 
 ## ----echo=TRUE, eval=TRUE------------------------------------------------
 rm(list=ls())
@@ -214,7 +217,6 @@ SM_1 <- FLBEIA(biols = multiBio, SRs = multiSR, BDs = multiBD, fleets = multiFl_
                biols.ctrl = multiBioC, fleets.ctrl = multiFlC_1, covars.ctrl = multiCvC,
                obs.ctrl = multiObsC, assess.ctrl = multiAssC, advice.ctrl = multiAdvC)
 
-
 ## ----echo=TRUE, eval=TRUE------------------------------------------------
 SM_1_fltStk <- fltStkSum(SM_1, scenario ='elasticPrice') 
 SM_x <- rbind(SM_fltStk, SM_1_fltStk)
@@ -357,8 +359,6 @@ SM_5 <- FLBEIA(biols = multiBio, SRs = multiSR, BDs = multiBD, fleets = multiFl_
                 covars = multiCv_5, indices = NULL, advice = multiAdv, main.ctrl = multiMainC,
                 biols.ctrl = multiBioC, fleets.ctrl = multiFlC_5, covars.ctrl = multiCvC,
                 obs.ctrl = multiObsC, assess.ctrl = multiAssC, advice.ctrl = multiAdvC)
-
-
 
 ## ----echo=TRUE, eval=TRUE------------------------------------------------
 SM_5_flt    <- fltSum(SM_5, scenario = 'SM_5')

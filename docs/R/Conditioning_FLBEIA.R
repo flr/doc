@@ -1,14 +1,14 @@
-## ----setup, include=FALSE------------------------------------------------
-library(knitr)
-source("R/ini.R")
-
 ## ---- ini, echo=FALSE, results='hide', message=FALSE---------------------
 # This chunk set the document environment, so it is hidden
 library(knitr)
+source("R/ini.R")
 knitr::opts_chunk$set(fig.align='center',
   message=FALSE, warning=FALSE, echo=TRUE, cache=FALSE)
 options(width=50)
 set.seed(1423)
+
+## ----echo=FALSE, out.width='20%'-----------------------------------------
+include_graphics('images/FLBEIA_logo.png')
 
 ## ---- eval=FALSE---------------------------------------------------------
 ## install.packages(c("ggplot2"))
@@ -22,6 +22,11 @@ set.seed(1423)
   library(FLXSA)
   library(FLBEIA) 
   library(ggplot2)
+
+## ---- getfiles, message=FALSE--------------------------------------------
+dir <- tempdir()
+download.file("http://flr-project.org/doc/src/ConditioningMulti.zip", file.path(dir, "ConditioningMulti.zip"))
+unzip(file.path(dir, "ConditioningMulti.zip"), exdir=dir)
 
 ## ----echo=TRUE, eval=TRUE------------------------------------------------
 data(one)
@@ -152,6 +157,10 @@ ls()
 #   create advice object
   stks.data <- list(stk1=ls(pattern="^stk1")) 
   advice   <- create.advice.data(yrs,ns,ni,stks.data,fleets)
+`  
+  
+### indices:
+There is no index for this example.
 
 ## ----echo=TRUE, eval=TRUE------------------------------------------------
 indices <- NULL

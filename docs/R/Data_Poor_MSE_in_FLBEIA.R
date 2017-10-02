@@ -1,6 +1,11 @@
-## ----setup, include=FALSE------------------------------------------------
+## ---- ini, echo=FALSE, results='hide', message=FALSE---------------------
+# This chunk set the document environment, so it is hidden
 library(knitr)
 source("R/ini.R")
+set.seed(1423)
+
+## ----echo=FALSE, out.width='20%'-----------------------------------------
+include_graphics('images/FLBEIA_logo.png')
 
 ## ---- include=TRUE, echo=FALSE-------------------------------------------
 library(spict)
@@ -103,7 +108,7 @@ RandPar_flbeia[,3] <- RandPar_SPict[,'n'] - 1
 remiter <- unique(c(which((RandPar_flbeia[,'p']/RandPar_flbeia[,'r']) <  -1), which(RandPar_flbeia[,'r']>  2)))
 RandPar_flbeia <- RandPar_flbeia[-remiter,]
 # Identify the valid iterations and select the first 100.
-Niter <- Nit <- 100
+Niter <- Nit <- 20
 valid_iters <-  as.numeric(dimnames(RandPar_flbeia)[[1]])[1:Niter]
 
 ## ----fig:params, fig.height= 14/2.54, fig.width =  16/2.54, fig.cap = 'Density curves of the production model parameters used to condition the initial population.'----
