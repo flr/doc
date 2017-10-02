@@ -12,16 +12,16 @@
 <meta name="author" content="Dorleta Garcia and FLBEIA team" />
 
 
-<title>FLBEIA conditioning in Data Poor Situations: BoB Stripped Mullet</title>
+<title>Conditioning FLBEIA in Data Limited Situations: BoB Stripped Mullet</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<link href="site_libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-1.1/highlight.js"></script>
 <link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
 
@@ -99,34 +99,34 @@ button.code-folding-btn:focus {
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
-  padding-top: 51px;
+  padding-top: 45px;
   padding-bottom: 40px;
 }
 /* offset scroll position for anchor links (for fixed navbar)  */
 .section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 
 .section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 </style>
 
@@ -331,7 +331,7 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">FLBEIA conditioning in Data Poor Situations: BoB Stripped Mullet</h1>
+<h1 class="title toc-ignore">Conditioning FLBEIA in Data Limited Situations: BoB Stripped Mullet</h1>
 <h4 class="author"><em>Dorleta Garcia and FLBEIA team</em></h4>
 
 </div>
@@ -974,7 +974,7 @@ wt(biols.age[[1]])[,ac(2015:2028)]  &lt;- wt(biols.age[[1]])[,ac(2014)]</code></
 </div>
 <div id="flfleetsext-object" class="section level3">
 <h3>FLFleetsExt object</h3>
-<p>FLBEIA uses an extended version of the <code>FLFleet</code> object defined in <code>FLFleet</code> package. The only difference is in the <code>FLCatch</code> object used to store stock catch data. The <code>FLCatchExt</code> object defined in FLBEIA has to extra slots, <code>alpha</code> and <code>beta```. Theses two slots are used to store the parameters of the catch production function. At present there is only one function to simulate the catch production of the fleets, the Cobb-Douglas model. In this case</code>alpha<code>and</code>beta` correspond with the elasticities of the effort and the biomass respectively. In this case as we are not using a real fleet we are not interested in the elasticity parameters and we can set them to one.</p>
+<p>FLBEIA uses an extended version of the <code>FLFleet</code> object defined in <code>FLFleet</code> package. The only difference is in the <code>FLCatch</code> object used to store stock catch data. The <code>FLCatchExt</code> object defined in FLBEIA has to extra slots, <code>alpha</code> and <code>beta</code>. Theses two slots are used to store the parameters of the catch production function. At present there is only one function to simulate the catch production of the fleets, the Cobb-Douglas model. In this case <code>alpha</code> and <code>beta</code> correspond with the elasticities of the effort and the biomass respectively. In this case as we are not using a real fleet we are not interested in the elasticity parameters and we can set them to one.</p>
 <p>We will create two different objects one for biomass dynamic population and the other for the age structured one. First we build the FLCatchExt object:</p>
 <pre class="r"><code>cc &lt;- FLCatchExt(name = &#39;mur&#39;, alpha = flq, beta = flq, landings = murBD@catch, landings.n = murBD@catch, landings.wt = flq, 
            discards.wt = flq, landings.sel = flq, discards.sel = flq0, discards = flq0, discards.n = flq0)</code></pre>
@@ -1030,7 +1030,7 @@ dimnames(advice$quota.share[[1]])[[1]] &lt;- &#39;fl&#39;</code></pre>
 <p>The control objects are <code>R</code> lists used to store the values that control how each part of the simulation is carried out. There is one control object per data object. There are some functions in the package that facilitate the construction of the control objects.</p>
 <div id="main.ctrl" class="section level3">
 <h3>main.ctrl</h3>
-<p>The <code>main.ctrl</code> object declares the initial and final year of the simulations. These years must be within the range of the objects but could be different to the first and last year in the `FLQuants```.</p>
+<p>The <code>main.ctrl</code> object declares the initial and final year of the simulations. These years must be within the range of the objects but could be different to the first and last year in the <code>FLQuants</code>.</p>
 <pre class="r"><code>main.ctrl  &lt;- list(sim.years = c(initial = &#39;2015&#39;, final = &#39;2025&#39;))</code></pre>
 </div>
 <div id="biols.ctrl" class="section level3">
@@ -4073,11 +4073,11 @@ TAC advice time series obtained in each of the scenarios. The shaded area corres
 <h2>Software Versions</h2>
 <ul>
 <li>R version 3.4.1 (2017-06-30)</li>
-<li>FLCore: 2.6.5.9001</li>
+<li>FLCore: 2.6.5</li>
 <li>FLBEIA: 1.15.1</li>
 <li>spict: 1.1</li>
 <li>fishmethods: 1.10.3</li>
-<li><strong>Compiled</strong>: Tue Sep 26 17:37:36 2017</li>
+<li><strong>Compiled</strong>: Mon Oct 2 11:01:10 2017</li>
 </ul>
 </div>
 <div id="license" class="section level2">

@@ -10,23 +10,19 @@ pdf_document:
   toc: yes
 ---
 
-```{r setup, include=FALSE}
-library(knitr)
-source("R/ini.R")
-```
-
-<img src="//172.21.10.13/comun$/AZTIMAR/FLBEIA/logo/FLBEIA-1000px.transparente_small.png" >
-
 ```{r, ini, echo=FALSE, results='hide', message=FALSE}
 # This chunk set the document environment, so it is hidden
 library(knitr)
+source("R/ini.R")
 knitr::opts_chunk$set(fig.align='center',
-                      message=FALSE, warning=FALSE, echo=TRUE, cache=FALSE)
+  message=FALSE, warning=FALSE, echo=TRUE, cache=FALSE)
 options(width=50)
 set.seed(1423)
 ```
 
-
+```{r echo=FALSE, out.width='20%'}
+include_graphics('images/FLBEIA_logo.png')
+```
 
 # Aim 
 
@@ -50,9 +46,9 @@ Simulations with multi-annual advice is also possible.
 
 The exact way to define the objects used to set the simulation is described in the **FLBEIA** manual. 
 This manual can be downloaded from [GitHub](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf), 
-within the 'doc' folder of the package installation or typing ```help(package = FLBEIA)``` in the R console.
+within the 'doc' folder of the package installation or typing `help(package = FLBEIA)` in the R console.
 Nevertheless, the objects to set the simulation doesn't need to be defined for the following examples, 
-as the dataset ```one``` from the FLBEIA package will be used.
+as the dataset `one` from the FLBEIA package will be used.
 For details on these objects, see tutorial on FLBEIA - Simple example.
 <!-- [FLBEIA tutorial 2]+++LINK+++. -->
 
@@ -101,16 +97,16 @@ The following alternatives are possible in the observation model,
 depending on the inclusion or not of the assessement in the MP.
 
 * Stock without assessment:
-    + The stock is not observed (```NoObsStock```), for example in the cases when
+    + The stock is not observed (`NoObsStock`), for example in the cases when
         + there is no need to observe the stock as it is managed independently to its status 
           (e.g. v?a fixed TAC),
         + or when you use an alternative to know the abundance, through the observation 
-          of an abundance index, in biomass (```bioInd```) or age structured (```ageInd```),
+          of an abundance index, in biomass (`bioInd`) or age structured (`ageInd`),
           for example when using a HCR that requires an index to set the TAC.
-    + The population and the fleet are observed without errors (```perfectObs```), 
+    + The population and the fleet are observed without errors (`perfectObs`), 
       that could be usefull to test the HCR without any observation error;
-    + It can be simulated an assessment, age structured (```age2agePop```) or 
-      aggregated in biomass (```age2bioPop``` or ```bio2bioPop```, 
+    + It can be simulated an assessment, age structured (`age2agePop`) or 
+      aggregated in biomass (`age2bioPop` or `bio2bioPop```, 
       respectively if stock is age structured or aggregated in biomass), 
       given different types of errors defined a priori (e.g. ageing error, 
       errors in the observation of numbers, weights or total biomass at age 
@@ -119,10 +115,10 @@ depending on the inclusion or not of the assessement in the MP.
 * Stock with assessment:
     + If biological information (e.g. natural mortality, mean weights, maturity,...) and/or 
       catch information is required as input for the assessment, 
-      in biomass (```age2bioDat``` or ```bio2bioDat```, respectively if stock is age structured 
-      or aggregated in biomass) or age structured (```age2ageDat```);
-    + If the observation of an abundance index is required, in biomass (```bioInd```) 
-      or age structured (```ageInd```).
+      in biomass (`age2bioDat` or `bio2bioDat```, respectively if stock is age structured 
+      or aggregated in biomass) or age structured (`age2ageDat`);
+    + If the observation of an abundance index is required, in biomass (`bioInd`) 
+      or age structured (`ageInd`).
 
 For more details on these functions and the related control objects 
 see Sections 4.3.6-4.3.8 and Table C.5 in the 
@@ -165,17 +161,17 @@ All the objects have 3 iterations and uncertainty in the projections comes exclu
 
 * Operating model:
     + Biological:
-        + Population dynamics: ```stk1``` - age structured population growth
-        + SR model: ```stk1``` - Beverthon and Holt autoregressive/segmented regression 
-    + Fleet: ```fl1``` - Simple Mixed Fisheries Behaviour
+        + Population dynamics: `stk1` - age structured population growth
+        + SR model: `stk1` - Beverthon and Holt autoregressive/segmented regression 
+    + Fleet: `fl1` - Simple Mixed Fisheries Behaviour
     + Covariates: covariates related to economy (e.g. number of vessels, fuel costs,...)
 
 * Management Procedure:
-    + Observation: ```stk1``` - perfect observation 
-    + Assessment: ```stk1``` - no assessment
-    + Management advice: ```stk1``` - ICES harvest control rule
+    + Observation: `stk1` - perfect observation 
+    + Assessment: `stk1` - no assessment
+    + Management advice: `stk1` - ICES harvest control rule
 
-The neccesary ```FLR``` objects to run **FLBEIA** are available in the dataset called ```one```.
+The neccesary `FLR` objects to run **FLBEIA** are available in the dataset called `one`.
 ```{r echo=TRUE, eval=TRUE}
 rm(list=ls()) # empty the workspace
 data(one)     # load the dataset
@@ -184,14 +180,14 @@ data(one)     # load the dataset
 
 ## Exploring the data
 
-Information related to assessment component of the MP is provided in ```oneAssC``` object. 
+Information related to assessment component of the MP is provided in `oneAssC` object. 
 ```{r echo=TRUE, eval=FALSE}
 oneAssC
 ```
 
 
 In this case, no abundance index is required, as there is no assessment and 
-the HCR (```IcesHCR```) does not require any index, as it sets the TAC based on the perceived
+the HCR (`IcesHCR`) does not require any index, as it sets the TAC based on the perceived
 stock status.
 
 
@@ -240,7 +236,7 @@ Currently there is an R package called **spict** that provides the framework to 
 surplus production model in R using fisheries catch and biomass index data, 
 specifically the model is a Stochastic suplus Production model in Continuous-Time (SPiCT).
 
-```fit.spict``` is the function to fit a contiunuous-time surplus production model to data 
+`fit.spict` is the function to fit a contiunuous-time surplus production model to data 
 using the TMB package. 
 Following arguments are required:
 
@@ -248,15 +244,15 @@ Following arguments are required:
 
 * dbg : Debugging option. Will print out runtime information useful for debugging if set to 1. Will print even more if set to 2.
 
-For more details, type ```?fit.spict``` in the R console.
+For more details, type `?fit.spict` in the R console.
 
 Within **FLBEIA** these arguments are given to the function through the assess.ctrl object, 
 which is a named list with the names of the stocks and the following components for each stock:
 
 * assess.model: character with the name of the assessment model or 'NoAssessment'.
-  To do the call to SPiCT, this argument has to be set to ```spict2flbeia```, 
-  which is an FLBEIA function that links the inputs and outputs of ```fit.spict``` function 
-  with **FLBEIA** and calls to ```fit.spict``` function.
+  To do the call to SPiCT, this argument has to be set to `spict2flbeia`, 
+  which is an FLBEIA function that links the inputs and outputs of `fit.spict` function 
+  with **FLBEIA** and calls to `fit.spict` function.
 
 * control: control object, which depends on the selected assessment model 
 (e.g. FLXSA.control() for XSA assessment).
@@ -276,7 +272,7 @@ library(spict)
 
 In this example, the same dataset as in Example 0 will be used. 
 
-Information related to assessment component of the MP is provided in ```oneAssC``` object. 
+Information related to assessment component of the MP is provided in `oneAssC` object. 
 ```{r echo=TRUE, eval=FALSE}
 oneAssC
 ```
@@ -288,8 +284,8 @@ oneAssC.spict[["stk1"]]$assess.model  <- "spict2flbeia" # selected assessment mo
 oneAssC.spict[["stk1"]]$harvest.units <- "f"
 ```
 
-Additionally, we need and abundance index. We will take one age-structured ```oneIndAge``` object and its related control ```oneObsCIndAge```. 
-And inform in ```advice.ctrl``` what index should be used.
+Additionally, we need and abundance index. We will take one age-structured `oneIndAge` object and its related control `oneObsCIndAge`. 
+And inform in `advice.ctrl` what index should be used.
 ```{r echo=TRUE, eval=TRUE}
 summary(oneIndBio)
 summary(oneObsCIndBio)
@@ -367,16 +363,16 @@ Following arguments are required:
 * fit    : Character with type of fit: 'MP' or 'assessment'; 
     the former does not require the hessian to be computed, while the latter does.
 
-For more details, type ```?sca``` in the R console.
+For more details, type ```?sca` in the R console.
 
 Within **FLBEIA** these arguments are given to the function through the assess.ctrl object,
 which is a named list with the names of the stocks and the following components for each stock:
 * assess.model: character with the name of the assessment model or 'NoAssessment'.
-    To do the call to ```sca```, this argument has to be set to ```sca2flbeia```,
-    wich is an FLBEIA function that links the inputs and outputs of ```sca``` function
-    with **FLBEIA** and calls to ```sca``` function.
+    To do the call to `sca```, this argument has to be set to `sca2flbeia```,
+    wich is an FLBEIA function that links the inputs and outputs of `sca` function
+    with **FLBEIA** and calls to `sca` function.
 * control: control object, which depends on the selected assessment model.
-    That is a list with the controls required for sca assessment, these are ```fmod```, ```qmod``` and ```srmod```.
+    That is a list with the controls required for sca assessment, these are `fmod```, `qmod` and `srmod`.
 
 We load the FLa4a library.
 ```{r echo=TRUE, eval=TRUE}
@@ -384,20 +380,20 @@ We load the FLa4a library.
 ```
 
 
-The neccesary ```FLR``` objects to run **FLBEIA** are available in the dataset called ```one```.
+The neccesary `FLR` objects to run **FLBEIA** are available in the dataset called `one`.
 ```{r echo=TRUE, eval=TRUE}
 rm(list=ls()) # empty the workspace
 data(one)     # load the dataset
 ```
 
 
-However, in this dataset the assessment is set to ```noAssessment``` (that is, there is no assessment carried out in this case). 
+However, in this dataset the assessment is set to `noAssessment` (that is, there is no assessment carried out in this case). 
 So we need to change the initial settings in the loaded dataset to allow the call to SCA assessment model.
 
 
 ## Exploring the data
 
-Information related to assessment component of the MP is provided in ```oneAssC``` object. 
+Information related to assessment component of the MP is provided in `oneAssC` object. 
 ```{r echo=TRUE, eval=FALSE}
 oneAssC
 ```
@@ -410,8 +406,8 @@ oneAssC.sca[["stk1"]]$harvest.units <- "f"
 oneAssC.sca[["stk1"]]$control$test <- TRUE    # control values
 ```
 
-Additionally, we need and abundance index. We will take one age-structured ```oneIndAge``` object and its related control ```oneObsCIndAge```. 
-And inform in ```advice.ctrl``` what index should be used.
+Additionally, we need and abundance index. We will take one age-structured `oneIndAge` object and its related control `oneObsCIndAge`. 
+And inform in `advice.ctrl` what index should be used.
 ```{r echo=TRUE, eval=TRUE}
 summary(oneIndAge)
 summary(oneObsCIndAge)
@@ -485,14 +481,14 @@ analyse its results. Following arguments are required:
 * indices: An FLIndices object holding the indices of abundance to consider in the model
 * control: An FLXSA.control object giving parameters of the model (see FLXSA.control)
 * desc   : A short description of this analysis
-For more details, type ```?FLXSA``` in the R console.
+For more details, type `?FLXSA` in the R console.
 
 Within **FLBEIA** these arguments are given to the function through the assess.ctrl object, 
 which is a named list with the names of the stocks and the following components for each stock:
 * assess.model: character with the name of the assessment model or 'NoAssessment'.
-    To do the call to ```FLXSA```, this argument has to be set to ```FLXSA2flbeia```, 
-    wich is an FLBEIA function that links the inputs and outputs of ```FLXSA``` function 
-    with **FLBEIA** and calls to ```FLXSA``` function.
+    To do the call to `FLXSA`, this argument has to be set to `FLXSA2flbeia`, 
+    wich is an FLBEIA function that links the inputs and outputs of `FLXSA` function 
+    with **FLBEIA** and calls to `FLXSA` function.
 * control: control object, which depends on the selected assessment model.
     That is FLXSA.control() for XSA assessment.
     The FLXSA.control function creates a new control object required by XSA model.
@@ -506,14 +502,14 @@ We load the FLXSA library.
 library(FLXSA)
 ```
 
-The neccesary ```FLR``` objects to run this example are available in the dataset called ```one```.
+The neccesary `FLR` objects to run this example are available in the dataset called `one`.
 ```{r echo=TRUE, eval=TRUE}
 rm(list=ls()) # empty the workspace
 data(one)     # load the dataset
 ```
 
 
-However, in this dataset the assessment is set to ```noAssessment``` (that is, there is no assessment carried out). 
+However, in this dataset the assessment is set to `noAssessment` (that is, there is no assessment carried out). 
 So we need to change the initial settings in the loaded dataset to allow the call to XSA assessment model.
 
 
@@ -523,7 +519,7 @@ So we need to change the initial settings in the loaded dataset to allow the cal
 In this example, the same dataset as in Example 1 will be used, but as mentioned before 
 some parameters related to the selected assessment (i.e. XSA) need to be set.
 
-Information related to assessment component of the MP is provided in ```oneAssC``` object. 
+Information related to assessment component of the MP is provided in `oneAssC` object. 
 ```{r echo=TRUE, eval=FALSE}
 oneAssC
 ```
@@ -538,8 +534,8 @@ oneAssC1$stk1$work_w_Iter  <- TRUE
 oneAssC1$stk1$harvest.units <- 'f'
 ```
 
-Additionally, we need an abundance index. We will take one age-structured index available at ```oneIndAge``` object and its related control object ```oneObsCIndAge```. 
-And inform in ```advice.ctrl``` which index should be used.
+Additionally, we need an abundance index. We will take one age-structured index available at `oneIndAge` object and its related control object `oneObsCIndAge`. 
+And inform in `advice.ctrl` which index should be used.
 ```{r echo=TRUE, eval=TRUE}
 summary(oneIndAge)
 summary(oneObsCIndAge)

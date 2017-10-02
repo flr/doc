@@ -116,7 +116,7 @@ plot(density(RandPar_flbeia[,3]+1), main = 'Shape of Production Curve (n)', xlab
 abline(v = median(RandPar_flbeia[,3]+1), col = 2)
 par(mfrow = c(1,1))
 
-## ------------------------------------------------------------------------
+## ---- message=FALSE------------------------------------------------------
 Best <- Cest <- matrix(NA, Niter, 18, dimnames = list(iter = 1:Niter, year = 1997:2014))
 
 for(i in 1:Niter){
@@ -432,7 +432,7 @@ advice.ctrl.msy.pa$mur$ref.pts['Fmsy',]  <- mur_spict$report$Fmsy/1.4
 advice.ctrl.little.pa <- advice.ctrl.little
 advice.ctrl.little.pa[['mur']][['ref.pts']]['Cmax',]  <- mur_spict$report$MSY/1.4
 
-## ------------------------------------------------------------------------
+## ---- message =FALSE-----------------------------------------------------
 dls3.bd <- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleets = fleets.bd, covars = NULL, 
           indices = list(mur = indices), advice = advice, main.ctrl, biols.ctrl.bd, fleets.ctrl.bd, 
           covars.ctrl = NULL, obs.ctrl.ind, assess.ctrl, advice.ctrl.dls3) 
