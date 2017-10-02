@@ -52,24 +52,24 @@ navbar:
       icon: fa-cogs
       menu:
         - text: "An introduction to MSE using FLR"
-          herf: An_introduction_to_MSE_using_FLR.html
+          href: An_introduction_to_MSE_using_FLR.html
     - text: "FLBEIA"
       icon: fa-cogs
       menu:
         - text: "An introduction to MSE using FLR"
-          herf: An_introduction_to_MSE_using_FLR.html
+          href: An_introduction_to_MSE_using_FLR.html
         - text: "Conditioning FLBEIA using Smart Conditioning Functions"
-          herf: Conditioning_FLBEIA.html
+          href: Conditioning_FLBEIA.html
         - text: "A simple example on how to use FLBEIA"
-          herf: FLBEIA_A_Simple_Example.html
+          href: FLBEIA_A_Simple_Example.html
         - text: "A simple example with multiple dimensions in FLBEIA"
-          herf: FLBEIA_An_Example_with_multiple_dimensions.html
+          href: FLBEIA_An_Example_with_multiple_dimensions.html
         - text: "Using Stock Assessment models in the Managemnt procedure of FLBEIA"
-          herf: Using_Assessment_models_in_the_MP_FLBEIA.html
+          href: Using_Assessment_models_in_the_MP_FLBEIA.html
         - text: "Testing different Management Strategies in FLBEIA"
-          herf: Testing_Management_Strategies_in_FLBEIA.html
+          href: Testing_Management_Strategies_in_FLBEIA.html
         - text: "Data Limited MSE in FLBEIA"
-          herf: Data_Poor_MSE_in_FLBEIA.html
+          href: Data_Poor_MSE_in_FLBEIA.html
     - text: "Plotting"
       icon: fa-area-chart
       menu:
