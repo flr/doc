@@ -10,27 +10,23 @@ pdf_document:
   toc: yes
 ---
 
-```{r setup, include=FALSE}
-library(knitr)
-source("R/ini.R")
-```
-
-<img src="//172.21.10.13/comun$/AZTIMAR/FLBEIA/logo/FLBEIA-1000px.transparente_small.png" >
-
-
 ```{r, ini, echo=FALSE, results='hide', message=FALSE}
 # This chunk set the document environment, so it is hidden
 library(knitr)
+source("R/ini.R")
 knitr::opts_chunk$set(fig.align='center',
   message=FALSE, warning=FALSE, echo=TRUE, cache=FALSE)
 options(width=50)
 set.seed(1423)
 ```
 
+```{r echo=FALSE, out.width='20%'}
+include_graphics('images/FLBEIA_logo.png')
+```
 
 # Aim 
 
-***FLBEIA*** provides a battery of tutorials for learning how to use this software. This tutorial of ```FLBEIA```  is a practical guide about one of the simplest possible implementation of ```FLBEIA```.  In this tutorial a simple example, named ***one***,  is run in ```FLBEIA```. Then, the outputs of ```FLBEIA``` are explored, summarized and plotted. Once the user has understood the structure and outputs of ```FLBEIA```, let's start playing! Several scenarios are run changing and adjusting several funcionalities that ***FLBEIA*** provides. Finally, another simple example but with three iterations it is introduced. In this last example some exercises are proposed to be resolved by the user.  
+***FLBEIA*** provides a battery of tutorials for learning how to use this software. This tutorial of `FLBEIA`  is a practical guide about one of the simplest possible implementation of `FLBEIA`.  In this tutorial a simple example, named *one*,  is run in `FLBEIA`. Then, the outputs of `FLBEIA` are explored, summarized and plotted. Once the user has understood the structure and outputs of `FLBEIA`, let's start playing! Several scenarios are run changing and adjusting several funcionalities that **FLBEIA** provides. Finally, another simple example but with three iterations it is introduced. In this last example some exercises are proposed to be resolved by the user.  
 
 
 # Required packages to run this tutorial
@@ -43,19 +39,21 @@ To follow this tutorial you should have installed the following packages
        [FLFleet](http://www.flr-project.org/FLFleet/), [ggplotFL](http://www.flr-project.org/ggplotFL/)
 
 If you are using Windows, please use 32-bit R version because some of the packages do not work in 64-bit.
+
 ```{r, eval=FALSE}
 install.packages(c("ggplot2"))
 install.packages(c("FLCore", "FLBEIA", "FLFleets", "FLash", "FLAssess", "FLXSA", "ggplotFL"), repos="http://flr-project.org/R")
 ```
 
 Load all necessary packages.
+
 ```{r, pkgs, results = "hide"}
 # This chunk loads all necessary packages.
 library(FLBEIA)
 library(FLXSA)
 library(FLash)
 library(ggplotFL)
-library(FLBEIAShiny) # This is a beta version
+#library(FLBEIAShiny) # This is a beta version
 ```
 
 
@@ -75,59 +73,45 @@ This example is one of the simplest possible implementation of **FLBEIA**. The O
  
 ## Exploring the data
 
-The neccesary ```FLR``` objects to run ```FLBEIA``` are available in the dataset called ```one```.
+The neccesary `FLR` objects to run `FLBEIA` are available in the dataset called `one`.
 ```{r echo=TRUE, eval=TRUE}
 data(one) 
 ```
 
-With the ```ls()``` command we can see the objects stored in ```one```, which are those needed to call to run ```FLBEIA```. 
+With the `ls()` command we can see the objects stored in `one`, which are those needed to call to run `FLBEIA`. 
 ```{r echo=TRUE, eval=TRUE}
 ls()
 # Show the class of each of the objects.
 sapply(ls(), function(x) class(get(x)))
 ```
 
+The exact way to define the objects used to set the simulation is described in the **FLBEIA** manual. The manual can be download from [Manual](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf), within the 'doc' folder of the package installation or typing `help(package = FLBEIA)` in the R console. The description of objects stored in `one` is detailed below.
 
-The exact way to define the objects used to set the simulation is described in the ***FLBEIA*** manual. The manual can be download from [Manual](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf), within the 'doc' folder of the package installation or typing ```help(package = FLBEIA)``` in the R console. The description of objects stored in ```one``` is detailed below.
+  * `oneBio`: A FLBiols object that contains biological information of _stk1_ relative to 'real' biological population within the OM.
+    
+  * `oneBioC`: A list that controls the biological operating model. The growth function of stk1 is defined as Age Structured Populatin Growth `ASPG`. The function `ASPG` describes the evolution of an age structured population using an exponential survival equation for existing age classes and a stock-recruitment relationship to generate the recruitment. In FLBEIA there are other models available:  `fixedPopulation`  and `BDPG`.
+    
+  * `oneMainC`: Controls the behaviour of FLBEIA function setting the initial and final year of the proyected period.
 
+  * `oneFL`: It is a FLFleetExt object that contains information relative to the fleet `_fl1_` (effort, costs, capacity...) and information relative to the metier  `_met1_` (effort share, varaible costs, parameters of the Cobb Douglas function).
 
-  * ```oneBio```: A FLBiols object that contains biological information of _stk1_ relative to 'real' biological population within the OM.
+  * `oneFlC`: The basic structure of the fleets.ctrl object; the effort dynamics is Simple Mixed Fisheries Behaviour `SMFB`. `SMFB` is a simplified version of the behavior of fleets that work in a mixed fisheries framework. The function is seasonal and assumes that effort share among metiers is given as input parameter. There are also other effort models defined in FLBEIA [`fixedEffort`, `SSFB`, `MaxProfit`, `MaxProfitSeq`]. See the [Manual](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf) for detailed description. In this example the capacity, catchability and price are given as input data and are unchanged within the simulation. Summarizing, the fleet catches yearly exactly the adviced TAC and there is no exit-entry of vessels in the fishery.  
     
+  * `oneCv`: All variables needed for the capital dynamics are stored (fuel costs, capital costs, number of vessels, invest share, number of vessels, maximum fishing days by vessel...). The capital model is defined in `oneFlC` as `fixedCapital`.
+
+  * `oneCvC`: Control list for the capital dynamics. All slots of this element are `fixedCovar`, i.e, covariates are given as input data and are unchanged within the simulation.   
+
+  * `oneAdv`: List containing information on management advice;  total allowable catch 'TAC' and quota share.
     
-  * ```oneBioC```: A list that controls the biological operating model. The growth function of stk1 is defined as Age Structured Populatin Growth ```ASPG```. The function ```ASPG``` describes the evolution of an age structured population using an exponential survival equation for existing age classes and a stock-recruitment relationship to generate the recruitment. In FLBEIA there are other models available:  ```fixedPopulation```  and ```BDPG```.
-    
-    
-  * ```oneMainC```: Controls the behaviour of FLBEIA function setting the initial and final year of the proyected period.
+  * `oneAdvC`: Controls the behaviour of advice management procedure. It is a list with one element per stock and one more element for each fleet. The selected model is `IcesHCR`. The function represents the HCR used by ICES to generate TAC advice in the MSY framework. It is a biomass based HCR, where the TAC advice depends on F in relation to several reference points. 
+
+  * `oneAssC`: Defines the name of the assessment model to be used for each stock. In the current example there is no asssessment `NoAssessment`. 
+
+  * `oneObsC`: These type of models are useful when no assessment model is used in the next step of the MP and management advice is just based on the population 'observed' in this step. A `perfecObs` model is defined. This function does not introduce any observation uncertainty in the observation of the different quantities stored in the `FLStock` or `FLFLeetsExt` objects. 
   
-
-  * ```oneFL```: It is a FLFleetExt object that contains information relative to the fleet _fl1_ (effort, costs, capacity...) and information relative to the metier  _met1_ (effort share, varaible costs, parameters of the Cobb Douglas function).
-
-
-  * ```oneFlC```: The basic structure of the fleets.ctrl object; the effort dynamics is Simple Mixed Fisheries Behaviour ```SMFB```. ```SMFB``` is a simplified version of the behavior of fleets that work in a mixed fisheries framework. The function is seasonal and assumes that effort share among metiers is given as input parameter. There are also other effort models defined in FLBEIA [```fixedEffort```, ```SSFB```, ```MaxProfit```, ```MaxProfitSeq```]. See the [Manual](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf) for detailed description. In this example the capacity, catchability and price are given as input data and are unchanged within the simulation. Summarizing, the fleet catches yearly exactly the adviced TAC and there is no exit-entry of vessels in the fishery.  
-    
-    
-  * ```oneCv```: All variables needed for the capital dynamics are stored (fuel costs, capital costs, number of vessels, invest share, number of vessels, maximum fishing days by vessel...). The capital model is defined in ```oneFlC``` as ```fixedCapital```.
-
-    
-  * ```oneCvC```: Control list for the capital dynamics. All slots of this element are ```fixedCovar```, i.e, covariates are given as input data and are unchanged within the simulation.   
-
-
-  * ```oneAdv```: List containing information on management advice;  total allowable catch 'TAC' and quota share.
-
-    
-  * ```oneAdvC```: Controls the behaviour of advice management procedure. It is a list with one element per stock and one more element for each fleet. The selected model is ```IcesHCR```. The function represents the HCR used by ICES to generate TAC advice in the MSY framework. It is a biomass based HCR, where the TAC advice depends on F in relation to several reference points. 
-
-
-  * ```oneAssC```: Defines the name of the assessment model to be used for each stock. In the current example there is no asssessment ```NoAssessment```. 
-
-
-  * ```oneObsC```: These type of models are useful when no assessment model is used in the next step of the MP and management advice is just based on the population 'observed' in this step. A ```perfecObs``` model is defined. This function does not introduce any observation uncertainty in the observation of the different quantities stored in the ```FLStock``` or ```FLFLeetsExt``` objects. 
+  * `oneSR`: The stock recruitment relationship, not needed in the case of population aggregated in biomass. The model is `bevholtAR1`, a regression stock recruitment model with autoregressive normal log residuals of first order. There are several SR models available in FLR and FLBEIA: `geomean`, `bevholt`, `ricker`, `segreg`, `shepherd`, `rickerAR1`, `segregAR1`, `cushing`, `bevholtSV`, `rickerSV`, `segregSV`, `shepherdSV`, `cushingSV`, `rickerCa`, `hockstick`, `redfishRecModel` and `ctRec`. All these models are detailed in the [Manual](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf).
   
-  
-  * ```oneSR```:The stock recruitment relationship, not needed in the case of population aggregated in biomass. The model is ```bevholtAR1```, a regression stock recruitment model with autoregressive normal log residuals of first order. There are several SR models available in FLR and FLBEIA: ```geomean```, ```bevholt```, ```ricker```, ```segreg```, ```shepherd```, ```rickerAR1```, ```segregAR1```, ```cushing```, ```bevholtSV```, ```rickerSV```, ```segregSV```, ```shepherdSV```, ```cushingSV```, ```rickerCa```, ```hockstick```, ```redfishRecModel``` and ```ctRec```. All these models are detailed in the [Manual](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf).
-  
-  
-In the code below we call to ```FLBEIA``` with the arguments stored in ```one``` dataset. It takes less than a minute to run up to 2025.  
+In the code below we call to `FLBEIA` with the arguments stored in `one` dataset. It takes less than a minute to run up to 2025.  
 
 ##  Run FLBEIA
 ```{r echo=TRUE, eval=TRUE, results = "hide"}
@@ -147,22 +131,24 @@ s0 <- FLBEIA(biols = oneBio,       # FLBiols object with one FLBiol element for 
        advice.ctrl = oneAdvC)      # A list with one element to define how the TAC advice is obtained ("IcesHCR").
 ```
 
-```FLBEIA``` returns a list with several objects, let's print the names of the objects and its class. 
+`FLBEIA` returns a list with several objects, let's print the names of the objects and its class. 
+
 ```{r echo=TRUE, eval=TRUE}
 names(s0)
 sapply(s0, function(x) class(x))
 ```
 
-
 ## Summarizing results
-```FLBEIA``` has several functions to summaryze the information in data frames. These data frames will allow to use methods available in R to analyze the results visually and numerically. You can summaryze information in two formats.
+
+`FLBEIA` has several functions to summaryze the information in data frames. These data frames will allow to use methods available in R to analyze the results visually and numerically. You can summaryze information in two formats.
 
 * Long format: where all the indicators are in the same column. There is one column, indicator, for the name of the indicator and a second one  for the numeric value of the indicator. 
 * Wide format: where each column corresponds with one indicator. 
 
-The long format it is recommendable to work with ```ggplot2``` functions, while the wide format is more efficient for memory allocation and speed of computations. 
+The long format it is recommendable to work with `ggplot2` functions, while the wide format is more efficient for memory allocation and speed of computations. 
 
 ### Long format.
+
 ```{r echo=TRUE, eval=TRUE, results = "hide"}
 s0_bio    <- bioSum(s0)           # Data frame (DF) of biological indicators.
 s0_adv    <- advSum(s0)           # DF of management advice (TAC). 
@@ -188,6 +174,7 @@ head(s0_risk); unique(s0_risk$indicator)
 ```
 
 ### Wide format.
+
 ```{r echo=TRUE, eval=TRUE, results = "hide"}
 s0_bio_l    <- bioSum(s0, long = FALSE, years = ac(2016:2020))            
 s0_adv_l    <- advSum(s0, long = FALSE, years = ac(2016:2020))             
@@ -209,9 +196,10 @@ head(s0_vessel_l, 2)
 head(s0_vesselStk_l, 2)
 ```
 
-
 ## Plotting results
+
 You can show results using the default plots in **FLCore** package.
+
 ```{r echo=TRUE, fig.width = 4, fig.height = 4, eval=TRUE}
 plot(s0$biols[[1]])
 ```
@@ -220,7 +208,8 @@ plot(s0$biols[[1]])
 plot(s0$stocks[[1]])
 ```
 
-Additionally you can plot results using  ```plotFLBiols```, ```plotFLFleets``` and ```plotCatchFl```. The plots will be load in your working directory by default. 
+Additionally you can plot results using  `plotFLBiols`, `plotFLFleets` and `plotCatchFl`. The plots will be load in your working directory by default. 
+
 ```{r echo=TRUE, eval=TRUE, results= 'hide'}
 # set your own working directory.
 # myWD <- "My working directory"
@@ -231,7 +220,8 @@ plotEco(s0, pdfnm="s0")
 plotfltStkSum(s0, pdfnm="s0")
 ```
 
-You can also use the function ```ggplot``` to plot additional figures.
+You can also use the function `ggplot` to plot additional figures.
+
 ```{r echo=TRUE,  fig.width = 4, fig.height = 2, eval=TRUE}
 aux <- subset(s0_bio, indicator=="catch" )
 p <- ggplot(data=aux, aes(x=year, y=value, color=stock))+
@@ -245,19 +235,15 @@ p <- ggplot(data=aux, aes(x=year, y=value, color=stock))+
 print(p)
 ```
 
-```{r echo=TRUE, eval=TRUE, results = "hide"}
-dev.off()
-```
-
-
 ## Let`s play
 
-*FLBEIA* have several options to model the specific characteristics of a fishery. In particular, ```FLBEIA``` provides several options for population growth, effort dynamics, price models, capital dynamics, observation models and management advice. Let's play with these options.
+*FLBEIA* have several options to model the specific characteristics of a fishery. In particular, `FLBEIA` provides several options for population growth, effort dynamics, price models, capital dynamics, observation models and management advice. Let's play with these options.
 
 
 ### Operating model: Change stock-recruitment relationship.
 
 Firstly, we define some useful parameters.
+
 ```{r echo=TRUE, eval=TRUE}
   first.yr          <- 1990
   proj.yr           <- 2010 
@@ -267,13 +253,12 @@ Firstly, we define some useful parameters.
   stks <- c('stk1')
 ```
 
-
-In example ```one``` the stock recruitment model is ```bevholtAR1```.
+In example `one` the stock recruitment model is `bevholtAR1`.
 ```{r echo=TRUE, eval=TRUE}
 oneSR$stk1@model
 ```
 
-Replace the stock - recruitment relationship ```bevholtAR1```  by ```segreg``` model in another simulation called s1. ```segreg``` is a segmented regression stock-recruitment model. For this new simulation you need to estimate parameters of ```segreg``` model using the function ```fmle```. ```fmle``` is a method that fits the SR model using logl and R's optim model fitting through maximum likelihood estimation.  For more details click [here](https://github.com/flr/doc/blob/master/Modelling_stock_recruitment_with_FLSR.Rmd).
+Replace the stock - recruitment relationship `bevholtAR1`  by `segreg` model in another simulation called s1. `segreg` is a segmented regression stock-recruitment model. For this new simulation you need to estimate parameters of `segreg` model using the function `fmle`. `fmle` is a method that fits the SR model using logl and R's optim model fitting through maximum likelihood estimation.  For more details click [here](https://github.com/flr/doc/blob/master/Modelling_stock_recruitment_with_FLSR.Rmd).
 
 ```{r echo=TRUE, eval=TRUE, results = "hide"}
 ssb <-  ssb(oneBio[[1]])[,as.character(first.yr:(proj.yr-1)),1,1]
@@ -296,15 +281,16 @@ plotFLFleets(s1$fleets, pdfnm='s1')
 ```
 
 Compare biomass of s0 ("bevholtAR1") with s1 ("segreg"),
+
 ```{r echo=TRUE,  fig.width = 3.5, fig.height = 3.5, eval=TRUE}
 temp <- cbind(matrix(B_flbeia(s0)), matrix(B_flbeia(s1)))
 matplot(temp, x = dimnames( B_flbeia(s1))$year, type = 'l', xlab = 'Year', ylab = 'Biomass')
 legend('top', c('s0', 's1'), col = c('black','red'), lty = c(1,2))
 ```
 
-
 ### Natural mortality
 In a simulation called s2, increase by 20% the natural mortality of the ages 7 to 12.
+
 ```{r echo=TRUE, eval=TRUE,  results = "hide"}
 oneBioM <- oneBio
 oneBioM$stk1@m[7:12,,,,] <- oneBioM$stk1@m[7:12,,,,]*1.2
@@ -319,15 +305,16 @@ plotFLFleets(s1$fleets, pdfnm='s2')
 ```
 
 Compare the biomass of s0 with s2.
+
 ```{r echo=TRUE,  fig.width = 3.5, fig.height = 3.5, eval=TRUE}
 temp <- cbind(matrix(B_flbeia(s0)), matrix(B_flbeia(s2)))
 matplot(temp, x = dimnames( B_flbeia(s0))$year, type = 'l', xlab = 'Year', ylab = 'Biomass')
 legend('top', c('s0', 's2'), col = c('black','red'), lty = c(1,2))
 ```
 
-
 ### Harvest control rule
 Change the target: the Fmsy value will be decreased by 20%.
+
 ```{r echo=TRUE, eval=TRUE, results = "hide"}
 oneAdvC$stk1$ref.pts[3]
 oneAdvC2 <- oneAdvC
@@ -339,6 +326,7 @@ s3 <- FLBEIA(biols = oneBio, SRs = oneSR , BDs = NULL, fleets = oneFl, covars = 
 ```
 
 Compare de biomass and the fishing mortality of s0 with s3.
+
 ```{r echo=TRUE, eval=TRUE,  fig.width = 3.5, fig.height = 3.5, results = "hide"}
 temp <- cbind(matrix(B_flbeia(s0)), matrix(B_flbeia(s3)))
 matplot(temp, x = dimnames( B_flbeia(s0))$year, type = 'l', xlab = 'Year', ylab = 'Biomass')
@@ -349,7 +337,7 @@ matplot(temp, x = dimnames( B_flbeia(s0))$year, type = 'l', xlab = 'Year', ylab 
 legend('top', c('s0', 's3'), col = c('black','red'), lty = c(1,2) )
 ```
 
-Now change the harvest control rule (HCR). The HCR applied in s0 was ```IcesHCR```, which is the HCR used by ICES to generate TAC advice in the MSY framework. Now, run the model with ```fixedAdvice```. This function is used when the advice is fixed and independent to the stock status, and therefore TAC values should be given as input in the advice object.
+Now change the harvest control rule (HCR). The HCR applied in s0 was `IcesHCR`, which is the HCR used by ICES to generate TAC advice in the MSY framework. Now, run the model with `fixedAdvice`. This function is used when the advice is fixed and independent to the stock status, and therefore TAC values should be given as input in the advice object.
 
 ```{r echo=TRUE, eval=TRUE,  results = "hide"}
 HCR.models       <- 'fixedAdvice'
@@ -363,7 +351,6 @@ s4 <- FLBEIA(biols = oneBio, SRs = oneSR , BDs = NULL, fleets = oneFl, covars = 
 plotFLBiols(s4$biols,pdfnm= 's4')
 plotFLFleets(s4$fleets,pdfnm= 's4')  
 ```
-
 
 ```{r echo=TRUE, eval=TRUE,  fig.width = 3.5, fig.height = 3.5, results = "hide"}
 temp <- cbind(matrix(B_flbeia(s0)), matrix(B_flbeia(s4)))
@@ -386,7 +373,7 @@ legend('top', c('s0', 's4'), col = c('black','red'), lty = c(1,2))
 ```
 
 ### Effort function.
-The effort dynamics follows a Simple Mixed Fisheries Behaviour ```SMFB```. Change that function by Fixed Effort ```fixedEffort```. In this function all the parameters are given as input except discards and landings (total and at age). The only task of this function is to update the discards and landings (total and at age) according to the catch production function specified in ```fleets.ctrl``` argument.
+The effort dynamics follows a Simple Mixed Fisheries Behaviour `SMFB`. Change that function by Fixed Effort `fixedEffort`. In this function all the parameters are given as input except discards and landings (total and at age). The only task of this function is to update the discards and landings (total and at age) according to the catch production function specified in `fleets.ctrl` argument.
 
 ```{r echo=TRUE, eval=TRUE,  fig.width = 3.5, fig.height = 3.5, results = "hide"}
 oneFlC1 <- oneFlC 
@@ -403,10 +390,10 @@ temp <- cbind(s0_eff$value, s5_eff$value)
 matplot(temp, x = dimnames( B_flbeia(s0))$year, type = 'l', xlab = 'Year', ylab = 'Effort')
 legend('top', c('s0', 's5'), col = c('black','red'), lty = c(1,2))
 ```
-
  
 ### Price
 Now, increase by 40% the average price of the stock 1.
+
 ```{r echo=TRUE, eval=TRUE,  fig.width = 3.5, fig.height = 3.5, results = "hide"}
 oneFl1 <- oneFl
 oneFl1$fl1@metiers$met1@catches$stk1@price <- oneFl$fl1@metiers$met1@catches$stk1@price*1.4 
@@ -426,15 +413,14 @@ legend('bottom', c('s0', 's6'),col = c('black','red'), lty = c(1,2) )
 ```
 
 Now, we can estimate economics indicators
+
 ```{r echo=TRUE, eval=TRUE}
 rev_s0 <- revenue_flbeia(s0$fleets$fl1)   
 rev_s6 <- revenue_flbeia(s6$fleets$fl1) 
 ```
 
-
-
 ## Visualizing results with flbeiaApp
-Currently is under development, but soon you will be able to run the ```flbeiaApp``` to built an interactive web applications for visualizing data. Currently this a preliminary version or beta versi?n of the ```flbeiaApp```.
+Currently is under development, but soon you will be able to run the `flbeiaApp` to built an interactive web applications for visualizing data. Currently this a preliminary version or beta versi?n of the `flbeiaApp`.
 
 ```{r echo=TRUE,  eval=FALSE}
 one_simul <- list(s0, s1, s2, s3, s4, s5, s6)
@@ -454,7 +440,6 @@ RefPts <- data.frame(stock = rep(names(one_simul[[1]][[1]]), each = 6*length(one
 flbeiaApp(one_simul , RefPts = RefPts,  years = ac(1990:2025), npv.y0 = '2009', npv.yrs = ac(2010:2025))
 ```
 
-
 # EXAMPLE 2: single stock, single fleet, single season and  three iterations.
 
 The second example is the same as the first example, but with three iterations. The Operating Model (OM) is formed by a single age-structured stock. Only one operates fleet which activity is performed in an unique metier and the time step is annual. The historic data go from 1990 to 2009 and projection period from 2010 to 2025.
@@ -467,19 +452,18 @@ The second example is the same as the first example, but with three iterations. 
     + Perfect observation 
     + No assessment 
 
-
-
 ## Load data
+
 ```{r echo=TRUE, eval=TRUE, results = "hide"}
 rm(list =ls())  # Clean the environment
 data(oneIt)
 ls()
 ```
 
-
 ## Run FLBEIA
-Call to ```FLBEIA``` function with the arguments stored in ```oneIt``` dataset. 
+Call to `FLBEIA` function with the arguments stored in `oneIt` dataset. 
 The uncertainty is in the parameters of the SR. Check it.
+
 ```{r echo=TRUE, eval=TRUE, results = "hide"}
 opts_chunk$set(message=FALSE)
 
@@ -491,6 +475,7 @@ s0_it <- FLBEIA(biols = oneItBio, SRs = oneItSR , BDs = NULL, fleets = oneItFl, 
 
 
 ## Summarizing results
+
 ```{r echo=TRUE, eval=TRUE, results = "hide"}
 s0_it_bio    <- bioSum(s0_it)             
 s0_it_adv    <- advSum(s0_it)             
@@ -504,7 +489,8 @@ s0_it_npv  <- npv(s0_it, y0 = '2014')
 s0_it_risk <- riskSum(s0_it, Bpa = c(stk1= 135000), Blim = c(stk1= 96000), Prflim = c(fl1 = 0))
 ```
 
-Create summary data frames (biological, economic, and catch) with quantiles(5,50,95). There are several predeterminated functios to sumarize results of ```FLBEIA``` outputs taken into account the uncertainty.
+Create summary data frames (biological, economic, and catch) with quantiles(5,50,95). There are several predeterminated functios to sumarize results of `FLBEIA` outputs taken into account the uncertainty.
+
 ```{r echo=TRUE, eval=TRUE, results = "hide"}
 proj.yr     <- 2009  
 s0_it_bioQ   <- bioSumQ(s0_it_bio)
@@ -513,6 +499,7 @@ s0_it_fltQ   <- fltSumQ(s0_it_flt)
 
 ## Plotting results
 Create several plots and save them in the working directory using 'pdf' format. 
+
 ```{r echo=TRUE,  eval=TRUE}
 plotFLBiols(s0_it$biols, pdfnm='s0_it')
 plotFLFleets(s0_it$fleets,pdfnm='s0_it')
@@ -520,7 +507,8 @@ plotEco(s0_it, pdfnm='s0_it')
 plotfltStkSum(s0_it, pdfnm='s0_it')
 ```
 
-See the biomass and the profit time series with its uncertainty (quantiles). In this case  ```ggplot``` function is used.
+See the biomass and the profit time series with its uncertainty (quantiles). In this case  `ggplot` function is used.
+
 ```{r echo=TRUE,  fig.width = 3.5, fig.height = 3, eval=TRUE}
 
 aux <-  subset(s0_it_bioQ, indicator=="biomass")
@@ -553,14 +541,9 @@ p1 <- ggplot(data=aux , aes(x=year, y=q50, color=fleet))+
 print(p1)
 ```
 
-```{r echo=TRUE, eval=TRUE, results = "hide"}
-dev.off()
-```
-     
-     
 ## Visualizing results with flbeiaApp
 
-Apply the ```flbeiaApp``` (beta versi?n) to built an interactive web applications for visualizing data. 
+Apply the `flbeiaApp` (beta versi?n) to built an interactive web applications for visualizing data. 
 
 ```{r echo=TRUE,  eval=FALSE}
 
@@ -589,13 +572,13 @@ flbeiaApp(list(bc = s0_it), RefPts = RefPts, npv.y0 = '2012', npv.yrs = ac(2013:
 
 Run the following scenarios and compare them with the baseline scenario (s0_it). The comparison should be done numerically and/or plotting scenarios.
 
-* s1_it: Population growth: Change stock-recruitment relationship.
-* s2_it: Natural mortality: Increase the natural mortility of ages 2 to 6 as 25%.
-* s3_it: Harvest control rule: apply ```FroeseHCR```.
-* s4_it: Effort dinamic: Apply ```MaxProfit```.
-* s6_it: Decrease a 15% the price of the recruits.
-* s6_it: The legislation has changed and the mesh size of the vessel will be changed, decreasing the catchability of vessels a 10%. What will be the biological and economic impacts of this legislation?
-* s7_it: Change the effort dynamic from ```SMFB``` to ```fixed effort``` and compare de SSB resulted from this simulation with de baseline scenario.
+* *s1_it*: Population growth: Change stock-recruitment relationship.
+* *s2_it*: Natural mortality: Increase the natural mortility of ages 2 to 6 as 25%.
+* *s3_it*: Harvest control rule: apply `FroeseHCR`.
+* *s4_it*: Effort dinamic: Apply `MaxProfit`.
+* *s6_it*: Decrease a 15% the price of the recruits.
+* *s6_it*: The legislation has changed and the mesh size of the vessel will be changed, decreasing the catchability of vessels a 10%. What will be the biological and economic impacts of this legislation?
+* *s7_it*: Change the effort dynamic from `SMFB` to `fixed effort` and compare de SSB resulted from this simulation with de baseline scenario.
 
 
 # More information
