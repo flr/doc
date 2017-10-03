@@ -2,10 +2,6 @@
 # This chunk set the document environment, so it is hidden
 library(knitr)
 source("R/ini.R")
-knitr::opts_chunk$set(fig.align='center',
-  message=FALSE, warning=FALSE, echo=TRUE, cache=FALSE)
-options(width=50)
-set.seed(1423)
 
 ## ----echo=FALSE, out.width='20%'-----------------------------------------
 include_graphics('images/FLBEIA_logo.png')
@@ -63,11 +59,16 @@ ls()
 #  Data: stk1_n.flq, m, spwn, fec, wt
 
   #stock stk1
-  stk1_n.flq     <- iter(as.FLQuant(read.csv(file = 'data/stk1_n.csv')),it)
-  stk1_m.flq     <- iter(as.FLQuant(read.csv(file = 'data/stk1_m.csv')),it)
-  stk1_spwn.flq  <- iter(as.FLQuant(read.csv(file = 'data/stk1_spwn.csv')),it)
-  stk1_fec.flq   <- iter(as.FLQuant(read.csv(file = 'data/stk1_fec.csv')),it)
-  stk1_wt.flq    <- iter(as.FLQuant(read.csv(file = 'data/stk1_wt.csv')),it)
+  stk1_n.flq     <- iter(as.FLQuant(read.csv(
+    file = file.path(dir, 'data/stk1_n.csv'))),it)
+  stk1_m.flq     <- iter(as.FLQuant(read.csv(
+    file = file.path(dir, 'data/stk1_m.csv'))),it)
+  stk1_spwn.flq  <- iter(as.FLQuant(read.csv(
+    file = file.path(dir, 'data/stk1_spwn.csv'))),it)
+  stk1_fec.flq   <- iter(as.FLQuant(read.csv(
+    file = file.path(dir, 'data/stk1_fec.csv'))),it)
+  stk1_wt.flq    <- iter(as.FLQuant(read.csv(
+    file = file.path(dir, 'data/stk1_wt.csv'))),it)
   stk1_mat.flq   <- stk1_fec.flq
   stk1_mat.flq[] <- 1
   
@@ -95,13 +96,13 @@ ls()
   stk1_sr.model        <- 'bevholtAR1'
   stk1_params.n        <- 3
   stk1_params.array    <- xtabs2(data~param+year+season+iter, 
-                                data=read.csv(file = 'data/stk1_params.csv'),
-                                exclude=NULL,na.action=na.pass)[,,,it,drop=F]         
+    data=read.csv(file = file.path(dir, 'data/stk1_params.csv')),
+    exclude=NULL,na.action=na.pass)[,,,it,drop=F]         
   stk1_params.name     <- c('a','b','c') 
-  stk1_rec.flq         <- iter(as.FLQuant(read.csv(file = 'data/stk1_rec.csv')),it)
-  stk1_ssb.flq         <- iter(as.FLQuant(read.csv(file = 'data/stk1_ssb.csv')),it)
-  stk1_uncertainty.flq <- iter(as.FLQuant(read.csv(file = 'data/stk1_uncertainty.csv')),it)
-  stk1_proportion.flq  <- iter(as.FLQuant(read.csv(file = 'data/stk1_proportion.csv')),it)
+  stk1_rec.flq         <- iter(as.FLQuant(read.csv(file = file.path(dir, 'data/stk1_rec.csv'))),it)
+  stk1_ssb.flq         <- iter(as.FLQuant(read.csv(file = file.path(dir, 'data/stk1_ssb.csv'))),it)
+  stk1_uncertainty.flq <- iter(as.FLQuant(read.csv(file = file.path(dir, 'data/stk1_uncertainty.csv'))),it)
+  stk1_proportion.flq  <- iter(as.FLQuant(read.csv(file = file.path(dir, 'data/stk1_proportion.csv'))),it)
   stk1_prop.avg.yrs    <- ac(2006:2008)
   stk1_timelag.matrix  <- matrix(c(1,1),nrow=2,ncol=1, dimnames = list(c('year', 'season'),'all'))
 
@@ -119,18 +120,18 @@ ls()
 # Data per fleet, metier and stock
 #    landings.n, discards.n,landings.wt, discards.wt, landings, discards, landings.sel, discards.sel, price
 
-  fl1_effort.flq        <- iter(as.FLQuant(read.csv(file = 'data/fl1_effort.csv')),it)
-  fl1_capacity.flq      <- iter(as.FLQuant(read.csv(file = 'data/fl1_capacity.csv')),it)
-  fl1_fcost.flq         <- iter(as.FLQuant(read.csv(file = 'data/fl1_fcost.csv')),it)
-  fl1_crewshare.flq     <- iter(as.FLQuant(read.csv(file = 'data/fl1_crewshare.csv')),it)
+  fl1_effort.flq        <- iter(as.FLQuant(read.csv(file = file.path(dir, 'data/fl1_effort.csv'))),it)
+  fl1_capacity.flq      <- iter(as.FLQuant(read.csv(file = file.path(dir, 'data/fl1_capacity.csv'))),it)
+  fl1_fcost.flq         <- iter(as.FLQuant(read.csv(file = file.path(dir, 'data/fl1_fcost.csv'))),it)
+  fl1_crewshare.flq     <- iter(as.FLQuant(read.csv(file = file.path(dir, 'data/fl1_crewshare.csv'))),it)
 
-  fl1.met1_effshare.flq  <- iter(as.FLQuant(read.csv(file = 'data/fl1.met1_effshare.csv')),it)
+  fl1.met1_effshare.flq  <- iter(as.FLQuant(read.csv(file = file.path(dir, 'data/fl1.met1_effshare.csv'))),it)
           
-  fl1.met1.stk1_landings.n.flq <- iter(as.FLQuant(read.csv(file = 'data/fl1.met1.stk1_landings.n.csv')),it)
-  fl1.met1.stk1_discards.n.flq <- iter(as.FLQuant(read.csv(file = 'data/fl1.met1.stk1_discards.n.csv')),it)
-#  fl1.met1.stk1_alpha.flq      <- iter(as.FLQuant(read.csv(file = 'data/fl1.met1.stk1_alpha.csv'))  ,it)
-#  fl1.met1.stk1_beta.flq       <- iter(as.FLQuant(read.csv(file = 'data/fl1.met1.stk1_beta.csv'))  ,it)
-#  fl1.met1.stk1_catch.q.flq    <- iter(as.FLQuant(read.csv(file = 'data/fl1.met1.stk1_catch.q.csv'))  ,it)
+  fl1.met1.stk1_landings.n.flq <- iter(as.FLQuant(read.csv(file = file.path(dir, 'data/fl1.met1.stk1_landings.n.csv'))),it)
+  fl1.met1.stk1_discards.n.flq <- iter(as.FLQuant(read.csv(file = file.path(dir, 'data/fl1.met1.stk1_discards.n.csv'))),it)
+#  fl1.met1.stk1_alpha.flq      <- iter(as.FLQuant(read.csv(file = file.path(dir, 'data/fl1.met1.stk1_alpha.csv')))  ,it)
+#  fl1.met1.stk1_beta.flq       <- iter(as.FLQuant(read.csv(file = file.path(dir, 'data/fl1.met1.stk1_beta.csv')))  ,it)
+#  fl1.met1.stk1_catch.q.flq    <- iter(as.FLQuant(read.csv(file = file.path(dir, 'data/fl1.met1.stk1_catch.q.csv')))  ,it)
     
     # Projection
     #         fleets: fl1
@@ -150,8 +151,8 @@ ls()
 ## ----echo=TRUE, eval=TRUE------------------------------------------------
 #  advice:TAC/TAE/quota.share
 
-  stk1_advice.TAC.flq         <- iter(as.FLQuant(read.csv(file = 'data/stk1_advice.tac.csv')),it)
-  stk1_advice.quota.share.flq <- iter(as.FLQuant(read.csv(file = 'data/stk1_advice.quota.share.csv')),it)
+  stk1_advice.TAC.flq         <- iter(as.FLQuant(read.csv(file = file.path(dir, 'data/stk1_advice.tac.csv'))),it)
+  stk1_advice.quota.share.flq <- iter(as.FLQuant(read.csv(file = file.path(dir, 'data/stk1_advice.quota.share.csv'))),it)
   stk1_advice.avg.yrs         <- c(2006:2008)
 
 #   create advice object
