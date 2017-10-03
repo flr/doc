@@ -57,7 +57,8 @@ The data files used in this tutorial need to be available in R's working directo
 
 ```{r, getfiles, message=FALSE}
 dir <- tempdir()
-download.file("http://flr-project.org/doc/src/ConditioningMulti.zip", file.path(dir, "ConditioningMulti.zip"))
+download.file("http://flr-project.org/doc/src/ConditioningMulti.zip",
+  file.path(dir, "ConditioningMulti.zip"))
 unzip(file.path(dir, "ConditioningMulti.zip"), exdir=dir)
 ```
 
@@ -124,7 +125,7 @@ The smart conditioning functions are listed and described in the [Manual](https:
 ### biols:
 An FLBiols object that contains biological information of stk1 relative to 'real' biological population within the OM.
 
-```{r echo=TRUE, eval=TRUE}  
+```{r readbiols, eval=TRUE}  
 # Set Simulation parameters related with time
 
   first.yr          <- 1990
@@ -189,7 +190,8 @@ An FLBiols object that contains biological information of stk1 relative to 'real
 ```
 
 ### SRs:
-The stock recruitment relationship, not needed in the case of population aggregated in biomass.The model is `bevholtAR1`, a regression stock recruitment model with autoregressive normal log residuals of first order. There are several SR models available in FLBEIA: `geomean`, `bevholt`, `ricker`, `segreg`, `shepherd`, `rickerAR1`, `segregAR1`, `cushing`, `bevholtSV`, `rickerSV`, `segregSV`, `shepherdSV`, `cushingSV`, `rickerCa`, `hockstick`, `redfishRecModel` and `ctRec`. 
+
+The stock recruitment relationship, not needed in the case of population aggregated in biomass. The model is `bevholtAR1`, a regression stock recruitment model with autoregressive normal log residuals of first order. There are several SR models available in FLBEIA: `geomean`, `bevholt`, `ricker`, `segreg`, `shepherd`, `rickerAR1`, `segregAR1`, `cushing`, `bevholtSV`, `rickerSV`, `segregSV`, `shepherdSV`, `cushingSV`, `rickerCa`, `hockstick`, `redfishRecModel` and `ctRec`. 
 
 ```{r echo=TRUE, eval=TRUE}  
 
