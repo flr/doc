@@ -60,6 +60,7 @@ dir <- tempdir()
 download.file("http://flr-project.org/doc/src/ConditioningOne.zip",
   file.path(dir, "ConditioningOne.zip"))
 unzip(file.path(dir, "ConditioningOne.zip"), exdir=dir)
+dir <- paste(dir,"/ConditioningOne",sep="")
 ```
 
 # Conditioning example one
@@ -268,10 +269,11 @@ List containing information on management advice;  total allowable catch 'TAC' a
 #   create advice object
   stks.data <- list(stk1=ls(pattern="^stk1")) 
   advice   <- create.advice.data(yrs,ns,ni,stks.data,fleets)
-`  
+```  
   
 ### indices:
 There is no index for this example.
+  
 ```{r echo=TRUE, eval=TRUE} 
 indices <- NULL
 ```
