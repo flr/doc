@@ -58,8 +58,8 @@ The data files used in this tutorial need to be available in R's working directo
 ```{r, getfiles, message=FALSE}
 dir <- tempdir()
 download.file("http://flr-project.org/doc/src/ConditioningMulti.zip",
-  file.path(dir, "ConditioningMulti.zip"))
-unzip(file.path(dir, "ConditioningMulti.zip"), exdir=dir)
+  file.path(dir, "ConditioningOne.zip"))
+unzip(file.path(dir, "ConditioningOne.zip"), exdir=dir)
 ```
 
 # Conditioning example one
