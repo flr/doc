@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Agurtzane Urtizberea and FLBEIA team" />
+
+
+<title>Conditioning FLBEIA using Smart Conditioning functions</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="http://flr-project.org">
+    <span class="fa fa-home"></span>
+     
+    FLR
+  </a>
+</li>
+<li>
+  <a href="index.html">
+    <span class="fa fa-info"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-play-circle-o"></span>
+     
+    Intro
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A_quick_introduction_to_FLR.html">A quick introduction to FLR</a>
+    </li>
+    <li>
+      <a href="An_overview_of_the_FLCore_classes.html">An overview of the FLCore classes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-database"></span>
+     
+    Input
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Loading_your_data_into_FLR.html">Loading your data into FLR</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-magic"></span>
+     
+    Modelling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Modelling_stock_recruitment_with_FLSR.html">Modelling stock recruitment with FLSR</a>
+    </li>
+    <li>
+      <a href="Statistical_catch_at_age_models_in_FLa4a.html">Statistical catch at age models in FLa4a</a>
+    </li>
+    <li>
+      <a href="Modelling_growth_and_its_uncertainty_in_FLa4a.html">Modelling growth and its uncertainty in FLa4a</a>
+    </li>
+    <li>
+      <a href="Natural_mortality_modelling_in_FLa4a.html">Natural mortality modelling in FLa4a</a>
+    </li>
+    <li>
+      <a href="Stock_assessment_using_eXtended_Survivors_Analysis_with_FLXSA.html">Stock assessment using eXtended Survivors Analysis with FLXSA</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-tachometer"></span>
+     
+    Advice
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Running_Medium_Term_Forecasts_with_FLash.html">Running Medium Term Forecasts with FLash</a>
+    </li>
+    <li>
+      <a href="Short_Term_Forecasting_for_advice_using_FLash.html">Short Term Forecasting for advice using FLash</a>
+    </li>
+    <li>
+      <a href="Forecasting_on_the_Medium_Term_for_advice_using_FLasher.html">Forecasting on the Medium Term for advice using FLasher</a>
+    </li>
+    <li>
+      <a href="Reference_points_for_fisheries_management_with_FLBRP.html">Reference points for fisheries management with FLBRP</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-cogs"></span>
+     
+    MSE
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-cogs"></span>
+     
+    FLBEIA
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+    <li>
+      <a href="Conditioning_FLBEIA.html">Conditioning FLBEIA using Smart Conditioning Functions</a>
+    </li>
+    <li>
+      <a href="FLBEIA_A_Simple_Example.html">A simple example on how to use FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_An_Example_with_multiple_dimensions.html">A simple example with multiple dimensions in FLBEIA</a>
+    </li>
+    <li>
+      <a href="Using_Assessment_models_in_the_MP_FLBEIA.html">Using Stock Assessment models in the Management procedure of FLBEIA</a>
+    </li>
+    <li>
+      <a href="Testing_Management_Strategies_in_FLBEIA.html">Testing different Management Strategies in FLBEIA</a>
+    </li>
+    <li>
+      <a href="Data_Poor_MSE_in_FLBEIA.html">Data Limited MSE in FLBEIA</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-area-chart"></span>
+     
+    Plotting
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="ggplotFL_plotting_FLR_objects_with_ggplot2.html">ggplotFL, plotting FLR objects with ggplot2</a>
+    </li>
+    <li>
+      <a href="Plotting_FLR_objects_using_lattice.html">Plotting FLR objects using lattice</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-puzzle-piece"></span>
+     
+    Internals
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Units_of_measurement_in_FLR_objects.html">Units of measurement in FLR objects</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="http://github.com/flr/doc/issues">
+    <span class="fa fa-question fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Conditioning FLBEIA using Smart Conditioning functions</h1>
+<h4 class="author"><em>Agurtzane Urtizberea and FLBEIA team</em></h4>
+
+</div>
+
+
+<p><img src="images/FLBEIA_logo.png" width="20%" style="display: block; margin: auto;" /></p>
+<div id="aim" class="section level1">
+<h1>AIM</h1>
+<p><strong>FLBEIA</strong> provides a battery of tutorials for learning how to use this software. This tutorial is a practical guide about how to condition FLBEIA using the smart conditioning functions. The smart conditioning functions facilitate, save time and help to avoid possible errors later on when FLBEIA is ran. The tutorial will start showing how to condition the example <code>one</code> a simple example with single stock, single fleet and one iteration. FLBEIA library also includes some plots in order to show a fast way to verify if the data are introduced correctly.</p>
+<p>Afterwards, a more complicated example will be shown with 2 stocks, 2 fleets, 4 seasons and 3 iterations. The objects created here are the same as in the example <code>multi</code>. The examples <code>one</code> and <code>multi</code> are part of the examples used in other tutorials.</p>
+</div>
+<div id="required-packages-to-run-this-tutorial" class="section level1">
+<h1>Required packages to run this tutorial</h1>
+<p>To follow this tutorial you should have installed the following packages</p>
+<ul>
+<li>CRAN: <a href="https://cran.r-project.org/web/packages/ggplot2/index.html">ggplot2</a></li>
+<li>FLR: <a href="http://www.flr-project.org/FLCore/">FLCore</a>, <a href="http://www.flr-project.org/FLBEIA/">FLBEIA</a>, <a href="http://www.flr-project.org/FLFleet/">FLFleet</a>, <a href="http://www.flr-project.org/ggplotFL/">ggplotFL</a></li>
+</ul>
+<p>If you are using Windows, please use 32-bit R version because some of the packages do not work in 64-bit.</p>
+<pre class="r"><code>install.packages(c(&quot;ggplot2&quot;))
+install.packages(c(&quot;FLCore&quot;, &quot;FLBEIA&quot;, &quot;FLFleets&quot;, &quot;FLash&quot;, &quot;FLAssess&quot;, &quot;FLXSA&quot;, &quot;ggplotFL&quot;), repos=&quot;http://flr-project.org/R&quot;)</code></pre>
+<p>Load all necessary packages.</p>
+<pre class="r"><code>  library(FLCore) 
+  library(FLAssess)
+  library(FLash)
+  library(FLFleet)
+  library(FLXSA)
+  library(FLBEIA) 
+  library(ggplot2)</code></pre>
+<div id="input-data" class="section level2">
+<h2>Input data</h2>
+<p>The data files used in this tutorial need to be available in R’s working directory, and this code obtains them from the <strong>FLR</strong> website. Files will be downloaded to a temporary folder. If you want to keep a local copy, simply set a different value to the <code>dir</code> variable below.</p>
+<pre class="r"><code>dir &lt;- tempdir()
+download.file(&quot;http://flr-project.org/doc/src/ConditioningOne.zip&quot;,
+  file.path(dir, &quot;ConditioningOne.zip&quot;))
+unzip(file.path(dir, &quot;ConditioningOne.zip&quot;), exdir=dir)
+dir &lt;- paste(dir,&quot;/ConditioningOne&quot;,sep=&quot;&quot;)</code></pre>
+</div>
+</div>
+<div id="conditioning-example-one" class="section level1">
+<h1>Conditioning example one</h1>
+<div id="description-of-the-example-one" class="section level2">
+<h2>Description of the example one</h2>
+<p>This example is one of the simplest possible implementation of <strong>FLBEIA</strong>. The Operating Model (OM) is formed by a single age-structured stock. Only one fleet which activity is performed in an unique metier and the time step is annual. The historic data go from 1990 to 2009 and projection period from 2010 to 2025.</p>
+<ul>
+<li>Operating model:
+<ul>
+<li>Population dynamics: Age structured population growth</li>
+<li>SR model: Beverthon and Holt autoregressive/segmented regression</li>
+</ul></li>
+<li>Management Procedure:
+<ul>
+<li>Perfect observation</li>
+<li>No assessment</li>
+<li>Ices HCR</li>
+</ul></li>
+</ul>
+</div>
+<div id="input-data-1" class="section level2">
+<h2>Input data</h2>
+<p>Download the input data from InputOne.zip. The data are in ‘.csv’ format and the example shows how to transform the data in the format required to run FLBEIA.</p>
+</div>
+<div id="conditioning" class="section level2">
+<h2>Conditioning</h2>
+<p><code>FLBEIA</code> requires a number of input arguments to run a simulation; such as <code>biols</code>, <code>SRs</code>, <code>BDs</code>, <code>fleets</code>, <code>covars</code>, <code>indices</code>,<code>advice</code>, <code>main.ctrl</code>, <code>biols.ctrl</code>, <code>fleets.ctrl</code>, <code>covars.ctrl</code>, <code>obs.ctrl</code>, <code>assess.ctrl</code> and <code>advice.ctrl</code>.</p>
+<p>These objects contain biological and economical historical and projection data, and also point the functions that are going to be used by the model. Here we introduce and explain the smart conditioning functions that have been generated to facilitate the creation of these objects.</p>
+<p>When the data in the example <code>one</code> are loaded, with the <code>ls()</code> command we can see the objects stored in <code>one</code>, which are those needed to call to run <code>FLBEIA</code>, and these are some of the objects that will be created in this tutorial.</p>
+<pre class="r"><code>data(one)
+ls()</code></pre>
+<pre><code> [1] &quot;dir&quot;           &quot;fig_nums&quot;      &quot;fign&quot;          &quot;oneAdv&quot;       
+ [5] &quot;oneAdvC&quot;       &quot;oneAssC&quot;       &quot;oneBio&quot;        &quot;oneBioC&quot;      
+ [9] &quot;oneCv&quot;         &quot;oneCvC&quot;        &quot;oneFl&quot;         &quot;oneFlC&quot;       
+[13] &quot;oneIndAge&quot;     &quot;oneIndBio&quot;     &quot;oneMainC&quot;      &quot;oneObsC&quot;      
+[17] &quot;oneObsCIndAge&quot; &quot;oneObsCIndBio&quot; &quot;oneSR&quot;        </code></pre>
+<p>The smart conditioning functions are listed and described in the <a href="https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf">Manual</a> of <strong>FLBEIA</strong>, within the ‘doc’ folder of the package installation or typing <code>help(package = FLBEIA)</code> in the R console. The description of the smart conditioning functions are listed below.</p>
+<ul>
+<li><p><code>create.biols.data</code>: It generates a <code>FLBiol</code> object for each stock, and includes all of them in a <code>FLBiols</code> object. It returns an object that could be used as <code>biols</code> argument in <code>FLBEIA</code> function. The function filled historical data of weight, abundance, natural mortality, fecundity, spawning, maturity and recruitment. In the projection years, weight, natural mortality, fecundity, maturity and spawning, are assumed equal to the average of the historical years that the user specifies in <code>stk_biol.proj.avg.yrs</code>.</p></li>
+<li><p><code>create.SRs.data</code>: It generates a list with <code>FLSRsim</code> objects and returns an object that could be used as <code>SRs</code> argument in <code>FLBEIA</code> function. This function does not calculate stock-recruitment function’s parameter values; therefore, they must be calculated previously by the user. In case that the proportion of spawning per season is not defined in the projection years, then it is assumed equal to the average of the historical years range that the user defines. If uncertainty is not an input, then there is not uncertainty.</p></li>
+<li><p><code>create.BDs.data</code>: It generates a list with <code>FLBDsim</code> objects. It returns an object that could be used as <code>BDs</code> argument in <code>FLBEIA</code> function. This function does not calculate biomass dynamics function’s parameter values, so they must be introduced by the user. If uncertainty is not an input, then the function assumes no uncertainty.</p></li>
+<li><p><code>create.fleets.data</code>: It generates an <code>FLFleet</code> object for each fleet and includes all of them in an <code>FLFleets</code> object. It returns an object that could be used as <code>fleets</code> argument in <code>FLBEIA</code> function. The function requires historical data of effort per fleet, effort share between m?tiers, landings and weight at age per stock. Notice that when the input data of landings weight are not especified then it takes the weight values specified to the stock in <code>create.biols.data</code>. In case that discards data are available, then its weight is assumed the same as for landings. The function assumes that when historical data of effort, fixed cost, capacity or crewshare are introduced, then the projection values of each of them are the average of the years that the user sets in <code>fl.proj.avg.yrs</code>; in the case of effort share and variable cost per metier, is set in <code>fl.met_proj.avg.yrs</code>; and in the case of landings at age, discards at age and price, in <code>fl.met.stk_proj.avg.yrs</code>. If the Cobb-Douglas parameters, <code>alpha</code>, <code>beta</code> and <code>q</code>, are not introduced as inputs, then they are created assumming that <code>alpha</code> and <code>beta</code> are equal to 1 and <code>q</code> is the ratio between total catch and effort per metier multiplied by the stock abundance.</p></li>
+<li><p><code>create.indices.data</code>: It generates a list with all the stocks and for each stock a list with <code>FLIndex</code> or <code>FLIndexBiomass</code> objects. It returns an object that could be used as <code>indices</code> argument in <code>FLBEIA</code> function.</p></li>
+<li><p><code>create.advice.data</code>: It generates a list with the advice for each of the stocks. It returns an object that could be used as <code>advice</code> argument in <code>FLBEIA</code> function. In case that the values of TAC and TAE are not introduced in the projection years, then the model assumes that they are equal to the average of the historical data that the user defines in <code>stk_advice.avg.yrs</code>, although not always is necessary to have as input the TAC value of the projection. When quota share is not defined in the projection years, then the function calculates it for each stock as the ratio between catch per fleet and total catch.</p></li>
+<li><p><code>create.biols.ctrl</code>: It creates an object with the name of the growth function for each stock. The object that returns this function can be used as <code>biols.ctrl</code> argument in <code>FLBEIA</code> function.</p></li>
+<li><p><code>create.fleets.ctrl</code>: It creates an object with the fleet dynamics function that is applied for each fleet. The object that returns this function can be used as <code>fleets.ctrl</code> argument in <code>FLBEIA</code> function.</p></li>
+<li><p><code>create.covars.ctrl</code>: It creates an object with the function that is applied to the covariate. The object that returns this function can be used as <code>covars.ctrl</code> argument in <code>FLBEIA</code> function.</p></li>
+<li><p><code>create.obs.ctrl</code>: It creates a function with the observed function for each stock. The object that returns this function can be used as <code>obs.ctrl</code> argument in <code>FLBEIA</code> function.</p></li>
+<li><p><code>create.advice.ctrl</code>: It creates an object with the harvest control rule for each stock, and its parameter values. The object that returns this function can be used as <code>advice.ctrl</code> argument in <code>FLBEIA</code> function.</p></li>
+<li><p><code>create.assess.ctrl</code>: It creates an object with the name of the kind of assessment that is applied to each stock. The object that returns this function can be used as <code>assess.ctrl</code> argument in <code>FLBEIA</code> function.</p></li>
+</ul>
+<div id="biols" class="section level3">
+<h3>biols:</h3>
+<p>An FLBiols object that contains biological information of stk1 relative to ‘real’ biological population within the OM.</p>
+<pre class="r"><code># Set Simulation parameters related with time
+
+  first.yr          &lt;- 1990
+  proj.yr           &lt;- 2010 
+  last.yr           &lt;- 2025  
+  yrs &lt;- c(first.yr=first.yr,proj.yr=proj.yr,last.yr=last.yr)
+  
+#  Set names, age, dimensions 
+
+  fls   &lt;- c(&#39;fl1&#39;)
+
+  stks &lt;- c(&#39;stk1&#39;)
+
+  fl1.mets      &lt;- c(&#39;met1&#39;)
+  fl1.met1.stks  &lt;- c(&#39;stk1&#39;)
+
+  # all stocks the same
+  
+  ni           &lt;- 1
+  it           &lt;- 1:ni
+  ns             &lt;- 1
+  
+  # stock stk1
+  stk1.age.min    &lt;- 1
+  stk1.age.max    &lt;- 12
+  stk1.unit       &lt;- 1         
+ 
+#  Data: stk1_n.flq, m, spwn, fec, wt
+
+  #stock stk1
+  stk1_n.flq     &lt;- iter(as.FLQuant(read.csv(
+    file = file.path(dir, &#39;data/stk1_n.csv&#39;))),it)
+  stk1_m.flq     &lt;- iter(as.FLQuant(read.csv(
+    file = file.path(dir, &#39;data/stk1_m.csv&#39;))),it)
+  stk1_spwn.flq  &lt;- iter(as.FLQuant(read.csv(
+    file = file.path(dir, &#39;data/stk1_spwn.csv&#39;))),it)
+  stk1_fec.flq   &lt;- iter(as.FLQuant(read.csv(
+    file = file.path(dir, &#39;data/stk1_fec.csv&#39;))),it)
+  stk1_wt.flq    &lt;- iter(as.FLQuant(read.csv(
+    file = file.path(dir, &#39;data/stk1_wt.csv&#39;))),it)
+  stk1_mat.flq   &lt;- stk1_fec.flq
+  stk1_mat.flq[] &lt;- 1
+  
+  stk1_range.min       &lt;- 1
+  stk1_range.max       &lt;- 12
+  stk1_range.plusgroup &lt;- 12
+  stk1_range.minyear   &lt;- 1990
+  stk1_range.minfbar   &lt;- 4
+  stk1_range.maxfbar   &lt;- 9
+
+# Projection biols: weight,fecundity,mortality and spawning 
+
+  stk1_biol.proj.avg.yrs  &lt;- c(2007:2009)
+  
+# Create the object
+  
+   stks.data &lt;- list(stk1=ls(pattern=&quot;^stk1&quot;)) 
+
+    biols    &lt;- create.biols.data(yrs,ns,ni,stks.data)</code></pre>
+<pre><code>============= stk1 biol =============</code></pre>
+<pre class="r"><code>  plotFLBiols(biols,pdfnm=&#39;s0&#39;)</code></pre>
+</div>
+<div id="srs" class="section level3">
+<h3>SRs:</h3>
+<p>The stock recruitment relationship, not needed in the case of population aggregated in biomass. The model is <code>bevholtAR1</code>, a regression stock recruitment model with autoregressive normal log residuals of first order. There are several SR models available in FLBEIA: <code>geomean</code>, <code>bevholt</code>, <code>ricker</code>, <code>segreg</code>, <code>shepherd</code>, <code>rickerAR1</code>, <code>segregAR1</code>, <code>cushing</code>, <code>bevholtSV</code>, <code>rickerSV</code>, <code>segregSV</code>, <code>shepherdSV</code>, <code>cushingSV</code>, <code>rickerCa</code>, <code>hockstick</code>, <code>redfishRecModel</code> and <code>ctRec</code>.</p>
+<pre class="r"><code>  stk1_sr.model        &lt;- &#39;bevholtAR1&#39;
+  stk1_params.n        &lt;- 3
+  stk1_params.array    &lt;- xtabs2(data~param+year+season+iter, 
+    data=read.csv(file = file.path(dir, &#39;data/stk1_params.csv&#39;)),
+    exclude=NULL,na.action=na.pass)[,,,it,drop=F]         
+  stk1_params.name     &lt;- c(&#39;a&#39;,&#39;b&#39;,&#39;c&#39;) 
+  stk1_rec.flq         &lt;- iter(as.FLQuant(read.csv(file = file.path(dir, &#39;data/stk1_rec.csv&#39;))),it)
+  stk1_ssb.flq         &lt;- iter(as.FLQuant(read.csv(file = file.path(dir, &#39;data/stk1_ssb.csv&#39;))),it)
+  stk1_uncertainty.flq &lt;- iter(as.FLQuant(read.csv(file = file.path(dir, &#39;data/stk1_uncertainty.csv&#39;))),it)
+  stk1_proportion.flq  &lt;- iter(as.FLQuant(read.csv(file = file.path(dir, &#39;data/stk1_proportion.csv&#39;))),it)
+  stk1_prop.avg.yrs    &lt;- ac(2006:2008)
+  stk1_timelag.matrix  &lt;- matrix(c(1,1),nrow=2,ncol=1, dimnames = list(c(&#39;year&#39;, &#39;season&#39;),&#39;all&#39;))
+
+    #              FLBEIA input object: SRs
+
+    stks.data &lt;- list(stk1=ls(pattern=&quot;^stk1&quot;)) 
+  
+  SRs      &lt;- create.SRs.data(yrs,ns,ni,stks.data)</code></pre>
+<pre><code>============= stk1 SR =============</code></pre>
+</div>
+<div id="fleets" class="section level3">
+<h3>fleets:</h3>
+<p>It is a FLFleetExt object that contains information relative to the fleet fl1 (effort, costs, capacity…) and information relative to the metier met1 (effort share, varaible costs, parameters of the Cobb Dougras function).</p>
+<pre class="r"><code># Data per fleet
+#    effort, crewshare, fcost, capacity
+# Data per fleet and metier
+#    effshare, vcost
+# Data per fleet, metier and stock
+#    landings.n, discards.n,landings.wt, discards.wt, landings, discards, landings.sel, discards.sel, price
+
+  fl1_effort.flq        &lt;- iter(as.FLQuant(read.csv(file = file.path(dir, &#39;data/fl1_effort.csv&#39;))),it)
+  fl1_capacity.flq      &lt;- iter(as.FLQuant(read.csv(file = file.path(dir, &#39;data/fl1_capacity.csv&#39;))),it)
+  fl1_fcost.flq         &lt;- iter(as.FLQuant(read.csv(file = file.path(dir, &#39;data/fl1_fcost.csv&#39;))),it)
+  fl1_crewshare.flq     &lt;- iter(as.FLQuant(read.csv(file = file.path(dir, &#39;data/fl1_crewshare.csv&#39;))),it)
+
+  fl1.met1_effshare.flq  &lt;- iter(as.FLQuant(read.csv(file = file.path(dir, &#39;data/fl1.met1_effshare.csv&#39;))),it)
+          
+  fl1.met1.stk1_landings.n.flq &lt;- iter(as.FLQuant(read.csv(file = file.path(dir, &#39;data/fl1.met1.stk1_landings.n.csv&#39;))),it)
+  fl1.met1.stk1_discards.n.flq &lt;- iter(as.FLQuant(read.csv(file = file.path(dir, &#39;data/fl1.met1.stk1_discards.n.csv&#39;))),it)
+#  fl1.met1.stk1_alpha.flq      &lt;- iter(as.FLQuant(read.csv(file = file.path(dir, &#39;data/fl1.met1.stk1_alpha.csv&#39;)))  ,it)
+#  fl1.met1.stk1_beta.flq       &lt;- iter(as.FLQuant(read.csv(file = file.path(dir, &#39;data/fl1.met1.stk1_beta.csv&#39;)))  ,it)
+#  fl1.met1.stk1_catch.q.flq    &lt;- iter(as.FLQuant(read.csv(file = file.path(dir, &#39;data/fl1.met1.stk1_catch.q.csv&#39;)))  ,it)
+    
+    # Projection
+    #         fleets: fl1
+  fl1_proj.avg.yrs           &lt;- c(2008:2009)
+  fl1.met1_proj.avg.yrs       &lt;- c(2008:2009)   
+  fl1.met1.stk1_proj.avg.yrs   &lt;- c(2006:2008)   
+
+    #              create fleets object
+  
+  fls.data &lt;- list(fl1=ls(pattern=&quot;^fl1&quot;)) 
+  
+  fleets   &lt;- create.fleets.data(yrs,ns,ni,fls.data,stks.data)</code></pre>
+<pre><code>
+============= fl1 fleet =============
+--------------------- fl1 fleet, met1 ------------------
+warning: NA in vcost projection 
+--------------------- fl1 fleet, met1  metier, stk1 stock ---------------------
+warning: all NA-s in price projection </code></pre>
+<pre class="r"><code>  plotFLFleets(fleets,pdfnm=&#39;s0&#39;)   </code></pre>
+</div>
+<div id="advice" class="section level3">
+<h3>advice:</h3>
+<p>List containing information on management advice; total allowable catch ‘TAC’ and quota share.</p>
+<pre class="r"><code>#  advice:TAC/TAE/quota.share
+
+  stk1_advice.TAC.flq         &lt;- iter(as.FLQuant(read.csv(file = file.path(dir, &#39;data/stk1_advice.tac.csv&#39;))),it)
+  stk1_advice.quota.share.flq &lt;- iter(as.FLQuant(read.csv(file = file.path(dir, &#39;data/stk1_advice.quota.share.csv&#39;))),it)
+  stk1_advice.avg.yrs         &lt;- c(2006:2008)
+
+#   create advice object
+  stks.data &lt;- list(stk1=ls(pattern=&quot;^stk1&quot;)) 
+  advice   &lt;- create.advice.data(yrs,ns,ni,stks.data,fleets)</code></pre>
+</div>
+<div id="indices" class="section level3">
+<h3>indices:</h3>
+<p>There is no index for this example.</p>
+<pre class="r"><code>indices &lt;- NULL</code></pre>
+</div>
+<div id="main.ctrl" class="section level3">
+<h3>main.ctrl:</h3>
+<p>Controls the settings with the initial and final year of the proyected period.</p>
+<pre class="r"><code>  main.ctrl           &lt;- list()
+  main.ctrl$sim.years &lt;- c(initial = proj.yr, final = last.yr)</code></pre>
+</div>
+<div id="biols.ctrl" class="section level3">
+<h3>biols.ctrl:</h3>
+<p>A list that controls the biological operation model. The growth function of stk1 is defined as Age Structured Population Growth <code>ASPG</code>. The function <code>ASPG</code> describes the evolution of an age structured population using an exponential survival equation for existing age classes and a stock-recruitment relationship to generate the recruitment. In FLBEIA there are other models available: <code>fixedPopulation</code> and <code>BDPG</code>.</p>
+<pre class="r"><code>  growth.model     &lt;- c(&#39;ASPG&#39;)
+  biols.ctrl       &lt;- create.biols.ctrl (stksnames=stks,growth.model=growth.model)</code></pre>
+</div>
+<div id="fleets.ctrl" class="section level3">
+<h3>fleets.ctrl:</h3>
+<p>The basic structure of the fleets.ctrl object; the effort dynamics is Simple Mixed Fisheries Behaviour <code>SMFB</code>. <code>SMFB</code> is a simplified version of the behavior of fleets that work in a mixed fisheries framework. The function is seasonal and assumes that effort share among metiers is given as input parameter. There are also others effort model defined in FLBEIA [<code>fixedEffort</code>, <code>SSFB</code>, <code>MaxProfit</code>, `MaxProfitSeq```]. Summarizing, the fleet catches yearly exactly the adviced TAC and there is no exit-entry of vessels in the fishery.</p>
+<pre class="r"><code>  n.fls.stks      &lt;- 1
+  fls.stksnames   &lt;- &#39;stk1&#39;
+  effort.models    &lt;- &#39;SMFB&#39;
+  effort.restr.fl1 &lt;- &#39;stk1&#39;
+  restriction.fl1  &lt;- &#39;catch&#39;
+  catch.models     &lt;- &#39;CobbDouglasAge&#39;
+  capital.models   &lt;- &#39;fixedCapital&#39;       
+  flq.stk1&lt;- FLQuant(dimnames = list(age = &#39;all&#39;, year = first.yr:last.yr, unit = stk1.unit, 
+                                     season = 1:ns, iter = 1:ni)) 
+  fleets.ctrl      &lt;- create.fleets.ctrl(fls=fls,n.fls.stks=n.fls.stks,fls.stksnames=fls.stksnames,
+                                         effort.models= effort.models, catch.models=catch.models,
+                                         capital.models=capital.models, flq=flq.stk1,
+                                         effort.restr.fl1 = effort.restr.fl1, restriction.fl1 = restriction.fl1)
+
+fleets.ctrl$fl1$stk1$discard.TAC.OS  &lt;- FALSE
+fleets.ctrl$fl1$restriction &lt;- &quot;landings&quot;</code></pre>
+</div>
+<div id="advice.ctrl" class="section level3">
+<h3>advice.ctrl:</h3>
+<p>Controls the behaviour of advice management procedure.It is a list with one element per stock and one more element for each fleet. The selected model is <code>IcesHCR</code>.The function represents the HCR used by ICES to generate TAC advice in the MSY framework. It is a biomass based HCR, where the TAC advice depends on F in relation to several reference points.</p>
+<pre class="r"><code>  HCR.models       &lt;- c(&#39;IcesHCR&#39;) 
+  ref.pts.stk1      &lt;- matrix(rep(c(548.6296271, 768.0814779, 0.1057783),3), 3,ni, dimnames = list(c(&#39;Blim&#39;, &#39;Btrigger&#39;,&#39;Fmsy&#39;), 1:ni))
+  advice.ctrl      &lt;- create.advice.ctrl(stksnames = stks, HCR.models =  HCR.models, 
+                      ref.pts.stk1 = ref.pts.stk1,first.yr=first.yr,last.yr=last.yr)</code></pre>
+<pre><code>--------------------- NOTE ON ADVICE ------------------------------------------------------------------------------
+A default control for &#39;IcesHCR&#39; HCR has been created for stock,  stk1 .
+In the intermediate year fishing mortality equal to F statu quo.
+For recruitment or population growth in biomass a geometric mean of historic time series estimates will be used.
+Average of last 3 years used for biological parameters and fishing mortality.
+------------------------------------------------------------------------------</code></pre>
+<pre class="r"><code>  advice.ctrl[[&#39;stk1&#39;]][[&#39;sr&#39;]]            &lt;- list()
+  advice.ctrl[[&#39;stk1&#39;]][[&#39;sr&#39;]][[&#39;model&#39;]] &lt;- &#39;geomean&#39;
+  advice.ctrl[[&#39;stk1&#39;]][[&#39;sr&#39;]][[&#39;years&#39;]] &lt;- c(y.rm = 2, num.years = 10)
+  advice.ctrl$stk1$AdvCatch &lt;- rep(TRUE,length(first.yr:last.yr))   #TRUE advice in catches, FALSE advice in landings
+  names(advice.ctrl$stk1$AdvCatch) &lt;- as.character((first.yr:last.yr))</code></pre>
+</div>
+<div id="assess.ctrl" class="section level3">
+<h3>assess.ctrl:</h3>
+<p>Defines the name of the assessment model to be used for each stock. In the current example there is no asssessment <code>NoAssessment</code>.</p>
+<pre class="r"><code>assess.models    &lt;- &#39;NoAssessment&#39;
+assess.ctrl &lt;- create.assess.ctrl(stksnames = stks, assess.models = assess.models)
+assess.ctrl[[&#39;stk1&#39;]]$work_w_Iter   &lt;- TRUE</code></pre>
+</div>
+<div id="obs.ctrl" class="section level3">
+<h3>obs.ctrl:</h3>
+<p>There is no assessment model in this examples,therefore, the management advice is just based on the ‘observed’ population. A <code>perfecObs</code> model is defined. This function does not introduce any observation uncertainty in the observation of the different quantities stored in the <code>FLStock</code> or <code>FLFLeetsExt</code> objects.</p>
+<pre class="r"><code>stkObs.models&lt;- &quot;perfectObs&quot;
+flq.stk1&lt;- FLQuant(dimnames = list(age = &#39;all&#39;, year = first.yr:last.yr, unit = stk1.unit, 
+                                   season = 1:ns, iter = 1:ni)) 
+
+obs.ctrl        &lt;- create.obs.ctrl(stksnames = stks,  stkObs.models = stkObs.models,flq.stk1 = flq.stk1)</code></pre>
+</div>
+<div id="bdscovarscovars.ctrl-null-objects" class="section level3">
+<h3>BDs/covars/covars.ctrl/ NULL objects</h3>
+<pre class="r"><code>  covars.ctrl      &lt;- NULL
+  BDs       &lt;- NULL
+  covars    &lt;- NULL</code></pre>
+</div>
+<div id="flbeia-input-objects" class="section level3">
+<h3>FLBEIA input objects</h3>
+<pre class="r"><code>  save(biols, SRs,BDs, fleets, covars, 
+     indices, advice, main.ctrl, 
+     biols.ctrl, fleets.ctrl, 
+     covars.ctrl, obs.ctrl, 
+     assess.ctrl, advice.ctrl, file=&quot;input_S0_1it.RData&quot;)</code></pre>
+</div>
+<div id="run-flbeia" class="section level3">
+<h3>Run FLBEIA</h3>
+<pre class="r"><code>s0 &lt;- FLBEIA(biols = biols, SRs = SRs, BDs = BDs, fleets=fleets, covars = covars, 
+              indices = indices, advice = advice, main.ctrl = main.ctrl, 
+              biols.ctrl = biols.ctrl, fleets.ctrl = fleets.ctrl, 
+              covars.ctrl = covars.ctrl, obs.ctrl = obs.ctrl, 
+              assess.ctrl = assess.ctrl, advice.ctrl = advice.ctrl) </code></pre>
+<pre><code>############################################################
+-                   Year:  21 , Season:  1 
+############################################################
+************ OPERATING MODEL***************************
+------------ BIOLOGICAL OM ------------
+-----------------ASPG-----------
+------------ FLEETS OM ------------
+[1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
+[1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;****************************** CAPITAL ******************************&quot;
+[1] &quot;fl1&quot;
+------------ COVARS OM ------------
+************ MANAGEMENT PROCEDURE ****************************
+----------- OBSERVATION MODEL ------------
+------------ ASSESSMENT MODEL ------------
+----------------- ADVICE -----------------
+-----------------  stk1  -----------------
+[1] 0.1057783
+############################################################
+-                   Year:  22 , Season:  1 
+############################################################
+************ OPERATING MODEL***************************
+------------ BIOLOGICAL OM ------------
+-----------------ASPG-----------
+------------ FLEETS OM ------------
+[1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
+[1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;****************************** CAPITAL ******************************&quot;
+[1] &quot;fl1&quot;
+------------ COVARS OM ------------
+************ MANAGEMENT PROCEDURE ****************************
+----------- OBSERVATION MODEL ------------
+------------ ASSESSMENT MODEL ------------
+----------------- ADVICE -----------------
+-----------------  stk1  -----------------
+[1] 0.1057783
+############################################################
+-                   Year:  23 , Season:  1 
+############################################################
+************ OPERATING MODEL***************************
+------------ BIOLOGICAL OM ------------
+-----------------ASPG-----------
+------------ FLEETS OM ------------
+[1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
+[1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;****************************** CAPITAL ******************************&quot;
+[1] &quot;fl1&quot;
+------------ COVARS OM ------------
+************ MANAGEMENT PROCEDURE ****************************
+----------- OBSERVATION MODEL ------------
+------------ ASSESSMENT MODEL ------------
+----------------- ADVICE -----------------
+-----------------  stk1  -----------------
+[1] 0.1057783
+############################################################
+-                   Year:  24 , Season:  1 
+############################################################
+************ OPERATING MODEL***************************
+------------ BIOLOGICAL OM ------------
+-----------------ASPG-----------
+------------ FLEETS OM ------------
+[1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
+[1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;****************************** CAPITAL ******************************&quot;
+[1] &quot;fl1&quot;
+------------ COVARS OM ------------
+************ MANAGEMENT PROCEDURE ****************************
+----------- OBSERVATION MODEL ------------
+------------ ASSESSMENT MODEL ------------
+----------------- ADVICE -----------------
+-----------------  stk1  -----------------
+[1] 0.1057783
+############################################################
+-                   Year:  25 , Season:  1 
+############################################################
+************ OPERATING MODEL***************************
+------------ BIOLOGICAL OM ------------
+-----------------ASPG-----------
+------------ FLEETS OM ------------
+[1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
+[1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;****************************** CAPITAL ******************************&quot;
+[1] &quot;fl1&quot;
+------------ COVARS OM ------------
+************ MANAGEMENT PROCEDURE ****************************
+----------- OBSERVATION MODEL ------------
+------------ ASSESSMENT MODEL ------------
+----------------- ADVICE -----------------
+-----------------  stk1  -----------------
+[1] 0.1057783
+############################################################
+-                   Year:  26 , Season:  1 
+############################################################
+************ OPERATING MODEL***************************
+------------ BIOLOGICAL OM ------------
+-----------------ASPG-----------
+------------ FLEETS OM ------------
+[1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
+[1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;****************************** CAPITAL ******************************&quot;
+[1] &quot;fl1&quot;
+------------ COVARS OM ------------
+************ MANAGEMENT PROCEDURE ****************************
+----------- OBSERVATION MODEL ------------
+------------ ASSESSMENT MODEL ------------
+----------------- ADVICE -----------------
+-----------------  stk1  -----------------
+[1] 0.1057783
+############################################################
+-                   Year:  27 , Season:  1 
+############################################################
+************ OPERATING MODEL***************************
+------------ BIOLOGICAL OM ------------
+-----------------ASPG-----------
+------------ FLEETS OM ------------
+[1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
+[1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;****************************** CAPITAL ******************************&quot;
+[1] &quot;fl1&quot;
+------------ COVARS OM ------------
+************ MANAGEMENT PROCEDURE ****************************
+----------- OBSERVATION MODEL ------------
+------------ ASSESSMENT MODEL ------------
+----------------- ADVICE -----------------
+-----------------  stk1  -----------------
+[1] 0.1057783
+############################################################
+-                   Year:  28 , Season:  1 
+############################################################
+************ OPERATING MODEL***************************
+------------ BIOLOGICAL OM ------------
+-----------------ASPG-----------
+------------ FLEETS OM ------------
+[1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
+[1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;****************************** CAPITAL ******************************&quot;
+[1] &quot;fl1&quot;
+------------ COVARS OM ------------
+************ MANAGEMENT PROCEDURE ****************************
+----------- OBSERVATION MODEL ------------
+------------ ASSESSMENT MODEL ------------
+----------------- ADVICE -----------------
+-----------------  stk1  -----------------
+[1] 0.1057783
+############################################################
+-                   Year:  29 , Season:  1 
+############################################################
+************ OPERATING MODEL***************************
+------------ BIOLOGICAL OM ------------
+-----------------ASPG-----------
+------------ FLEETS OM ------------
+[1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
+[1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;****************************** CAPITAL ******************************&quot;
+[1] &quot;fl1&quot;
+------------ COVARS OM ------------
+************ MANAGEMENT PROCEDURE ****************************
+----------- OBSERVATION MODEL ------------
+------------ ASSESSMENT MODEL ------------
+----------------- ADVICE -----------------
+-----------------  stk1  -----------------
+[1] 0.1057783
+############################################################
+-                   Year:  30 , Season:  1 
+############################################################
+************ OPERATING MODEL***************************
+------------ BIOLOGICAL OM ------------
+-----------------ASPG-----------
+------------ FLEETS OM ------------
+[1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
+[1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;****************************** CAPITAL ******************************&quot;
+[1] &quot;fl1&quot;
+------------ COVARS OM ------------
+************ MANAGEMENT PROCEDURE ****************************
+----------- OBSERVATION MODEL ------------
+------------ ASSESSMENT MODEL ------------
+----------------- ADVICE -----------------
+-----------------  stk1  -----------------
+[1] 0.1057783
+############################################################
+-                   Year:  31 , Season:  1 
+############################################################
+************ OPERATING MODEL***************************
+------------ BIOLOGICAL OM ------------
+-----------------ASPG-----------
+------------ FLEETS OM ------------
+[1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
+[1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;****************************** CAPITAL ******************************&quot;
+[1] &quot;fl1&quot;
+------------ COVARS OM ------------
+************ MANAGEMENT PROCEDURE ****************************
+----------- OBSERVATION MODEL ------------
+------------ ASSESSMENT MODEL ------------
+----------------- ADVICE -----------------
+-----------------  stk1  -----------------
+[1] 0.1057783
+############################################################
+-                   Year:  32 , Season:  1 
+############################################################
+************ OPERATING MODEL***************************
+------------ BIOLOGICAL OM ------------
+-----------------ASPG-----------
+------------ FLEETS OM ------------
+[1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
+[1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;****************************** CAPITAL ******************************&quot;
+[1] &quot;fl1&quot;
+------------ COVARS OM ------------
+************ MANAGEMENT PROCEDURE ****************************
+----------- OBSERVATION MODEL ------------
+------------ ASSESSMENT MODEL ------------
+----------------- ADVICE -----------------
+-----------------  stk1  -----------------
+[1] 0.1057783
+############################################################
+-                   Year:  33 , Season:  1 
+############################################################
+************ OPERATING MODEL***************************
+------------ BIOLOGICAL OM ------------
+-----------------ASPG-----------
+------------ FLEETS OM ------------
+[1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
+[1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;****************************** CAPITAL ******************************&quot;
+[1] &quot;fl1&quot;
+------------ COVARS OM ------------
+************ MANAGEMENT PROCEDURE ****************************
+----------- OBSERVATION MODEL ------------
+------------ ASSESSMENT MODEL ------------
+----------------- ADVICE -----------------
+-----------------  stk1  -----------------
+[1] 0.1057783
+############################################################
+-                   Year:  34 , Season:  1 
+############################################################
+************ OPERATING MODEL***************************
+------------ BIOLOGICAL OM ------------
+-----------------ASPG-----------
+------------ FLEETS OM ------------
+[1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
+[1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;****************************** CAPITAL ******************************&quot;
+[1] &quot;fl1&quot;
+------------ COVARS OM ------------
+************ MANAGEMENT PROCEDURE ****************************
+----------- OBSERVATION MODEL ------------
+------------ ASSESSMENT MODEL ------------
+----------------- ADVICE -----------------
+-----------------  stk1  -----------------
+[1] 0.1057783
+############################################################
+-                   Year:  35 , Season:  1 
+############################################################
+************ OPERATING MODEL***************************
+------------ BIOLOGICAL OM ------------
+-----------------ASPG-----------
+------------ FLEETS OM ------------
+[1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
+[1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;****************************** CAPITAL ******************************&quot;
+[1] &quot;fl1&quot;
+------------ COVARS OM ------------
+************ MANAGEMENT PROCEDURE ****************************
+----------- OBSERVATION MODEL ------------
+------------ ASSESSMENT MODEL ------------
+----------------- ADVICE -----------------
+-----------------  stk1  -----------------
+[1] 0.1057783
+############################################################
+-                   Year:  36 , Season:  1 
+############################################################
+************ OPERATING MODEL***************************
+------------ BIOLOGICAL OM ------------
+-----------------ASPG-----------
+------------ FLEETS OM ------------
+[1] &quot;~~~~~~~~~~ EFFORT ~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;~~~~~~ UPDATE CATCH ~~~~~~&quot;
+[1] &quot;~~~~~~~~~~ PRICE ~~~~~~~~~~&quot;
+[1] &quot;fl1&quot;
+[1] &quot;****************************** CAPITAL ******************************&quot;
+[1] &quot;fl1&quot;
+------------ COVARS OM ------------</code></pre>
+</div>
+<div id="results-flbeia" class="section level3">
+<h3>Results FLBEIA</h3>
+<pre class="r"><code>    names(s0)</code></pre>
+<pre><code>[1] &quot;biols&quot;         &quot;fleets&quot;        &quot;covars&quot;        &quot;advice&quot;       
+[5] &quot;stocks&quot;        &quot;indices&quot;       &quot;fleets.ctrl&quot;   &quot;pkgs.versions&quot;</code></pre>
+<pre class="r"><code>  plotFLBiols(s0$biols,pdfnm=&#39;s0_res&#39;)
+  plotFLFleets(s0$fleets,pdfnm=&#39;s0_res&#39;)   </code></pre>
+</div>
+</div>
+<div id="exercises" class="section level2">
+<h2>EXERCISES</h2>
+<p>Create the objects to condition the example <strong>multi</strong>.</p>
+</div>
+<div id="description-of-the-example-multi" class="section level2">
+<h2>Description of the example multi</h2>
+<p>This test case analyzes the dynamics of two fictitious stocks (stk1 and stk2), with two fleets (fl1 and fl2). Each of the fleets has two metiers (met1 and met2) and all the metiers catch both stocks. This case study simulates the management using an ICES harvest control rule for stock stk1 and annual TAC for stk2. The effort function of both fleets is different; fixed effort is assumed for fleet fl1 and simple mixed fisheries behavior, limited by the minimum catch of both stocks, for fleet fl2. There is no assessment in this study and perfect observation is assumed.</p>
+<p>The biological historical data available for both stocks range from 1990 to 2008. The simulation time covers from 1990 to 2025, with 2009 as the first projection year. Biological data are described by stock abundance, weight, spawning, fecundity and natural mortality. Biological data of stock stk1 are age structured in a range from 0 to 15 years, but not for stock stk2, which is modelled in biomass. The minimum age to calculate the average f for stock stk1 is set at age 1 and the maximum at age 5. Stock stk1 has 4 spawning seasons, while stock stk2 only one, then we set different units for both. The values of weight, spawning, fecundity and natural mortality in the projection period are assumed to be equal to the average between 2006 and 2008 for both stocks.</p>
+<p>Both fleets have historical information on effort and capacity, but only fleet fl2 has fixed cost data. For each fleet and metier, effort share data are available and only for fleet fl2 are variable costs. For each fleet and metier, there is age structured data for stock stk1 and in biomass for stk2. Both fleets have landings and discards data for each stock, but in the case of stock stk2 discards data of metier met2 in fleet fl1 are missing. Cobb-Douglas parameters (alpha,beta,q) are not introduced as input; therefore the function create.fleets.data calls calculate.CBparam function to calculate them.</p>
+<p>Since the biological and economical historic data of stock stk1 are age specific, then the model allows using age-structured population growth and catch model, while in the case of stock stk2 they must be based on biomass. Beverton-Holt model is applied as stock-recruitment relationship for stock stk1, with 4 spawning seasons, and Pella-Tomlinson biomass dynamics model for stock stk2. In both cases the parameters in the projection period are introduced as input.</p>
+</div>
+</div>
+<div id="more-information" class="section level1">
+<h1>More information</h1>
+<p>You can submit bug reports, questions or suggestions on this tutorial at <a href="https://github.com/flr/doc/issues" class="uri">https://github.com/flr/doc/issues</a>. * Or send a pull request to <a href="https://github.com/flr/doc/" class="uri">https://github.com/flr/doc/</a> * For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <a href="http://flr-project.org" class="uri">http://flr-project.org</a>. * You can submit bug reports, questions or suggestions specific to <strong>FLBEIA</strong> to <a href="mailto:flbeia@azti.es">flbeia@azti.es</a>.</p>
+<div id="software-versions" class="section level2">
+<h2>Software Versions</h2>
+<ul>
+<li>R version 3.3.3 (2017-03-06)</li>
+<li>FLCore: 2.6.5</li>
+<li>FLBEIA: 1.15.2</li>
+<li>FLFleet: 2.6.0</li>
+<li>FLash: 2.5.0</li>
+<li>FLAssess: 2.6.1</li>
+<li>FLXSA: 2.5.20140808</li>
+<li>ggplotFL: 2.6.2</li>
+<li>ggplot2: 2.2.1</li>
+<li><strong>Compiled</strong>: Thu Oct 19 15:27:08 2017</li>
+</ul>
+</div>
+<div id="license" class="section level2">
+<h2>License</h2>
+<p>This document is licensed under the <a href="https://creativecommons.org/licenses/by-sa/4.0">Creative Commons Attribution-ShareAlike 4.0 International</a> license.</p>
+</div>
+<div id="author-information" class="section level2">
+<h2>Author information</h2>
+<p><strong>FLBEIA team</strong> AZTI. Marine Reserach Unit. Txatxarramendi Ugartea z/g, 48395, Sukarrieta, Basque Country, Spain. ** Mail** <a href="mailto:flbeia@azti.es">flbeia@azti.es</a></p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
