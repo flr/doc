@@ -1,0 +1,548 @@
+---
+title: "Setting Stock-Recruitment Models When Projecting With **FLasher**"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+github_document:
+  mathjax: TRUE
+pdf_document:
+  fig_width: 6 
+  fig_height: 4 
+tags: [FLR]
+license: Creative Commons Attribution-ShareAlike 4.0 International Public License
+---
+ 
+```{r, ini, echo=FALSE, results='hide', message=FALSE, warnings=FALSE, cache=FALSE}
+library(knitr)
+source("R/ini.R")
+```
+
+This tutorial describes how stock-recruitment (SR) models can be set when performing projections with `FLasher` using the *fwd()* method.
+
+Projections are either run with an *FLStock* object or with *FLBiol* and *FLFishery* objects. Examples of how to set the SR model for both types is described here.
+
+## Required packages
+
+To follow this tutorial you should have installed the following packages:
+
+- FLR: [FLCore](http://www.flr-project.org/FLCore/), [FLasher](http://www.flr-project.org/FLash/), [FLFishery](http://www.flr-project.org/FLFishery/)
+
+You can do so as follows,
+
+```{r, eval=FALSE}
+install.packages(c("FLCore"), repos="http://flr-project.org/R")
+install.packages(c("FLasher"), repos="http://flr-project.org/R")
+install.packages(c("FLFishery"), repos="http://flr-project.org/R")
+```
+
+```{r, pkgs}
+# Load all necessary packages, trim pkg messages
+library(FLCore)
+library(FLasher)
+```
+
+# Modelling recruitment in `FLasher`
+
+When running a projection it is necessary for the projected recruitment to be calculated.
+Recruitment can either be fixed in advance, for example, projecting with constant recruitment based on the mean historical value, such as is done with a short-term forecast, or recruitment can be calculated as a function of the stock-reproductive potential (SRP).
+At the moment the SRP is calculated as the spawning-stock biomass (SSB) *at the time of spawning*.
+
+Recruits enter the population at the start of the timestep. The SSB used to calculate the recruitment depends on the age of the recruits in the model. If the age of recruitment is 1, the SSB in the timestep 1 year ago is used. If the age of recruitment is 2, the SSB in the timestep 2 years ago is used and so on. If the age of recruitment is 0, the SSB in the *season* before is used (this only works with a seasonal model) or in the same year as recruitment if the model has an annual timestep (a weird case, and one that should probably be avoided).
+
+The predicted recruitment can be further modified by multiplying it by *residuals*.
+
+Currently available models - table
+
+In these examples we only use an annual model.
+We initially look at deterministic projections with only one iteration, and then look at projections with stochasticity in the SR model.
+
+All the examples are based on the North Sea plaice dataset (of course...).
+We load the dataset which is an *FLStock*.
+
+# Setting up the data
+
+```{r}
+data(ple4)
+```
+
+Fitting and projecting can be better when the data is appropriately scaled.
+In particular, fitting SR models with appopriately scaled data can result in more accurate estimates of the Hessian matrix of the parameters.
+Here we rescale all the abundance slots by dividing the values by 1000.
+
+```{r}
+slots <- c("landings.n", "discards.n", "catch.n", "stock.n")
+for (i in slots){
+    slot(ple4, i) <- slot(ple4, i) / 1000
+    # Correct units too
+    units(slot(ple4, i)) <- "10^6"
+}
+# Recalc aggregate slots
+catch(ple4) <- computeCatch(ple4)
+landings(ple4) <- computeLandings(ple4)
+discards(ple4) <- computeDiscards(ple4)
+stock(ple4) <- computeStock(ple4)
+```
+
+We are going to run a ten year projection so we use the *stf()* function to set up the future stock object.
+
+```{r}
+ple4mtf <- stf(ple4, 10)
+```
+
+We are only going to run a simple projection with an annual catch target set to an easily obtained value.
+The projection control object is created as:
+
+```{r}
+years <- 2009:2018
+catch_target <- 100
+control <- fwdControl(data.frame(year=years, quant="catch", value=catch_target))
+```
+
+# Projecting with an FLStock
+
+There are two methods for supplying a SR model when projecting an *FLStock*.
+
+* Pass an already fitted *FLSR* object;
+* Pass a list of the model name (a character string) and model parameters (an *FLPar*).
+
+We will look look both of them here.
+
+Here we fit a Beverton-Holt SR model using the *FLSR* class:
+
+```{r}
+ple4_srr <- fmle(as.FLSR(ple4, model="bevholt"), control=list(trace=0))
+plot(ple4_srr)
+```
+
+## Deterministic projections
+
+In this section we look at the basics of setting up SR models to be used by `FLasher`.
+We perform deterministic projections with only one iteration in the stock.
+We don't bother to check if the projection targets have been hit, only that the recruitment has been calculated correctly.
+
+### Passing an *FLSR* object
+
+In this simple example we run the projection by calling *fwd()* with the *FLStock*, the control object and the Beverton-Holt *FLSR* fitted above.
+
+```{r}
+test <- fwd(ple4mtf, control=control, sr=ple4_srr)
+```
+
+The predicted recruitment is:
+
+```{r}
+rec(test)[,ac(years)]
+```
+
+The projected stock looks like:
+
+```{r}
+plot(test)
+```
+
+There is not much variability in the recruitment because the SR is very flat (see figure above).
+We can check the predicted recruitment is correct by taking the predicted SSB and passing it into the *predict()* function:
+This calculates the predicted recruitment based on the *FLSR* model (ignore the years, *predict()* does not shift them).
+
+```{r}
+predict(ple4_srr, ssb=ssb(test)[,ac(years-1)])
+```
+### Passing a list of model name and model parameters
+
+In this simple example the SR model is specified by passing in a list of the model name and the model parameters.
+The model name is specified as a character string. The model parameters is specified as an *FLPar* with the correct parameter names.
+
+Here we take the parameters from *FLSR* object fitted above:
+
+```{r}
+bh_params <- params(ple4_srr)
+bh_params
+```
+
+The projection is then run:
+
+```{r}
+test <- fwd(ple4mtf, control=control, sr=list(model = "bevholt", params=bh_params))
+```
+
+The predicted recruitment is (should be...) the same as calculated above.
+
+```{r}
+rec(test)[,ac(years)]
+```
+
+### Fixing recruitment
+
+It is possible to fix the recruitment in advance, i.e. so that the predicted recruitment is not a function of SSB.
+It is still necessary to supply an SR model, but one that does not depend on SSB.
+This is done using the *geomean()* model (the name is a poor one, it should be *fixed()* or something).
+This model has a single parameter, *a*.
+
+In this example we fix the predicted recruitment to be the geometric mean of the last three data years.
+
+```{r}
+geomeanrec <- exp(mean(log(rec(ple4)[,ac(2006:2008)])))
+geomeanrec
+test <- fwd(ple4mtf, control=control, sr=list(model = "geomean", params=FLPar(a=geomeanrec)))
+rec(test)[,ac(years)]
+```
+
+### Time varying parameters
+
+In the previous examples the SR parameters have been fixed in time. This may not necessarily be the case.
+Time varing parameters can be used to simulate non-stationary processes in recruitment, for example, regime shifts, trends and cycles.
+This is achieved by including a time dimension in the *FLPar* object used to set the SR parameters.
+
+Here we set a fixed recruitment that decreases over time (ignore the warnings):
+
+```{r}
+decrec <- seq(900, 500, length=10)
+decpar <- FLPar(decrec, dimnames=list(params="a", year=2009:2018, iter=1))
+test <- fwd(ple4mtf, control=control, sr=list(model = "geomean", params=decpar))
+# Warnings - but recruitment looks OK
+rec(test)[,ac(years)]
+```
+
+Note that when using this method the year dimension of the *FLPar* must include all years in the projection, otherwise the projection is fail.
+For example, here we set an *FLPar* to have a year dimension but it only has one year.
+The example fails (try it).
+
+```{r, eval=FALSE}
+badpar <- FLPar(1000, dimnames=list(params="a", year=2009, iter=1))
+test <- fwd(ple4mtf, control=control, sr=list(model = "geomean", params=badpar))
+```
+
+Also note that *fwd()* will always try to project the stock abundances in the year *after* the final year in the control if there is room (the "bonus year").
+This means that if the projection years do not reach the final year in the stock, and you have an SR *FLPar* with a year dimension, you will need an extra year.
+For example, if our control object only went until 2017 and not 2018, then *fwd()* would try to update the stock abundance in 2018. This would then require recruitment parameters for 2018 also. If the *FLPar* object has years, we would need it go until 2018.
+
+In this example, we use the Beverton-Holt relationship fitted earlier, but the *a* parameter cycles (perhaps driven by an environmental process).
+First we make the *FLPar* object with a cycling *a* parameter.
+
+```{r}
+a <- c(params(ple4_srr)["a"])
+acycle <- a * (1 + sin(seq(from=0,to=2*pi,length=10))/10)
+srpar <- FLPar(NA, dimnames=list(params=c("a","b"), year=2009:2018, iter=1))
+srpar["a"] <- acycle
+srpar["b"] <- c(params(ple4_srr)["b"])
+srpar
+```
+
+The projection is run as normal and the predicted recruitment is driven by the cycles in the *a* parameter:
+
+```{r}
+test <- fwd(ple4mtf, control=control, sr=list(model = "bevholt", params=srpar))
+rec(test)[,ac(years)]
+```
+
+## Stochastic projections
+
+We now move onto stochastic projections, i.e. those that use the *iter* dimension of `FLR` objects.
+
+There are two ways to include stochasticity in the predicted recruitment of a projection using *fwd()*.
+
+* Using residuals;
+* Iterations in the stock recruitment parameters.
+
+To include stochasticity in a projection, the object being projected must have iterations.
+Here we use the *propagate()* method to increase the number of iterations in the *FLStock* object.
+
+
+```{r}
+niters <- 200
+ple4mtfp <- propagate(ple4mtf, niters)
+```
+
+### SR parameter recycling
+
+If we do not use iterations in the SR parameters, the same parameters are applied across iterations.
+To demonstrate this, we project our stock with 200 iterations using SR parameters with 1 iteration (we use the parameters from the deterministic examples above).
+It takes a little longer to run.
+All iterations in the stock object were the same so the predicted recruitment is also the same across all iterations (and matches the deterministic examples above).
+
+
+```{r}
+test <- fwd(ple4mtfp, control=control, sr=list(model = "bevholt", params=bh_params))
+rec(test)[,ac(years)]
+```
+
+### Including residuals
+
+Residuals are a way of introducing variability into the predicted recruitment that reflects the variability in the observations that is not captured by the model fit.
+Residuals are specified as an *FLQuant* for the prediction years (note, again it is necessary to include the "bonus year" described above if the final year of the projection is less than the final of the *FLStock*).
+The residuals *FLQuant* must have either 1 iteration (the same residual iteration applies to all iterations of the *FLStock* - of limited use) or the same iterations as the *FLStock*.
+Residuals are multiplicative, i.e. realised recruitment = predicted recruitment from SR model * residual.
+
+In this example we demonstrate the use of residuals by using only 1 iteration in the stock and residuals objects.
+First we make the *FLQuant* with a timeseries of residuals by sampling from the residuals slot of the *FLSR* constructed above.
+The residuals in the *FLSR* object are on the log scale and must be transformed.
+
+```{r}
+res <- FLQuant(NA, dimnames=list(year=years, iter=1))
+# Sample from SRR params with replacement
+# Residuals n SRR are on log scale and must be transformed
+res[] <- sample(c(exp(residuals(ple4_srr))), prod(dim(res)), replace=TRUE)
+res
+```
+
+The projection is performed by including the *residuals* argument in the call to *fwd()*:
+
+```{r}
+test <- fwd(ple4mtf, control=control, sr=ple4_srr, residuals=res)
+rec(test)[,ac(years)]
+# Predicted recruitment * residuals
+predict(ple4_srr, ssb=ssb(test)[,ac(years-1)]) %*% res
+```
+We can see that the recruitment is no longer flat (as the plot above) but has variance driven by the residuals.
+
+```{r}
+plot(test)
+```
+
+The previous example only had 1 iteration which is of limited use.
+Here we generate residuals with multiple iterations and project the stock with multiple iterations (the SR parameters still only have 1 iteration).
+
+```{r}
+# Residuals with multiple iterations - more useful
+res <- FLQuant(NA, dimnames=list(year=years, iter=1:niters))
+res[] <- sample(c(exp(residuals(ple4_srr))), prod(dim(res)), replace=TRUE)
+# Project with residuals
+test <- fwd(ple4mtfp, control=control, sr=ple4_srr, residuals=res)
+rec(test)[,ac(years)]
+# Check the predicted recruitment * residuals
+predict(ple4_srr, ssb=ssb(test)[,ac(years-1)]) %*% res
+```
+
+The predicted stock object now has multiple iterations and stochasticity in the predicted recruitment.
+
+```{r}
+plot(test)
+```
+
+### Iterations in the SR parameters
+
+Iterations in the SR parameterss can reflect uncertainty in the parameter values, e.g. estimation uncertainty. 
+For example, it would be possible to use the estimated variance-covariance matrix of the fitted SR relationship to do calculate estimation uncertainty (if it is well estimated).
+
+Ideally, this example would show how to do that the Beverton-Holt model fitted above. However, the variance-covariance matrix of the parameters has very large values (particularly on the *b*) parameter in relation to the parameter values:
+
+```{r}
+vc <- vcov(ple4_srr)[,,1]
+vc
+params(ple4_srr)
+```
+
+Instead we will use correlation matrix of the parameters and assume a coefficient of variation of 25% to make a new variance-covariance matrix.
+We will then sample from a bivariate normal distribution to generate samples for our SR parameters.
+
+```{r}
+# Get correlation matrix
+invsd <- solve(sqrt(diag(diag(vc))))
+corr_matrix <- invsd %*% vc %*% invsd
+# Assume CoV of 25% on each parameter
+# So SDs of the params will be
+newsd <- diag(c(params(ple4_srr)) * 0.25)
+newvc <- newsd %*% corr_matrix %*% newsd
+# Sample from a multivariate norm to generate new parameters with the appropriate correlation
+newparams <- mvrnorm(niters, mu = c(params(ple4_srr)), Sigma=newvc)
+# Hope none of them are -ve...
+# Replace -ve values with something small - hacky but whatever
+newparams[newparams<=0] <- 1
+```
+
+Make a new *FLPar* with iterations to store the SR parameters and fill them up with the samples generated above:
+
+```{r}
+iter_params <- propagate(params(ple4_srr),niters)
+iter_params["a",] <- newparams[,1]
+iter_params["b",] <- newparams[,2]
+iter_params
+```
+
+Now project with the stochastic SR parameters.
+The variance in the predicted recruitment is only driven by the variance in the SR parameters
+
+```{r}
+test <- fwd(ple4mtfp, control=control, sr=list(model="bevholt", params=iter_params))
+rec(test)[,ac(years)]
+```
+
+We can combine the stochastic SR parameters and residuals to combine both sources of uncertainty.
+
+```{r}
+test <- fwd(ple4mtfp, control=control, sr=list(model="bevholt", params=iter_params), residuals=res)
+```
+
+```{r}
+plot(test)
+```
+
+We could also make the SR parameters vary in time as well as across the iterations, e.g. driven by a noisy cyclic process.
+However, this is not shown.
+
+# Projecting with an FLBiol and FLFishery
+
+In this section we project with an *FLBiol* and an *FLFishery* instead of *FLStock*.
+The main difference is that the SR model and parameters are set in the *FLBiol* object instead of being passed in to *fwd()*.
+
+For these examples we make an *FLBiol* and an *FLFishery* based on the *ple4* stock object.
+
+```{r}
+biol <- as(ple4mtf, "FLBiol")
+fishery <- as(ple4mtf, "FLFishery")
+```
+
+## Determinsitic projections
+
+The SR model is set using the *rec* slot of the *FLBiol* object.
+This is of type *predictModel*.
+To access the slot use the *@* operator. If we use the *rec()* accessor the *predictModel* is evaluated instead.
+
+```{r}
+is(biol@rec)
+```
+
+The *rec* slot has some slots of its own. The two we are interested in are *params* and *model*.
+The *model* slot should hold a formula, and the *params* should hold an *FLPar*.
+You can access these directly (they don't have much of interest at the moment).
+
+```{r}
+biol@rec@params
+biol@rec@model
+```
+
+To set the SR model you can either:
+
+* Set the *model* and *params* slots yourself;
+* Set the *rec* slot using a *predictModel* object.
+
+
+### Setting *model* and *params* directly
+
+
+The model formula should not be entered directly by you (because of some matching that you don't need to know about).
+Instead it can be set by either taking the model from one of the SR functions (e.g. *bevholt()*):
+
+```{r}
+bevholt()[["model"]]
+biol@rec@model <- bevholt()[["model"]]
+```
+
+or or extracting it from an *FLSR* object (the one we fitted earlier).
+
+```{r}
+biol@rec@model <- model(ple4_srr)
+```
+
+The *params* slot can be set directly. It should be an *FLPar*. Here the parameters are extracted from the fitted *FLSR* object.
+
+```{r}
+biol@rec@params <- params(ple4_srr)
+```
+
+The projection can then be run with *fwd()* (note the absence of the *sr* argument):
+
+```{r}
+test <- fwd(biol, fishery=fishery, control=control)
+n(test[["biols"]])[1,ac(years)]
+```
+
+### Settting the SR using a *predictModel*
+
+It is also possible to set the SR model by setting the *rec* slot to a *predictModel*.
+The model and parameters are again taken from the *FLSR* object.
+
+```{r}
+biol@rec <- predictModel(model=model(ple4_srr), params=params(ple4_srr))
+```
+
+```{r}
+test <- fwd(biol, fishery=fishery, control=control)
+n(test[["biols"]])[1,ac(years)]
+```
+### Time varying parameters
+
+You can set time varying SR parameters just as you can with the *FLStock* examples above.
+This uses a decreasing recruitment, the same as above. The model is set to *geomean()*.
+
+```{r}
+decrec <- seq(900, 500, length=10)
+decpar <- FLPar(decrec, dimnames=list(params="a", year=2009:2018, iter=1))
+biol@rec@model <- geomean()[["model"]]
+biol@rec@params <- decpar
+test <- fwd(biol, fishery=fishery, control=control)
+n(test[["biols"]])[1,ac(years)]
+```
+
+## Stochastic projections
+
+Stochasticity is introduced in the same way as with the *FLStock* examples, either through residuals or through SR parameters.
+
+We need to propagate the *FLBiol* and *FLFishery* to have iterations (this is a bit wonky...).
+The SR model is 
+
+```{r}
+biolp <- biol
+# Just propagate the n slot
+biolp@n <- propagate(biolp@n, niters)
+# Do all slots of fishery - need to do Catch separately - a bug
+fisheryp <- propagate(fishery, niters)
+fisheryp[[1]] <- propagate(fishery[[1]], niters)
+```
+
+
+### Residuals
+
+Here the SR model and parameters are set. The parameters have only 1 iteration.
+
+
+```{r}
+biolp@rec@model <- model(ple4_srr)
+biolp@rec@params <- params(ple4_srr)
+```
+
+We use the same residuals as prepared earlier:
+
+```{r}
+test <- fwd(biolp, fishery=fisheryp, control=control, residuals=res)
+n(test[["biols"]])[1,ac(years)]
+```
+
+### Iterations in the SR parameters
+
+Here we include iterations in the SR parameters by setting the *params* slot to use the *iter_params* object created above:
+
+```{r}
+biolp@rec@params <- iter_params
+test <- fwd(biolp, fishery=fisheryp, control=control)
+n(test[["biols"]])[1,ac(years)]
+```
+
+### Residuals and iterations in the SR parameters
+
+Simple:
+
+```{r}
+test <- fwd(biolp, fishery=fisheryp, control=control, residuals=res)
+n(test[["biols"]])[1,ac(years)]
+```
+
+# More information
+
+* You can submit bug reports, questions or suggestions on this tutorial at <https://github.com/flr/doc/issues>.
+* Or send a pull request to <https://github.com/flr/doc/>
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flr-project.org>.
+
+## Software Versions
+
+* `r version$version.string`
+* FLCore: `r packageVersion('FLCore')`
+* FLasher: `r packageVersion('FLasher')`
+* **Compiled**: `r date()`
+
+## License
+
+This document is licensed under the [Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0) license.
+
+## Author information
+
+**Finlay Scott**. European Commission, DG Joint Research Centre, Directorate D - Sustainable Resources, Unit D.02 Water and Marine Resources, Via E. Fermi 2749, 21027 Ispra VA, Italy. <https://ec.europa.eu/jrc/>
