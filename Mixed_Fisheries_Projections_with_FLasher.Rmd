@@ -18,7 +18,7 @@ license: European Union Public Licence (EUPL) V.1.1
 library(Rcpp)
 library(FLasher)
 library(knitr)
-opts_chunk$set(dev='png', cache=FALSE, fig.width=4, fig.height=4, tidy=TRUE, dpi=72)
+opts_chunk$set(dev='png', cache=FALSE, fig.width=5, fig.height=5, tidy=TRUE, dpi=72)
 options(width=60)
 ```
 
@@ -231,9 +231,8 @@ The other years will be filled in with the projected values.
 There are two fisheries, a gillnet and a beam trawl, each stored as an **FLFishery** object, held in the **FLFisheries** list object, _biols_.
 Each fishery has 2 **FLCatch**es, one that catches plaice and the other that catches sole.
 
-The **FLFishery** objects can be accessed from the **FLFisheries** object by the _[[_ operator (like accessing a list), either by name or position.
-Each **FLCatch** within an **FLFishery** is also accessed by the _[[_ operator by name or position.
-The positions are important when it comes to setting up the control object (more on this later).
+The **FLFishery** objects can be accessed from the **FLFisheries** object by the _[[_ operator, either by name or position. It's like accessing elements of a list.
+Each **FLCatch** within an **FLFishery** is also accessed by the _[[_ operator by name or position. Again, it's like accessing elements of a list.
 
 Each **FLCatch** has a selectivity pattern (stored in the *catch.sel* slot) and a catchability parameter (stored in the *catch.q* slot) depending on the gear type and the stock that is being caught.
 
@@ -281,8 +280,10 @@ First we make the simple fishery and biology objects based on the ones created a
 Note that it is important that all **FLFishery** objects have an initial value for effort in the projection years. It cannot be 0 and it cannot be NA.
 
 ```{r, make_single_f_s}
+# First pull out a single FLCatch from the BT fishery using [[]]
+pleBT <- flfs[["bt"]][["pleBT"]]
 # Make a single beam trawl FLFishery with 1 FLCatch
-bt1 <- FLFishery(pleBT=flfs[["bt"]][["pleBT"]])
+bt1 <- FLFishery(pleBT=pleBT)
 # Set the initial effort
 bt1@effort[] <- 1
 # Make an FLFisheries from it
@@ -296,33 +297,44 @@ We set a projection control object to reflect this.
 Here, we have a single fishery, with a single catch fishing on a single biol.
 
 In the contol object we need to specify to which object the catch target is related to. This is a key difference between projecting **FLasher** with an **FLStock** and with an **FLBiols** and **FLFisheries**.
-In this example, the catch target relates to the total catch from that **FLBiol**. We therefore use the _biol_ column to specify this. This column takes an integer which relates to the position of the chosen **FLBiol** in the **FLBiols** list.
-In this case we only have one **FLBiol** in the **FLBiols** object so the entry in the _biol_ column is 1.
+In this example, the catch target relates to the total catch from the **FLBiol**. We therefore use the _biol_ column to specify this. This column takes either an integer to specify the position of the chosen **FLBiol** in the **FLBiols** list, or, more conveniently, the name of the **FLBiol** in the **FLBiols** list.
+In this case we only have one **FLBiol** in the **FLBiols** object so the entry in the _biol_ column could be 1.
+Alternatively, as we have named the **FLBiol** objects, we could also set the _biol_ column to the name _ple_.
 
 Another difference between projecting **FLasher** with an **FLStock** and with an **FLBiols** and **FLFisheries** is the need to specify the _FCB_ matrix to describe what **FLCatch** from what **FLFishery** is fishing on what **FLBiol**.
 The _FCB_ matrix always has three columns: _F_, _C_ and _B_ which describe the positions of the **FLFishery** objects within the **FLFisheries** object, the position of the **FLCatch** objects in the **FLFishery** objects, and the position of the **FLBiol** objects in the **FLBiols** object.
 It is essentially a map of what is fishing on who.
 In this example, we only a single **FLBiol** that is being fished by the only **FLCatch** of the only **FLFishery**. Hence the _FCB_ matrix only one row, all filled with 1s.
+The _FCB_ matrix looks like this which means that the first **FLCatch** of the **FLFishery** is catching from the first **FLBiol**:
+
+```{r}
+fcb <- matrix(1, nrow=1, ncol=3, dimnames=list(1,c("F","C","B")))
+fcb
+```
+
+To make the control object we can either pass a data.frame or a list to the _fwdControl()_ method.
+Here we pass a data.frame.
 
 ```{r}
 catch_target <- 100000
 flasher_ctrl_target <- data.frame(year = 2:20,
                         quant = "catch",
-                        biol = 1,
+                        biol = "ple",
                         value = catch_target)
-flasher_ctrl <- fwdControl(flasher_ctrl_target)
-flasher_ctrl@FCB <- matrix(1, nrow=1, ncol=3, dimnames=list(1,c("F","C","B")))
+flasher_ctrl <- fwdControl(flasher_ctrl_target, FCB=fcb)
 ```
-The _FCB_ matrix looks like this which means that the first **FLCatch** of the **FLFishery** is catching from the first **FLBiol**:
+
+An alternative is to pass a named list. Using this method is easier for making complicated control objects (see later).
 
 ```{r}
-flasher_ctrl@FCB
+flasher_ctrl <- fwdControl(list(year=2:20, quant="catch", biol="ple", value=catch_target),
+                           FCB = fcb)
 ```
 
 We can draw the fishery system using the *draw()* method:
 
 ```{r, fig.cap="A single Fishery with 1 Catch fishing on a single Biol"}
-draw(flasher_ctrl)
+draw(flasher_ctrl, fisheryNames="Beam", catchNames="Plaice catch", biolNames="Plaice")
 ```
 
 We run the projection calling *fwd()* passing in the **FLBiols**, the **FLFisheries** and the control objects:
@@ -352,15 +364,17 @@ We still only have one fishery (the beam trawl, constructed above) so we still h
 The same fishing effort is applied to both stocks as they are caught by the same fishery.
 
 ```{r, set_up_1f2s}
-# Single fishery on 2 stocks
-flfs2 <- FLFisheries(bt=flfs[["bt"]])
-# Only one FLFishery
+# Extract the beam trawl fishery from the FLFisheries loaded above
+bt <- flfs[["bt"]]
+# Create a new FLFisheries with the single FLFishery
+flfs2 <- FLFisheries(bt=bt)
+# It has only one FLFishery
 length(flfs2)
 # That FLFishery has 2 FLCatches
-length(flfs2[[1]])
+length(flfs2[["bt"]])
 # The FLBiols has 2 FLBiol objects
 length(biols)
-# The plaice FLBiol is first in the list
+# The names of the FLBiol objects are
 names(biols)
 ```
 
@@ -368,21 +382,20 @@ As we have only one independent variable we cannot set a catch target for each s
 Additionally, the catches of the two stocks are of course linked as they are caught by the same fishery. This means that we do not have the freedom to hit independent catch targets at the same time.
 This is a typical mixed fishery problem.
 
-In this first example we set only a catch target for the plaice stock. We again use the _biol_ column to specify which **FLBiol** the catch target relates to. There are two **FLBiol** objects in the **FLBiols** object. We saw above that the first one is the plaice stock and the second one is the sole stock. This means that to apply the catch target to the plaice stock we put _1_ in the _biol_ column. If we wanted to apply the catch target to the sole stock we would put _2_.
+In this first example we set only a catch target for the plaice stock. We again use the _biol_ column to specify which **FLBiol** the catch target relates to. There are two **FLBiol** objects in the **FLBiols** object. We saw above that the first one is the plaice stock and the second one is the sole stock. This means that to apply the catch target to the plaice stock we could put _1_ or _"ple"_ in the _biol_ column. If we wanted to apply the catch target to the sole stock we would put _"sol"_ or _2_.
 
 This example requires a slightly more complicated _FCB_ matrix. It reflects that we have one fishery with two catches, each catching a different stock.
 Again, the numbers in the columns reflect the positions of the objects in their lists.
 Here, the first **FLCatch** of the first (only) **FLFishery** catches from the first **FLBiol** and the second **FLCatch** of the first (only) **FLFishery** catches from the second **FLBiol**.
 
+We make the control object using the list based constructor:
+
 ```{r,1f2s1}
+fcb <- matrix(c(1,1,1,2,1,2), nrow=2, ncol=3, dimnames=list(1:2,c("F","C","B")))
 plaice_catch_target <- 250000
-flasher_ctrl_target <- data.frame(year = 2:20,
-                        quant = "catch",
-                        biol = 1,
-                        value = plaice_catch_target)
-flasher_ctrl <- fwdControl(flasher_ctrl_target)
-flasher_ctrl@FCB <- matrix(c(1,1,1,2,1,2), nrow=2, ncol=3,
-    dimnames=list(1:2,c("F","C","B")))
+flasher_ctrl <- fwdControl(
+    list(year = 2:20, quant = "catch", biol = "ple", value = plaice_catch_target),
+    FCB = fcb)
 ```
 
 The _FCB_ matrix looks like this:
@@ -393,7 +406,7 @@ flasher_ctrl@FCB
 Take a look at the fishery system:
 
 ```{r, fig.cap="A single Fishery with 2 Catches, each fishing on a single Biol"}
-draw(flasher_ctrl)
+draw(flasher_ctrl, fisheryNames="Beam trawl", catchNames=c("Ple catch", "Sol catch"), biolNames=c("Ple", "Sol"))
 ```
 
 And project:
@@ -424,29 +437,20 @@ For example, we can set a maximum F for sole.
 We saw in the last example that catching the plaice catch target results in a maximum F for sole of about 0.26.
 We can set a limit of maximum F of 0.2 (this number is made up for the sake of the example).
 
-In this control object we set a catch target for _biol_ 1 (plaice) and also an F target for _biol_ 2 (sole) in the _biol_ column.
+In this control object we set a catch target for _biol = "ple"_ (plaice) and also an F target for _biol = "sol"_ (sole).
 When setting an F target it is necessary to specify the minimum and maximum ages of the Fbar range. This information is automatically taken from the **FLStock** when projecting with an **FLStock**. However, an **FLBiol** does not have this information and so it must be supplied in the control object in the _minAge_ and _maxAge_ columns.
+When setting the sole target instead of setting a _value_ we set a _max_.
+
+We again make use of the list creator for the fwdControl. This is convenient as we can pass a list for each of the targets we are trying to hit.
+This time we pass in two lists, one to set the plaice target, the other for the sole target.
 
 ```{r,1f2s2}
 plaice_catch_target <- 250000
 sole_f_limit <- 0.2
-# Make the control object in two bits
-# The plaice target bit - note the NAs for minAge and maxAge
-flasher_ctrl_target1 <- data.frame(year = 2:20,
-                        quant = "catch",
-                        biol = 1,
-                        value = plaice_catch_target,
-                        max = NA, minAge = NA, maxAge = NA)
-flasher_ctrl_target2 <- data.frame(year = 2:20,
-                        quant = "f",
-                        biol = 2,
-                        max = sole_f_limit,
-                        value=NA,
-                        minAge=2, maxAge=6)
-flasher_ctrl_target <- rbind(flasher_ctrl_target1, flasher_ctrl_target2)
-flasher_ctrl <- fwdControl(flasher_ctrl_target)
-flasher_ctrl@FCB <- matrix(c(1,1,1,2,1,2), nrow=2, ncol=3,
-    dimnames=list(1:2,c("F","C","B")))
+flasher_ctrl <- fwdControl(
+    list(year = 2:20, quant = "catch", biol = "ple", value = plaice_catch_target),
+    list(year = 2:20, quant = "f", biol = "sol", max = sole_f_limit, minAge=2, maxAge=6),
+    FCB = fcb)
 test <- fwd(object=biols, fishery=flfs2, control=flasher_ctrl)
 ```
 
@@ -496,21 +500,27 @@ For example, if the stock is managed by a single TAC, we can use the individual 
 Here the total catch target is 15000, split between the two fisheries.
 
 Note that now the catch target is set at the **FLFishery** and **FLCatch** level, not the **FLBiol** level as in the previous examples.
-To do this we use the _fishery_ and _catch_ column to specify the position of the objects that relate to the target.
-Here there is a catch target that relates to the first (only) **FLCatch** of the first **FLFishery** and another catch target that relates to the first (only) **FLCatch** of the second **FLFishery**.
-The _biol_ column can now be ignored.
+To do this we use the _fishery_ and _catch_ column to specify which **FLFishery** and **FLCatch** objects relate to the target. They can be specified by position in their lists (e.g. position of the **FLCatch** in the parent **FLFishery**) or by name.
+Here there is a catch target that relates to the first (only) **FLCatch** of the beam trawl **FLFishery** and another catch target that relates to the first (only) **FLCatch** of the gillnet **FLFishery**. 
+The names of the **FLFishery** objects and their respective **FLCatch** objects are:
 
-```{r,2f1s1}
-sole_bt_catch_target <- 10000
-sole_gn_catch_target <- 5000
-flasher_ctrl_target <- data.frame(year = rep(2:20, each=2),
-                        quant = "catch",
-                        fishery = c(1,2),
-                        catch = 1,
-                        value = c(sole_bt_catch_target, sole_gn_catch_target))
-flasher_ctrl <- fwdControl(flasher_ctrl_target)
-flasher_ctrl@FCB <- matrix(c(1,2,1,1,1,1), nrow=2, ncol=3,
-    dimnames=list(1:2,c("F","C","B")))
+```{r}
+# Names of the FLFishery objects
+names(flfs3)
+# Names of their FLCatch objects
+names(flfs3[["bt"]])
+names(flfs3[["gn"]])
+```
+
+The _biol_ column can now be ignored.
+```{r}
+sole_bt_catch <- 10000
+sole_gn_catch <- 5000
+fcb <- matrix(c(1,2,1,1,1,1), nrow=2, ncol=3, dimnames=list(1:2,c("F","C","B")))
+flasher_ctrl <- fwdControl(
+    list(year=2:20, quant="catch", fishery="bt", catch="solBT", value=sole_bt_catch),
+    list(year=2:20, quant="catch", fishery="gn", catch="solGN", value=sole_gn_catch),
+    FCB = fcb)
 ```
 
 Note that the _FCB_ matrix has been changed to reflect the relationship between the objects.
@@ -523,7 +533,7 @@ flasher_ctrl@FCB
 Take a look at the fishery system:
 
 ```{r, fig.cap="Two Fisheries with one Catch each fishing on a single Biol"}
-draw(flasher_ctrl)
+draw(flasher_ctrl, fisheryNames=names(flfs3), catchNames=unlist(lapply(flfs3, names)), biolNames=names(biols3))
 ```
 
 And project:
@@ -531,7 +541,6 @@ And project:
 ```{r}
 test <- fwd(object=biols3, fishery=flfs3, control=flasher_ctrl)
 ```
-
 
 Both catch targets been hit although this has resulted in increasing fishing mortality on the stock. 
 The plot also shows the partial fishing mortality from each fishery and it can be seen that the most of the fishing mortality comes from the beam trawl fishery.
@@ -554,29 +563,17 @@ Here we set a total catch target of the stock to be 12000 and also that the catc
 We again set two targets. The first specifies the _total_ catch from the sole stock and requires the use of the _biol_ column.
 The second specifies the relative catch of the two **FLCatch** objects in the two **FLFishery** objects.
 This involves the use of the _relFishery_ and _relCatch_ columns to describe the total catch relative to another fishery.
-Here we are saying the catch of the first (only) **FLCatch** of the first **FLFishery** in the **FLFisheries** object is relative to the first (only) **FLCatch** of the second **FLFishery** object.
+Here we are saying the catch of the _solBT_ **FLCatch** of the _bt_ **FLFishery** in the **FLFisheries** object is relative to the _solGN_ **FLCatch** of the _gn_ **FLFishery** object.
 As we are setting a relative target, we also need to specify the relative year in which we hit the target using the _relYear_ column.
-(All the columns with NA in them are only there to allow the _rbind()_ of the data.frames and looks a bit ugly - sorry).
+
+We make the **fwdControl** object by passing a list for each target. One of the targets is relative, hence all the additional elements.
 
 ```{r, 2f1s11}
 sole_catch_target <- 12000
 sole_bt_gn_catch_relative <- 2
-flasher_ctrl_target1 <- data.frame(year = 2:20,
-                        quant = "catch", relYear = NA,
-                        fishery = NA, relFishery=NA,
-                        catch = NA, relCatch=NA,
-                        biol = 1,
-                        value = sole_catch_target)
-flasher_ctrl_target2 <- data.frame(year = 2:20,
-                        quant = "catch", relYear = 2:20,
-                        fishery = 1, relFishery=2,
-                        catch = 1, relCatch = 1,
-                        biol = NA,
-                        value = sole_bt_gn_catch_relative)
-flasher_ctrl_target <- rbind(flasher_ctrl_target1, flasher_ctrl_target2)
-flasher_ctrl <- fwdControl(flasher_ctrl_target)
-flasher_ctrl@FCB <- matrix(c(1,2,1,1,1,1), nrow=2, ncol=3,
-    dimnames=list(1:2,c("F","C","B")))
+flasher_ctrl <-fwdControl(list(year=2:20, quant="catch", biol="sol", value=sole_catch_target),
+                           list(year=2:20, quant="catch",relYear=2:20, fishery="bt", catch="solBT", relFishery="gn", relCatch="solGN", value=sole_bt_gn_catch_relative),
+                           FCB=fcb)
 test <- fwd(object=biols3, fishery=flfs3, control=flasher_ctrl)
 ```
 
@@ -606,31 +603,17 @@ We can also add an extra target of relative plaice catches based on the historic
 
 ## Example with constant total sole catch
 
-In this example we set a total sole catch (_biol = 2_ in the control object).
-We also set a relative plaice catch between the fisheries. The beam trawl fishery (the first **FLFishery**, hence _fishery = 1_) takes 1.5 times as much plaice as the gillnet fishery (the second **FLFishery**, hence _relFishery_ = 2).
-The plaice is caught by the first **FLCatch** of each **FLFishery** hence the use of _catch = 1_ and _relCatch = 1_.
+In this example we set a total sole catch (_biol = "sol"_ in the control object).
+We also set a relative plaice catch between the fisheries. The _"pleBT"_ **FLCatch** of the _"bt"_ beam trawl **FLFishery** takes 1.5 times as much plaice as the _"pleGN"_ **FLCatch** of the _"gn"_ gillnet **FLFishery**.
 
 ```{r, mf}
+fcb <- matrix(c(1,1,1,1,2,2,2,1,1,2,2,2), byrow=TRUE, ncol=3, dimnames=list(1:4,c("F","C","B")))
 sole_catch_target <- 12000
 plaice_bt_gn_catch_relative <- 1.5
-flasher_ctrl_target1 <- data.frame(year = 2:20,
-                        quant = "catch",
-                        relYear = NA,
-                        fishery = NA, relFishery=NA,
-                        catch = NA, relCatch=NA,
-                        biol = 2,
-                        value = sole_catch_target)
-flasher_ctrl_target2 <- data.frame(year = 2:20,
-                        quant = "catch",
-                        relYear = 2:20,
-                        fishery = 1, relFishery=2,
-                        catch = 1, relCatch = 1,
-                        biol = NA,
-                        value = plaice_bt_gn_catch_relative)
-flasher_ctrl_target <- rbind(flasher_ctrl_target1, flasher_ctrl_target2)
-flasher_ctrl <- fwdControl(flasher_ctrl_target)
-flasher_ctrl@FCB <- matrix(c(1,1,1,1,2,2,2,1,1,2,2,2), byrow=TRUE, ncol=3,
-    dimnames=list(1:4,c("F","C","B")))
+
+flasher_ctrl <- fwdControl(list(year=2:20, quant="catch",biol="sol",value=sole_catch_target),
+           list(year=2:20, quant="catch", relYear=2:20, fishery="bt", catch="pleBT", relFishery="gn", relCatch="pleGN", value=plaice_bt_gn_catch_relative),
+           FCB=fcb)
 ```
 
 The FCB matrix has been updated to reflect the complicated mixed fishery:
@@ -642,7 +625,7 @@ flasher_ctrl@FCB
 Take a look at the fishery system:
 
 ```{r, fig.cap="Two Fisheries, each with 2 Catches fishing on two Biols"}
-draw(flasher_ctrl)
+draw(flasher_ctrl, fisheryNames=names(flfs), catchNames=unlist(lapply(flfs, names)), biolNames=names(biols))
 ```
 
 And project:
@@ -671,33 +654,21 @@ plot_biomass(test[["biols"]][[2]],stock_name="Sole")
 
 ## A more complicated example with decreasing catches
 
-In this more complicated example we set the total catch of sole to decrease yearly to 90% of the previous year.
+In this more complicated example we set the total catch of sole in the first year, and then decrease it yearly to 90% of the previous year.
 We also set the relative plaice catch from the beam trawl to be 1.5 the catch from the gillnet.
 
-This example makes extensive use of relative targets and consequently the control object is quite fiddly to set up.
+This example makes extensive use of relative targets.
 
 ```{r, complicated}
 sole_catch_target_initial <- 20000
 sole_catch_decrease <- 0.9
 plaice_bt_gn_catch_relative <- 1.5
-flasher_ctrl_target1 <- data.frame(year = 2:20,
-                    quant = "catch",
-                    relYear = c(NA,c(2:19)),
-                    fishery = NA, relFishery=NA,
-                    catch = NA, relCatch=NA,
-                    biol = 2, relBiol=c(NA,rep(2,18)),
-                    value = c(sole_catch_target_initial, rep(sole_catch_decrease,18)))
-flasher_ctrl_target2 <- data.frame(year = 2:20,
-                    quant = "catch",
-                    relYear = 2:20,
-                    fishery = 1, relFishery=2,
-                    catch = 1, relCatch = 1,
-                    biol = NA, relBiol=NA,
-                    value = plaice_bt_gn_catch_relative)
-flasher_ctrl_target <- rbind(flasher_ctrl_target1, flasher_ctrl_target2)
-flasher_ctrl <- fwdControl(flasher_ctrl_target)
-flasher_ctrl@FCB <- matrix(c(1,1,1,1,2,2,2,1,1,2,2,2), byrow=TRUE, ncol=3,
-    dimnames=list(1:4,c("F","C","B")))
+
+flasher_ctrl <- fwdControl(
+    list(year=2, quant="catch", biol="sol", value=sole_catch_target_initial),
+    list(year=3:20, quant="catch", relYear=2:19, biol="sol", relBiol="sol", value=sole_catch_decrease),
+    list(year=2:20, quant="catch", relYear=2:20, fishery="bt", catch="pleBT", relFishery="gn", relCatch="pleGN",value=plaice_bt_gn_catch_relative),
+    FCB=fcb)
 test <- fwd(object=biols, fishery=flfs, control=flasher_ctrl)
 ```
 
@@ -726,7 +697,8 @@ More economic indicators, such as costs and profits, will be added in the future
 We saw in the previous example that the revenues of both fisheries decreases as the sole catches decrease by 10\% each year.
 Although, the stock biomasses increase, the decrease in revenue is likely to be unacceptable by the fishing industry.
 Given their costs of operation they may expect a minimum revenue, even if means the total catch exceeds the TAC.
-In this example a minimum revenue is set for each fishery.
+In this example a minimum revenue is set for each fishery. The target quant os _"revenue"_. Revenue is calculated at the **FLFishery** level meaning that only the **FLFishery** needs to be specified in the control object.
+This is a complicated projection. However, each target can be specified as a separate list to the **fwdControl** constructor to help organise it.
 
 ```{r, revtest}
 sole_catch_target_initial <- 20000
@@ -734,42 +706,14 @@ sole_catch_decrease <- 0.9
 plaice_bt_gn_catch_relative <- 1.5
 bt_min_revenue <- 150000
 gn_min_revenue <- 100000
-# Sole catch
-flasher_ctrl_target1 <- data.frame(year = 2:20,
-                    quant = "catch",
-                    relYear = c(NA,c(2:19)),
-                    fishery = NA, relFishery=NA,
-                    catch = NA, relCatch=NA,
-                    biol = 2, relBiol=c(NA,rep(2,18)),
-                    value = c(sole_catch_target_initial,
-                    rep(sole_catch_decrease,18)), min=NA)
-# Relative plaice catch
-flasher_ctrl_target2 <- data.frame(year = 2:20,
-                    quant = "catch",
-                    relYear = 2:20,
-                    fishery = 1, relFishery=2,
-                    catch = 1, relCatch = 1,
-                    biol = NA, relBiol=NA,
-                    value = plaice_bt_gn_catch_relative, min=NA)
-# Minimum BT revenue
-flasher_ctrl_target3 <- data.frame(year = 2:20,
-                    quant = "revenue",
-                    relYear = NA,
-                    fishery = 1, catch = NA, biol = NA,
-                    relFishery = NA, relCatch = NA, relBiol = NA,
-                    value = NA, min = bt_min_revenue)
-# Minimum GN revenue
-flasher_ctrl_target4 <- data.frame(year = 2:20,
-                    quant = "revenue",
-                    relYear = NA,
-                    fishery = 2, catch = NA, biol = NA,
-                    relFishery = NA, relCatch = NA, relBiol = NA,
-                    value = NA, min = gn_min_revenue)
-flasher_ctrl_target <- rbind(flasher_ctrl_target1, flasher_ctrl_target2,
-    flasher_ctrl_target3, flasher_ctrl_target4)
-flasher_ctrl <- fwdControl(flasher_ctrl_target)
-flasher_ctrl@FCB <- matrix(c(1,1,1,1,2,2,2,1,1,2,2,2), byrow=TRUE, ncol=3,
-    dimnames=list(1:4,c("F","C","B")))
+
+flasher_ctrl <- fwdControl(
+    list(year=2, quant="catch", biol="sol", value=sole_catch_target_initial),
+    list(year=3:20, quant="catch", relYear=2:19, biol="sol", relBiol="sol", value=sole_catch_decrease),
+    list(year=2:20, quant="catch", relYear=2:20, fishery="bt", catch="pleBT", relFishery="gn", relCatch="pleGN",value=plaice_bt_gn_catch_relative),
+    list(year=2:20, quant="revenue", fishery="bt", min=bt_min_revenue),
+    list(year=2:20, quant="revenue", fishery="gn", min=gn_min_revenue),
+    FCB=fcb)
 test <- fwd(object=biols, fishery=flfs, control=flasher_ctrl)
 ```
 
