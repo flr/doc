@@ -50,7 +50,26 @@ Recruits enter the population at the start of the timestep. The SSB used to calc
 
 The predicted recruitment can be further modified by multiplying it by *residuals*.
 
-Currently available models - table
+The currently available models, their names (and aliases) in `Flasher` and their parameters names can be seen in the table.
+The actual names of the parameters passed to `FLasher` is not important. What is important is the order in which they are passed.
+The order is presented in the table.
+
+Model                         | Model name and aliases | Parameter order | Formulation
+----------------------------- | ---------------------- | --------------- | ----------------
+Ricker                        | ricker                 | a, b            | a srp exp (-b srp)
+-                             | Ricker                 | -               | - 
+Beverton & Holt               | bevholt                | a, b            | a srp / (b + srp)
+-                             | Bevholt                | -               | -
+Constant                      | constant               | a               | a
+-                             | Constant               | -               | - 
+-                             | mean                   | -               | -   
+-                             | Mean                   | -               | -
+-                             | geomean                | -               | -
+-                             | Geomean                | -               | -
+Beverton & Holt (SS3 version) | bevholtSS3             | s, R0, v        | (4 s R0 ssb) / (v (1-s) + ssb(5 * s - 1)) 
+-                             | bevholtss3             | -               | - 
+-                             | BevholtSS3             | -               | -
+
 
 In these examples we only use an annual model.
 We initially look at deterministic projections with only one iteration, and then look at projections with stochasticity in the SR model.
