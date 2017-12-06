@@ -98,7 +98,7 @@ catch.n.flq[,1:7]
 
 ## Reading common fisheries data formats 
 
-FLCore contains functions for reading in fish stock data in commonly used formats. To read a single variable (e.g. numbers-at-age, maturity-at-age) from the **Lowestoft VPA** format you use the `readVPA` function. The following example reads the catch numbers-at-age for herring:
+FLCore contains functions for reading in fish stock data in commonly used formats. To read a single variable (e.g. numbers-at-age, maturity-at-age) from the **Lowestoft VPA** format you use the `readVPAFile` function. The following example reads the catch numbers-at-age for herring:
 
 ```{r, readVPA}
 # Read from a VPA text file
