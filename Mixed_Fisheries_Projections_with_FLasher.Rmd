@@ -22,7 +22,6 @@ opts_chunk$set(dev='png', cache=FALSE, fig.width=5, fig.height=5, tidy=TRUE, dpi
 options(width=60)
 ```
 
-
 # Introduction
 
 In this vignette we demonstrate how __FLasher__ can be used to simulate a mixed fishery, with multiple fisheries catching multiple stocks.
@@ -270,13 +269,36 @@ Here we assume that the catchability of the beam trawl gear is twice that of the
 Some prices have been added to the **FLCatch**es to allow revenues to be calculated.
 Sole is assumed to be 5 times as expensive as plaice.
 
+# A note about target setting, independent variables and precedence of constraints
+
+As mentioned above the independent variables in the projections are the efforts of each **FLFishery** in each time step.
+For a projection to make sense the number of independent variables must equal the number of dependent variables.
+This means that when there is more than one **FLFishery** there is more than one independent variable in each timestep and so there must be more than one target in each timestep.
+These targets are solved simultaneously.
+
+For example, if we have two **FLFishery** objects we must set two targets per time step. These two targets are solved simultaneously, not one at a time.
+The two targets can be thought of as *subtargets* of a single target.
+
+It is possible to set multiple targets. However, it is necessary that each target contains a number of *subtargets*, equal to the number of **FLFishery** objects, that are solved simultaneously.
+If we have two **FLFishery** objects, we can have multiple targets, but they must come in pairs that can be solved together.
+
+The order of the targets in each timestep is important. The targets that are solved later have precedence over the ones solved earlier, i.e. solving a later target will essentially overwrite the results from the preceeding targets.
+
+Constraint targets (minimum and maximum values) are solved last in each timestep.
+Internally, first the non-constraint targets are solved and the resulting status of the fisheries and stocks are checked against the constraints.
+If the constraints have been breached, a second projection is then solved with the contraints as the targets.
+In this way the target constraints have the highest precedence.
+
+Hopefully some of this will become clear in the examples.
+
 # Example: A single fishery and a single stock
 
 Before we do anything complicated, we show a simple example with only a single fishery (the beam trawl) catching a single stock (plaice).
-As there is only 1 fishery, we only have 1 independent variable (the fishing effort) to solve each year to hit the target.
+This gives us a single independent variable (the fishing effort) to solve in each timestep (year).
+As described above, we only need to provide a single target for each timestep.
+In this example we project with a constant catch for all years.
 
 First we make the simple fishery and biology objects based on the ones created above.
-
 Note that it is important that all **FLFishery** objects have an initial value for effort in the projection years. It cannot be 0 and it cannot be NA.
 
 ```{r, make_single_f_s}
@@ -294,7 +316,6 @@ biols1 <- FLBiols(ple=biols[["ple"]])
 
 In this first example we set a constant total catch target for 20 years (we assume that there is no fishing in year 1).
 We set a projection control object to reflect this.
-Here, we have a single fishery, with a single catch fishing on a single biol.
 
 In the contol object we need to specify to which object the catch target is related to. This is a key difference between projecting **FLasher** with an **FLStock** and with an **FLBiols** and **FLFisheries**.
 In this example, the catch target relates to the total catch from the **FLBiol**. We therefore use the _biol_ column to specify this. This column takes either an integer to specify the position of the chosen **FLBiol** in the **FLBiols** list, or, more conveniently, the name of the **FLBiol** in the **FLBiols** list.
@@ -493,11 +514,13 @@ biols3 <- FLBiols(sol=biols[["sol"]])
 ```
 
 We have two fisheries which means we have two independent variables (the effort from each of the fisheries) to manipulate to hit the targets. 
-This means that we cannot set just a single target for the total catch of sole because there are an infinite number of ways that the two effort levels can be set to hit the total catch.
+This means that we cannot set just a single target in each timestep, e.g. we cannot only set a target for the total catch of sole because there are an infinite number of ways that the two effort levels can be set to hit the total catch.
+It is necessary to set two *subtargets* per timestep which will be solved simultaneously.
 
-One option is to set target catches for each of the fisheries, i.e. a target catch for sole caught by the beam trawl and a target catch for sole caught by the gillnet. i.e. to set partial catches at the **FLCatch** level.
+## Two catch subtargets
+
+A first example is to set target catches for each of the fisheries (a target catch for sole caught by the beam trawl and a target catch for sole caught by the gillnet) i.e. to set partial catches at the **FLCatch** level.
 For example, if the stock is managed by a single TAC, we can use the individual fishery quotas for targets.
-Here the total catch target is 15000, split between the two fisheries.
 
 Note that now the catch target is set at the **FLFishery** and **FLCatch** level, not the **FLBiol** level as in the previous examples.
 To do this we use the _fishery_ and _catch_ column to specify which **FLFishery** and **FLCatch** objects relate to the target. They can be specified by position in their lists (e.g. position of the **FLCatch** in the parent **FLFishery**) or by name.
@@ -555,7 +578,17 @@ plot_revenue(test[["fisheries"]], legpos="bottomleft")
 plot_biomass(test[["biols"]][[1]],stock_name="Sole")
 ```
 
-An alternative approach is to set a total catch at the stock level (for example, if the stock was managed through a TAC) and set _relative_ catches between the fisheries (for example, by maintaining the historic relative stability of the fleets).
+We can also check if each pair of *subtargets* have been hit by looking at the *flag* element of the **fwd()** output:
+
+```{r}
+test[["flag"]]
+```
+
+We have 19 targets (one of each year) and each target is made up of the two subtargets. A one means that the target was hit.
+
+## Absolute and relative catches
+
+An alternative approach is to set a total catch at the stock level (for example, if the stock was managed through a TAC) and set an accompanying _relative_ catch between the fisheries (for example, to maintain the historic relative stability of the fleets).
 In this way we do not explicitly specify how much the fisheries will catch, only that the total must be equal to the TAC and the historic relative stability must be respected. 
 
 This is quite a complicated control object!
@@ -566,7 +599,7 @@ This involves the use of the _relFishery_ and _relCatch_ columns to describe the
 Here we are saying the catch of the _solBT_ **FLCatch** of the _bt_ **FLFishery** in the **FLFisheries** object is relative to the _solGN_ **FLCatch** of the _gn_ **FLFishery** object.
 As we are setting a relative target, we also need to specify the relative year in which we hit the target using the _relYear_ column.
 
-We make the **fwdControl** object by passing a list for each target. One of the targets is relative, hence all the additional elements.
+We make the **fwdControl** object by passing a list for each *subtarget*. One of the targets is relative, hence all the additional elements. In each timestep the two subtargets will be solved simultaneously.
 
 ```{r, 2f1s11}
 sole_catch_target <- 12000
@@ -589,12 +622,11 @@ plot_biomass(test[["biols"]][[1]],stock_name="Sole")
 We can see that the relative catch target between the fisheries has been hit.
 Also, the total catches from both fisheries is the same as the total catch target on the **FLBiol**. 
 
-
 # Example: a mixed fishery
 
 In this example we have a full mixed fishery consisting of two fisheries (a beam trawl and a gill net) each of which catch from two stocks (plaice and sole).
 
-We have two independent variables (the fishing effort of the two fisheries) so we need to set two targets for each timestep of the projection.
+As above, we have two independent variables (the fishing effort of the two fisheries) so we need to set subtargets in groups of 2 for each timestep of the projection.
 However, there is no guarantee that the targets can be met.
 For example, setting a very low total catch of sole and a high total catch of plaice cannot be achieved simultaneously because catching plaice means sole are also caught.
 
@@ -697,7 +729,10 @@ More economic indicators, such as costs and profits, will be added in the future
 We saw in the previous example that the revenues of both fisheries decreases as the sole catches decrease by 10\% each year.
 Although, the stock biomasses increase, the decrease in revenue is likely to be unacceptable by the fishing industry.
 Given their costs of operation they may expect a minimum revenue, even if means the total catch exceeds the TAC.
-In this example a minimum revenue is set for each fishery. The target quant os _"revenue"_. Revenue is calculated at the **FLFishery** level meaning that only the **FLFishery** needs to be specified in the control object.
+
+To simulate this we can add a minimum revenue as a contraint target. As mentioned above, as we have two independent variables the targets must be supplied as pairs of subtargets. One pair of subtargets is the catch targets used above.
+In this example we add another pair of subtargets to each timestep. These subtargets are minimum revenues for each fishery.
+The target quant os _"revenue"_. Revenue is calculated at the **FLFishery** level meaning that only the **FLFishery** needs to be specified in the control object.
 This is a complicated projection. However, each target can be specified as a separate list to the **fwdControl** constructor to help organise it.
 
 ```{r, revtest}
