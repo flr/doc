@@ -490,7 +490,7 @@ You can see that the 6th dimension, iterations, now has length 200:
 summary(ple4_mtf)
 ```
 
-## Example 7: Stochastic recruitment
+## Example 7: Stochastic recruitment with residuals
 
 There is an argument to _fwd()_ that we haven't used yet: *residuals*
    
