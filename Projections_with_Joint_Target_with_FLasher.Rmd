@@ -1,0 +1,205 @@
+---
+title: "Projecting Combined Targets with FLasher"
+author: Finlay Scott, Iago Mosqueira - European Commission Joint Research Center
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    fig_caption: yes
+    number_sections: yes
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{FLasher}
+tags: [FLR FLasher forecast fisheries]
+abstract:
+license: European Union Public Licence (EUPL) V.1.1
+---
+
+```{r, pkgs, echo=FALSE, message=FALSE, warnings=FALSE}
+library(Rcpp)
+library(FLasher)
+library(knitr)
+opts_chunk$set(dev='png', cache=FALSE, fig.width=5, fig.height=5, tidy=TRUE, dpi=72)
+options(width=60)
+```
+
+# Introduction
+
+
+In this vignette we demonstrate how __FLasher__ can be used to perform projections with join targets.
+A joint target means a target that is the sum of metrics from more than one FLFishery or FLBiol object.
+For example, a combined species TAC (such as for dab and flounder in the North Sea) can be simulated by setting a joint catch target from more than one FLBiol.
+
+These examples will all be run using the mixed fishery example data set. We load that here:
+
+```{r}
+data("mixed_fishery_example_om")
+```
+
+# Simple example with a combined species TAC
+
+In this simple example we have a single beam trawl **FLFishery** with two **FLCatch** objects, each fishing on a single **FLBiol** (plaice and sole).
+We can set a catch target so that the total catch is the sum of the catches from each **FLBiol**.
+
+```{r}
+# Extract the beam trawl fishery
+bt <- flfs["bt"]
+```
+
+To make the control object we use the list-based constructor.
+To specify that a target is the sum of metrics from multiple objects we use the _G()_ function.
+Here we specify a combined target for the two **FLBiol** objects, **ple** and **sol**.
+We project for the years 2 to 5 only.
+
+```{r}
+joint_tac <- 200000
+years <- 2:5
+fcb <- matrix(c(1,1,1,2,1,2), nrow=2, ncol=3, dimnames=list(1:2,c("F","C","B")))
+ctrl <- fwdControl(list(year=years, quant="catch", value=joint_tac, biol=G("ple", "sol")),
+           FCB=fcb)
+```
+
+If we look at the control object we can see that the _biol_ column has two names in it instead of just one.
+This means that the target applies to the _sum_ of the catches of those stocks.
+
+
+```{r}
+ctrl
+```
+
+We project as normal:
+
+```{r}
+test <- fwd(object=biols, fishery=bt, control=ctrl)
+```
+
+We can check that the total catch from both the stocks is the same as the target:
+
+```{r}
+# plaice catch
+catch_ple <- catch(test[["fisheries"]][["bt"]][["pleBT"]])[,ac(years)]
+# sole catch
+catch_sol <- catch(test[["fisheries"]][["bt"]][["solBT"]])[,ac(years)]
+catch_sol + catch_ple
+```
+
+In this example plaice makes up the majority of the catch.
+
+```{r}
+catch_sol  / (catch_sol + catch_ple)
+catch_ple  / (catch_sol + catch_ple)
+```
+
+The same effort is applied to each stock so the proportion in the total catch is determined by the abundance of each stock and the catchability and selectivity of the fishing activity stored in the corresponding **FLCatch** object.
+
+If we also had price information for these stocks we could see what proportion of total revenue came from which stock.
+
+
+# Simple example with a combined target from multiple fisheries
+
+In this example we have two **FLFishery** objects, a beam trawl and a gillnet. Both of them are fishing plaice and sole.
+We can set a total plaice catch from both the **FLFishery** objects.
+
+Here we have two **FLFishery** objects which means that we have two efforts that need to be solved in each time step.
+This means that we need to set pairs of targets per timestep.
+Here we we set a total target on plaice and also relative target between the catches of sole from the beam trawl and gillnet fisheries.
+
+In the control object we use _G()_ function to specify the **FLFishery** and **FLCatch** objects the joint target applies to:
+
+```{r}
+rel_sol_catch <- 0.8
+total_ple_catch <- 200000 
+years <- 2:5
+fcb <- matrix(c(1,1,1,1,2,2,2,1,1,2,2,2), byrow=TRUE, ncol=3, dimnames=list(1:4,c("F","C","B")))
+ctrl <- fwdControl(
+        list(year=years, quant="catch", value=total_ple_catch, fishery=G("bt","gn"), catch=G("pleBT", "pleGN")),
+        list(year=years, quant="catch", value = 0.8, fishery="bt", catch="solBT", relYear=years, relFishery="gn", relCatch="solGN"),
+        FCB=fcb)
+```
+
+We can see that the _fishery_ and _catch_ columns have both names in them:
+
+```{r}
+ctrl
+```
+
+The fishery system looks like:
+
+```{r}
+draw(ctrl, fisheryNames=names(flfs), catchNames=unlist(lapply(flfs, names)), biolNames=names(biols))
+```
+
+We project as normal:
+
+```{r}
+test <- fwd(object=biols, fishery=flfs, control=ctrl)
+```
+
+We check out the total plaice catch from both fisheries, and also the relative sole catch:
+
+```{r}
+catch_ple_bt <- catch(test[["fisheries"]][["bt"]][["pleBT"]])[,ac(years)]
+catch_ple_gn <- catch(test[["fisheries"]][["gn"]][["pleGN"]])[,ac(years)]
+catch_sol_bt <- catch(test[["fisheries"]][["bt"]][["solBT"]])[,ac(years)]
+catch_sol_gn <- catch(test[["fisheries"]][["gn"]][["solGN"]])[,ac(years)]
+catch_ple_bt + catch_ple_gn
+catch_sol_bt / catch_sol_gn
+```
+
+The corresponding individual effort from each **FLFishery** is:
+
+```{r}
+effort(test[["fisheries"]][["bt"]])[,ac(years)]
+effort(test[["fisheries"]][["gn"]])[,ac(years)]
+```
+
+We can set an additional constraint of maximum total effort of both fisheries.
+We have two efforts to solve which means that the targets in each time step (year) of the control object must come in pairs.
+When we include a maximum constraint on effort we must also include an accompanying target to be solved at the same time.
+As constraint targets (maximum and minimum targets) are solved after non-constraint targets, the accompanying target must also be a constraint.
+We can set a constraint that is never triggered just to make up the numbers (however, it cannot be a separate minimum effort target for the two fishery objects).
+
+```{r}
+total_max_effort <- 2
+years <- 2:5
+ctrl <- fwdControl(
+        list(year=years, quant="catch", value=total_ple_catch, fishery=G("bt","gn"), catch=G("pleBT", "pleGN")),
+        list(year=years, quant="catch", value = 0.8, fishery="bt", catch="solBT", relYear=years,
+            relFishery="gn", relCatch="solGN"),
+        list(year=years, quant="effort", max=total_max_effort, fishery=G("bt","gn")), # maximum effort
+        list(year=years, quant="biomass_end", min=1.0, biol="ple"), # minimum biomass target that should not be triggered
+        FCB=fcb)
+ctrl
+```
+
+```{r}
+test <- fwd(object=biols, fishery=flfs, control=ctrl)
+```
+
+What happened? First we take a look at the effort.
+We can see that the total effort has been constrained by the effort limit.
+
+```{r}
+# Check that all the target pairs in each year solved
+test[["flag"]]
+effort_bt <- (test[["fisheries"]][["bt"]]@effort)[,ac(years)]
+effort_gn <- (test[["fisheries"]][["gn"]]@effort)[,ac(years)]
+effort_bt + effort_gn
+```
+
+Consequently the catch targets have not been hit
+
+```{r}
+catch_ple_bt <- catch(test[["fisheries"]][["bt"]][["pleBT"]])[,ac(years)]
+catch_ple_gn <- catch(test[["fisheries"]][["gn"]][["pleGN"]])[,ac(years)]
+catch_sol_bt <- catch(test[["fisheries"]][["bt"]][["solBT"]])[,ac(years)]
+catch_sol_gn <- catch(test[["fisheries"]][["gn"]][["solGN"]])[,ac(years)]
+catch_ple_bt + catch_ple_gn
+catch_sol_bt / catch_sol_gn
+```
+
+
+
+# References
+
+Scott, F. and Mosqueira, I. 2016. Bioeconomic Modelling for Fisheries; EUR 28383 EN; doi:10.2788/722156
+
