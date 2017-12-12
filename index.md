@@ -14,6 +14,7 @@ title: "FLR Tutorials"
 ## Fisheries Modelling
 
 - [Modelling stock recruitment with FLSR](Modelling_stock_recruitment_with_FLSR.html)
+- [Using information on Life History relationships](Using_information_on_life_history_relationships.html)
 - [Statistical catch at age models in FLa4a](Statistical_catch_at_age_models_in_FLa4a.html)
 - [Modelling growth and its uncertainty in FLa4a](Modelling_growth_and_its_uncertainty_in_FLa4a.html)
 - [Natural mortality modelling in FLa4a](Natural_mortality_modelling_in_FLa4a.html)
