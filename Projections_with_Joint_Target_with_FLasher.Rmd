@@ -35,6 +35,30 @@ These examples will all be run using the mixed fishery example data set. We load
 data("mixed_fishery_example_om")
 ```
 
+# A note about target setting and  independent variables
+
+The following text is taken from the Mixed Fisheries tutorial.
+
+The independent variables in the projections are the efforts of each **FLFishery** in each time step.
+For a projection to make sense the number of independent variables must equal the number of dependent variables.
+This means that when there is more than one **FLFishery** there is more than one independent variable in each timestep and so there must be more than one target in each timestep.
+These targets are solved simultaneously.
+
+For example, if we have two **FLFishery** objects we must set two targets per time step. These two targets are solved simultaneously, not one at a time.
+The two targets can be thought of as *subtargets* of a single target.
+
+It is possible to set multiple targets. However, it is necessary that each target contains a number of *subtargets*, equal to the number of **FLFishery** objects, that are solved simultaneously.
+If we have two **FLFishery** objects, we can have multiple targets, but they must come in pairs that can be solved together.
+
+The order of the targets in each timestep is important. The targets that are solved later have precedence over the ones solved earlier, i.e. solving a later target will essentially overwrite the results from the preceeding targets.
+
+Constraint targets (minimum and maximum values) are solved last in each timestep.
+Internally, first the non-constraint targets are solved and the resulting status of the fisheries and stocks are checked against the constraints.
+If the constraints have been breached, a second projection is then solved with the contraints as the targets.
+In this way the target constraints have the highest precedence.
+
+Hopefully some of this will become clear in the examples.
+
 # Simple example with a combined species TAC
 
 In this simple example we have a single beam trawl **FLFishery** with two **FLCatch** objects, each fishing on a single **FLBiol** (plaice and sole).
@@ -152,19 +176,21 @@ effort(test[["fisheries"]][["bt"]])[,ac(years)]
 effort(test[["fisheries"]][["gn"]])[,ac(years)]
 ```
 
-We can set an additional constraint of maximum total effort of both fisheries.
-We have two efforts to solve which means that the targets in each time step (year) of the control object must come in pairs.
-When we include a maximum constraint on effort we must also include an accompanying target to be solved at the same time.
-As constraint targets (maximum and minimum targets) are solved after non-constraint targets, the accompanying target must also be a constraint.
-We can set a constraint that is never triggered just to make up the numbers (however, it cannot be a separate minimum effort target for the two fishery objects).
+We can set an additional constraint of maximum total effort of both fisheries, a joint target set at the **FLFishery** level.
+Here we have two efforts to solve (one from each **FLFishery**) which means that we must have two *subtargets* in each target in each time step (year).
+This means that if we want to introduce a maximum constraint on effort we must also include a second subtarget. 
+Constraint targets (maximum and minimum targets) are solved after non-constraint targets. This means that if a target has a constraint *subtarget* then all the other *subtargets* of that target must also be constraints. 
+We can set up a *dummy* constraint that is never triggered just to make up the numbers (however, it cannot be a separate minimum effort target for the two fishery objects).
 
 ```{r}
 total_max_effort <- 2
 years <- 2:5
 ctrl <- fwdControl(
+        # First pair of targets
         list(year=years, quant="catch", value=total_ple_catch, fishery=G("bt","gn"), catch=G("pleBT", "pleGN")),
         list(year=years, quant="catch", value = 0.8, fishery="bt", catch="solBT", relYear=years,
             relFishery="gn", relCatch="solGN"),
+        # Second pair of targets - constraints
         list(year=years, quant="effort", max=total_max_effort, fishery=G("bt","gn")), # maximum effort
         list(year=years, quant="biomass_end", min=1.0, biol="ple"), # minimum biomass target that should not be triggered
         FCB=fcb)
@@ -181,6 +207,7 @@ We can see that the total effort has been constrained by the effort limit.
 ```{r}
 # Check that all the target pairs in each year solved
 test[["flag"]]
+# Look at effort
 effort_bt <- (test[["fisheries"]][["bt"]]@effort)[,ac(years)]
 effort_gn <- (test[["fisheries"]][["gn"]]@effort)[,ac(years)]
 effort_bt + effort_gn
@@ -196,8 +223,6 @@ catch_sol_gn <- catch(test[["fisheries"]][["gn"]][["solGN"]])[,ac(years)]
 catch_ple_bt + catch_ple_gn
 catch_sol_bt / catch_sol_gn
 ```
-
-
 
 # References
 
