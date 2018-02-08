@@ -15,13 +15,13 @@
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -31,10 +31,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -98,34 +100,34 @@ button.code-folding-btn:focus {
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
-  padding-top: 51px;
+  padding-top: 45px;
   padding-bottom: 40px;
 }
 /* offset scroll position for anchor links (for fixed navbar)  */
 .section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 
 .section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 </style>
 
@@ -279,7 +281,41 @@ $(document).ready(function () {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">An introduction to MSE using FLR</li>
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-cogs"></span>
+     
+    FLBEIA
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+    <li>
+      <a href="Conditioning_FLBEIA.html">Conditioning FLBEIA using Smart Conditioning Functions</a>
+    </li>
+    <li>
+      <a href="FLBEIA_A_Simple_Example.html">A simple example on how to use FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_An_Example_with_multiple_dimensions.html">A simple example with multiple dimensions in FLBEIA</a>
+    </li>
+    <li>
+      <a href="Using_Assessment_models_in_the_MP_FLBEIA.html">Using Stock Assessment models in the Management procedure of FLBEIA</a>
+    </li>
+    <li>
+      <a href="Testing_Management_Strategies_in_FLBEIA.html">Testing different Management Strategies in FLBEIA</a>
+    </li>
+    <li>
+      <a href="Data_Poor_MSE_in_FLBEIA.html">Data Limited MSE in FLBEIA</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -331,7 +367,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Running Medium Term Forecasts with FLash</h1>
-<h4 class="date"><em>15 September, 2017</em></h4>
+<h4 class="date"><em>08 February, 2018</em></h4>
 
 </div>
 
@@ -478,8 +514,7 @@ Target
 <p><img src="Running_Medium_Term_Forecasts_with_FLash_files/figure-html/fegplot-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>The future Fs are as we set in the control object (good):</p>
 <pre class="r"><code>fbar(ple4_f_sq)[,ac(2005:2018)]</code></pre>
-<pre><code>An object of class &quot;FLQuant&quot;
-, , unit = unique, season = all, area = unique
+<pre><code>, , unit = unique, season = all, area = unique
 
      year
 age   2005    2006    2007    2008    2009   
@@ -492,8 +527,7 @@ age   2014    2015    2016    2017    2018
   all 0.49783 0.49783 0.49783 0.49783 0.49783</code></pre>
 <p>What about recruitment? Remember we are now using a Beverton-Holt model.</p>
 <pre class="r"><code>rec(ple4_f_sq)[,ac(2005:2018)]</code></pre>
-<pre><code>An object of class &quot;FLQuant&quot;
-, , unit = unique, season = all, area = unique
+<pre><code>, , unit = unique, season = all, area = unique
 
    year
 age 2005   2006   2007   2008   2009  
@@ -567,27 +601,27 @@ Target
 <p>When setting a biological abundance target we have to consider the timing of the target. In an <strong>FLStock</strong>, abundances are at the beginning of the year (or at the very end of the previous year). For example, if you look at the total stock abundances you get the stock at the beginning of each year, i.e. before any fishing has occurred.</p>
 <p>Internally, <strong>FLash</strong> attempts to hit the desired target by finding the appropriate value of F. However, the stock abundance at the start of the year is the result of fishing in the previous year, i.e SSB in year Y depends on F in Y-1. This means that if you set an abundance based target, you are really finding the F in the previous year that will give you that target. Setting an SSB target in a year is the equivalent of setting an SSB target for the very <code>end</code> of that year (the same as setting a target for the very start of the next year). The result is that you have to be careful with the years in the control object when setting a target based on the stock abundance.</p>
 <p>This is best illustrated with a simple example of a one year projection. If we want to hit an SSB target in 2009 (i.e. the SSB at the start of 2009 etc), we actually set it in the control object as being for 2008 as it is in 2008 that the F will be found that hits the SSB in 2009. In this example we want the future SSB to be high (we could have used <strong>FLBRP</strong> to come up with a suitable value, e.g. Bmsy but here we just pick a value).</p>
-<pre class="r"><code>future_ssb &lt;- 300000
+<pre class="r"><code>future_ssb &lt;- 150000
 ctrl_ssb &lt;- fwdControl(data.frame(year=2008, quantity = &quot;ssb&quot;, val=future_ssb))
 ctrl_ssb</code></pre>
 <pre><code>
 Target
-  year quantity min   val max
-1 2008      ssb  NA 3e+05  NA
+  year quantity min    val max
+1 2008      ssb  NA 150000  NA
 
    
-    min   val   max  
-  1    NA 3e+05    NA</code></pre>
+    min    val    max   
+  1     NA 150000     NA</code></pre>
 <pre class="r"><code>ple4_ssb &lt;- fwd(ple4_mtf, ctrl_ssb, sr = ple4_sr)</code></pre>
+<pre><code>303</code></pre>
 <p>Remember, we have effectively set an SSB target for the very end of 2008 but we do not see this in the <strong>FLStock</strong> until the very beginning of 2009. The result is that we can see that the SSB target has been hit, but not until 2009.</p>
 <pre class="r"><code>ssb(ple4_ssb)[,ac(2005:2009)]</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
-An object of class &quot;FLQuant&quot;
 , , unit = unique, season = all, area = unique
 
      year
 age   2005   2006   2007   2008   2009  
-  all 167531 173783 166061 203766 300000
+  all 167531 173783 166061 203766 150000
 
 units:  NA </code></pre>
 </div>
@@ -597,10 +631,19 @@ units:  NA </code></pre>
 <pre class="r"><code>future_ssb &lt;- 300000
 ctrl_ssb &lt;- fwdControl(data.frame(year=2008:2017, quantity = &quot;ssb&quot;, val=future_ssb))
 ple4_ssb &lt;- fwd(ple4_mtf, ctrl_ssb, sr = ple4_sr)</code></pre>
+<pre><code>303
+303
+303
+303
+303
+303
+303
+303
+303
+303</code></pre>
 <p>The SSB has been hit upto 2018.</p>
 <pre class="r"><code>ssb(ple4_ssb)[,ac(2005:2018)]</code></pre>
-<pre><code>An object of class &quot;FLQuant&quot;
-, , unit = unique, season = all, area = unique
+<pre><code>, , unit = unique, season = all, area = unique
 
      year
 age   2005   2006   2007   2008   2009  
@@ -657,8 +700,7 @@ Target
 <p>We run the projection as normal:</p>
 <pre class="r"><code>ple4_rel_catch &lt;- fwd(ple4_mtf, ctrl_rel_catch, sr = ple4_sr)</code></pre>
 <pre class="r"><code>catch(ple4_rel_catch)</code></pre>
-<pre><code>An object of class &quot;FLQuant&quot;
-, , unit = unique, season = all, area = unique
+<pre><code>, , unit = unique, season = all, area = unique
 
      year
 age   1957   1958   1959   1960   1961  
@@ -671,7 +713,6 @@ age   2014  2015  2016  2017  2018
   all 51040 45936 41342 37208 33487</code></pre>
 <pre class="r"><code>catch(ple4_rel_catch)[,ac(2009:2018)] / catch(ple4_rel_catch)[,ac(2008:2017)]</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
-An object of class &quot;FLQuant&quot;
 , , unit = unique, season = all, area = unique
 
      year
@@ -1214,7 +1255,6 @@ Target
 <p>The bounds on the catch are operational in several of the years. They prevent the catch from increasing as well as decreasing too strongly, (allegedly) providing stability to the fishery.</p>
 <pre class="r"><code>catch(recovery)[,ac(2009:2018)] / catch(recovery)[,ac(2008:2017)]</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
-An object of class &quot;FLQuant&quot;
 , , unit = unique, season = all, area = unique
 
      year
@@ -1291,8 +1331,7 @@ m.spwn        : [ 10 62 1 1 1 1000 ], units =   </code></pre>
 <pre class="r"><code>multi_rec_residuals &lt;- FLQuant(NA, dimnames = list(year=2009:2018, iter=1:niters))</code></pre>
 <p>We’re going to use residuals from the stock-recruitment relationship we fitted at the beginning. We can access these using:</p>
 <pre class="r"><code>residuals(ple4_sr)</code></pre>
-<pre><code>An object of class &quot;FLQuant&quot;
-, , unit = unique, season = all, area = unique
+<pre><code>, , unit = unique, season = all, area = unique
 
    year
 age 1958      1959      1960      1961      1962     
@@ -1312,7 +1351,6 @@ age 2004      2005      2006      2007      2008
 <p>What have we got?</p>
 <pre class="r"><code>multi_rec_residuals</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
-An object of class &quot;FLQuant&quot;
 iters:  1000 
 
 , , unit = unique, season = all, area = unique
@@ -1337,8 +1375,7 @@ units:  NA </code></pre>
 <p><img src="Running_Medium_Term_Forecasts_with_FLash_files/figure-html/res7-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>We can see that the projected stock metrics also have uncertainty in them.</p>
 <pre class="r"><code>rec(ple4_stoch_rec)[,ac(2008:2018)]</code></pre>
-<pre><code>An object of class &quot;FLQuant&quot;
-iters:  1000 
+<pre><code>iters:  1000 
 
 , , unit = unique, season = all, area = unique
 
@@ -1358,8 +1395,7 @@ age 2014           2015           2016           2017
 age 2018          
   1 873320(393490)</code></pre>
 <pre class="r"><code>fbar(ple4_stoch_rec)[,ac(2008:2018)]</code></pre>
-<pre><code>An object of class &quot;FLQuant&quot;
-iters:  1000 
+<pre><code>iters:  1000 
 
 , , unit = unique, season = all, area = unique
 
@@ -1379,8 +1415,7 @@ age   2014             2015             2016             2017
 age   2018            
   all 0.10846(0.02918)</code></pre>
 <pre class="r"><code>ssb(ple4_stoch_rec)[,ac(2008:2018)]</code></pre>
-<pre><code>An object of class &quot;FLQuant&quot;
-iters:  1000 
+<pre><code>iters:  1000 
 
 , , unit = unique, season = all, area = unique
 
@@ -1505,8 +1540,7 @@ iter:  1000 </code></pre>
 <p><img src="Running_Medium_Term_Forecasts_with_FLash_files/figure-html/stv11-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>The projected catches reflect the uncertainty in the target.</p>
 <pre class="r"><code>catch(ple4_catch_iters)[,ac(2008:2018)]</code></pre>
-<pre><code>An object of class &quot;FLQuant&quot;
-iters:  1000 
+<pre><code>iters:  1000 
 
 , , unit = unique, season = all, area = unique
 
@@ -1524,8 +1558,7 @@ age   2014         2015         2016         2017         2018
 <h2>Example 9: A projection with stochastic catch and recruiment</h2>
 <p>What is going on with recruitment in the results of the previous example?</p>
 <pre class="r"><code>rec(ple4_catch_iters)[,ac(2008:2018)]</code></pre>
-<pre><code>An object of class &quot;FLQuant&quot;
-iters:  1000 
+<pre><code>iters:  1000 
 
 , , unit = unique, season = all, area = unique
 
@@ -1545,8 +1578,7 @@ age 2014         2015         2016         2017         2018
 <p><img src="Running_Medium_Term_Forecasts_with_FLash_files/figure-html/stv15-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>The projected recruitment and catches are stochastic.</p>
 <pre class="r"><code>catch(ple4_catch_iters)[,ac(2008:2018)]</code></pre>
-<pre><code>An object of class &quot;FLQuant&quot;
-iters:  1000 
+<pre><code>iters:  1000 
 
 , , unit = unique, season = all, area = unique
 
@@ -1560,8 +1592,7 @@ age   2008         2009         2010         2011         2012
 age   2014         2015         2016         2017         2018        
   all 96040(    0) 87660(26293) 79335(24225) 69880(21157) 62566(18866)</code></pre>
 <pre class="r"><code>rec(ple4_catch_iters)[,ac(2008:2018)]</code></pre>
-<pre><code>An object of class &quot;FLQuant&quot;
-iters:  1000 
+<pre><code>iters:  1000 
 
 , , unit = unique, season = all, area = unique
 
@@ -1606,12 +1637,12 @@ age 2018
 <div id="software-versions" class="section level2">
 <h2>Software Versions</h2>
 <ul>
-<li>R version 3.4.1 (2017-06-30)</li>
-<li>FLCore: 2.6.5</li>
-<li>FLash: 2.5.8</li>
+<li>R version 3.4.3 (2017-11-30)</li>
+<li>FLCore: 2.6.5.9026</li>
+<li>FLash: 2.5.9</li>
 <li>FLBRP: 2.5.2</li>
 <li>FLAssess: 2.6.1</li>
-<li><strong>Compiled</strong>: Fri Sep 15 15:48:58 2017</li>
+<li><strong>Compiled</strong>: Thu Feb 8 09:42:46 2018</li>
 </ul>
 </div>
 <div id="license" class="section level2">

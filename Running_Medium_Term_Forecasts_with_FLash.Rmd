@@ -240,7 +240,7 @@ If we want to hit an SSB target in 2009 (i.e. the SSB at the start of 2009 etc),
 In this example we want the future SSB to be high (we could have used **FLBRP** to come up with a suitable value, e.g. Bmsy but here we just pick a value).
 
 ```{r, seg2}
-future_ssb <- 300000
+future_ssb <- 150000
 ctrl_ssb <- fwdControl(data.frame(year=2008, quantity = "ssb", val=future_ssb))
 ctrl_ssb
 ple4_ssb <- fwd(ple4_mtf, ctrl_ssb, sr = ple4_sr)
