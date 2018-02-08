@@ -962,14 +962,14 @@ We can set up a *dummy* constraint that is never triggered just to make up the n
 ```{r}
 total_max_effort <- 2
 years <- 2:5
+# targets + constraints (max effort, min biomass)
 ctrl <- fwdControl(
-        # First pair of targets
-        list(year=years, quant="catch", value=total_ple_catch, fishery=G("bt","gn"), catch=G("pleBT", "pleGN")),
-        list(year=years, quant="catch", value = 0.8, fishery="bt", catch="solBT", relYear=years,
-            relFishery="gn", relCatch="solGN"),
-        # Second pair of targets - constraints
-        list(year=years, quant="effort", max=total_max_effort, fishery=G("bt","gn")), # maximum effort
-        list(year=years, quant="biomass_end", min=1.0, biol="ple"), # minimum biomass target that should not be triggered
+  list(year=years, quant="catch", value=total_ple_catch,
+    fishery=G("bt","gn"), catch=G("pleBT", "pleGN")),
+  list(year=years, quant="catch", value = 0.8, fishery="bt",
+    catch="solBT", relYear=years, relFishery="gn", relCatch="solGN"),
+  list(year=years, quant="effort", max=total_max_effort, fishery=G("bt","gn")),
+  list(year=years, quant="biomass_end", min=1.0, biol="ple"),
         FCB=fcb)
 ctrl
 ```

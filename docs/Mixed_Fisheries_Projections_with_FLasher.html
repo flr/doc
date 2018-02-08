@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Finlay Scott, Iago Mosqueira - European Commission Joint Research Center" />
+
+
+<title>Mixed fisheries projections with FLasher</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="http://flr-project.org">
+    <span class="fa fa-home"></span>
+     
+    FLR
+  </a>
+</li>
+<li>
+  <a href="index.html">
+    <span class="fa fa-info"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-play-circle-o"></span>
+     
+    Intro
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A_quick_introduction_to_FLR.html">A quick introduction to FLR</a>
+    </li>
+    <li>
+      <a href="An_overview_of_the_FLCore_classes.html">An overview of the FLCore classes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-database"></span>
+     
+    Input
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Loading_your_data_into_FLR.html">Loading your data into FLR</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-magic"></span>
+     
+    Modelling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Modelling_stock_recruitment_with_FLSR.html">Modelling stock recruitment with FLSR</a>
+    </li>
+    <li>
+      <a href="Statistical_catch_at_age_models_in_FLa4a.html">Statistical catch at age models in FLa4a</a>
+    </li>
+    <li>
+      <a href="Modelling_growth_and_its_uncertainty_in_FLa4a.html">Modelling growth and its uncertainty in FLa4a</a>
+    </li>
+    <li>
+      <a href="Natural_mortality_modelling_in_FLa4a.html">Natural mortality modelling in FLa4a</a>
+    </li>
+    <li>
+      <a href="Stock_assessment_using_eXtended_Survivors_Analysis_with_FLXSA.html">Stock assessment using eXtended Survivors Analysis with FLXSA</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-tachometer"></span>
+     
+    Advice
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Running_Medium_Term_Forecasts_with_FLash.html">Running Medium Term Forecasts with FLash</a>
+    </li>
+    <li>
+      <a href="Short_Term_Forecasting_for_advice_using_FLash.html">Short Term Forecasting for advice using FLash</a>
+    </li>
+    <li>
+      <a href="Forecasting_on_the_Medium_Term_for_advice_using_FLasher.html">Forecasting on the Medium Term for advice using FLasher</a>
+    </li>
+    <li>
+      <a href="Reference_points_for_fisheries_management_with_FLBRP.html">Reference points for fisheries management with FLBRP</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-cogs"></span>
+     
+    MSE
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-cogs"></span>
+     
+    FLBEIA
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+    <li>
+      <a href="Conditioning_FLBEIA.html">Conditioning FLBEIA using Smart Conditioning Functions</a>
+    </li>
+    <li>
+      <a href="FLBEIA_A_Simple_Example.html">A simple example on how to use FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_An_Example_with_multiple_dimensions.html">A simple example with multiple dimensions in FLBEIA</a>
+    </li>
+    <li>
+      <a href="Using_Assessment_models_in_the_MP_FLBEIA.html">Using Stock Assessment models in the Management procedure of FLBEIA</a>
+    </li>
+    <li>
+      <a href="Testing_Management_Strategies_in_FLBEIA.html">Testing different Management Strategies in FLBEIA</a>
+    </li>
+    <li>
+      <a href="Data_Poor_MSE_in_FLBEIA.html">Data Limited MSE in FLBEIA</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-area-chart"></span>
+     
+    Plotting
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="ggplotFL_plotting_FLR_objects_with_ggplot2.html">ggplotFL, plotting FLR objects with ggplot2</a>
+    </li>
+    <li>
+      <a href="Plotting_FLR_objects_using_lattice.html">Plotting FLR objects using lattice</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-puzzle-piece"></span>
+     
+    Internals
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Units_of_measurement_in_FLR_objects.html">Units of measurement in FLR objects</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="http://github.com/flr/doc/issues">
+    <span class="fa fa-question fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Mixed fisheries projections with FLasher</h1>
+<h4 class="author"><em>Finlay Scott, Iago Mosqueira - European Commission Joint Research Center</em></h4>
+<h4 class="date"><em>08 February, 2018</em></h4>
+
+</div>
+
+
+<pre><code>## Warning: replacing previous import &#39;ggplot2::%+%&#39; by
+## &#39;FLCore::%+%&#39; when loading &#39;ggplotFL&#39;</code></pre>
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<p>In this vignette we demonstrate how <strong>FLasher</strong> can be used to simulate a mixed fishery, with multiple fisheries catching multiple stocks.</p>
+<p>The vignette uses a simple mixed fishery case study, based on two fishing fleets catching European plaice (<em>Pleuronectes platessa</em>) and common sole (<em>Solea solea</em>). Projections of the fishery are performed under different management options, including economic metrics. Plaice and sole are two species that are commonly caught together, for example in the North Sea. However, the case study presented here is not based on a real scenario and is used only to demonstrate how such a system can be modelled using <strong>FLasher</strong>. The two stocks are fished by a beam trawl fishery and a gillnet fishery. The selectivities and fishing effort of each fishery are independent of each other.</p>
+<p>The model has an annual timestep (seasonal models will be considered in a separate vignette).</p>
+<p>To perform mixed fishery projections it is necessary to use the <strong>FLBiol</strong> and <strong>FLFishery</strong> classes, instead of the <strong>FLStock</strong> objects (which is one of the main differences between using the older package <strong>FLash</strong> and <strong>FLasher</strong>). Projecting with <strong>FLBiol</strong> and <strong>FLFishery</strong> objects requires a little more setting up than projecting with an <strong>FLStock</strong>, in terms of the objects themselves and also in terms of the projection control object.</p>
+<p>The main difference is that the projection method, <em>fwd()</em> takes an <strong>FLFisheries</strong> object and an <strong>FLBiols</strong> object as well as the <strong>fwdControl</strong> object. An <strong>FLFisheries</strong> object is basically a list of <strong>FLFishery</strong> objects and an <strong>FLBiols</strong> object is a list of <strong>FLBiol</strong> objects. Each <strong>FLFishery</strong> contains one or more <strong>FLCatch</strong> objects which catch from the <strong>FLBiol</strong> objects. Multiple <strong>FLCatch</strong> objects from different <strong>FLFishery</strong> objects can catch from the same <strong>FLBiol</strong>. The output of running <em>fwd()</em> in this way is a named list with the updated <strong>FLFisheries</strong> and <strong>FLBiols</strong> objects.</p>
+<p>Projection targets can be set at different levels. For example, a <em>catch</em> target can be set at the <strong>FLCatch</strong> level (the catch of that particular <strong>FLCatch</strong>) or at the <strong>FLBiol</strong> level (the <em>total</em> catch from an <strong>FLBiol</strong> which may be fished by one or more <strong>FLCatch</strong> objects. This means that when setting the projection control it is necessary to describe which <strong>FLFishery</strong>, <strong>FLCatch</strong> and <strong>FLBiol</strong> that target is attributed to. A description of which target types can be attributed to which object type can be seen in the <strong>FLasher</strong> reference manual (type vignette(topic=“FLasher_reference”, package=“FLasher”)).</p>
+<p>This is better described with examples, which make up this tutorial.</p>
+</div>
+<div id="useful-functions" class="section level1">
+<h1><span class="header-section-number">2</span> Useful functions</h1>
+<p>The following functions are used for plotting the output of the <strong>FLasher</strong> projections. They will evenutally be moved inside the package when they are better.</p>
+<pre class="r"><code># Handy function to get F from OP from FLasher
+getf &lt;- function(op, fn = 1, cn = 1, bn = 1, age_range = c(2, 
+    6)) {
+    # f = alpha * sel * effort
+    flf &lt;- op[[&quot;fisheries&quot;]][[fn]]
+    flc &lt;- flf[[cn]]
+    b &lt;- op[[&quot;biols&quot;]][[bn]]
+    f &lt;- ((flc@catch.q[1, ] * quantSums(b@n * b@wt)^(-1 * flc@catch.q[2, 
+        ])) * flf@effort) %*% flc@catch.sel
+    fbar &lt;- apply(f[age_range[1]:age_range[2], ], 2:6, mean)
+    return(fbar)
+}
+
+getrevcatch &lt;- function(catch) {
+    return(quantSums(catch@price * catch@landings.n * catch@landings.wt))
+}
+
+getrev &lt;- function(fishery, catch = NA) {
+    if (is.na(catch)) {
+        # get all catches
+        revs &lt;- lapply(fishery, function(x) getrevcatch(x))
+        rev &lt;- Reduce(&quot;+&quot;, revs)
+    } else {
+        rev &lt;- getrevcatch(fishery[[catch]])
+    }
+    return(rev)
+}
+
+# Plotting functions
+plot_biomass &lt;- function(biol, stock_name, years = 2:20) {
+    tb &lt;- c(quantSums(biol@n * biol@wt)[, ac(years)])
+    plot(years, tb, type = &quot;l&quot;, xlab = &quot;Year&quot;, ylab = &quot;Biomass&quot;, 
+        main = paste(stock_name, &quot; biomass&quot;, sep = &quot;&quot;))
+}
+
+plot_catch &lt;- function(biol_no, op, FCB, stock_name, years = 2:20, 
+    legpos = &quot;topleft&quot;) {
+    fcbf &lt;- FCB[FCB[, &quot;B&quot;] == biol_no, , drop = FALSE]
+    partialc &lt;- list()
+    for (i in 1:nrow(fcbf)) {
+        catch_name &lt;- names(op[[&quot;fisheries&quot;]][[fcbf[i, &quot;F&quot;]]])[fcbf[i, 
+            &quot;C&quot;]]
+        partialc[[catch_name]] &lt;- c(catch(op[[&quot;fisheries&quot;]][[fcbf[i, 
+            &quot;F&quot;]]][[fcbf[i, &quot;C&quot;]]])[, ac(years)])
+    }
+    totalc &lt;- Reduce(&quot;+&quot;, partialc)
+    minc &lt;- min(unlist(lapply(partialc, min))) * 0.9
+    maxc &lt;- max(totalc) * 1.1
+    colours &lt;- c(&quot;blue&quot;, &quot;red&quot;)
+    plot(years, totalc, type = &quot;l&quot;, xlab = &quot;Year&quot;, ylab = &quot;Catch&quot;, 
+        main = paste(stock_name, &quot; catch&quot;, sep = &quot;&quot;), ylim = c(minc, 
+            maxc))
+    if (length(partialc) &gt; 1) {
+        legend_names &lt;- &quot;Total&quot;
+        legend_cols &lt;- &quot;black&quot;
+        for (i in 1:length(partialc)) {
+            lines(years, partialc[[i]], col = colours[i])
+            legend_names &lt;- c(legend_names, names(partialc)[i])
+            legend_cols &lt;- c(legend_cols, colours[i])
+        }
+        legend(legpos, legend = legend_names, col = legend_cols, 
+            lty = 1)
+    }
+}
+
+plot_f &lt;- function(biol_no, op, FCB, stock_name, years = 2:20, 
+    legpos = &quot;topleft&quot;) {
+    fcbf &lt;- FCB[FCB[, &quot;B&quot;] == biol_no, , drop = FALSE]
+    partialf &lt;- list()
+    for (i in 1:nrow(fcbf)) {
+        catch_name &lt;- names(op[[&quot;fisheries&quot;]][[fcbf[i, &quot;F&quot;]]])[fcbf[i, 
+            &quot;C&quot;]]
+        partialf[[catch_name]] &lt;- c(getf(op, fn = fcbf[i, &quot;F&quot;], 
+            cn = fcbf[i, &quot;C&quot;], bn = biol_no)[, ac(years)])
+    }
+    totalf &lt;- Reduce(&quot;+&quot;, partialf)
+    minf &lt;- min(unlist(lapply(partialf, min))) * 0.9
+    maxf &lt;- max(totalf) * 1.1
+    colours &lt;- c(&quot;blue&quot;, &quot;red&quot;)
+    plot(years, totalf, type = &quot;l&quot;, xlab = &quot;Year&quot;, ylab = &quot;F&quot;, 
+        main = paste(stock_name, &quot; F&quot;, sep = &quot;&quot;), ylim = c(minf, 
+            maxf), col = &quot;black&quot;)
+    if (length(partialf) &gt; 1) {
+        legend_names &lt;- &quot;Total&quot;
+        legend_cols &lt;- &quot;black&quot;
+        for (i in 1:length(partialf)) {
+            lines(years, partialf[[i]], col = colours[i])
+            legend_names &lt;- c(legend_names, names(partialf)[i])
+            legend_cols &lt;- c(legend_cols, colours[i])
+        }
+        legend(legpos, legend = legend_names, col = legend_cols, 
+            lty = 1)
+    }
+}
+
+plot_revenue &lt;- function(fisheries, years = 2:20, legpos = &quot;topleft&quot;) {
+    nf &lt;- length(fisheries)
+    revs &lt;- list()
+    for (i in 1:nf) {
+        revs[[i]] &lt;- c(getrev(fisheries[[i]])[, ac(years)])
+    }
+    minr &lt;- min(unlist(lapply(revs, min))) * 0.9
+    maxr &lt;- max(unlist(lapply(revs, max))) * 1.1
+    colours &lt;- c(&quot;blue&quot;, &quot;red&quot;)
+    plot(years, revs[[1]], type = &quot;l&quot;, ylim = c(minr, maxr), 
+        xlab = &quot;Year&quot;, ylab = &quot;Revenue&quot;, main = &quot;Fishery revenue&quot;, 
+        col = colours[1])
+    if (length(revs) &gt; 1) {
+        legend_names &lt;- names(fisheries)[1]
+        legend_cols &lt;- colours[1]
+        for (i in 2:length(revs)) {
+            lines(years, revs[[i]], col = colours[i])
+            legend_names &lt;- c(legend_names, names(fisheries)[i])
+            legend_cols &lt;- c(legend_cols, colours[i])
+        }
+        legend(legpos, legend = legend_names, col = legend_cols, 
+            lty = 1)
+    }
+}
+
+plot_effort &lt;- function(fisheries, years = 2:20, legpos = &quot;topleft&quot;) {
+    nf &lt;- length(fisheries)
+    eff &lt;- list()
+    for (i in 1:nf) {
+        eff[[i]] &lt;- c(fisheries[[i]]@effort[, ac(years)])
+    }
+    mine &lt;- min(unlist(lapply(eff, min))) * 0.9
+    maxe &lt;- max(unlist(lapply(eff, max))) * 1.1
+    colours &lt;- c(&quot;blue&quot;, &quot;red&quot;)
+    plot(years, eff[[1]], type = &quot;l&quot;, ylim = c(mine, maxe), xlab = &quot;Year&quot;, 
+        ylab = &quot;Effort&quot;, main = &quot;Fishery relative effort&quot;, col = colours[1])
+    if (length(eff) &gt; 1) {
+        legend_names &lt;- names(fisheries)[1]
+        legend_cols &lt;- colours[1]
+        for (i in 2:length(eff)) {
+            lines(years, eff[[i]], col = colours[i])
+            legend_names &lt;- c(legend_names, names(fisheries)[i])
+            legend_cols &lt;- c(legend_cols, colours[i])
+        }
+        legend(legpos, legend = legend_names, col = legend_cols, 
+            lty = 1)
+    }
+}</code></pre>
+</div>
+<div id="the-operating-model" class="section level1">
+<h1><span class="header-section-number">3</span> The operating model</h1>
+<p>The full operating model comprises 2 fisheries (a beam trawl and a gillnet) fishing on two biological stocks (plaice and sole). The example is based on Scott and Mosqueira (2016). As mentioned above, although the example is based on a plaice and sole mixed fishery, it is not intended to represent any particular real-world example. The operating model only has one iteration for clarity.</p>
+<p>The objects have already been created and are in the <strong>FLasher</strong> package. They are loaded here:</p>
+<pre class="r"><code>data(mixed_fishery_example_om)</code></pre>
+<p>The data set contains two objects: <em>biols</em> (an <strong>FLBiols</strong> object containing an <strong>FLBiol</strong> each for plaice and sole) and <em>flfs</em> (an <strong>FLFisheries</strong> object containing an <strong>FLFishery</strong> each for the beam trawl and gillnet fisheries).</p>
+<div id="exploring-the-biological-stocks" class="section level2">
+<h2><span class="header-section-number">3.1</span> Exploring the biological stocks</h2>
+<p>The plaice and sole stocks are based on the life history of plaice and sole in the North Sea. They are each stored as <strong>FLBiol</strong> objects in a <strong>FLBiols</strong> list called <em>biols</em>. They can be accessed using the <em>[[</em> operator, either by name or position.</p>
+<p>The stock-recruitment (SR) models have been set using the _<span class="citation">@rec_</span> slot of the <strong>FLBiol</strong> objects. Both stocks have Ricker SR models that are already parameterised:</p>
+<pre class="r"><code># Plaice
+biols[[&quot;ple&quot;]]@rec</code></pre>
+<pre><code>## An object of class &quot;FLQuants&quot;: EMPTY
+## model:  
+## rec ~ a * ssb * exp(-b * ssb)
+## &lt;environment: 0xaae7ff8&gt;
+## 
+## params:  
+## An object of class &quot;FLPar&quot;
+## params
+##        a        b 
+## 4.83e+00 1.33e-06 
+## units:  NA</code></pre>
+<pre class="r"><code>biols[[&quot;sol&quot;]]@rec</code></pre>
+<pre><code>## An object of class &quot;FLQuants&quot;: EMPTY
+## model:  
+## rec ~ a * ssb * exp(-b * ssb)
+## &lt;environment: 0xaafc108&gt;
+## 
+## params:  
+## An object of class &quot;FLPar&quot;
+## params
+##        a        b 
+## 7.73e+00 2.75e-05 
+## units:  NA</code></pre>
+<p>The SR models look like this:</p>
+<div class="figure">
+<img src="Mixed_Fisheries_Projections_with_FLasher_files/figure-html/plotSRRs-1.png" alt="The stock-recruitment relationships of the plaice and sole stocks" width="720" />
+<p class="caption">
+The stock-recruitment relationships of the plaice and sole stocks
+</p>
+</div>
+<p>Both biological stocks have 20 years. Only the first year has abundances. The other years will be filled in with the projected values.</p>
+</div>
+<div id="exploring-the-fisheries" class="section level2">
+<h2><span class="header-section-number">3.2</span> Exploring the fisheries</h2>
+<p>There are two fisheries, a gillnet and a beam trawl, each stored as an <strong>FLFishery</strong> object, held in the <strong>FLFisheries</strong> list object, <em>biols</em>. Each fishery has 2 <strong>FLCatch</strong>es, one that catches plaice and the other that catches sole.</p>
+<p>The <strong>FLFishery</strong> objects can be accessed from the <strong>FLFisheries</strong> object by the <em>[[</em> operator, either by name or position. It’s like accessing elements of a list. Each <strong>FLCatch</strong> within an <strong>FLFishery</strong> is also accessed by the <em>[[</em> operator by name or position. Again, it’s like accessing elements of a list.</p>
+<p>Each <strong>FLCatch</strong> has a selectivity pattern (stored in the <em>catch.sel</em> slot) and a catchability parameter (stored in the <em>catch.q</em> slot) depending on the gear type and the stock that is being caught.</p>
+<p>The selectivities could be set by looking at the partial fishing mortalities or partial catches of each fishery if the data was available. Here we assume that the beam trawl has a logistic selection pattern and the gillnet has a dome shaped selection pattern. The selectivity patterns are assumed to be constant in time (although this does not have to be the case).</p>
+<div class="figure">
+<img src="Mixed_Fisheries_Projections_with_FLasher_files/figure-html/plot_sel_pattern-1.png" alt="Selection patterns for the beam trawl (black) and gillnet (blue) fisheries on sole and plaice." width="720" />
+<p class="caption">
+Selection patterns for the beam trawl (black) and gillnet (blue) fisheries on sole and plaice.
+</p>
+</div>
+<p>The catchability parameter, <span class="math inline">\(\alpha\)</span>, for each <strong>FLCatch</strong> links the fishing effort to the fishing mortality through the selection pattern. The partial F of each <strong>FLCatch</strong> on the stock is given by:</p>
+<p><span class="math display">\[pF_{f,c,b} = \alpha_{f,c} * sel_{f,c} * effort_{f}\]</span></p>
+<p>where <span class="math inline">\(f\)</span>, <span class="math inline">\(c\)</span> and <span class="math inline">\(b\)</span> are the fishery, catch and biological stock respectively.</p>
+<p>Note that fishing effort is set at the fishery level (in the _<span class="citation">@effort_</span> slot). Fishing effort is the only independent variable over which managers have any control. All other measures (landings, fishing mortality etc) are driven by the fishing effort. In all of the projections, the targets are hit by finding the fishing effort of each fishery in the projection.</p>
+<p>Here the <span class="math inline">\(\alpha\)</span> parameter of each <strong>FLCatch</strong> has been set so that an effort of 1 from each fishery yields a mean F on each stock of 0.3. All of the projected effort values can then be considered as relative to this effort rather than an as absolute fishing effort. Here we assume that the catchability of the beam trawl gear is twice that of the gillnet.</p>
+<p>Some prices have been added to the <strong>FLCatch</strong>es to allow revenues to be calculated. Sole is assumed to be 5 times as expensive as plaice.</p>
+</div>
+</div>
+<div id="a-note-about-target-setting-independent-variables-and-precedence-of-constraints" class="section level1">
+<h1><span class="header-section-number">4</span> A note about target setting, independent variables and precedence of constraints</h1>
+<p>As mentioned above the independent variables in the projections are the efforts of each <strong>FLFishery</strong> in each time step. For a projection to make sense the number of independent variables must equal the number of dependent variables. This means that when there is more than one <strong>FLFishery</strong> there is more than one independent variable in each timestep and so there must be more than one target in each timestep. These targets are solved simultaneously.</p>
+<p>For example, if we have two <strong>FLFishery</strong> objects we must set two targets per time step. These two targets are solved simultaneously, not one at a time. The two targets can be thought of as <em>subtargets</em> of a single target.</p>
+<p>It is possible to set multiple targets. However, it is necessary that each target contains a number of <em>subtargets</em>, equal to the number of <strong>FLFishery</strong> objects, that are solved simultaneously. If we have two <strong>FLFishery</strong> objects, we can have multiple targets, but they must come in pairs that can be solved together.</p>
+<p>Essentially, projecting a target in a time step is the same as solving a set of simultaneous equations. In the same way to solve a system of simultaneous equations the equations must be dependent on a mix all of the independent variables, the <em>subtargets</em> in each target must depend on a mix of the efforts from each <strong>FLFishery</strong> (it is not necessary for every subtarget to be dependent on each <strong>FLFishery</strong>).</p>
+<p>The order of the targets in each timestep is important. The targets that are solved later have precedence over the ones solved earlier, i.e. solving a later target will essentially overwrite the results from the preceeding targets.</p>
+<p>Constraint targets (minimum and maximum values) are solved last in each timestep. Internally, the non-constraint targets are solved first. The resulting status of the fisheries and stocks is then checked against the constraints. If the constraints have been breached, a second projection is then solved with the contraints as the targets. In this way the target constraints have the highest precedence.</p>
+<p>Hopefully some of this will become clear in the examples.</p>
+</div>
+<div id="example-a-single-fishery-and-a-single-stock" class="section level1">
+<h1><span class="header-section-number">5</span> Example: A single fishery and a single stock</h1>
+<p>Before we do anything complicated, we show a simple example with only a single fishery (the beam trawl) catching a single stock (plaice). This gives us a single independent variable (the fishing effort) to solve in each timestep (year). As described above, we only need to provide a single target for each timestep. In this example we project with a constant catch for all years.</p>
+<p>First we make the simple fishery and biology objects based on the ones created above. Note that it is important that all <strong>FLFishery</strong> objects have an initial value for effort in the projection years. It cannot be 0 and it cannot be NA.</p>
+<pre class="r"><code># First pull out a single FLCatch from the BT fishery using
+# [[]]
+pleBT &lt;- flfs[[&quot;bt&quot;]][[&quot;pleBT&quot;]]
+# Make a single beam trawl FLFishery with 1 FLCatch
+bt1 &lt;- FLFishery(pleBT = pleBT)
+# Set the initial effort
+bt1@effort[] &lt;- 1
+# Make an FLFisheries from it
+flfs1 &lt;- FLFisheries(bt = bt1)
+# Make an FLBiols with a single FLBiol
+biols1 &lt;- FLBiols(ple = biols[[&quot;ple&quot;]])</code></pre>
+<p>In this first example we set a constant total catch target for 20 years (we assume that there is no fishing in year 1). We set a projection control object to reflect this.</p>
+<p>In the contol object we need to specify to which object the catch target is related to. This is a key difference between projecting <strong>FLasher</strong> with an <strong>FLStock</strong> and with an <strong>FLBiols</strong> and <strong>FLFisheries</strong>. In this example, the catch target relates to the total catch from the <strong>FLBiol</strong>. We therefore use the <em>biol</em> column to specify this. This column takes either an integer to specify the position of the chosen <strong>FLBiol</strong> in the <strong>FLBiols</strong> list, or, more conveniently, the name of the <strong>FLBiol</strong> in the <strong>FLBiols</strong> list. In this case we only have one <strong>FLBiol</strong> in the <strong>FLBiols</strong> object so the entry in the <em>biol</em> column could be 1. Alternatively, as we have named the <strong>FLBiol</strong> objects, we could also set the <em>biol</em> column to the name <em>ple</em>.</p>
+<p>Another difference between projecting <strong>FLasher</strong> with an <strong>FLStock</strong> and with an <strong>FLBiols</strong> and <strong>FLFisheries</strong> is the need to specify the <em>FCB</em> matrix to describe what <strong>FLCatch</strong> from what <strong>FLFishery</strong> is fishing on what <strong>FLBiol</strong>. The <em>FCB</em> matrix always has three columns: <em>F</em>, <em>C</em> and <em>B</em> which describe the positions of the <strong>FLFishery</strong> objects within the <strong>FLFisheries</strong> object, the position of the <strong>FLCatch</strong> objects in the <strong>FLFishery</strong> objects, and the position of the <strong>FLBiol</strong> objects in the <strong>FLBiols</strong> object. It is essentially a map of what is fishing on who. In this example, we only a single <strong>FLBiol</strong> that is being fished by the only <strong>FLCatch</strong> of the only <strong>FLFishery</strong>. Hence the <em>FCB</em> matrix only one row, all filled with 1s. The <em>FCB</em> matrix looks like this which means that the first <strong>FLCatch</strong> of the <strong>FLFishery</strong> is catching from the first <strong>FLBiol</strong>:</p>
+<pre class="r"><code>fcb &lt;- matrix(1, nrow = 1, ncol = 3, dimnames = list(1, c(&quot;F&quot;, 
+    &quot;C&quot;, &quot;B&quot;)))
+fcb</code></pre>
+<pre><code>##   F C B
+## 1 1 1 1</code></pre>
+<p>To make the control object we can either pass a data.frame or a list to the <em>fwdControl()</em> method. Here we pass a data.frame.</p>
+<pre class="r"><code>catch_target &lt;- 1e+05
+flasher_ctrl_target &lt;- data.frame(year = 2:20, quant = &quot;catch&quot;, 
+    biol = &quot;ple&quot;, value = catch_target)
+flasher_ctrl &lt;- fwdControl(flasher_ctrl_target, FCB = fcb)</code></pre>
+<p>An alternative is to pass a named list. Using this method is easier for making complicated control objects (see later).</p>
+<pre class="r"><code>flasher_ctrl &lt;- fwdControl(list(year = 2:20, quant = &quot;catch&quot;, 
+    biol = &quot;ple&quot;, value = catch_target), FCB = fcb)</code></pre>
+<p>We can draw the fishery system using the <em>draw()</em> method:</p>
+<pre class="r"><code>draw(flasher_ctrl, fisheryNames = &quot;Beam&quot;, catchNames = &quot;Plaice catch&quot;, 
+    biolNames = &quot;Plaice&quot;)</code></pre>
+<div class="figure">
+<img src="Mixed_Fisheries_Projections_with_FLasher_files/figure-html/unnamed-chunk-4-1.png" alt="A single Fishery with 1 Catch fishing on a single Biol" width="720" />
+<p class="caption">
+A single Fishery with 1 Catch fishing on a single Biol
+</p>
+</div>
+<p>We run the projection calling <em>fwd()</em> passing in the <strong>FLBiols</strong>, the <strong>FLFisheries</strong> and the control objects:</p>
+<pre class="r"><code>test &lt;- fwd(object = biols1, fishery = flfs1, control = flasher_ctrl)</code></pre>
+<p>The output from running <em>fwd()</em> with <strong>FLFisheries</strong> and <strong>FLBiols</strong> is a named <strong>list</strong>.</p>
+<pre class="r"><code>is(test)</code></pre>
+<pre><code>## [1] &quot;list&quot;   &quot;vector&quot;</code></pre>
+<pre class="r"><code>names(test)</code></pre>
+<pre><code>## [1] &quot;biols&quot;     &quot;fisheries&quot; &quot;control&quot;   &quot;flag&quot;</code></pre>
+<p>The contents of the output list are the updated <strong>FLFisheries</strong> and <strong>FLBiols</strong> objects, the <strong>fwdControl</strong> object and a mysterious other object called <em>flag</em>. <em>flag</em> is the output from the solver and is a matrix of integers indicating which targets, or subtarget, (rows) and iterations (columns) successfully solved and which didn’t. The number 1 indicates that target and iteration solved successfully. The number -1 indicates that the solver iterations maxed out. The numbers -2 and -3 indicate that the solver limits were breached.</p>
+<p>Here we have 1 column as we only have 1 iteration. We have 19 rows as we have 19 targets (1 for each year). All the flags are 1 so all targets solved OK.</p>
+<pre class="r"><code>test[[&quot;flag&quot;]]</code></pre>
+<pre><code>##       [,1]
+##  [1,]    1
+##  [2,]    1
+##  [3,]    1
+##  [4,]    1
+##  [5,]    1
+##  [6,]    1
+##  [7,]    1
+##  [8,]    1
+##  [9,]    1
+## [10,]    1
+## [11,]    1
+## [12,]    1
+## [13,]    1
+## [14,]    1
+## [15,]    1
+## [16,]    1
+## [17,]    1
+## [18,]    1
+## [19,]    1</code></pre>
+<p>We can see that the constant catch target has been hit in the target years. The plot also shows the resulting fishing mortality, relative effort, revenue of the fishery and biomass of the stock. The biomass is also driven by the stock-recruitment relationship of the stock and the initial dynamics will be affected by the initial age structure.</p>
+<div class="figure">
+<img src="Mixed_Fisheries_Projections_with_FLasher_files/figure-html/plotex1-1.png" alt="Summary results of projecting a single stock with a single fishery with a constant catch target." width="720" />
+<p class="caption">
+Summary results of projecting a single stock with a single fishery with a constant catch target.
+</p>
+</div>
+</div>
+<div id="example-a-single-fishery-with-two-stocks" class="section level1">
+<h1><span class="header-section-number">6</span> Example: A single fishery with two stocks</h1>
+<p>Here, we build on the previous example and introduce the sole stock as an additional stock that will be caught by the same fishery. The <strong>FLFishery</strong> object will now contain two <strong>FLCatch</strong> objects which catch plaice and sole respectively. The <strong>FLBiols</strong> object will have two <strong>FLBiol</strong> objects: plaice and sole. We still only have one fishery (the beam trawl, constructed above) so we still have only one independent variable (the fishing effort) in each year. The same fishing effort is applied to both stocks as they are caught by the same fishery.</p>
+<pre class="r"><code># Extract the beam trawl fishery from the FLFisheries loaded
+# above
+bt &lt;- flfs[[&quot;bt&quot;]]
+# Create a new FLFisheries with the single FLFishery
+flfs2 &lt;- FLFisheries(bt = bt)
+# It has only one FLFishery
+length(flfs2)</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code># That FLFishery has 2 FLCatches
+length(flfs2[[&quot;bt&quot;]])</code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="r"><code># The FLBiols has 2 FLBiol objects
+length(biols)</code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="r"><code># The names of the FLBiol objects are
+names(biols)</code></pre>
+<pre><code>## [1] &quot;ple&quot; &quot;sol&quot;</code></pre>
+<p>As we have only one independent variable (effort from one <strong>FLFishery</strong>) we cannot set a catch target for each stock (i.e. two dependent variables) because that would require two independent variables. Additionally, the catches of the two stocks are of course linked as they are caught by the same fishery. This means that we do not have the freedom to hit independent catch targets at the same time. This is a typical mixed fishery problem.</p>
+<p>In this first example we set only a catch target for the plaice stock. We again use the <em>biol</em> column to specify which <strong>FLBiol</strong> the catch target relates to. There are two <strong>FLBiol</strong> objects in the <strong>FLBiols</strong> object. We saw above that the first one is the plaice stock and the second one is the sole stock. This means that to apply the catch target to the plaice stock we could put <em>1</em> or <em>“ple”</em> in the <em>biol</em> column. If we wanted to apply the catch target to the sole stock we would put <em>“sol”</em> or <em>2</em>.</p>
+<p>This example requires a slightly more complicated <em>FCB</em> matrix. It reflects that we have one fishery with two catches, each catching a different stock. Again, the numbers in the columns reflect the positions of the objects in their lists. Here, the first <strong>FLCatch</strong> of the first (only) <strong>FLFishery</strong> catches from the first <strong>FLBiol</strong> and the second <strong>FLCatch</strong> of the first (only) <strong>FLFishery</strong> catches from the second <strong>FLBiol</strong>.</p>
+<p>We make the control object using the list based constructor:</p>
+<pre class="r"><code>fcb &lt;- matrix(c(1, 1, 1, 2, 1, 2), nrow = 2, ncol = 3, dimnames = list(1:2, 
+    c(&quot;F&quot;, &quot;C&quot;, &quot;B&quot;)))
+plaice_catch_target &lt;- 250000
+flasher_ctrl &lt;- fwdControl(list(year = 2:20, quant = &quot;catch&quot;, 
+    biol = &quot;ple&quot;, value = plaice_catch_target), FCB = fcb)</code></pre>
+<p>The <em>FCB</em> matrix looks like this:</p>
+<pre class="r"><code>flasher_ctrl@FCB</code></pre>
+<pre><code>##   F C B
+## 1 1 1 1
+## 2 1 2 2</code></pre>
+<p>Take a look at the fishery system:</p>
+<pre class="r"><code>draw(flasher_ctrl, fisheryNames = &quot;Beam trawl&quot;, catchNames = c(&quot;Ple catch&quot;, 
+    &quot;Sol catch&quot;), biolNames = c(&quot;Ple&quot;, &quot;Sol&quot;))</code></pre>
+<div class="figure">
+<img src="Mixed_Fisheries_Projections_with_FLasher_files/figure-html/unnamed-chunk-5-1.png" alt="A single Fishery with 2 Catches, each fishing on a single Biol" width="720" />
+<p class="caption">
+A single Fishery with 2 Catches, each fishing on a single Biol
+</p>
+</div>
+<p>And project:</p>
+<pre class="r"><code>test &lt;- fwd(object = biols, fishery = flfs2, control = flasher_ctrl)</code></pre>
+<p>We can see that the plaice catch target has been hit. We also look at the resulting sole catches, Fs, relative effort, revenue and biomasses that resulted from fishing at the effort that yielded the plaice target catch.</p>
+<div class="figure">
+<img src="Mixed_Fisheries_Projections_with_FLasher_files/figure-html/plotex2-1.png" alt="Summary results of projecting two stocks with a single fishery with a constant catch target on plaice." width="720" />
+<p class="caption">
+Summary results of projecting two stocks with a single fishery with a constant catch target on plaice.
+</p>
+</div>
+<p>As mentioned above, we cannot also have a target for the sole catch that is hit simultaneously as the plaice catch target. However, we can add a limit to the amount of fishing pressure that sole is subject to. For example, we can set a maximum F for sole.</p>
+<p>We saw in the last example that catching the plaice catch target results in a maximum F for sole of about 0.26. We can set a limit of maximum F of 0.2 (this number is made up for the sake of the example).</p>
+<p>In this control object we set a catch target for <em>biol = “ple”</em> (plaice) and also an F target for <em>biol = “sol”</em> (sole). When setting an F target it is necessary to specify the minimum and maximum ages of the Fbar range. This information is automatically taken from the <strong>FLStock</strong> when projecting with an <strong>FLStock</strong>. However, an <strong>FLBiol</strong> does not have this information and so it must be supplied in the control object in the <em>minAge</em> and <em>maxAge</em> columns. When setting the sole target instead of setting a <em>value</em> we set a <em>max</em>.</p>
+<p>We again make use of the list creator for the fwdControl. This is convenient as we can pass a list for each of the targets we are trying to hit. This time we pass in two lists, one to set the plaice target, the other for the sole target.</p>
+<pre class="r"><code>plaice_catch_target &lt;- 250000
+sole_f_limit &lt;- 0.2
+flasher_ctrl &lt;- fwdControl(list(year = 2:20, quant = &quot;catch&quot;, 
+    biol = &quot;ple&quot;, value = plaice_catch_target), list(year = 2:20, 
+    quant = &quot;f&quot;, biol = &quot;sol&quot;, max = sole_f_limit, minAge = 2, 
+    maxAge = 6), FCB = fcb)
+test &lt;- fwd(object = biols, fishery = flfs2, control = flasher_ctrl)</code></pre>
+<div class="figure">
+<img src="Mixed_Fisheries_Projections_with_FLasher_files/figure-html/plotex3-1.png" alt="Summary results of projecting two stocks with a single fishery with a constant catch target on plaice and a maximum F limit on sole." width="720" />
+<p class="caption">
+Summary results of projecting two stocks with a single fishery with a constant catch target on plaice and a maximum F limit on sole.
+</p>
+</div>
+<p>We can see that the maximum limit of F on sole has come into effect at the start of the projection and continues until year 5. The catches on plaice in those years has been limited and the target plaice catch has not been hit. After year 5, the required fishing effort to catch the plaice target is sufficiently low that the resulting F on sole is less than 0.2. This demonstrates how <strong>FLasher</strong> can be used to simulate management decisions on a fishery that fishes multiple stocks.</p>
+</div>
+<div id="example-two-fisheries-on-a-single-stock" class="section level1">
+<h1><span class="header-section-number">7</span> Example: Two fisheries on a single stock</h1>
+<p>In this example we simulate two different fisheries (beam trawl and gillnet) that are fishing the same stock (sole). The <strong>FLFisheries</strong> will have two <strong>FLFishery</strong> objects, each with one <strong>FLCatch</strong> which fish on sole. The <strong>FLBiols</strong> object will have a single <strong>FLBiol</strong> (sole). We make the <strong>FLFishery</strong> and <strong>FLBiol</strong> objects like this (initial effort has been set to 1):</p>
+<pre class="r"><code># Two fisheries on a single stock Make the plaice fishery
+# with a single FLCatch
+bt3 &lt;- FLFishery(solBT = flfs[[&quot;bt&quot;]][[&quot;solBT&quot;]], desc = &quot;&quot;)
+bt3@effort[] &lt;- 1
+# Make the sole fishery with a single FLCatch
+gn3 &lt;- FLFishery(solGN = flfs[[&quot;gn&quot;]][[&quot;solGN&quot;]], desc = &quot;&quot;)
+gn3@effort[] &lt;- 1
+# Make the FLFisheries
+flfs3 &lt;- FLFisheries(bt = bt3, gn = gn3)
+# Make the FLBiols with a single FLBiol
+biols3 &lt;- FLBiols(sol = biols[[&quot;sol&quot;]])</code></pre>
+<p>We have two fisheries which means we have two independent variables (the effort from each of the fisheries) to manipulate to hit the targets. This means that we cannot set just a single target in each timestep, e.g. we cannot only set a target for the total catch of sole because there are an infinite number of ways that the two effort levels can be set to hit the total catch. It is necessary to set two <em>subtargets</em> per timestep which will be solved simultaneously.</p>
+<div id="two-catch-subtargets" class="section level2">
+<h2><span class="header-section-number">7.1</span> Two catch subtargets</h2>
+<p>A first example is to set target catches for each of the fisheries (a target catch for sole caught by the beam trawl and a target catch for sole caught by the gillnet) i.e. to set partial catches at the <strong>FLCatch</strong> level. For example, if the stock is managed by a single TAC, we can use the individual fishery quotas for targets.</p>
+<p>Note that now the catch target is set at the <strong>FLFishery</strong> and <strong>FLCatch</strong> level, not the <strong>FLBiol</strong> level as in the previous examples. To do this we use the <em>fishery</em> and <em>catch</em> column to specify which <strong>FLFishery</strong> and <strong>FLCatch</strong> objects relate to the target. They can be specified by position in their lists (e.g. position of the <strong>FLCatch</strong> in the parent <strong>FLFishery</strong>) or by name. Here there is a catch target that relates to the first (only) <strong>FLCatch</strong> of the beam trawl <strong>FLFishery</strong> and another catch target that relates to the first (only) <strong>FLCatch</strong> of the gillnet <strong>FLFishery</strong>. The names of the <strong>FLFishery</strong> objects and their respective <strong>FLCatch</strong> objects are:</p>
+<pre class="r"><code># Names of the FLFishery objects
+names(flfs3)</code></pre>
+<pre><code>## [1] &quot;bt&quot; &quot;gn&quot;</code></pre>
+<pre class="r"><code># Names of their FLCatch objects
+names(flfs3[[&quot;bt&quot;]])</code></pre>
+<pre><code>## [1] &quot;solBT&quot;</code></pre>
+<pre class="r"><code>names(flfs3[[&quot;gn&quot;]])</code></pre>
+<pre><code>## [1] &quot;solGN&quot;</code></pre>
+<p>The <em>biol</em> column can now be ignored.</p>
+<pre class="r"><code>sole_bt_catch &lt;- 10000
+sole_gn_catch &lt;- 5000
+fcb &lt;- matrix(c(1, 2, 1, 1, 1, 1), nrow = 2, ncol = 3, dimnames = list(1:2, 
+    c(&quot;F&quot;, &quot;C&quot;, &quot;B&quot;)))
+flasher_ctrl &lt;- fwdControl(list(year = 2:20, quant = &quot;catch&quot;, 
+    fishery = &quot;bt&quot;, catch = &quot;solBT&quot;, value = sole_bt_catch), 
+    list(year = 2:20, quant = &quot;catch&quot;, fishery = &quot;gn&quot;, catch = &quot;solGN&quot;, 
+        value = sole_gn_catch), FCB = fcb)</code></pre>
+<p>Note that the <em>FCB</em> matrix has been changed to reflect the relationship between the objects. The first (only) <strong>FLCatch</strong> of the first <strong>FLFishery</strong> catches from the first (only) <strong>FLBiol</strong> and the first (only) <strong>FLCatch</strong> of the second <strong>FLFishery</strong> also catches from the first (only) <strong>FLBiol</strong></p>
+<pre class="r"><code>flasher_ctrl@FCB</code></pre>
+<pre><code>##   F C B
+## 1 1 1 1
+## 2 2 1 1</code></pre>
+<p>Take a look at the fishery system:</p>
+<pre class="r"><code>draw(flasher_ctrl, fisheryNames = names(flfs3), catchNames = unlist(lapply(flfs3, 
+    names)), biolNames = names(biols3))</code></pre>
+<div class="figure">
+<img src="Mixed_Fisheries_Projections_with_FLasher_files/figure-html/unnamed-chunk-9-1.png" alt="Two Fisheries with one Catch each fishing on a single Biol" width="720" />
+<p class="caption">
+Two Fisheries with one Catch each fishing on a single Biol
+</p>
+</div>
+<p>And project:</p>
+<pre class="r"><code>test &lt;- fwd(object = biols3, fishery = flfs3, control = flasher_ctrl)</code></pre>
+<p>Both catch targets been hit although this has resulted in increasing fishing mortality on the stock. The plot also shows the partial fishing mortality from each fishery and it can be seen that the most of the fishing mortality comes from the beam trawl fishery. The beam trawl also also has a correspondingly higher revenue even though the relative effort is not higher (suggesting the profit will be higher, something which can be explored when further economic indicators are added to <strong>FLasher</strong>).</p>
+<div class="figure">
+<img src="Mixed_Fisheries_Projections_with_FLasher_files/figure-html/plotex4-1.png" alt="Summary results of projecting one stock with two fisheries with a constant catch target on both fisheries" width="720" />
+<p class="caption">
+Summary results of projecting one stock with two fisheries with a constant catch target on both fisheries
+</p>
+</div>
+<p>We can also check if each pair of <em>subtargets</em> have been hit by looking at the <em>flag</em> element of the <strong>fwd()</strong> output:</p>
+<pre class="r"><code>test[[&quot;flag&quot;]]</code></pre>
+<pre><code>##       [,1]
+##  [1,]    1
+##  [2,]    1
+##  [3,]    1
+##  [4,]    1
+##  [5,]    1
+##  [6,]    1
+##  [7,]    1
+##  [8,]    1
+##  [9,]    1
+## [10,]    1
+## [11,]    1
+## [12,]    1
+## [13,]    1
+## [14,]    1
+## [15,]    1
+## [16,]    1
+## [17,]    1
+## [18,]    1
+## [19,]    1</code></pre>
+<p>We have 19 targets (one of each year) and each target is made up of the two subtargets. A one means that the target was hit.</p>
+</div>
+<div id="absolute-and-relative-catches" class="section level2">
+<h2><span class="header-section-number">7.2</span> Absolute and relative catches</h2>
+<p>An alternative approach is to set a total catch at the stock level (for example, if the stock was managed through a TAC) and set an accompanying <em>relative</em> catch between the fisheries (for example, to maintain the historic relative stability of the fleets). In this way we do not explicitly specify how much the fisheries will catch, only that the total must be equal to the TAC and the historic relative stability must be respected.</p>
+<p>This is quite a complicated control object! Here we set a total catch target of the stock to be 12000 and also that the catch of the beam trawl fishery is twice that of the gillnet. We again set two targets. The first specifies the <em>total</em> catch from the sole stock and requires the use of the <em>biol</em> column. The second specifies the relative catch of the two <strong>FLCatch</strong> objects in the two <strong>FLFishery</strong> objects. This involves the use of the <em>relFishery</em> and <em>relCatch</em> columns to describe the total catch relative to another fishery. Here we are saying the catch of the <em>solBT</em> <strong>FLCatch</strong> of the <em>bt</em> <strong>FLFishery</strong> in the <strong>FLFisheries</strong> object is relative to the <em>solGN</em> <strong>FLCatch</strong> of the <em>gn</em> <strong>FLFishery</strong> object. As we are setting a relative target, we also need to specify the relative year in which we hit the target using the <em>relYear</em> column.</p>
+<p>We make the <strong>fwdControl</strong> object by passing a list for each <em>subtarget</em>. One of the targets is relative, hence all the additional elements. In each timestep the two subtargets will be solved simultaneously.</p>
+<pre class="r"><code>sole_catch_target &lt;- 12000
+sole_bt_gn_catch_relative &lt;- 2
+flasher_ctrl &lt;- fwdControl(list(year = 2:20, quant = &quot;catch&quot;, 
+    biol = &quot;sol&quot;, value = sole_catch_target), list(year = 2:20, 
+    quant = &quot;catch&quot;, relYear = 2:20, fishery = &quot;bt&quot;, catch = &quot;solBT&quot;, 
+    relFishery = &quot;gn&quot;, relCatch = &quot;solGN&quot;, value = sole_bt_gn_catch_relative), 
+    FCB = fcb)
+test &lt;- fwd(object = biols3, fishery = flfs3, control = flasher_ctrl)</code></pre>
+<div class="figure">
+<img src="Mixed_Fisheries_Projections_with_FLasher_files/figure-html/plotex5-1.png" alt="Summary results of projecting one stock with two fisheries with a constant total catch target and relative catch" width="720" />
+<p class="caption">
+Summary results of projecting one stock with two fisheries with a constant total catch target and relative catch
+</p>
+</div>
+<p>We can see that the relative catch target between the fisheries has been hit. Also, the total catches from both fisheries is the same as the total catch target on the <strong>FLBiol</strong>.</p>
+</div>
+</div>
+<div id="example-a-mixed-fishery" class="section level1">
+<h1><span class="header-section-number">8</span> Example: a mixed fishery</h1>
+<p>In this example we have a full mixed fishery consisting of two fisheries (a beam trawl and a gill net) each of which catch from two stocks (plaice and sole).</p>
+<p>As above, we have two independent variables (the fishing effort of the two fisheries) so we need to set 2 subtargets for each target. However, there is no guarantee that the targets can be met. For example, setting a very low total catch of sole and a high total catch of plaice cannot be achieved simultaneously because catching plaice means sole are also caught.</p>
+<div id="bad-example-with-two-catch-targets" class="section level2">
+<h2><span class="header-section-number">8.1</span> Bad example with two catch targets</h2>
+<p>In this example we try to do the impossible which is hit an catch target for each of the stocks. However, given the interactions between catching the stocks this is not possible.</p>
+<pre class="r"><code>fcb &lt;- matrix(c(1, 1, 1, 1, 2, 2, 2, 1, 1, 2, 2, 2), byrow = TRUE, 
+    ncol = 3, dimnames = list(1:4, c(&quot;F&quot;, &quot;C&quot;, &quot;B&quot;)))
+sole_catch_target &lt;- 12000
+plaice_catch_target &lt;- 5000
+flasher_ctrl &lt;- fwdControl(list(year = 2:20, quant = &quot;catch&quot;, 
+    biol = &quot;sol&quot;, value = sole_catch_target), list(year = 2:20, 
+    quant = &quot;catch&quot;, biol = &quot;ple&quot;, value = plaice_catch_target), 
+    FCB = fcb)</code></pre>
+<p>The FCB matrix has been updated to reflect the complicated mixed fishery:</p>
+<pre class="r"><code>flasher_ctrl@FCB</code></pre>
+<pre><code>##   F C B
+## 1 1 1 1
+## 2 1 2 2
+## 3 2 1 1
+## 4 2 2 2</code></pre>
+<p>Take a look at the fishery system:</p>
+<pre class="r"><code>draw(flasher_ctrl, fisheryNames = names(flfs), catchNames = unlist(lapply(flfs, 
+    names)), biolNames = names(biols))</code></pre>
+<div class="figure">
+<img src="Mixed_Fisheries_Projections_with_FLasher_files/figure-html/unnamed-chunk-13-1.png" alt="Two Fisheries, each with 2 Catches fishing on two Biols" width="720" />
+<p class="caption">
+Two Fisheries, each with 2 Catches fishing on two Biols
+</p>
+</div>
+<p>And project:</p>
+<pre class="r"><code>test &lt;- fwd(object = biols, fishery = flfs, control = flasher_ctrl)</code></pre>
+<p><strong>FLasher</strong> hasn’t complained or thrown an error which looks like maybe the projection ran OK. However, if we look at the solver flag we can see that the solver was unable to find a solution (it runs out of iterations, hence the -1 flag).</p>
+<pre class="r"><code>test[[&quot;flag&quot;]]</code></pre>
+<pre><code>##       [,1]
+##  [1,]   -2
+##  [2,]   -2
+##  [3,]   -2
+##  [4,]   -2
+##  [5,]   -2
+##  [6,]   -2
+##  [7,]   -3
+##  [8,]   -3
+##  [9,]   -2
+## [10,]   -2
+## [11,]   -3
+## [12,]   -3
+## [13,]   -3
+## [14,]   -3
+## [15,]   -3
+## [16,]   -3
+## [17,]   -3
+## [18,]   -3
+## [19,]   -3</code></pre>
+<p>Additionally, the catches of the two stocks show that the targets have not been hit.</p>
+<pre class="r"><code>catch(test[[&quot;fisheries&quot;]][[&quot;bt&quot;]][[&quot;pleBT&quot;]]) + catch(test[[&quot;fisheries&quot;]][[&quot;gn&quot;]][[&quot;pleGN&quot;]])</code></pre>
+<pre><code>## , , unit = unique, season = all, area = unique
+## 
+##      year
+## age   1          2          3          4         
+##   all      7.302 172659.253 229605.652 241473.832
+##      year
+## age   5         
+##   all 216375.836
+## 
+##       [ ...  10 years]
+## 
+##      year
+## age   16         17         18         19        
+##   all 4.1504e-06 4.1504e-06 4.1504e-06 4.1504e-06
+##      year
+## age   20        
+##   all 4.1504e-06</code></pre>
+<pre class="r"><code>catch(test[[&quot;fisheries&quot;]][[&quot;bt&quot;]][[&quot;solBT&quot;]]) + catch(test[[&quot;fisheries&quot;]][[&quot;gn&quot;]][[&quot;solGN&quot;]])</code></pre>
+<pre><code>## , , unit = unique, season = all, area = unique
+## 
+##      year
+## age   1          2          3          4         
+##   all     4.5258 21105.6081 23020.3874 21714.6572
+##      year
+## age   5         
+##   all 18881.8040
+## 
+##       [ ...  10 years]
+## 
+##      year
+## age   16         17         18         19        
+##   all 3.0296e-06 3.0296e-06 3.0296e-06 3.0296e-06
+##      year
+## age   20        
+##   all 3.0296e-06</code></pre>
+</div>
+<div id="example-with-constant-total-sole-catch" class="section level2">
+<h2><span class="header-section-number">8.2</span> Example with constant total sole catch</h2>
+<p>Sole is more valuable than plaice so it is assumed that the total TAC of sole will be taken at the expense of taking all of the plaice TAC (essentially forgoing the plaice catch to maximise the sole catch). Instead of including catch targets for both stocks, we can a use relative target for plaice catches based on the historic relative stability, i.e. if we take all of the sole TAC we don’t know what the eventual total catch of plaice will be but we want the relative catches of plaice between the fisheries to be fixed.</p>
+<p>In this example we set a total sole catch (<em>biol = “sol”</em> in the control object). We also set a relative plaice catch between the fisheries. The <em>“pleBT”</em> <strong>FLCatch</strong> of the <em>“bt”</em> beam trawl <strong>FLFishery</strong> takes 1.5 times as much plaice as the <em>“pleGN”</em> <strong>FLCatch</strong> of the <em>“gn”</em> gillnet <strong>FLFishery</strong>.</p>
+<pre class="r"><code>sole_catch_target &lt;- 12000
+plaice_bt_gn_catch_relative &lt;- 1.5
+
+flasher_ctrl &lt;- fwdControl(list(year = 2:20, quant = &quot;catch&quot;, 
+    biol = &quot;sol&quot;, value = sole_catch_target), list(year = 2:20, 
+    quant = &quot;catch&quot;, relYear = 2:20, fishery = &quot;bt&quot;, catch = &quot;pleBT&quot;, 
+    relFishery = &quot;gn&quot;, relCatch = &quot;pleGN&quot;, value = plaice_bt_gn_catch_relative), 
+    FCB = fcb)</code></pre>
+<p>And project:</p>
+<pre class="r"><code>test &lt;- fwd(object = biols, fishery = flfs, control = flasher_ctrl)</code></pre>
+<p>The total sole catch target from both fisheries has been hit with the gillnet fishery taking more of it. The target of relative catches between the fisheries of plaice has also been hit. The beam trawl takes more plaice than the gillnet and this difference is enough to mean that the revenue of the beam trawl is higher than for the gillnet, despite the sole catches of the gillnet being higher than for the beam trawl. The relative effort of the gillnet fishery is also higher than for the beam trawl. Both stocks experience an increase followed by decrease in biomass (the dynamic being partly driven by the age structure of the initial population).</p>
+<div class="figure">
+<img src="Mixed_Fisheries_Projections_with_FLasher_files/figure-html/plotex6-1.png" alt="Summary results of projecting a mixed fishery with two stocks and two fleets with a constant total sole catch target and a relative plaice catch" width="720" />
+<p class="caption">
+Summary results of projecting a mixed fishery with two stocks and two fleets with a constant total sole catch target and a relative plaice catch
+</p>
+</div>
+</div>
+<div id="a-more-complicated-example-with-decreasing-catches" class="section level2">
+<h2><span class="header-section-number">8.3</span> A more complicated example with decreasing catches</h2>
+<p>In this more complicated example we set the total catch of sole in the first year, and then decrease it yearly to 90% of the previous year. We also set the relative plaice catch from the beam trawl to be 1.5 the catch from the gillnet.</p>
+<p>This example makes extensive use of relative targets.</p>
+<pre class="r"><code>sole_catch_target_initial &lt;- 20000
+sole_catch_decrease &lt;- 0.9
+plaice_bt_gn_catch_relative &lt;- 1.5
+
+flasher_ctrl &lt;- fwdControl(list(year = 2, quant = &quot;catch&quot;, biol = &quot;sol&quot;, 
+    value = sole_catch_target_initial), list(year = 3:20, quant = &quot;catch&quot;, 
+    relYear = 2:19, biol = &quot;sol&quot;, relBiol = &quot;sol&quot;, value = sole_catch_decrease), 
+    list(year = 2:20, quant = &quot;catch&quot;, relYear = 2:20, fishery = &quot;bt&quot;, 
+        catch = &quot;pleBT&quot;, relFishery = &quot;gn&quot;, relCatch = &quot;pleGN&quot;, 
+        value = plaice_bt_gn_catch_relative), FCB = fcb)
+test &lt;- fwd(object = biols, fishery = flfs, control = flasher_ctrl)</code></pre>
+<p>The sole catches have decreased by 0.9 each year. The plaice catches have also decreased but the relative catches between the fisheries remains constant. The biomass of both stocks increases rapidly whilst the revenue decreases along with the relative effort.</p>
+<div class="figure">
+<img src="Mixed_Fisheries_Projections_with_FLasher_files/figure-html/plotex7-1.png" alt="Summary results of projecting a mixed fishery with two stocks and two fleets with a decreasing total sole catch target and a relative plaice catch" width="720" />
+<p class="caption">
+Summary results of projecting a mixed fishery with two stocks and two fleets with a decreasing total sole catch target and a relative plaice catch
+</p>
+</div>
+</div>
+</div>
+<div id="economic-targets" class="section level1">
+<h1><span class="header-section-number">9</span> Economic targets</h1>
+<p>The examples so far have focussed on setting catch and F targets. It is also possible to set the revenue as a target at either the catch level (for example, the revenue from the plaice portion of the beam trawl catch) or the fishery level (the sum of revenues from all the catches of that fishery). More economic indicators, such as costs and profits, will be added in the future.</p>
+<p>We saw in the previous example that the revenues of both fisheries decreases as the sole catches decrease by 10% each year. Although, the stock biomasses increase, the decrease in revenue is likely to be unacceptable by the fishing industry. Given their costs of operation they may expect a minimum revenue, even if means the total catch exceeds the TAC.</p>
+<p>To simulate this we can add a minimum revenue as a contraint target. As mentioned above, as we have two independent variables the targets must be supplied as pairs of subtargets. One pair of subtargets is the catch targets used above. In this example we add another pair of subtargets to each timestep. These subtargets are minimum revenues for each fishery. The target quant os <em>“revenue”</em>. Revenue is calculated at the <strong>FLFishery</strong> level meaning that only the <strong>FLFishery</strong> needs to be specified in the control object. This is a complicated projection. However, each target can be specified as a separate list to the <strong>fwdControl</strong> constructor to help organise it.</p>
+<pre class="r"><code>sole_catch_target_initial &lt;- 20000
+sole_catch_decrease &lt;- 0.9
+plaice_bt_gn_catch_relative &lt;- 1.5
+bt_min_revenue &lt;- 150000
+gn_min_revenue &lt;- 1e+05
+
+flasher_ctrl &lt;- fwdControl(list(year = 2, quant = &quot;catch&quot;, biol = &quot;sol&quot;, 
+    value = sole_catch_target_initial), list(year = 3:20, quant = &quot;catch&quot;, 
+    relYear = 2:19, biol = &quot;sol&quot;, relBiol = &quot;sol&quot;, value = sole_catch_decrease), 
+    list(year = 2:20, quant = &quot;catch&quot;, relYear = 2:20, fishery = &quot;bt&quot;, 
+        catch = &quot;pleBT&quot;, relFishery = &quot;gn&quot;, relCatch = &quot;pleGN&quot;, 
+        value = plaice_bt_gn_catch_relative), list(year = 2:20, 
+        quant = &quot;revenue&quot;, fishery = &quot;bt&quot;, min = bt_min_revenue), 
+    list(year = 2:20, quant = &quot;revenue&quot;, fishery = &quot;gn&quot;, min = gn_min_revenue), 
+    FCB = fcb)
+test &lt;- fwd(object = biols, fishery = flfs, control = flasher_ctrl)</code></pre>
+<div class="figure">
+<img src="Mixed_Fisheries_Projections_with_FLasher_files/figure-html/plotex8-1.png" alt="Summary results of projecting a mixed fishery with two stocks and two fleets with a decreasing sole catch target and a relative plaice catch. Minimum limits to the revenues of both fleets are also included." width="720" />
+<p class="caption">
+Summary results of projecting a mixed fishery with two stocks and two fleets with a decreasing sole catch target and a relative plaice catch. Minimum limits to the revenues of both fleets are also included.
+</p>
+</div>
+<p>What happened? We can see that the minimum revenue of the gillnet fishery comes into effect in year 10. After this year, the gillnet revenue hits the minimum level and does not decrease further. This has knock-on effects. From year 10, the annual decrease in sole catches is no longer 10% and the total sole catches remain approximately constant. The minimum revenue of the beam trawl fishery is never breached. With the limit on the sole revenue being reached, it is not possible to continue to hit the relative plaice catch targets between the fisheries (although it gets as close as possible).</p>
+</div>
+<div id="joint-targets" class="section level1">
+<h1><span class="header-section-number">10</span> Joint targets</h1>
+<p><strong>FLasher</strong> can also be used to perform projections with joint targets. A joint target means a target that is the sum of metrics from more than one <strong>FLFishery</strong> or <strong>FLBiol</strong> object. For example, a combined species TAC (such as for dab and flounder in the North Sea) can be simulated by setting a joint catch target from more than one FLBiol.</p>
+<div id="simple-example-with-a-combined-species-tac" class="section level2">
+<h2><span class="header-section-number">10.1</span> Simple example with a combined species TAC</h2>
+<p>In this simple example we have a single beam trawl <strong>FLFishery</strong> with two <strong>FLCatch</strong> objects, each fishing on a single <strong>FLBiol</strong> (plaice and sole). We can set a catch target so that the total catch is the sum of the catches from each <strong>FLBiol</strong>.</p>
+<pre class="r"><code># Extract the beam trawl fishery
+bt &lt;- flfs[&quot;bt&quot;]</code></pre>
+<p>To make the control object we use the list-based constructor. To specify that a target is the sum of metrics from multiple objects we use the <em>G()</em> function. Here we specify a combined target for the two <strong>FLBiol</strong> objects, <strong>ple</strong> and <strong>sol</strong>. We project for the years 2 to 5 only.</p>
+<pre class="r"><code>joint_tac &lt;- 2e+05
+years &lt;- 2:5
+fcb &lt;- matrix(c(1, 1, 1, 2, 1, 2), nrow = 2, ncol = 3, dimnames = list(1:2, 
+    c(&quot;F&quot;, &quot;C&quot;, &quot;B&quot;)))
+ctrl &lt;- fwdControl(list(year = years, quant = &quot;catch&quot;, value = joint_tac, 
+    biol = G(&quot;ple&quot;, &quot;sol&quot;)), FCB = fcb)</code></pre>
+<p>If we look at the control object we can see that the <em>biol</em> column has two names in it instead of just one. This means that the target applies to the <em>sum</em> of the catches of those stocks.</p>
+<pre class="r"><code>ctrl</code></pre>
+<pre><code>## An object of class &quot;fwdControl&quot;
+##  (step) year quant     biol min      value max
+##       1    2 catch ple, sol  NA 200000.000  NA
+##       2    3 catch ple, sol  NA 200000.000  NA
+##       3    4 catch ple, sol  NA 200000.000  NA
+##       4    5 catch ple, sol  NA 200000.000  NA</code></pre>
+<p>We project as normal:</p>
+<pre class="r"><code>test &lt;- fwd(object = biols, fishery = bt, control = ctrl)</code></pre>
+<p>We can check that the total catch from both the stocks is the same as the target:</p>
+<pre class="r"><code># plaice catch
+catch_ple &lt;- catch(test[[&quot;fisheries&quot;]][[&quot;bt&quot;]][[&quot;pleBT&quot;]])[, 
+    ac(years)]
+# sole catch
+catch_sol &lt;- catch(test[[&quot;fisheries&quot;]][[&quot;bt&quot;]][[&quot;solBT&quot;]])[, 
+    ac(years)]
+catch_sol + catch_ple</code></pre>
+<pre><code>## An object of class &quot;FLQuant&quot;
+## , , unit = unique, season = all, area = unique
+## 
+##      year
+## age   2     3     4     5    
+##   all 2e+05 2e+05 2e+05 2e+05
+## 
+## units:  NA</code></pre>
+<p>In this example plaice makes up the majority of the catch.</p>
+<pre class="r"><code>catch_sol/(catch_sol + catch_ple)</code></pre>
+<pre><code>## An object of class &quot;FLQuant&quot;
+## , , unit = unique, season = all, area = unique
+## 
+##      year
+## age   2        3        4        5       
+##   all 0.058429 0.061289 0.061256 0.057716
+## 
+## units:  NA</code></pre>
+<pre class="r"><code>catch_ple/(catch_sol + catch_ple)</code></pre>
+<pre><code>## An object of class &quot;FLQuant&quot;
+## , , unit = unique, season = all, area = unique
+## 
+##      year
+## age   2       3       4       5      
+##   all 0.94157 0.93871 0.93874 0.94228
+## 
+## units:  NA</code></pre>
+<p>The same effort is applied to each stock so the proportion in the total catch is determined by the abundance of each stock and the catchability and selectivity of the fishing activity stored in the corresponding <strong>FLCatch</strong> object.</p>
+<p>If we also had price information for these stocks we could see what proportion of total revenue came from which stock.</p>
+</div>
+<div id="simple-example-with-a-combined-target-from-multiple-fisheries" class="section level2">
+<h2><span class="header-section-number">10.2</span> Simple example with a combined target from multiple fisheries</h2>
+<p>In this example we have two <strong>FLFishery</strong> objects, a beam trawl and a gillnet. Both of them are fishing plaice and sole. We can set a total plaice catch from both the <strong>FLFishery</strong> objects.</p>
+<p>Here we have two <strong>FLFishery</strong> objects which means that we have two efforts that need to be solved in each time step. This means that we need to set pairs of targets per timestep. Here we we set a total target on plaice and also relative target between the catches of sole from the beam trawl and gillnet fisheries.</p>
+<p>In the control object we use <em>G()</em> function to specify the <strong>FLFishery</strong> and <strong>FLCatch</strong> objects the joint target applies to:</p>
+<pre class="r"><code>rel_sol_catch &lt;- 0.8
+total_ple_catch &lt;- 2e+05
+years &lt;- 2:5
+fcb &lt;- matrix(c(1, 1, 1, 1, 2, 2, 2, 1, 1, 2, 2, 2), byrow = TRUE, 
+    ncol = 3, dimnames = list(1:4, c(&quot;F&quot;, &quot;C&quot;, &quot;B&quot;)))
+ctrl &lt;- fwdControl(list(year = years, quant = &quot;catch&quot;, value = total_ple_catch, 
+    fishery = G(&quot;bt&quot;, &quot;gn&quot;), catch = G(&quot;pleBT&quot;, &quot;pleGN&quot;)), list(year = years, 
+    quant = &quot;catch&quot;, value = 0.8, fishery = &quot;bt&quot;, catch = &quot;solBT&quot;, 
+    relYear = years, relFishery = &quot;gn&quot;, relCatch = &quot;solGN&quot;), 
+    FCB = fcb)</code></pre>
+<p>We can see that the <em>fishery</em> and <em>catch</em> columns have both names in them:</p>
+<pre class="r"><code>ctrl</code></pre>
+<pre><code>## An object of class &quot;fwdControl&quot;
+##  (step) year quant relYear relFishery relCatch fishery
+##       1    2 catch      NA       &lt;NA&gt;     &lt;NA&gt;  bt, gn
+##       2    2 catch       2         gn    solGN      bt
+##       3    3 catch      NA       &lt;NA&gt;     &lt;NA&gt;  bt, gn
+##       4    3 catch       3         gn    solGN      bt
+##       5    4 catch      NA       &lt;NA&gt;     &lt;NA&gt;  bt, gn
+##       6    4 catch       4         gn    solGN      bt
+##       7    5 catch      NA       &lt;NA&gt;     &lt;NA&gt;  bt, gn
+##       8    5 catch       5         gn    solGN      bt
+##         catch min      value max
+##  pleBT, pleGN  NA 200000.000  NA
+##         solBT  NA      0.800  NA
+##  pleBT, pleGN  NA 200000.000  NA
+##         solBT  NA      0.800  NA
+##  pleBT, pleGN  NA 200000.000  NA
+##         solBT  NA      0.800  NA
+##  pleBT, pleGN  NA 200000.000  NA
+##         solBT  NA      0.800  NA</code></pre>
+<p>The fishery system looks like:</p>
+<pre class="r"><code>draw(ctrl, fisheryNames = names(flfs), catchNames = unlist(lapply(flfs, 
+    names)), biolNames = names(biols))</code></pre>
+<p><img src="Mixed_Fisheries_Projections_with_FLasher_files/figure-html/unnamed-chunk-26-1.png" width="720" /></p>
+<p>We project as normal:</p>
+<pre class="r"><code>test &lt;- fwd(object = biols, fishery = flfs, control = ctrl)</code></pre>
+<p>We check out the total plaice catch from both fisheries, and also the relative sole catch:</p>
+<pre class="r"><code>catch_ple_bt &lt;- catch(test[[&quot;fisheries&quot;]][[&quot;bt&quot;]][[&quot;pleBT&quot;]])[, 
+    ac(years)]
+catch_ple_gn &lt;- catch(test[[&quot;fisheries&quot;]][[&quot;gn&quot;]][[&quot;pleGN&quot;]])[, 
+    ac(years)]
+catch_sol_bt &lt;- catch(test[[&quot;fisheries&quot;]][[&quot;bt&quot;]][[&quot;solBT&quot;]])[, 
+    ac(years)]
+catch_sol_gn &lt;- catch(test[[&quot;fisheries&quot;]][[&quot;gn&quot;]][[&quot;solGN&quot;]])[, 
+    ac(years)]
+catch_ple_bt + catch_ple_gn</code></pre>
+<pre><code>## An object of class &quot;FLQuant&quot;
+## , , unit = unique, season = all, area = unique
+## 
+##      year
+## age   2     3     4     5    
+##   all 2e+05 2e+05 2e+05 2e+05
+## 
+## units:  NA</code></pre>
+<pre class="r"><code>catch_sol_bt/catch_sol_gn</code></pre>
+<pre><code>## An object of class &quot;FLQuant&quot;
+## , , unit = unique, season = all, area = unique
+## 
+##      year
+## age   2   3   4   5  
+##   all 0.8 0.8 0.8 0.8
+## 
+## units:  NA</code></pre>
+</div>
+<div id="setting-a-joint-effort-limit" class="section level2">
+<h2><span class="header-section-number">10.3</span> Setting a joint effort limit</h2>
+<p>The corresponding individual effort from each <strong>FLFishery</strong> is in the above example:</p>
+<pre class="r"><code>effort(test[[&quot;fisheries&quot;]][[&quot;bt&quot;]])[, ac(years)]</code></pre>
+<pre><code>## An object of class &quot;FLQuant&quot;
+## , , unit = unique, season = all, area = unique
+## 
+##      year
+## quant 2       3       4       5      
+##   all 0.63774 0.53341 0.48727 0.46268
+## 
+## units:  NA</code></pre>
+<pre class="r"><code>effort(test[[&quot;fisheries&quot;]][[&quot;gn&quot;]])[, ac(years)]</code></pre>
+<pre><code>## An object of class &quot;FLQuant&quot;
+## , , unit = unique, season = all, area = unique
+## 
+##      year
+## quant 2      3      4      5     
+##   all 1.5638 1.7128 1.9431 2.1127
+## 
+## units:  NA</code></pre>
+<p>We can set an additional constraint of maximum total effort of both fisheries, a joint target set at the <strong>FLFishery</strong> level. Here we have two efforts to solve (one from each <strong>FLFishery</strong>) which means that we must have two <em>subtargets</em> in each target in each time step (year). This means that if we want to introduce a maximum constraint on effort we must also include a second subtarget. Constraint targets (maximum and minimum targets) are solved after non-constraint targets. This means that if a target has a constraint <em>subtarget</em> then all the other <em>subtargets</em> of that target must also be constraints. We can set up a <em>dummy</em> constraint that is never triggered just to make up the numbers (however, it cannot be a separate minimum effort target for the two fishery objects).</p>
+<pre class="r"><code>total_max_effort &lt;- 2
+years &lt;- 2:5
+# targets + constraints (max effort, min biomass)
+ctrl &lt;- fwdControl(list(year = years, quant = &quot;catch&quot;, value = total_ple_catch, 
+    fishery = G(&quot;bt&quot;, &quot;gn&quot;), catch = G(&quot;pleBT&quot;, &quot;pleGN&quot;)), list(year = years, 
+    quant = &quot;catch&quot;, value = 0.8, fishery = &quot;bt&quot;, catch = &quot;solBT&quot;, 
+    relYear = years, relFishery = &quot;gn&quot;, relCatch = &quot;solGN&quot;), 
+    list(year = years, quant = &quot;effort&quot;, max = total_max_effort, 
+        fishery = G(&quot;bt&quot;, &quot;gn&quot;)), list(year = years, quant = &quot;biomass_end&quot;, 
+        min = 1, biol = &quot;ple&quot;), FCB = fcb)
+ctrl</code></pre>
+<pre><code>## An object of class &quot;fwdControl&quot;
+##  (step) year       quant relYear relFishery relCatch
+##       1    2       catch      NA       &lt;NA&gt;     &lt;NA&gt;
+##       2    2       catch       2         gn    solGN
+##       3    2      effort      NA       &lt;NA&gt;     &lt;NA&gt;
+##       4    2 biomass_end      NA       &lt;NA&gt;     &lt;NA&gt;
+##       5    3       catch      NA       &lt;NA&gt;     &lt;NA&gt;
+##       6    3       catch       3         gn    solGN
+##       7    3      effort      NA       &lt;NA&gt;     &lt;NA&gt;
+##       8    3 biomass_end      NA       &lt;NA&gt;     &lt;NA&gt;
+##       9    4       catch      NA       &lt;NA&gt;     &lt;NA&gt;
+##      10    4       catch       4         gn    solGN
+##      11    4      effort      NA       &lt;NA&gt;     &lt;NA&gt;
+##      12    4 biomass_end      NA       &lt;NA&gt;     &lt;NA&gt;
+##      13    5       catch      NA       &lt;NA&gt;     &lt;NA&gt;
+##      14    5       catch       5         gn    solGN
+##      15    5      effort      NA       &lt;NA&gt;     &lt;NA&gt;
+##      16    5 biomass_end      NA       &lt;NA&gt;     &lt;NA&gt;
+##  fishery        catch biol   min      value   max
+##   bt, gn pleBT, pleGN &lt;NA&gt;    NA 200000.000    NA
+##       bt        solBT &lt;NA&gt;    NA      0.800    NA
+##   bt, gn           NA &lt;NA&gt;    NA         NA 2.000
+##       NA           NA  ple 1.000         NA    NA
+##   bt, gn pleBT, pleGN &lt;NA&gt;    NA 200000.000    NA
+##       bt        solBT &lt;NA&gt;    NA      0.800    NA
+##   bt, gn           NA &lt;NA&gt;    NA         NA 2.000
+##       NA           NA  ple 1.000         NA    NA
+##   bt, gn pleBT, pleGN &lt;NA&gt;    NA 200000.000    NA
+##       bt        solBT &lt;NA&gt;    NA      0.800    NA
+##   bt, gn           NA &lt;NA&gt;    NA         NA 2.000
+##       NA           NA  ple 1.000         NA    NA
+##   bt, gn pleBT, pleGN &lt;NA&gt;    NA 200000.000    NA
+##       bt        solBT &lt;NA&gt;    NA      0.800    NA
+##   bt, gn           NA &lt;NA&gt;    NA         NA 2.000
+##       NA           NA  ple 1.000         NA    NA</code></pre>
+<pre class="r"><code>test &lt;- fwd(object = biols, fishery = flfs, control = ctrl)</code></pre>
+<p>What happened? First we take a look at the effort. We can see that the total effort has been constrained by the effort limit.</p>
+<pre class="r"><code># Check that all the target pairs in each year solved
+test[[&quot;flag&quot;]]</code></pre>
+<pre><code>##      [,1]
+## [1,]    1
+## [2,]    1
+## [3,]    1
+## [4,]    1
+## [5,]    1
+## [6,]    1
+## [7,]    1
+## [8,]    1</code></pre>
+<pre class="r"><code># Look at effort
+effort_bt &lt;- (test[[&quot;fisheries&quot;]][[&quot;bt&quot;]]@effort)[, ac(years)]
+effort_gn &lt;- (test[[&quot;fisheries&quot;]][[&quot;gn&quot;]]@effort)[, ac(years)]
+effort_bt + effort_gn</code></pre>
+<pre><code>## An object of class &quot;FLQuant&quot;
+## , , unit = unique, season = all, area = unique
+## 
+##      year
+## quant 2 3 4 5
+##   all 2 2 2 2
+## 
+## units:  NA</code></pre>
+<p>Consequently the catch targets have not been hit</p>
+<pre class="r"><code>catch_ple_bt &lt;- catch(test[[&quot;fisheries&quot;]][[&quot;bt&quot;]][[&quot;pleBT&quot;]])[, 
+    ac(years)]
+catch_ple_gn &lt;- catch(test[[&quot;fisheries&quot;]][[&quot;gn&quot;]][[&quot;pleGN&quot;]])[, 
+    ac(years)]
+catch_sol_bt &lt;- catch(test[[&quot;fisheries&quot;]][[&quot;bt&quot;]][[&quot;solBT&quot;]])[, 
+    ac(years)]
+catch_sol_gn &lt;- catch(test[[&quot;fisheries&quot;]][[&quot;gn&quot;]][[&quot;solGN&quot;]])[, 
+    ac(years)]
+catch_ple_bt + catch_ple_gn</code></pre>
+<pre><code>## An object of class &quot;FLQuant&quot;
+## , , unit = unique, season = all, area = unique
+## 
+##      year
+## age   2      3      4      5     
+##   all 200051 199957 199884 199863
+## 
+## units:  NA</code></pre>
+<pre class="r"><code>catch_sol_bt/catch_sol_gn</code></pre>
+<pre><code>## An object of class &quot;FLQuant&quot;
+## , , unit = unique, season = all, area = unique
+## 
+##      year
+## age   2      3      4      5     
+##   all 1.0455 1.0527 1.2195 1.3094
+## 
+## units:  NA</code></pre>
+</div>
+</div>
+<div id="references" class="section level1">
+<h1><span class="header-section-number">11</span> References</h1>
+<p>Scott, F. and Mosqueira, I. 2016. Bioeconomic Modelling for Fisheries; EUR 28383 EN; <a href="doi:10.2788/722156" class="uri">doi:10.2788/722156</a></p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
