@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Running Medium Term Forecasts with FLasher</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="http://flr-project.org">
+    <span class="fa fa-home"></span>
+     
+    FLR
+  </a>
+</li>
+<li>
+  <a href="index.html">
+    <span class="fa fa-info"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-play-circle-o"></span>
+     
+    Intro
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A_quick_introduction_to_FLR.html">A quick introduction to FLR</a>
+    </li>
+    <li>
+      <a href="An_overview_of_the_FLCore_classes.html">An overview of the FLCore classes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-database"></span>
+     
+    Input
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Loading_your_data_into_FLR.html">Loading your data into FLR</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-magic"></span>
+     
+    Modelling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Modelling_stock_recruitment_with_FLSR.html">Modelling stock recruitment with FLSR</a>
+    </li>
+    <li>
+      <a href="Statistical_catch_at_age_models_in_FLa4a.html">Statistical catch at age models in FLa4a</a>
+    </li>
+    <li>
+      <a href="Modelling_growth_and_its_uncertainty_in_FLa4a.html">Modelling growth and its uncertainty in FLa4a</a>
+    </li>
+    <li>
+      <a href="Natural_mortality_modelling_in_FLa4a.html">Natural mortality modelling in FLa4a</a>
+    </li>
+    <li>
+      <a href="Stock_assessment_using_eXtended_Survivors_Analysis_with_FLXSA.html">Stock assessment using eXtended Survivors Analysis with FLXSA</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-tachometer"></span>
+     
+    Advice
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Running_Medium_Term_Forecasts_with_FLash.html">Running Medium Term Forecasts with FLash</a>
+    </li>
+    <li>
+      <a href="Short_Term_Forecasting_for_advice_using_FLash.html">Short Term Forecasting for advice using FLash</a>
+    </li>
+    <li>
+      <a href="Forecasting_on_the_Medium_Term_for_advice_using_FLasher.html">Forecasting on the Medium Term for advice using FLasher</a>
+    </li>
+    <li>
+      <a href="Reference_points_for_fisheries_management_with_FLBRP.html">Reference points for fisheries management with FLBRP</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-cogs"></span>
+     
+    MSE
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-cogs"></span>
+     
+    FLBEIA
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+    <li>
+      <a href="Conditioning_FLBEIA.html">Conditioning FLBEIA using Smart Conditioning Functions</a>
+    </li>
+    <li>
+      <a href="FLBEIA_A_Simple_Example.html">A simple example on how to use FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_An_Example_with_multiple_dimensions.html">A simple example with multiple dimensions in FLBEIA</a>
+    </li>
+    <li>
+      <a href="Using_Assessment_models_in_the_MP_FLBEIA.html">Using Stock Assessment models in the Management procedure of FLBEIA</a>
+    </li>
+    <li>
+      <a href="Testing_Management_Strategies_in_FLBEIA.html">Testing different Management Strategies in FLBEIA</a>
+    </li>
+    <li>
+      <a href="Data_Poor_MSE_in_FLBEIA.html">Data Limited MSE in FLBEIA</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-area-chart"></span>
+     
+    Plotting
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="ggplotFL_plotting_FLR_objects_with_ggplot2.html">ggplotFL, plotting FLR objects with ggplot2</a>
+    </li>
+    <li>
+      <a href="Plotting_FLR_objects_using_lattice.html">Plotting FLR objects using lattice</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-puzzle-piece"></span>
+     
+    Internals
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Units_of_measurement_in_FLR_objects.html">Units of measurement in FLR objects</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="http://github.com/flr/doc/issues">
+    <span class="fa fa-question fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Running Medium Term Forecasts with <strong>FLasher</strong></h1>
+<h4 class="date"><em>04 September, 2018</em></h4>
+
+</div>
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>This tutorial describes how Medium-Term Forecasts (MTF) can be performed using FLR. It uses the <strong>FLasher</strong> package for running projections, an updated version of the<strong>FLash</strong> package.</p>
+<p>MTFs use the same engine as Short-Term Forecasts (STFs). However, there are some key differences between them.</p>
+<ul>
+<li>MTFs typically project over 5 to 10 years instead of the usual 3 years for a STF. Because of this increase in projection length it is necessary to include a stock-recruitment relationship to simulate the dynamics of the biological stock (an STF uses a constant recruitment assumption).</li>
+<li>MTFs may also have a more complicated projection control object because they can try to simulate management objectives (e.g. decreases in F over time).</li>
+<li>Finally, MTFs may also include consideration of uncertainty by including stochasticity in the projections.</li>
+</ul>
+<p>Special attention must be paid to the conditioning and future assumptions of the stock.</p>
+<p>This tutorial focuses on running projections with an <em>FLStock</em>. To see how <strong>FLasher</strong> can be used to simulate mixed fisheries with <strong>FLBiol</strong>s and <strong>FLFisheries</strong> see this <a href="http://www.flr-project.org/doc/Mixed_Fisheries_Projections_with_FLasher.html">tutorial</a>.</p>
+<div id="required-packages" class="section level2">
+<h2>Required packages</h2>
+<p>To follow this tutorial you should have installed the following packages:</p>
+<ul>
+<li>FLR: <a href="http://www.flr-project.org/FLCore/">FLCore</a>, <a href="http://www.flr-project.org/FLash/">FLasher</a>, <a href="http://www.flr-project.org/FLFishery/">FLFishery</a></li>
+</ul>
+<p>You can do so as follows,</p>
+<pre class="r"><code>install.packages(c(&quot;FLCore&quot;), repos=&quot;http://flr-project.org/R&quot;)
+install.packages(c(&quot;FLasher&quot;), repos=&quot;http://flr-project.org/R&quot;)
+install.packages(c(&quot;FLFishery&quot;), repos=&quot;http://flr-project.org/R&quot;)</code></pre>
+<pre class="r"><code># Load all necessary packages, trim pkg messages
+library(FLCore)
+library(FLasher)</code></pre>
+</div>
+</div>
+<div id="introduction-to-medium-term-forecasts" class="section level1">
+<h1>Introduction to Medium Term Forecasts</h1>
+<p>Running an MTF is similar to running an STF in that we need several components:</p>
+<ol style="list-style-type: decimal">
+<li>An <em>FLStock</em> object set up for the future (assumptions);</li>
+<li>A stock-recrutiment relationship (SRR);</li>
+<li>A projection control object;</li>
+</ol>
+<p>However, there are some significant differences between an MTF and an STF:</p>
+<ol style="list-style-type: lower-roman">
+<li>An MTF is usually run for 5 to 10 years (an STF for 3 years);</li>
+<li>An MTF can use different target types (e.g. setting catch targets, not just F targets);</li>
+<li>A dynamic SRR should be used (the STF assumption of mean recruitment is not a good one for a projection of more than 3 years);</li>
+<li>We can include uncertainty in the initial <em>FLStock</em>, projected recruitment and target values.</li>
+</ol>
+<p>In this tutorial we will build a 10 year projection, introduce a range of target types (including minimum and maximum target values, as well as relative target values), use a dynamic SRR and introduce uncertainty.</p>
+<p>As ususal, we base the projections on plaice in the North Sea.</p>
+<pre class="r"><code>data(ple4)</code></pre>
+</div>
+<div id="conditioning-the-projection" class="section level1">
+<h1>Conditioning the projection</h1>
+<p>The first step is to condition the projection by making assumptions about the stock in the future, and to fit the SRR.</p>
+<div id="making-the-future-stock" class="section level2">
+<h2>Making the future stock</h2>
+<p>We use the <em>stf()</em> function to set up our stock into the future. <em>stf()</em> makes a lot of assumptions to set up a future stock. We may want to change some of these assumptions, but for the moment we will use the defaults.</p>
+<pre class="r"><code>ple4_mtf &lt;- stf(ple4, nyears = 10)
+# Now the stock goes up to 2018
+summary(ple4_mtf)</code></pre>
+<pre><code>An object of class &quot;FLStock&quot;
+
+Name: PLE 
+Description: Plaice in IV. ICES WGNSSK 2018. FLAAP 
+Quant: age 
+Dims:  age  year    unit    season  area    iter
+    10  71  1   1   1   1   
+
+Range:  min max pgroup  minyear maxyear minfbar maxfbar 
+    1   10  10  1957    2027    2   6   
+
+catch         : [ 1 71 1 1 1 1 ], units =  t 
+catch.n       : [ 10 71 1 1 1 1 ], units =  1000 
+catch.wt      : [ 10 71 1 1 1 1 ], units =  kg 
+discards      : [ 1 71 1 1 1 1 ], units =  t 
+discards.n    : [ 10 71 1 1 1 1 ], units =  1000 
+discards.wt   : [ 10 71 1 1 1 1 ], units =  kg 
+landings      : [ 1 71 1 1 1 1 ], units =  t 
+landings.n    : [ 10 71 1 1 1 1 ], units =  1000 
+landings.wt   : [ 10 71 1 1 1 1 ], units =  kg 
+stock         : [ 1 71 1 1 1 1 ], units =  t 
+stock.n       : [ 10 71 1 1 1 1 ], units =  1000 
+stock.wt      : [ 10 71 1 1 1 1 ], units =  kg 
+m             : [ 10 71 1 1 1 1 ], units =  m 
+mat           : [ 10 71 1 1 1 1 ], units =   
+harvest       : [ 10 71 1 1 1 1 ], units =  f 
+harvest.spwn  : [ 10 71 1 1 1 1 ], units =   
+m.spwn        : [ 10 71 1 1 1 1 ], units =   </code></pre>
+</div>
+<div id="the-stock-recruitment-relationship" class="section level2">
+<h2>The stock-recruitment relationship</h2>
+<p>In these examples we use a Beverton-Holt model (see the tutorial on fitting SRRs for more detail). The resulting SRR fit can be seen in Figure 1. Most of the projections will be performed by passing in a fitted <em>FLSR</em> object. For more information on how to set the SR for projections with <strong>FLasher</strong> this <a href="http://www.flr-project.org/doc/Setting_Stock_Recruitment_in_FLasher_Projections.html">tutorial</a>.</p>
+<pre class="r"><code>ple4_sr &lt;- fmle(as.FLSR(ple4, model=&quot;bevholt&quot;), control=list(trace=0))</code></pre>
+<pre class="r"><code>plot(ple4_sr)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Running_Medium_Term_Forecasts_with_FLasher_files/figure-html/plotSRR-1.png" alt="Fitted Beverton-Holt stock-recruitment relationship for the *ple4* stock object" width="672" />
+<p class="caption">
+Fitted Beverton-Holt stock-recruitment relationship for the <em>ple4</em> stock object
+</p>
+</div>
+</div>
+</div>
+<div id="example-1-fbar-targets" class="section level1">
+<h1>Example 1: Fbar targets</h1>
+<p>For a simple first example we will set the future F at F status quo and assume that F status quo is the mean of the last 4 years</p>
+<pre class="r"><code>f_status_quo &lt;- mean(fbar(ple4)[,as.character(2005:2008)])
+f_status_quo</code></pre>
+<pre><code>[1] 0.3177</code></pre>
+<p>Make the control <code>data.frame</code> including all the years of the projection (note that <code>FLash</code> used <em>quantity</em> and <em>val</em> as column names and <code>FLasher</code> uses <em>quant</em> and <em>value</em>)</p>
+<pre class="r"><code>ctrl_target &lt;- data.frame(year = 2009:2018,
+                                quant = &quot;f&quot;,
+                                value = f_status_quo)</code></pre>
+<p>Make the <code>fwdControl</code> object from the control <code>data.frame</code></p>
+<pre class="r"><code>ctrl_f &lt;- fwdControl(ctrl_target)
+ctrl_f</code></pre>
+<pre><code>An object of class &quot;fwdControl&quot;
+ (step) year quant min value max
+      1 2009     f  NA 0.318  NA
+      2 2010     f  NA 0.318  NA
+      3 2011     f  NA 0.318  NA
+      4 2012     f  NA 0.318  NA
+      5 2013     f  NA 0.318  NA
+      6 2014     f  NA 0.318  NA
+      7 2015     f  NA 0.318  NA
+      8 2016     f  NA 0.318  NA
+      9 2017     f  NA 0.318  NA
+     10 2018     f  NA 0.318  NA</code></pre>
+<p>An alternative method for making the <em>fwdControl</em> object is to pass in lists of target. This can often be simpler when making complicated control objects as we will see below.</p>
+<pre class="r"><code>ctrl_f &lt;- fwdControl(list(year=2009:2018, quant=&quot;f&quot;, value=f_status_quo))
+ctrl_f</code></pre>
+<pre><code>An object of class &quot;fwdControl&quot;
+ (step) year quant min value max
+      1 2009     f  NA 0.318  NA
+      2 2010     f  NA 0.318  NA
+      3 2011     f  NA 0.318  NA
+      4 2012     f  NA 0.318  NA
+      5 2013     f  NA 0.318  NA
+      6 2014     f  NA 0.318  NA
+      7 2015     f  NA 0.318  NA
+      8 2016     f  NA 0.318  NA
+      9 2017     f  NA 0.318  NA
+     10 2018     f  NA 0.318  NA</code></pre>
+<p>We have columns of <em>year</em>, <em>quant</em> (target type), <em>min</em>, <em>value</em> and <em>max</em> (and others not shown here yet). Here we are only using <em>year</em>, <em>quant</em> and <em>value</em>. We can now run <em>fwd()</em> with our three ingredients. Note that the <em>control</em> argument used to be called <em>ctrl</em> in <strong>FLash</strong>. Also, with <strong>FLasher</strong> the <em>control</em> and <em>sr</em> arguments must be named.</p>
+<pre class="r"><code>ple4_f_sq &lt;- fwd(ple4_mtf, control = ctrl_f, sr = ple4_sr)
+# What just happened? We plot the stock from the year 2000.
+plot(window(ple4_f_sq, start=2000))</code></pre>
+<p><img src="Running_Medium_Term_Forecasts_with_FLasher_files/figure-html/ex1d-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The future Fs are as we set in the control object</p>
+<pre class="r"><code>fbar(ple4_f_sq)[,ac(2005:2018)]</code></pre>
+<pre><code>, , unit = unique, season = all, area = unique
+
+     year
+age   2005    2006    2007    2008    2009   
+  all 0.38686 0.33299 0.29622 0.25465 0.31768
+
+      [ ...  4 years]
+
+     year
+age   2014    2015    2016    2017    2018   
+  all 0.31768 0.31768 0.31768 0.31768 0.31768</code></pre>
+<p>What about recruitment? Remember we are now using a Beverton-Holt model.</p>
+<pre class="r"><code>rec(ple4_f_sq)[,ac(2005:2018)]</code></pre>
+<pre><code>, , unit = unique, season = all, area = unique
+
+   year
+age 2005    2006    2007    2008    2009   
+  1  863893  875191 1379750 1135050 1008401
+
+      [ ...  4 years]
+
+   year
+age 2014    2015    2016    2017    2018   
+  1 1049618 1062957 1038442 1045891 1054303</code></pre>
+<p>The recruitment is not constant but it is not changing very much. That’s because the fitted model looks flat (Figure 1).</p>
+</div>
+<div id="ex2" class="section level1">
+<h1>Example 2: A decreasing catch target</h1>
+<p>In this example we introduce two new things:</p>
+<ol style="list-style-type: decimal">
+<li>A new target type (catch)</li>
+<li>A changing target value</li>
+</ol>
+<p>Setting a catch target allows exploring the consequences of different TAC strategies. In this example, the TAC (the total catch of the stock) is reduced 10% each year for 10 years.</p>
+<p>We create a vector of future catches based on the catch in 2008:</p>
+<pre class="r"><code>future_catch &lt;- c(catch(ple4)[,&quot;2008&quot;]) * 0.9^(1:10)
+future_catch</code></pre>
+<pre><code> [1] 102057  91851  82666  74400  66960  60264  54237  48814  43932  39539</code></pre>
+<p>We create the <em>fwdControl</em> object, setting the target quantity to <em>catch</em> and passing in the vector of future catches</p>
+<pre class="r"><code>ctrl_catch &lt;- fwdControl(list(year=2009:2018, quant = &quot;catch&quot;, value=future_catch))
+# The control object has the desired catch target values
+ctrl_catch</code></pre>
+<pre><code>An object of class &quot;fwdControl&quot;
+ (step) year quant min      value max
+      1 2009 catch  NA 102056.935  NA
+      2 2010 catch  NA  91851.241  NA
+      3 2011 catch  NA  82666.117  NA
+      4 2012 catch  NA  74399.506  NA
+      5 2013 catch  NA  66959.555  NA
+      6 2014 catch  NA  60263.600  NA
+      7 2015 catch  NA  54237.240  NA
+      8 2016 catch  NA  48813.516  NA
+      9 2017 catch  NA  43932.164  NA
+     10 2018 catch  NA  39538.948  NA</code></pre>
+<p>We call <code>fwd()</code> with the stock, the control object and the SRR, and look at the results</p>
+<pre class="r"><code>ple4_catch &lt;- fwd(ple4_mtf, control = ctrl_catch, sr = ple4_sr)
+catch(ple4_catch)[,ac(2008:2018)]</code></pre>
+<pre><code>, , unit = unique, season = all, area = unique
+
+     year
+age   2008   2009   2010   2011   2012  
+  all 113397 102057  91851  82666  74400
+
+      [ ...  1 years]
+
+     year
+age   2014  2015  2016  2017  2018 
+  all 60264 54237 48814 43932 39539</code></pre>
+<pre class="r"><code>plot(window(ple4_catch, start=2000))</code></pre>
+<p><img src="Running_Medium_Term_Forecasts_with_FLasher_files/figure-html/ex2c-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The decreasing catch targets have been hit. Note that F has to be similarly reduced to hit the catch targets, resulting in a surge in SSB.</p>
+</div>
+<div id="example-3-setting-biological-targets" class="section level1">
+<h1>Example 3: Setting biological targets</h1>
+<p>In the previous examples we have set target types based on the activity of the fleet (F and catch). We can also set biological target types. This is useful when there are biological reference points, e.g. Bpa.</p>
+<p>Setting a biological target must be done with care because it may not be possible to hit the target. For example, even when F is set to 0, the stock may not be productive enough to increase its abundance sufficiently to hit the target.</p>
+<p>There are currently three types of biological target available in <code>FLasher</code>: <em>SRP</em>, <em>SSB</em> and <em>biomass</em>. Of these, there are several flavours of <em>SSB</em> and <em>biomass</em> that differ in terms of timing.</p>
+<p>The <em>SRP</em> target is the Stock Recruitment Potential <em>at the time of spawning</em>, i.e. if a stock spawns in the middle of the year, after the abundance has been reduced by fishing and natural mortality, this is the SRP at that point in time. At the moment, SRP is calculated as the mass of mature fish, i.e. SSB. If setting an <em>SRP</em> target, you must be aware of the timing of spawning and the timing of the fishing period.</p>
+<p>Internally, <strong>FLasher</strong> attempts to hit the desired target in a time step by finding the appropriate value of F in that timestep. If the stock spawns before fishing starts, then changing the fishing activity in that timestep has no effect on the SRP at the time of spawning. It is not possible to hit the target by manipulating F in that timestep and <strong>FLasher</strong> gives up.</p>
+<p><em>SSB</em> is the Spawning Stock Biomass calculated as the total biomass of mature fish. The <em>biomass</em> is simply the total biomass of the stock. For the <em>SSB</em> and <em>biomass</em> targets, there are three different flavours based on timing:</p>
+<ul>
+<li><em>ssb_end</em> and <em>biomass_end</em> - at the end of the time step after all mortality (natural and fishing) has ceased;</li>
+<li><em>ssb_spawn</em> and <em>biomass_spawn</em> - at the time of spawning (mimics the <code>ssb()</code> method for <em>FLStock</em> objects);</li>
+<li><em>ssb_flash</em> and <em>biomass_flash</em> - an attempt to mimic the behaviour of the original <strong>FLash</strong> package.</li>
+</ul>
+<p>This last option needs some explanation. If fishing starts before spawning (i.e. the <em>harvest.spwn</em> slot of an <em>FLStock</em> is greater than 0) then the SSB or biomass at the time of spawning in that timestep is returned. If fishing starts after spawning, or there is no spawning in that time step (which may happen with a seasonal model), then the SSB or biomass at the time of spawning in the next timestep is returned.</p>
+<p>However, this second case can be more complicated for several reasons. If there is no spawning in the next time step then we have a problem and <em>FLasher</em> gives up (F in the current timestep does not affect the SSB or biomass at the time of spawning in the current or next timestep). Additionally, if there is no next time step (i.e. we have reached the end of the projection) then <em>FLasher</em> gives up.</p>
+<p>There is also a potential problem that if the fishing in the next timestep starts before spawning, the SSB or biomass at the time of spawning in the next timestep will be affected by the effort in the current timestep AND the next timestep. <em>FLasher</em> cannot handle this and weird results will occur (although it is an unusal situation).</p>
+<p>For these reasons, it is better to only use the <strong>FLash</strong>-like target for annual models and when fishing and spawning happen at the same time in each year through the projection.</p>
+<div id="demonstrating-the-biological-targets" class="section level2">
+<h2>Demonstrating the biological targets</h2>
+<p>Here we give simple demonstrations of the different types of biological targets using SSB. The results of using a biomass target will have the same behaviour. Only a 1 year projection is run.</p>
+<p>The timing of spawning and fishing are controlled by the <em>m.spwn</em> and <em>harvest.spwn</em> slots. Our test <em>FLStock</em> object has <em>m.spwn</em> and <em>harvest.spwn</em> values of 0. This means that spawning and fishing happens at the start of the year and that spawning is assumed to happen before fishing.</p>
+<div id="targets-at-the-end-of-the-timestep" class="section level3">
+<h3>Targets at the end of the timestep</h3>
+<p>Here we set a target SSB for the end of the timestep</p>
+<pre class="r"><code>final_ssb &lt;- 100000
+ctrl_ssb &lt;- fwdControl(list(year=2009, quant = &quot;ssb_end&quot;, value=final_ssb))
+ple4_ssb &lt;- fwd(ple4_mtf, control=ctrl_ssb, sr = ple4_sr)
+# Calculate the final SSB to check the target has been hit
+survivors &lt;- stock.n(ple4_ssb) * exp(-harvest(ple4_ssb) - m(ple4_ssb))
+quantSums((survivors * stock.wt(ple4_ssb) * mat(ple4_ssb))[,ac(2009)])</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+age   2009 
+  all 1e+05
+
+units:  t </code></pre>
+</div>
+<div id="targets-at-the-time-of-spawning" class="section level3">
+<h3>Targets at the time of spawning</h3>
+<p>If fishing occurs after spawning, the level of fishing will not affect the SSB or biomass at the time of spawning. This is currently the case because <em>m.spwn</em> and <em>harvest.spwn</em> have values of 0. The result is that the projection will fail with a warning (intentionally). We see this here.</p>
+<pre class="r"><code>spawn_ssb &lt;- 100000
+ctrl_ssb &lt;- fwdControl(list(year=2009, quant = &quot;ssb_spawn&quot;, value=spawn_ssb))
+ple4_ssb &lt;- fwd(ple4_mtf, control=ctrl_ssb, sr = ple4_sr)</code></pre>
+<pre><code>Warning in operatingModelRun(rfishery, biolscpp, control, effort_max =
+effort_max, : In operatingModel eval_om, ssb_spawn target. Either spawning
+happens before fishing (so fishing effort has no impact on SRP), or no
+spawning in timestep. Cannot solve.</code></pre>
+<pre class="r"><code># Using the `ssb()` method to get the SSB at the time of spawning, we can see that the projection failed
+ssb(ple4_ssb)[,ac(2009)]</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+age   2009  
+  all 453027
+
+units:  t </code></pre>
+<p>In the previous example, spawning happens at the start of the year. We can change this with the <em>m.spwn</em> slot. Natural mortality is assumed to happen continuously through the year. Therefore, if we set the <em>m.spwn</em> slot to 0.5, then half the natural mortality happens before spawning, i.e. spawning happens half way through the year. Similarly, the current value of <em>harvest.spwn</em> is 0, meaning that spawning happens before any fishing happens. If we set this value to 0.5 then half of the fishing mortality has occurred before spawning. With these changes, the example now runs.</p>
+<pre class="r"><code>m.spwn(ple4_mtf)[,ac(2009)] &lt;- 0.5
+harvest.spwn(ple4_mtf)[,ac(2009)] &lt;- 0.5
+spawn_ssb &lt;- 100000
+ctrl_ssb &lt;- fwdControl(data.frame(year=2009, quant = &quot;ssb_spawn&quot;, value=spawn_ssb))
+ple4_ssb &lt;- fwd(ple4_mtf, control=ctrl_ssb, sr = ple4_sr)
+# We hit the target
+ssb(ple4_ssb)[,ac(2009)]</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+age   2009  
+  all 139185
+
+units:  t </code></pre>
+<p>At the moment <code>FLasher</code> calculates the SRP as SSB. This means that the <em>SRP</em> target type behaves in the same way as the <em>ssb_spawn</em> target.</p>
+<pre class="r"><code>srp &lt;- 100000
+ctrl_ssb &lt;- fwdControl(data.frame(year=2009, quant = &quot;srp&quot;, value=srp))
+ple4_ssb &lt;- fwd(ple4_mtf, control=ctrl_ssb, sr = ple4_sr)
+# We hit the target
+ssb(ple4_ssb)[,ac(2009)]</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+age   2009  
+  all 139185
+
+units:  t </code></pre>
+</div>
+<div id="flash-like-targets" class="section level3">
+<h3><strong>FLash</strong>-like targets</h3>
+<p>As mentioned above, the <code>FLash</code>-like targets can have different behaviour depending on the timing of spawning and fishing. If fishing starts before spawning, the SSB or biomass at the time of spawning <em>in the current timestep</em> will be hit (if possible). This is demonstrated here.</p>
+<pre class="r"><code># Force spawning to happen half way through the year
+# and fishing to start at the beginning of the year
+m.spwn(ple4_mtf)[,ac(2009)] &lt;- 0.5
+harvest.spwn(ple4_mtf)[,ac(2009)] &lt;- 0.5
+flash_ssb &lt;- 150000
+ctrl_ssb &lt;- fwdControl(data.frame(year=2009, quant = &quot;ssb_flash&quot;, value=flash_ssb))
+ple4_ssb &lt;- fwd(ple4_mtf, control=ctrl_ssb, sr = ple4_sr)
+# Hit the target? Yes
+ssb(ple4_ssb)[,ac(2009)]</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+age   2009  
+  all 150000
+
+units:  t </code></pre>
+<p>However, if fishing starts after spawning, the SSB or biomass at the time of spawning <em>in the next timestep</em> will be hit (if possible). This is because fishing in the current timestep will have no impact on the SSB at the time of spawning in the current timestep.</p>
+<pre class="r"><code># Force spawning to happen at the start of the year before fishing
+m.spwn(ple4_mtf)[,ac(2009)] &lt;- 0.0
+harvest.spwn(ple4_mtf)[,ac(2009)] &lt;- 0.0
+flash_ssb &lt;- 150000
+ctrl_ssb &lt;- fwdControl(data.frame(year=2009, quant = &quot;ssb_flash&quot;, value=flash_ssb))
+ple4_ssb &lt;- fwd(ple4_mtf, control=ctrl_ssb, sr = ple4_sr)
+# We did hit the SSB target, but not until 2010.
+ssb(ple4_ssb)[,ac(2009:2010)]</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+age   2009   2010  
+  all 453027 150000
+
+units:  t </code></pre>
+</div>
+</div>
+<div id="a-longer-ssb-projection" class="section level2">
+<h2>A longer SSB projection</h2>
+<p>Here we run a longer projection with a constant <strong>FLash</strong>-like SSB target. Spawning happens before fishing so the target will not be hit until the following year.</p>
+<pre class="r"><code># Force spawning to happen at the start of the year before fishing
+m.spwn(ple4_mtf)[,ac(2009)] &lt;- 0.0
+harvest.spwn(ple4_mtf)[,ac(2009)] &lt;- 0.0
+future_ssb &lt;- 200000
+ctrl_ssb &lt;- fwdControl(data.frame(year=2009:2018, quant = &quot;ssb_flash&quot;, value=future_ssb))
+ple4_ssb &lt;- fwd(ple4_mtf, control = ctrl_ssb, sr = ple4_sr)</code></pre>
+<p>We get a warning about running out of room. This is because future stock object, <em>ple4_mtf</em>, goes up to 2018. When we set the SSB target for 2018, it tries to hit the final year target in 2019. The targets that were set for 2009 to 2017 have been hit in 2010 to 2018. However, we cannot hit the target that was set for 2018. This means that the returned value of F in 2018 needs to be discounted.</p>
+<pre class="r"><code>ssb(ple4_ssb)[,ac(2009:2018)]</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+age   2009   2010   2011   2012   2013   2014   2015   2016   2017  
+  all 453027 200000 200000 200000 200000 200000 200000 200000 200000
+     year
+age   2018  
+  all 200000
+
+units:  t </code></pre>
+<pre class="r"><code>fbar(ple4_ssb)[,ac(2009:2018)]</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+age   2009    2010    2011    2012    2013    2014    2015    2016   
+  all 1.44978 0.34689 0.36678 0.61388 0.61653 0.23650 0.48870 0.50101
+     year
+age   2017    2018   
+  all 0.45091 0.49033
+
+units:  f </code></pre>
+<pre class="r"><code>plot(window(ple4_ssb, start=2000, end=2017))</code></pre>
+<p><img src="Running_Medium_Term_Forecasts_with_FLasher_files/figure-html/ex3h-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="example-4-relative-catch-target" class="section level1">
+<h1>Example 4: Relative catch target</h1>
+<p>The examples above have dealt with <em>absolute</em> target values. We now introduce the idea of <em>relative</em> values. This allows us to set the target value <em>relative</em> to the value in another time step.</p>
+<p>We do this by using the <em>relYear</em> column in the control object (the year that the target is relative to). The <em>value</em> column now holds the relative value, not the absolute value.</p>
+<p>Here we set catches in the projection years to be 90% of the catches in the previous year, i.e. we want the catche in 2009 to be 0.9 * value in 2008 etc.</p>
+<pre class="r"><code>ctrl_rel_catch &lt;- fwdControl(
+    data.frame(year = 2009:2018,
+           quant = &quot;catch&quot;,
+           value = 0.9,
+           relYear = 2008:2017))
+# The relative year appears in the control object summary
+ctrl_rel_catch</code></pre>
+<pre><code>An object of class &quot;fwdControl&quot;
+ (step) year quant relYear min value max
+      1 2009 catch    2008  NA 0.900  NA
+      2 2010 catch    2009  NA 0.900  NA
+      3 2011 catch    2010  NA 0.900  NA
+      4 2012 catch    2011  NA 0.900  NA
+      5 2013 catch    2012  NA 0.900  NA
+      6 2014 catch    2013  NA 0.900  NA
+      7 2015 catch    2014  NA 0.900  NA
+      8 2016 catch    2015  NA 0.900  NA
+      9 2017 catch    2016  NA 0.900  NA
+     10 2018 catch    2017  NA 0.900  NA</code></pre>
+<p>We run the projection as normal</p>
+<pre class="r"><code>ple4_rel_catch &lt;- fwd(ple4_mtf, control = ctrl_rel_catch, sr = ple4_sr)
+catch(ple4_rel_catch)</code></pre>
+<pre><code>, , unit = unique, season = all, area = unique
+
+     year
+age   1957   1958   1959   1960   1961  
+  all  78360  88785 105186 117975 119541
+
+      [ ...  61 years]
+
+     year
+age   2023 2024 2025 2026 2027
+  all NA   NA   NA   NA   NA  </code></pre>
+<pre class="r"><code>catch(ple4_rel_catch)[,ac(2008:2018)] / catch(ple4_rel_catch)[,ac(2007:2017)]</code></pre>
+<pre><code>, , unit = unique, season = all, area = unique
+
+     year
+age   2008   2009   2010   2011   2012  
+  all 1.0823 0.9000 0.9000 0.9000 0.9000
+
+      [ ...  1 years]
+
+     year
+age   2014 2015 2016 2017 2018
+  all 0.9  0.9  0.9  0.9  0.9 </code></pre>
+<pre class="r"><code>plot(window(ple4_rel_catch, start = 2001, end = 2018))</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Running_Medium_Term_Forecasts_with_FLasher_files/figure-html/ex4c-1.png" alt="Relative catch example" width="672" />
+<p class="caption">
+Relative catch example
+</p>
+</div>
+<p>This is equivalent to the catch example above (LINK) but without using absolute values.</p>
+</div>
+<div id="example-5-minimum-and-maximum-targets" class="section level1">
+<h1>Example 5: Minimum and Maximum targets</h1>
+<p>In this Example we introduce two new things:</p>
+<ol style="list-style-type: decimal">
+<li>Multiple target types;</li>
+<li>Targets with <em>bounds</em>.</li>
+</ol>
+<p>Here we set an F target so that the future F = F0.1. However, we also don’t want the catch to fall below a minimum level. We do this by setting a <em>minimum</em> value for the catch.</p>
+<p>First we set a value for F0.1 (you could use the <code>FLBRP</code> package to do this (LINK))</p>
+<pre class="r"><code>f01 &lt;- 0.1</code></pre>
+<p>We’ll set our minimum catch to be the mean catch of the last 3 years.</p>
+<pre class="r"><code>min_catch &lt;- mean(catch(ple4_mtf)[,as.character(2006:2008)])
+min_catch</code></pre>
+<pre><code>[1] 110010</code></pre>
+<p>To create the control object, we could make a <code>data.frame</code> with both target types and a <em>value</em> and a <em>min</em> column. However, it is probably easier to use the <em>list</em> constructor when making the <em>fwdControl</em>. Multiple lists can be passed in, each one representing a different catch. Here we pass in two lists, one for the F target and one for the minimum catch. Note the use of <em>min</em> in the second target list and that there is no <em>value</em>.</p>
+<p>It is important that when running the projection, the bounding targets (the <em>min</em> and the <em>max</em>) are processed after the non-bounding targets. This should be sorted out by the <em>fwdControl</em> constructor.</p>
+<pre class="r"><code>ctrl_min_catch &lt;- fwdControl(
+    list(year=2009:2018, quant=&quot;f&quot;, value=f01),
+    list(year=2009:2018, quant=&quot;catch&quot;, min=min_catch))
+ctrl_min_catch</code></pre>
+<pre><code>An object of class &quot;fwdControl&quot;
+ (step) year quant        min value max
+      1 2009     f         NA 0.100  NA
+      2 2009 catch 110010.243    NA  NA
+      3 2010     f         NA 0.100  NA
+      4 2010 catch 110010.243    NA  NA
+      5 2011     f         NA 0.100  NA
+      6 2011 catch 110010.243    NA  NA
+      7 2012     f         NA 0.100  NA
+      8 2012 catch 110010.243    NA  NA
+      9 2013     f         NA 0.100  NA
+     10 2013 catch 110010.243    NA  NA
+     11 2014     f         NA 0.100  NA
+     12 2014 catch 110010.243    NA  NA
+     13 2015     f         NA 0.100  NA
+     14 2015 catch 110010.243    NA  NA
+     15 2016     f         NA 0.100  NA
+     16 2016 catch 110010.243    NA  NA
+     17 2017     f         NA 0.100  NA
+     18 2017 catch 110010.243    NA  NA
+     19 2018     f         NA 0.100  NA
+     20 2018 catch 110010.243    NA  NA</code></pre>
+<p>What did we create? We can see that the <em>min</em> column has now got some data (the <em>max</em> column is still empty) and the targets appear in the correct order. Now project forward</p>
+<pre class="r"><code>ple4_min_catch &lt;- fwd(ple4_mtf, control = ctrl_min_catch, sr = ple4_sr)
+fbar(ple4_min_catch)[,ac(2008:2018)]</code></pre>
+<pre><code>, , unit = unique, season = all, area = unique
+
+     year
+age   2008    2009    2010    2011    2012   
+  all 0.25465 0.20542 0.18698 0.19504 0.19816
+
+      [ ...  1 years]
+
+     year
+age   2014    2015    2016    2017    2018   
+  all 0.19962 0.20073 0.20619 0.21024 0.19995</code></pre>
+<pre class="r"><code>catch(ple4_min_catch)[,ac(2008:2018)]</code></pre>
+<pre><code>, , unit = unique, season = all, area = unique
+
+     year
+age   2008   2009   2010   2011   2012  
+  all 113397 110010 110010 110010 110010
+
+      [ ...  1 years]
+
+     year
+age   2014   2015   2016   2017   2018  
+  all 110010 110010 110010 110010 110010</code></pre>
+<p>What happens? The catch constraint is hit in every year of the projection. The projected F decreases but never hits the target F because the minimum catch constraint prevents it from dropping further.</p>
+<pre class="r"><code>plot(window(ple4_min_catch, start = 2001, end = 2018))</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Running_Medium_Term_Forecasts_with_FLasher_files/figure-html/ex5f-1.png" alt="Example with a minimum catch bound and constant F target" width="672" />
+<p class="caption">
+Example with a minimum catch bound and constant F target
+</p>
+</div>
+<p>It is possible to also set a maximum constraint, for example, to prevent F from being too large.</p>
+</div>
+<div id="example-6---relative-targets-and-bounds" class="section level1">
+<h1>Example 6 - Relative targets and bounds</h1>
+<p>In this example we use a combination of <em>relative</em> targets and <em>bounds</em>.</p>
+<p>This kind of approach can be used to model a recovery plan. For example, we want to decrease F to F0.1 by 2015 (absolute target value) but catches cannot change by more than 15% each year (relative bound). This requires careful setting up of the control object.</p>
+<p>We make a vector of the desired F targets using the F0.1 we calculated above. We set up an F sequence that decreases from the current Fbar in 2008 to F01 in 2015, then F01 until 2018.</p>
+<pre class="r"><code>current_fbar &lt;- c(fbar(ple4)[,&quot;2008&quot;])
+f_target &lt;- c(seq(from = current_fbar, to = f01, length = 8)[-1], rep(f01, 3))
+f_target</code></pre>
+<pre><code> [1] 0.2326 0.2105 0.1884 0.1663 0.1442 0.1221 0.1000 0.1000 0.1000 0.1000</code></pre>
+<p>We set maximum annual change in catch to be 10% (in either direction).</p>
+<pre class="r"><code>rel_catch_bound &lt;- 0.10</code></pre>
+<p>We make the control object by passing two lists. The first list has the fixed F target, the second list has the relative minimum and maximum bounds on the catch (set using <em>relYear</em>, <em>min</em> and <em>max</em>).</p>
+<pre class="r"><code>ctrl_rel_min_max_catch &lt;- fwdControl(
+    list(year=2009:2018, quant=&quot;f&quot;, value=f_target),
+    list(year=2009:2018, quant=&quot;catch&quot;, relYear=2008:2017, max=1+rel_catch_bound, min=1-rel_catch_bound))
+ctrl_rel_min_max_catch</code></pre>
+<pre><code>An object of class &quot;fwdControl&quot;
+ (step) year quant relYear   min value   max
+      1 2009     f      NA    NA 0.233    NA
+      2 2009 catch    2008 0.900    NA 1.100
+      3 2010     f      NA    NA 0.210    NA
+      4 2010 catch    2009 0.900    NA 1.100
+      5 2011     f      NA    NA 0.188    NA
+      6 2011 catch    2010 0.900    NA 1.100
+      7 2012     f      NA    NA 0.166    NA
+      8 2012 catch    2011 0.900    NA 1.100
+      9 2013     f      NA    NA 0.144    NA
+     10 2013 catch    2012 0.900    NA 1.100
+     11 2014     f      NA    NA 0.122    NA
+     12 2014 catch    2013 0.900    NA 1.100
+     13 2015     f      NA    NA 0.100    NA
+     14 2015 catch    2014 0.900    NA 1.100
+     15 2016     f      NA    NA 0.100    NA
+     16 2016 catch    2015 0.900    NA 1.100
+     17 2017     f      NA    NA 0.100    NA
+     18 2017 catch    2016 0.900    NA 1.100
+     19 2018     f      NA    NA 0.100    NA
+     20 2018 catch    2017 0.900    NA 1.100</code></pre>
+<p>Run the projection:</p>
+<pre class="r"><code>recovery&lt;-fwd(ple4_mtf, control=ctrl_rel_min_max_catch, sr=ple4_sr)</code></pre>
+<p>What happened? The F decreased and then remains constant, while the catch has changed by only a limited amount each year.</p>
+<pre class="r"><code>plot(window(recovery, start = 2001, end = 2018))</code></pre>
+<p><img src="Running_Medium_Term_Forecasts_with_FLasher_files/figure-html/ex6f-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The minimum and maximum bounds on the catch are operational during the projection. They prevent the catch from increasing as well as decreasing too strongly, (supposedly) providing stability to the fishery.</p>
+<pre class="r"><code>catch(recovery)[,ac(2009:2018)] / catch(recovery)[,ac(2008:2017)]</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+     year
+age   2009    2010    2011    2012    2013    2014    2015    2016   
+  all 1.08377 0.97053 0.90000 0.90000 0.90000 0.90000 0.90000 0.91957
+     year
+age   2017    2018   
+  all 1.05300 1.08907
+
+units:   </code></pre>
+</div>
+<div id="projections-with-stochasticity" class="section level1">
+<h1>Projections with stochasticity</h1>
+<p>So far we have looked at combinations of:</p>
+<ul>
+<li>Absolute target values;</li>
+<li>Relative target values;</li>
+<li>Bounds on targets, and</li>
+<li>Mixed target types.</li>
+</ul>
+<p>But all of the projections have been deterministic, i.e. they all had only one iteration. Now, we are going start looking at projecting with multiple iterations. This is important because it can help us understand the impact of uncertainty (e.g. in the stock-recruitment relationship).</p>
+<p><em>fwd()</em> is happy to work over iterations. It treats each iteration separately. “All” you need to do is set the arguments correctly.</p>
+<p>There are four main ways of introducing iterations into fwd():</p>
+<ol style="list-style-type: decimal">
+<li>Having existing iterations and variability in the <em>FLStock</em> that is to be projected.</li>
+<li>By passing in residuals to the stock-recruitment function (as another argument to <em>fwd()</em>);</li>
+<li>Through the control object (by setting target values as multiple values)</li>
+<li>Including iterations in the parameters for the stock-relationship relationship.</li>
+</ol>
+<p>You can actually use both of these methods at the same time. As you can probably imagine, this can quickly become a bit complicated so we’ll just do some simple examples to start with.</p>
+<div id="preparation-for-projecting-with-iterations" class="section level2">
+<h2>Preparation for projecting with iterations</h2>
+<p>To perform a stochastic projection you need a stock object with multiple iterations. If you are using the output of a stock assessment method, such as <em>a4a</em>, then you may have one already. Here we use the <em>propagate()</em> method to expand the ple4 stock object to have 200 iterations. Each iteration is the same but we could have imposed some variability across the iterations (e.g. across the mean weights at age). We’ll use the ten year projection as before (remember that we probably should change the assumptions that come with the <em>stf()</em> method).</p>
+<pre class="r"><code>niters &lt;- 200
+ple4_mtf &lt;- stf(ple4, nyears = 10)
+ple4_mtf &lt;- propagate(ple4_mtf, niters)</code></pre>
+<p>You can see that the 6th dimension, iterations, now has length 200:</p>
+<pre class="r"><code>summary(ple4_mtf)</code></pre>
+<pre><code>An object of class &quot;FLStock&quot;
+
+Name: PLE 
+Description: Plaice in IV. ICES WGNSSK 2018. FLAAP 
+Quant: age 
+Dims:  age  year    unit    season  area    iter
+    10  71  1   1   1   200 
+
+Range:  min max pgroup  minyear maxyear minfbar maxfbar 
+    1   10  10  1957    2027    2   6   
+
+catch         : [ 1 71 1 1 1 200 ], units =  t 
+catch.n       : [ 10 71 1 1 1 200 ], units =  1000 
+catch.wt      : [ 10 71 1 1 1 200 ], units =  kg 
+discards      : [ 1 71 1 1 1 200 ], units =  t 
+discards.n    : [ 10 71 1 1 1 200 ], units =  1000 
+discards.wt   : [ 10 71 1 1 1 200 ], units =  kg 
+landings      : [ 1 71 1 1 1 200 ], units =  t 
+landings.n    : [ 10 71 1 1 1 200 ], units =  1000 
+landings.wt   : [ 10 71 1 1 1 200 ], units =  kg 
+stock         : [ 1 71 1 1 1 200 ], units =  t 
+stock.n       : [ 10 71 1 1 1 200 ], units =  1000 
+stock.wt      : [ 10 71 1 1 1 200 ], units =  kg 
+m             : [ 10 71 1 1 1 200 ], units =  m 
+mat           : [ 10 71 1 1 1 200 ], units =   
+harvest       : [ 10 71 1 1 1 200 ], units =  f 
+harvest.spwn  : [ 10 71 1 1 1 200 ], units =   
+m.spwn        : [ 10 71 1 1 1 200 ], units =   </code></pre>
+</div>
+<div id="example-7-stochastic-recruitment-with-residuals" class="section level2">
+<h2>Example 7: Stochastic recruitment with residuals</h2>
+<p>There is an argument to <em>fwd()</em> that we haven’t used yet: <em>residuals</em></p>
+<p>This is used for specifying the recruitment residuals (<em>residuals</em>) which are multiplicative. In this example we’ll use the residuals so that the predicted recruitment values in the projection = deterministic recruitment predicted by the SRR model * residuals. The residuals are passed in as an <em>FLQuant</em> with years and iterations. Here we make an empty <em>FLQuant</em> that will be filled with residuals.</p>
+<pre class="r"><code>rec_residuals &lt;- FLQuant(NA, dimnames = list(year=2009:2018, iter=1:niters))</code></pre>
+<p>We’re going to use residuals from the stock-recruitment relationship we fitted at the beginning. We can access these using:</p>
+<pre class="r"><code>residuals(ple4_sr)</code></pre>
+<pre><code>, , unit = unique, season = all, area = unique
+
+   year
+age 1958     1959     1960     1961     1962    
+  1 -0.33249 -0.13292 -0.22899 -0.15108 -0.50351
+
+      [ ...  50 years]
+
+   year
+age 2013      2014      2015      2016      2017     
+  1  0.282986  0.385725 -0.235863  0.072568  0.473244</code></pre>
+<p>These residuals are on a log scale i.e. log_residuals = log(observed_recruitment) - log(predicted_recruitment). To use these log residuals multiplicatively we need to transform them with <em>exp()</em>:</p>
+<p>We want to fill up our <em>multi_rec_residuals</em> <em>FLQuant</em> by randomly sampling from these log residuals. We can do this with the <em>sample()</em> function. We want to sample with replacement (i.e. if a residual is chosen, it gets put back in the pool and can be chosen again).</p>
+<p>First we get generate the samples of the years (indices of the residuals we will pick).</p>
+<pre class="r"><code>sample_years &lt;- sample(dimnames(residuals(ple4_sr))$year, niters * 10, replace = TRUE)</code></pre>
+<p>We fill up the <strong>FLQuant</strong> we made earlier with the residuals using the sampled years:</p>
+<pre class="r"><code>rec_residuals[] &lt;- exp(residuals(ple4_sr)[,sample_years])</code></pre>
+<p>What have we got?</p>
+<pre class="r"><code>rec_residuals</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+iters:  200 
+
+, , unit = unique, season = all, area = unique
+
+     year
+quant 2009           2010           2011           2012          
+  all 1.01533(0.465) 0.96006(0.375) 0.95913(0.385) 1.02982(0.505)
+     year
+quant 2013           2014           2015           2016          
+  all 1.03782(0.511) 0.96546(0.460) 0.95913(0.508) 1.02471(0.482)
+     year
+quant 2017           2018          
+  all 0.96993(0.521) 0.98794(0.498)
+
+units:  NA </code></pre>
+<p>It’s an <em>FLQuant</em> of SRR residuals but what do those brackets mean? The information in the brackets is the Median Absolute Deviation, a way of summarising the iterations. We have 200 iterations but don’t want to see all of them - just a summary.</p>
+<p>We now have the recruitment residuals. We’ll use the <em>ctrl_catch</em> control object we made earlier with decreasing catch. Note that this control object does not have iterations. The target values are recycled over the iterations in the projection.</p>
+<p>We call <em>fwd()</em> as usual, only now we have a <em>residuals</em> argument. This takes a little time depending on the number of iterations.</p>
+<pre class="r"><code>ple4_stoch_rec &lt;- fwd(ple4_mtf, control = ctrl_catch, sr = ple4_sr, residuals = rec_residuals) </code></pre>
+<p>What just happened? We can see that now we have uncertainty in the recruitment estimates, driven by the residuals. This uncertainty feeds into the SSB and, to a lesser extent, the projected F and catch.</p>
+<pre class="r"><code>plot(window(ple4_stoch_rec, start = 2001, end = 2018))</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Running_Medium_Term_Forecasts_with_FLasher_files/figure-html/res7-1.png" alt="Example projection with stochasticity in the recruitment residuals" width="672" />
+<p class="caption">
+Example projection with stochasticity in the recruitment residuals
+</p>
+</div>
+<p>We can see that the projected stock metrics also have uncertainty in them.</p>
+<pre class="r"><code>rec(ple4_stoch_rec)[,ac(2008:2018)]</code></pre>
+<pre><code>iters:  200 
+
+, , unit = unique, season = all, area = unique
+
+   year
+age 2008            2009            2010            2011           
+  1 1135050(     0) 1023863(468977) 1004448(392456) 1041097(443510)
+   year
+age 2012           
+  1 1120993(535756)
+
+      [ ...  1 years]
+
+   year
+age 2014            2015            2016            2017           
+  1 1135050(     0) 1023863(468977) 1004448(392456) 1041097(443510)
+   year
+age 2018           
+  1 1120993(535756)</code></pre>
+<pre class="r"><code>fbar(ple4_stoch_rec)[,ac(2008:2018)]</code></pre>
+<pre><code>iters:  200 
+
+, , unit = unique, season = all, area = unique
+
+     year
+age   2008             2009             2010             2011            
+  all 0.25465(0.00000) 0.18878(0.00812) 0.15006(0.01241) 0.13394(0.01948)
+     year
+age   2012            
+  all 0.11443(0.02337)
+
+      [ ...  1 years]
+
+     year
+age   2014             2015             2016             2017            
+  all 0.25465(0.00000) 0.18878(0.00812) 0.15006(0.01241) 0.13394(0.01948)
+     year
+age   2018            
+  all 0.11443(0.02337)</code></pre>
+<pre class="r"><code>ssb(ple4_stoch_rec)[,ac(2008:2018)]</code></pre>
+<pre><code>iters:  200 
+
+, , unit = unique, season = all, area = unique
+
+     year
+age   2008          2009          2010          2011         
+  all 371837(    0) 453027(    0) 565143(25222) 592259(42346)
+     year
+age   2012         
+  all 654045(70603)
+
+      [ ...  1 years]
+
+     year
+age   2014          2015          2016          2017         
+  all 371837(    0) 453027(    0) 565143(25222) 592259(42346)
+     year
+age   2018         
+  all 654045(70603)</code></pre>
+</div>
+<div id="example-8-stochastic-target-values" class="section level2">
+<h2>Example 8: stochastic target values</h2>
+<p>In this example we introduce uncertainty by including uncertainty in our target values. This example has catch as the target, except now catch will be stochastic.</p>
+<p>We will use the <em>ctrl_catch</em> object from above.</p>
+<pre class="r"><code>ctrl_catch</code></pre>
+<pre><code>An object of class &quot;fwdControl&quot;
+ (step) year quant min      value max
+      1 2009 catch  NA 102056.935  NA
+      2 2010 catch  NA  91851.241  NA
+      3 2011 catch  NA  82666.117  NA
+      4 2012 catch  NA  74399.506  NA
+      5 2013 catch  NA  66959.555  NA
+      6 2014 catch  NA  60263.600  NA
+      7 2015 catch  NA  54237.240  NA
+      8 2016 catch  NA  48813.516  NA
+      9 2017 catch  NA  43932.164  NA
+     10 2018 catch  NA  39538.948  NA</code></pre>
+<p>Let’s take a look at what else is in the control object:</p>
+<pre class="r"><code>slotNames(ctrl_catch)</code></pre>
+<pre><code>[1] &quot;target&quot; &quot;iters&quot;  &quot;FCB&quot;   </code></pre>
+<p>The iterations of the target value are set in the <em>iters</em> slot.</p>
+<pre class="r"><code>ctrl_catch@iters</code></pre>
+<pre><code>, , iter = 1
+
+    val
+row  min  value max
+  1   NA 102057  NA
+  2   NA  91851  NA
+  3   NA  82666  NA
+  4   NA  74400  NA
+  5   NA  66960  NA
+  6   NA  60264  NA
+  7   NA  54237  NA
+  8   NA  48814  NA
+  9   NA  43932  NA
+  10  NA  39539  NA</code></pre>
+<p>What is this slot?</p>
+<pre class="r"><code>class(ctrl_catch@iters)</code></pre>
+<pre><code>[1] &quot;array&quot;</code></pre>
+<pre class="r"><code>dim(ctrl_catch@iters)</code></pre>
+<pre><code>[1] 10  3  1</code></pre>
+<p>It’s a 3D array with structure: target no x value x iteration. It’s in here that we set the stochastic projection values. Each row of the <em>iters</em> slot corresponds to a row in the control <em>data.frame</em> (the <em>target</em> slot).</p>
+<p>One option for adding iterations to the control object is to manually adjust the <em>iters</em> slot to have the required number of iterations and fill it up accordingly.</p>
+<p>However, it is easier to use the <em>list</em> constructor for the control object. Here we generate random values, sampled from a lognormal distribution, for the catch based on the <em>future_catch</em> object we created earlier. This is a vector of length 2000. Passing this into the constructor with 10 years makes a control object with 200 iterations.</p>
+<pre class="r"><code>stoch_catch  &lt;- rlnorm(10*niters, meanlog=log(future_catch), sdlog=0.3)
+length(stoch_catch)</code></pre>
+<pre><code>[1] 2000</code></pre>
+<pre class="r"><code>ctrl_catch_iters &lt;- fwdControl(list(year=2009:2018, quant=&quot;catch&quot;, value=stoch_catch))</code></pre>
+<p>The control object has 200 iterations. The variance in the values can be seen.</p>
+<pre class="r"><code>ctrl_catch_iters</code></pre>
+<pre><code>An object of class &quot;fwdControl&quot;
+ (step) year quant min                 value max
+      1 2009 catch  NA 105652.321(30735.994)  NA
+      2 2010 catch  NA  92941.518(27272.510)  NA
+      3 2011 catch  NA  81156.389(24804.086)  NA
+      4 2012 catch  NA  74223.468(23611.442)  NA
+      5 2013 catch  NA  66862.879(17846.145)  NA
+      6 2014 catch  NA  63874.341(19309.311)  NA
+      7 2015 catch  NA  54867.112(15775.532)  NA
+      8 2016 catch  NA  49385.992(15241.818)  NA
+      9 2017 catch  NA  44723.688(13484.450)  NA
+     10 2018 catch  NA  38474.447(10896.283)  NA
+   iters:  200 </code></pre>
+<p>We project as normal using the deterministic SRR.</p>
+<pre class="r"><code>ple4_catch_iters &lt;- fwd(ple4_mtf, control=ctrl_catch_iters, sr = ple4_sr)</code></pre>
+<p>What happened?</p>
+<pre class="r"><code>plot(window(ple4_catch_iters, start = 2001, end = 2018))</code></pre>
+<p><img src="Running_Medium_Term_Forecasts_with_FLasher_files/figure-html/stv11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The projected catches reflect the uncertainty in the target.</p>
+<pre class="r"><code>catch(ple4_catch_iters)[,ac(2008:2018)]</code></pre>
+<pre><code>iters:  200 
+
+, , unit = unique, season = all, area = unique
+
+     year
+age   2008          2009          2010          2011         
+  all 113397(    0) 105652(30736)  92942(27273)  81156(24804)
+     year
+age   2012         
+  all  74223(23611)
+
+      [ ...  1 years]
+
+     year
+age   2014          2015          2016          2017         
+  all 113397(    0) 105652(30736)  92942(27273)  81156(24804)
+     year
+age   2018         
+  all  74223(23611)</code></pre>
+</div>
+<div id="example-9-including-iterations-in-the-stock-recruitment-relationship" class="section level2">
+<h2>Example 9: Including iterations in the stock-recruitment relationship</h2>
+<p>In this example we include stochasticity in the SR relationship. The SR model fitted above is deterministic in that the parameters only have 1 iteration.</p>
+<pre class="r"><code>params(ple4_sr)</code></pre>
+<pre><code>An object of class &quot;FLPar&quot;
+params
+      a       b 
+1263310   93995 
+units:  NA </code></pre>
+<p>The parameters are specified as an <em>FLPar</em>. To include stochasticity in the SR parameters it is necessary to make a similar <em>FLPar</em> which has iterations.</p>
+<pre class="r"><code>sr_iters &lt;- FLPar(NA, dimnames=list(params=c(&quot;a&quot;,&quot;b&quot;), iter=1:niters))</code></pre>
+<p>We then need to generate some stochastic values of the <em>a</em> and <em>b</em> parameters. These could be sampled from a distribution based on the SR model fit (see an example in this <a href="http://www.flr-project.org/doc/Setting_Stock_Recruitment_in_FLasher_Projections.html">tutorial</a>). Here we just pull some numbers from a distribution without worrying about covariance. The danger of doing is that we can end up with pairs of values for <em>a</em> and <em>b</em> which are stupid.</p>
+<pre class="r"><code>aiters &lt;- rlnorm(niters, meanlog=log(params(ple4_sr)[&quot;a&quot;]), sdlog=0.5)
+biters &lt;- rlnorm(niters, meanlog=log(params(ple4_sr)[&quot;b&quot;]), sdlog=0.01)</code></pre>
+<p>We then put this into the <em>FLPar</em>.</p>
+<pre class="r"><code>sr_iters[&quot;a&quot;] &lt;- aiters
+sr_iters[&quot;b&quot;] &lt;- biters
+sr_iters</code></pre>
+<pre><code>An object of class &quot;FLPar&quot;
+iters:  200 
+
+params
+              a               b 
+1222780(604312)   94114(   966) 
+units:  NA </code></pre>
+<p>The parameters are now all set up. We could put these into the <em>FLSR</em> object. Instead we use a different method for specifying the SR relationship, using the model name and the parameters. This projection only has stochasticity in the SR params.</p>
+<pre class="r"><code>ple4_sr_iters &lt;- fwd(ple4_mtf, control=ctrl_catch, sr = list(model=&quot;bevholt&quot;, params=sr_iters))
+plot(window(ple4_sr_iters, start = 2001, end = 2018))</code></pre>
+<p><img src="Running_Medium_Term_Forecasts_with_FLasher_files/figure-html/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="example-10-a-projection-with-stochastic-targets-and-recruitment" class="section level2">
+<h2>Example 10: A projection with stochastic targets and recruitment</h2>
+<p>In this example we use the stochastic catch target, residuals and stochasticity in the SR parameters:</p>
+<pre class="r"><code>ple4_iters &lt;- fwd(ple4_mtf, control=ctrl_catch_iters, sr = list(model=&quot;bevholt&quot;, params=sr_iters), residuals = rec_residuals)</code></pre>
+<p>What happened?</p>
+<pre class="r"><code>plot(window(ple4_iters, start = 2001, end = 2018))</code></pre>
+<p><img src="Running_Medium_Term_Forecasts_with_FLasher_files/figure-html/stv15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>We have a projection with stochastic target catches and recruitment.</p>
+<pre class="r"><code>catch(ple4_catch_iters)[,ac(2008:2018)]</code></pre>
+<pre><code>iters:  200 
+
+, , unit = unique, season = all, area = unique
+
+     year
+age   2008          2009          2010          2011         
+  all 113397(    0) 105652(30736)  92942(27273)  81156(24804)
+     year
+age   2012         
+  all  74223(23611)
+
+      [ ...  1 years]
+
+     year
+age   2014          2015          2016          2017         
+  all 113397(    0) 105652(30736)  92942(27273)  81156(24804)
+     year
+age   2018         
+  all  74223(23611)</code></pre>
+<pre class="r"><code>rec(ple4_catch_iters)[,ac(2008:2018)]</code></pre>
+<pre><code>iters:  200 
+
+, , unit = unique, season = all, area = unique
+
+   year
+age 2008           2009           2010           2011          
+  1 1135050(    0) 1008401(    0) 1046235(    0) 1081884( 9262)
+   year
+age 2012          
+  1 1087860(12843)
+
+      [ ...  1 years]
+
+   year
+age 2014           2015           2016           2017          
+  1 1135050(    0) 1008401(    0) 1046235(    0) 1081884( 9262)
+   year
+age 2018          
+  1 1087860(12843)</code></pre>
+<p>Super.</p>
+</div>
+</div>
+<div id="to-do" class="section level1">
+<h1>TO DO</h1>
+<div id="alternative-syntax-for-controlling-the-projection" class="section level2">
+<h2>Alternative syntax for controlling the projection</h2>
+<p>SOMETHING ON CALLING FWD() AND SPECIFYING TARGETS AS ARGUMENTS</p>
+</div>
+<div id="notes-on-conditioning-projections" class="section level2">
+<h2>Notes on conditioning projections</h2>
+<p>SOMETHING ON FWD WINDOW</p>
+</div>
+</div>
+<div id="references" class="section level1">
+<h1>References</h1>
+</div>
+<div id="more-information" class="section level1">
+<h1>More information</h1>
+<ul>
+<li>You can submit bug reports, questions or suggestions on this tutorial at <a href="https://github.com/flr/doc/issues" class="uri">https://github.com/flr/doc/issues</a>.</li>
+<li>Or send a pull request to <a href="https://github.com/flr/doc/" class="uri">https://github.com/flr/doc/</a></li>
+<li>For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <a href="http://flr-project.org" class="uri">http://flr-project.org</a>.</li>
+</ul>
+<div id="software-versions" class="section level2">
+<h2>Software Versions</h2>
+<ul>
+<li>R version 3.5.1 (2018-07-02)</li>
+<li>FLCore: 2.6.9.9002</li>
+<li>FLasher: 0.5.0.9001</li>
+<li><strong>Compiled</strong>: Tue Sep 4 11:45:35 2018</li>
+</ul>
+</div>
+<div id="license" class="section level2">
+<h2>License</h2>
+<p>This document is licensed under the <a href="https://creativecommons.org/licenses/by-sa/4.0">Creative Commons Attribution-ShareAlike 4.0 International</a> license.</p>
+</div>
+<div id="author-information" class="section level2">
+<h2>Author information</h2>
+<p><strong>Finlay Scott</strong>. European Commission, DG Joint Research Centre, Directorate D - Sustainable Resources, Unit D.02 Water and Marine Resources, Via E. Fermi 2749, 21027 Ispra VA, Italy. <a href="https://ec.europa.eu/jrc/" class="uri">https://ec.europa.eu/jrc/</a></p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

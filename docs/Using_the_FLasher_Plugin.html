@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Finlay Scott, Iago Mosqueira - European Commission Joint Research Center" />
+
+
+<title>Using the FLasher Rcpp plugin for Automatic Differentiation and other nerdy stuff</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="http://flr-project.org">
+    <span class="fa fa-home"></span>
+     
+    FLR
+  </a>
+</li>
+<li>
+  <a href="index.html">
+    <span class="fa fa-info"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-play-circle-o"></span>
+     
+    Intro
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A_quick_introduction_to_FLR.html">A quick introduction to FLR</a>
+    </li>
+    <li>
+      <a href="An_overview_of_the_FLCore_classes.html">An overview of the FLCore classes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-database"></span>
+     
+    Input
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Loading_your_data_into_FLR.html">Loading your data into FLR</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-magic"></span>
+     
+    Modelling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Modelling_stock_recruitment_with_FLSR.html">Modelling stock recruitment with FLSR</a>
+    </li>
+    <li>
+      <a href="Statistical_catch_at_age_models_in_FLa4a.html">Statistical catch at age models in FLa4a</a>
+    </li>
+    <li>
+      <a href="Modelling_growth_and_its_uncertainty_in_FLa4a.html">Modelling growth and its uncertainty in FLa4a</a>
+    </li>
+    <li>
+      <a href="Natural_mortality_modelling_in_FLa4a.html">Natural mortality modelling in FLa4a</a>
+    </li>
+    <li>
+      <a href="Stock_assessment_using_eXtended_Survivors_Analysis_with_FLXSA.html">Stock assessment using eXtended Survivors Analysis with FLXSA</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-tachometer"></span>
+     
+    Advice
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Running_Medium_Term_Forecasts_with_FLash.html">Running Medium Term Forecasts with FLash</a>
+    </li>
+    <li>
+      <a href="Short_Term_Forecasting_for_advice_using_FLash.html">Short Term Forecasting for advice using FLash</a>
+    </li>
+    <li>
+      <a href="Forecasting_on_the_Medium_Term_for_advice_using_FLasher.html">Forecasting on the Medium Term for advice using FLasher</a>
+    </li>
+    <li>
+      <a href="Reference_points_for_fisheries_management_with_FLBRP.html">Reference points for fisheries management with FLBRP</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-cogs"></span>
+     
+    MSE
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-cogs"></span>
+     
+    FLBEIA
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+    <li>
+      <a href="Conditioning_FLBEIA.html">Conditioning FLBEIA using Smart Conditioning Functions</a>
+    </li>
+    <li>
+      <a href="FLBEIA_A_Simple_Example.html">A simple example on how to use FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_An_Example_with_multiple_dimensions.html">A simple example with multiple dimensions in FLBEIA</a>
+    </li>
+    <li>
+      <a href="Using_Assessment_models_in_the_MP_FLBEIA.html">Using Stock Assessment models in the Management procedure of FLBEIA</a>
+    </li>
+    <li>
+      <a href="Testing_Management_Strategies_in_FLBEIA.html">Testing different Management Strategies in FLBEIA</a>
+    </li>
+    <li>
+      <a href="Data_Poor_MSE_in_FLBEIA.html">Data Limited MSE in FLBEIA</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-area-chart"></span>
+     
+    Plotting
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="ggplotFL_plotting_FLR_objects_with_ggplot2.html">ggplotFL, plotting FLR objects with ggplot2</a>
+    </li>
+    <li>
+      <a href="Plotting_FLR_objects_using_lattice.html">Plotting FLR objects using lattice</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-puzzle-piece"></span>
+     
+    Internals
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Units_of_measurement_in_FLR_objects.html">Units of measurement in FLR objects</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="http://github.com/flr/doc/issues">
+    <span class="fa fa-question fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Using the FLasher Rcpp plugin for Automatic Differentiation and other nerdy stuff</h1>
+<h4 class="author"><em>Finlay Scott, Iago Mosqueira - European Commission Joint Research Center</em></h4>
+<h4 class="date"><em>04 September, 2018</em></h4>
+
+</div>
+
+
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<p>With the <strong>Rcpp</strong> package it is possible to write, compile and call C++ code on the fly during an R session using the <em>cppFunction()</em> and <em>sourceCpp()</em> functions. A plugin has been written that allows the C++ components of <strong>FLasher</strong> to be used during an R session, including access to all of the FLCpp classes (the C++ implementation of the FLR classes) and automatic differentiation (AD) functionality through access to the CppAD library.</p>
+</div>
+<div id="using-cppfunction-and-sourcecpp" class="section level1">
+<h1><span class="header-section-number">2</span> Using <em>cppFunction()</em> and <em>sourceCpp()</em></h1>
+<p>Here we demonstrate how the <strong>Rcpp</strong> functions <em>cppFunction()</em> and <em>sourceCpp()</em> can be used</p>
+<div id="cppfunction" class="section level2">
+<h2><span class="header-section-number">2.1</span> <em>cppFunction()</em></h2>
+<p><em>cppFunction()</em> is used for writing functions in C++ that you want to call from R. You write your C++ function using standard C++ types for the arguments and returned object and the automatic <strong>Rcpp</strong> <em>as&lt;&gt;</em> and <em>wrap</em> takes care of the conversion. The C++ function is passed as a string to <em>cppFunction()</em> during the R session:</p>
+<pre class="r"><code>cppFunction(&quot;
+int my_add(int x, int y, int z) {
+  int sum = x + y + z;
+  return sum;
+}&quot;)</code></pre>
+<p>The C++ function can then be called as if it was an R function:</p>
+<pre class="r"><code>my_add(1L, 2L, 10L)</code></pre>
+<pre><code>## [1] 13</code></pre>
+<p>It is possible to use C++11 functionality, for example, using range-based loops and auto types: To do this we need to use C++11 plugin. This function takes a vector of integers and increments each value in the vector.</p>
+<pre class="r"><code>cppFunction(&quot;
+std::vector&lt;int&gt; rbl_demo(std::vector&lt;int&gt; v){
+    for (auto&amp; i : v){
+        i++;
+    }
+    return v;
+    }&quot;, 
+    plugins = &quot;cpp11&quot;)</code></pre>
+<p>We can call it as if it was a normal R function.</p>
+<pre class="r"><code>rbl_demo(c(1L, 2L, 3L))</code></pre>
+<pre><code>## [1] 2 3 4</code></pre>
+</div>
+<div id="sourcecpp" class="section level2">
+<h2><span class="header-section-number">2.2</span> <em>sourceCpp()</em></h2>
+<p><em>sourceCpp</em> is for writing longer C++ scripts and can contain multiple functions and classes, not all of which need to be exposed to R. Exposing the desired functions to R is done using the <em>Rcpp::attributes</em> (see the vignette in the <strong>Rcpp</strong> package for details). The C++ code can either be included as a text string or written in a separate file. Writing the code in a separate file makes it easier to manage and also your text editor will highlight the syntax correctly. You need to include the <em>include</em> to get all the advantages of Rcpp. Ideally, the following source code should be in a separate script. However, for the purposes of this vignette we write the C++ code as a text string, save it as a temporary file and then source the file. Be careful that the #include line does not get interpreted as a comment by R! This is why it is not on a separate line.</p>
+<pre class="r"><code>source_code &lt;- &quot; #include &lt;Rcpp.h&gt;
+    // This function is not exposed to R
+    double foo(double x){
+        return 2.0 * x;
+    }
+
+    // This function is exposed to R and calls the unexposed one
+    // [[Rcpp::export]]
+    double call_foo(double x){
+        double y = foo(x);
+        return y;
+    }
+&quot;
+cat(source_code, file = paste(tempdir(), &quot;test-1.cpp&quot;, sep = &quot;/&quot;))
+sourceCpp(file = paste(tempdir(), &quot;test-1.cpp&quot;, sep = &quot;/&quot;))</code></pre>
+<pre class="r"><code>call_foo(3.5)</code></pre>
+<pre><code>## [1] 7</code></pre>
+<p>C++11 code can be included using the C++11 plugin:</p>
+<pre class="r"><code>source_code &lt;- &quot; #include &lt;Rcpp.h&gt;
+    // [[Rcpp::plugins(cpp11)]]     
+
+    // [[Rcpp::export]]
+    std::vector&lt;double&gt; rbl_demo2(std::vector&lt;double&gt; v){
+        for (auto&amp; i : v){
+            i = i * 2.0;
+        }
+        return v;
+    }
+&quot;
+cat(source_code, file = paste(tempdir(), &quot;test-2.cpp&quot;, sep = &quot;/&quot;))
+sourceCpp(file = paste(tempdir(), &quot;test-2.cpp&quot;, sep = &quot;/&quot;))</code></pre>
+<pre class="r"><code>rbl_demo2(c(1.3, 2.6, 3.9))</code></pre>
+<pre><code>## [1] 2.6 5.2 7.8</code></pre>
+</div>
+</div>
+<div id="using-the-flasher-plugin" class="section level1">
+<h1><span class="header-section-number">3</span> Using the <strong>FLasher</strong> plugin</h1>
+<div id="with-cppfunction" class="section level2">
+<h2><span class="header-section-number">3.1</span> With <em>cppFunction()</em></h2>
+<p>Using the <strong>FLasher</strong> plugin means that you have access to the methods and classes in the C++ code of the <strong>FLasher</strong> package. For example, you can pass in and manipulate <em>FLQuant</em> objects. In this example, we write a C++ function that takes two <em>FLQuant</em>s adds them together and returns the resulting <em>FLQuant</em>.</p>
+<p>To use it with <em>cppFunction()</em> you must specify it as a <em>depends</em> argument:</p>
+<pre class="r"><code>cppFunction(&quot;
+FLQuant calc_catches(FLQuant landings, FLQuant discards){
+    FLQuant catches = landings + discards;
+    return catches;
+    }&quot;, 
+    depends = &quot;FLasher&quot;)</code></pre>
+<pre class="r"><code>data(ple4)
+landings &lt;- landings.n(ple4)[, ac(2000:2003)]
+discards &lt;- discards.n(ple4)[, ac(2000:2003)]</code></pre>
+<p>The C++ function can be called as normal:</p>
+<pre class="r"><code>calc_catches(landings, discards)</code></pre>
+<pre><code>## An object of class &quot;FLQuant&quot;
+## , , unit = unique, season = all, area = unique
+## 
+##     year
+## age  2000      2001      2002      2003     
+##   1  128525.79  97495.00 273411.66  91796.79
+##   2  138479.50 187737.70 172176.50 531815.50
+##   3  147232.10 142364.40 199413.20 136174.20
+##   4  242206.10  92615.80  77923.40  74693.40
+##   5   32822.43 109946.10  41589.14  34002.05
+##   6   12638.84  12252.56  47176.75  20056.13
+##   7    3078.29   4697.26   5248.95  19344.91
+##   8    1433.52   1455.38   2162.48   1819.76
+##   9    1209.85    716.29    593.44    673.88
+##   10   2395.19   1899.89   1503.05   1324.69
+## 
+## units:  1000</code></pre>
+</div>
+<div id="with-sourcecpp" class="section level2">
+<h2><span class="header-section-number">3.2</span> With <em>sourceCpp()</em></h2>
+<p>To use the <strong>FLasher</strong> plugin with <em>sourceCpp()</em> you must add a <em>depends</em> at the top of the script and <em>include</em> the <strong>FLasher</strong> header file. Again, be careful that the #include line does not interpreted as a comment by R. For this reason we place it on the same line as another line but include the line separator <em></em>. This is not necessary if creating a stand alone C++ file from scratching instead of trying to create a text string to write to a file.</p>
+<pre class="r"><code>source_code &lt;- &quot;
+    // [[Rcpp::depends(FLasher)]] \n #include &lt;FLasher.h&gt;
+
+    // [[Rcpp::export]]
+    FLQuant calc_catches2(FLQuant landings, FLQuant discards){
+        FLQuant catches = landings + discards;
+        return catches;
+    }
+&quot;
+cat(source_code, file = paste(tempdir(), &quot;test-3.cpp&quot;, sep = &quot;/&quot;))
+sourceCpp(file = paste(tempdir(), &quot;test-3.cpp&quot;, sep = &quot;/&quot;))</code></pre>
+<pre class="r"><code>calc_catches2(landings, discards)</code></pre>
+<pre><code>## An object of class &quot;FLQuant&quot;
+## , , unit = unique, season = all, area = unique
+## 
+##     year
+## age  2000      2001      2002      2003     
+##   1  128525.79  97495.00 273411.66  91796.79
+##   2  138479.50 187737.70 172176.50 531815.50
+##   3  147232.10 142364.40 199413.20 136174.20
+##   4  242206.10  92615.80  77923.40  74693.40
+##   5   32822.43 109946.10  41589.14  34002.05
+##   6   12638.84  12252.56  47176.75  20056.13
+##   7    3078.29   4697.26   5248.95  19344.91
+##   8    1433.52   1455.38   2162.48   1819.76
+##   9    1209.85    716.29    593.44    673.88
+##   10   2395.19   1899.89   1503.05   1324.69
+## 
+## units:  1000</code></pre>
+</div>
+</div>
+<div id="using-automatic-differentiation" class="section level1">
+<h1><span class="header-section-number">4</span> Using automatic differentiation</h1>
+<p>As well as providing access to the <em>FLCppad</em> classes and methods, the plugin allows the AD library <strong>CppAD</strong> that <strong>FLasher</strong> uses to be accessed. Unfortunately, at the moment, the interface is a bit clunky.</p>
+<p>Here we write C++ code that returns the value and the gradient of the <em>banana</em> function (see the R help page for <em>optim</em> for more information on the banana function). We can pass the exposed gradient function to R’s <em>optim</em> functions. There is also an exposed function that returns the Hessian.</p>
+<p>The function <em>func()</em> can be rewritten to be <em>any</em> function that you want that derivatives for. The rest of the code remains the same (it would be good to have this other code in the package but it is not possible at the moment).</p>
+<pre class="r"><code>source_code &lt;- &quot;
+    // [[Rcpp::depends(FLasher)]] \n #include &lt;FLasher.h&gt;
+
+    // This is the function we want to solve - the banana function
+    // It is templated because we need versions of it that deal with
+    // types double (for normal evaluation) and adouble (for AD evaluation) 
+    template &lt;typename T&gt;
+    std::vector&lt;T&gt; func(std::vector&lt;T&gt; params){
+        std::vector&lt;T&gt; res(1, 0.0);
+        res[0] = 100 * pow((params[1] - params[0] * params[0]), 2.0) + pow((1 - params[0]), 2.0);
+        return res;
+    }
+
+    // Evaluates the function
+    // [[Rcpp::export]]
+    std::vector&lt;double&gt; eval_function(std::vector&lt;double&gt; params){
+        return func(params);
+    }
+
+    // Uses CppAD magic to get the gradient of the function
+    // [[Rcpp::export]]
+    std::vector&lt;double&gt; eval_gradient(std::vector&lt;double&gt; params){
+        std::vector&lt;adouble&gt; x(params.begin(), params.end());
+        CppAD::Independent(x);
+        std::vector&lt;adouble&gt; res = func(x);
+        CppAD::ADFun&lt;double&gt; fun(x, res);
+        return fun.Jacobian(params);
+    }
+
+    // Uses CppAD magic to get the Hessian
+    // [[Rcpp::export]]
+    std::vector&lt;double&gt; eval_hessian(std::vector&lt;double&gt; params, unsigned int var = 0){
+        std::vector&lt;adouble&gt; x(params.begin(), params.end());
+        CppAD::Independent(x);
+        std::vector&lt;adouble&gt; res = func(x);
+        CppAD::ADFun&lt;double&gt; fun(x, res);
+        return fun.Hessian(params, var);
+    }
+&quot;
+
+cat(source_code, file = paste(tempdir(), &quot;test-4.cpp&quot;, sep = &quot;/&quot;))
+sourceCpp(file = paste(tempdir(), &quot;test-4.cpp&quot;, sep = &quot;/&quot;))</code></pre>
+<p>We can test this by solving the function in R with <em>optim()</em> using an approximate gradient, the exact gradient function and the AD gradient.</p>
+<pre class="r"><code># Rosenbrock Banana function
+fr &lt;- function(x) {
+    100 * (x[2] - x[1] * x[1])^2 + (1 - x[1])^2
+}
+# The exact gradient of the banana function Gradient of &#39;fr&#39;
+grr &lt;- function(x) {
+    x1 &lt;- x[1]
+    x2 &lt;- x[2]
+    c(-400 * x[1] * (x[2] - x[1] * x[1]) - 2 * (1 - x[1]), 200 * 
+        (x[2] - x[1] * x[1]))
+}</code></pre>
+<p>We then solve the function using <em>optim</em> using the three methods for calculating the gradient:</p>
+<p>Using the approximate gradient in R.</p>
+<pre class="r"><code>res1 &lt;- optim(c(-1.2, 1), fr, method = &quot;BFGS&quot;)
+res1[c(&quot;par&quot;, &quot;value&quot;, &quot;counts&quot;)]</code></pre>
+<pre><code>## $par
+## [1] 0.9998 0.9996
+## 
+## $value
+## [1] 3.827e-08
+## 
+## $counts
+## function gradient 
+##      118       38</code></pre>
+<p>Using the exact gradient in R.</p>
+<pre class="r"><code>res2 &lt;- optim(c(-1.2, 1), fr, grr, method = &quot;BFGS&quot;)
+res2[c(&quot;par&quot;, &quot;value&quot;, &quot;counts&quot;)]</code></pre>
+<pre><code>## $par
+## [1] 1 1
+## 
+## $value
+## [1] 9.595e-18
+## 
+## $counts
+## function gradient 
+##      110       43</code></pre>
+<p>Using the the AD gradient we get from using the CppAD library</p>
+<pre class="r"><code>res3 &lt;- optim(c(-1.2, 1), eval_function, eval_gradient, method = &quot;BFGS&quot;)
+res3[c(&quot;par&quot;, &quot;value&quot;, &quot;counts&quot;)]</code></pre>
+<pre><code>## $par
+## [1] 1 1
+## 
+## $value
+## [1] 9.595e-18
+## 
+## $counts
+## function gradient 
+##      110       43</code></pre>
+<p>The version with the AD gradient is exactly the same as the version with the exact gradient function.</p>
+<p>We can also get the Hessian:</p>
+<pre class="r"><code># Estimated by R
+optimHess(res1$par, fr)</code></pre>
+<pre><code>##        [,1]   [,2]
+## [1,]  801.7 -399.9
+## [2,] -399.9  200.0</code></pre>
+<pre class="r"><code># Estimated by R using the the gradient function
+optimHess(res2$par, fr, grr)</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]  802 -400
+## [2,] -400  200</code></pre>
+<pre class="r"><code># Calculated using the AD function
+eval_hessian(res3$par)</code></pre>
+<pre><code>## [1]  802 -400 -400  200</code></pre>
+<p>The above C++ code can be used to provide the gradients and Hessians for any functions. All the user needs to do is write their own <em>func()</em> function (with the same arguments).</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

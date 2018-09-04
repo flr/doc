@@ -15,14 +15,16 @@
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
-<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -31,10 +33,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -89,6 +93,9 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
 }
@@ -98,34 +105,34 @@ button.code-folding-btn:focus {
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
-  padding-top: 51px;
+  padding-top: 45px;
   padding-bottom: 40px;
 }
 /* offset scroll position for anchor links (for fixed navbar)  */
 .section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 
 .section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 </style>
 
@@ -279,7 +286,41 @@ $(document).ready(function () {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">An introduction to MSE using FLR</li>
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-cogs"></span>
+     
+    FLBEIA
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+    <li>
+      <a href="Conditioning_FLBEIA.html">Conditioning FLBEIA using Smart Conditioning Functions</a>
+    </li>
+    <li>
+      <a href="FLBEIA_A_Simple_Example.html">A simple example on how to use FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_An_Example_with_multiple_dimensions.html">A simple example with multiple dimensions in FLBEIA</a>
+    </li>
+    <li>
+      <a href="Using_Assessment_models_in_the_MP_FLBEIA.html">Using Stock Assessment models in the Management procedure of FLBEIA</a>
+    </li>
+    <li>
+      <a href="Testing_Management_Strategies_in_FLBEIA.html">Testing different Management Strategies in FLBEIA</a>
+    </li>
+    <li>
+      <a href="Data_Poor_MSE_in_FLBEIA.html">Data Limited MSE in FLBEIA</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -331,7 +372,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">An introduction to MSE with FLR</h1>
-<h4 class="date"><em>15 September, 2017</em></h4>
+<h4 class="date"><em>04 September, 2018</em></h4>
 
 </div>
 
@@ -383,7 +424,7 @@ fmod &lt;- ~te(replace(age, age&gt;9,9), year, k=c(6,8))
 mcsave &lt;- 100
 mcmc &lt;- it * mcsave
 # Fit the model
-fit &lt;- a4aSCA(stk, idx, fmodel = fmod, qmodel = qmod, fit = &quot;MCMC&quot;, 
+fit &lt;- sca(stk, idx, fmodel = fmod, qmodel = qmod, fit = &quot;MCMC&quot;, 
        mcmc = SCAMCMC(mcmc = mcmc, mcsave = mcsave, mcprobe = 0.4))
 # Update the FLStock object
 stk &lt;- stk + fit
@@ -544,21 +585,20 @@ for(i in vy[-length(vy)]){
 stk.tmp&lt;-window(stk.om,start=iy)
 # annual probability of being below Blim
 (risky&lt;-iterSums(ssb(stk.tmp)/Blim&lt;1)/it)</code></pre>
-<pre><code>An object of class &quot;FLQuant&quot;
-, , unit = unique, season = all, area = unique
+<pre><code>, , unit = unique, season = all, area = unique
 
      year
-age   2009 2010 2011 2012 2013
-  all 1.00 1.00 0.90 0.50 0.05
+age   2018 2019 2020 2021 2022
+  all 1.00 1.00 1.00 0.85 0.15
 
       [ ...  2 years]
 
      year
-age   2016 2017 2018 2019 2020
+age   2025 2026 2027 2028 2029
   all 0    0    0    0    0   </code></pre>
 <pre class="r"><code># mean probabiity of being below Blim in the first half of the projection period
 mean(risky[,1:trunc(length(risky)/2)])</code></pre>
-<pre><code>[1] 0.575</code></pre>
+<pre><code>[1] 0.6667</code></pre>
 <pre class="r"><code># ...and second half
 mean(risky[,(trunc(length(risky)/2)+1):length(risky)])</code></pre>
 <pre><code>[1] 0</code></pre>
@@ -592,11 +632,11 @@ Results for applying an ICES MSY-like rule, comparing the operating model to the
 <div id="software-versions" class="section level2">
 <h2>Software Versions</h2>
 <ul>
-<li>R version 3.4.1 (2017-06-30)</li>
-<li>FLCore: 2.6.5</li>
-<li>ggplotFL: 2.6.1</li>
-<li>ggplot2: 2.2.1</li>
-<li><strong>Compiled</strong>: Fri Sep 15 15:43:55 2017</li>
+<li>R version 3.5.1 (2018-07-02)</li>
+<li>FLCore: 2.6.9.9002</li>
+<li>ggplotFL: 2.6.4.9002</li>
+<li>ggplot2: 3.0.0</li>
+<li><strong>Compiled</strong>: Tue Sep 4 11:47:51 2018</li>
 </ul>
 </div>
 <div id="license" class="section level2">

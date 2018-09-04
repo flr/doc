@@ -568,7 +568,6 @@ The information in the brackets is the Median Absolute Deviation, a way of summa
 We now have the recruitment residuals.
 We'll use the *ctrl_catch* control object we made in [Example 2](#ex2).
 
-
 with decreasing catch.
 We call *fwd()* as usual, only now we have *sr.residuals* and *sr.residuals.mult* arguments.
 This takes a little time (we have 1000 iterations).

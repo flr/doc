@@ -40,7 +40,7 @@ fmod <- ~te(replace(age, age>9,9), year, k=c(6,8))
 mcsave <- 100
 mcmc <- it * mcsave
 # Fit the model
-fit <- a4aSCA(stk, idx, fmodel = fmod, qmodel = qmod, fit = "MCMC", 
+fit <- sca(stk, idx, fmodel = fmod, qmodel = qmod, fit = "MCMC", 
        mcmc = SCAMCMC(mcmc = mcmc, mcsave = mcsave, mcprobe = 0.4))
 # Update the FLStock object
 stk <- stk + fit

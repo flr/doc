@@ -68,11 +68,15 @@ plot(brp4Eco)
 
 ## ---- pgy_ex2------------------------------------------------------------
 p <- plot(brp4Eco,obs=T)
-p$data <- within(p$data,{minrge <- NA
-                         minrge <- replace(minrge,grep("v. F",pnl),rge4@.Data["min","harvest",])
-                         minrge <- replace(minrge,grep("v. SSB",pnl),rge4@.Data["max","ssb",])
-                         maxrge <- NA
-                         maxrge <- replace(maxrge,grep("v. F",pnl),rge4@.Data["max","harvest",])
-                         maxrge <- replace(maxrge,grep("v. SSB",pnl),rge4@.Data["min","ssb",])})
-p+ geom_area(aes(x = ifelse(x>=minrge & x<=maxrge , x, NA),y=y,group=iter),fill="grey",alpha=0.5)    
+p$data <- within(p$data, {
+  minrge <- NA
+  minrge <- replace(minrge,grep("v. F",pnl),rge4@.Data["min","harvest",])
+  minrge <- replace(minrge,grep("v. SSB",pnl),rge4@.Data["max","ssb",])
+  maxrge <- NA
+  maxrge <- replace(maxrge,grep("v. F",pnl),rge4@.Data["max","harvest",])
+  maxrge <- replace(maxrge,grep("v. SSB",pnl),rge4@.Data["min","ssb",])
+})
+
+p + geom_area(aes(x = ifelse(x>=minrge & x<=maxrge ,x, NA), y=y, group=iter),
+  fill="grey",alpha=0.5)    
 
