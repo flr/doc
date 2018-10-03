@@ -15,14 +15,16 @@
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
-<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -31,10 +33,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -89,6 +93,9 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
 }
@@ -98,34 +105,34 @@ button.code-folding-btn:focus {
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
-  padding-top: 51px;
+  padding-top: 45px;
   padding-bottom: 40px;
 }
 /* offset scroll position for anchor links (for fixed navbar)  */
 .section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 
 .section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
+  padding-top: 50px;
+  margin-top: -50px;
 }
 </style>
 
@@ -279,7 +286,41 @@ $(document).ready(function () {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">An introduction to MSE using FLR</li>
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-cogs"></span>
+     
+    FLBEIA
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+    <li>
+      <a href="Conditioning_FLBEIA.html">Conditioning FLBEIA using Smart Conditioning Functions</a>
+    </li>
+    <li>
+      <a href="FLBEIA_A_Simple_Example.html">A simple example on how to use FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_An_Example_with_multiple_dimensions.html">A simple example with multiple dimensions in FLBEIA</a>
+    </li>
+    <li>
+      <a href="Using_Assessment_models_in_the_MP_FLBEIA.html">Using Stock Assessment models in the Management procedure of FLBEIA</a>
+    </li>
+    <li>
+      <a href="Testing_Management_Strategies_in_FLBEIA.html">Testing different Management Strategies in FLBEIA</a>
+    </li>
+    <li>
+      <a href="Data_Poor_MSE_in_FLBEIA.html">Data Limited MSE in FLBEIA</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -331,7 +372,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">ggplotFL: plotting FLR objects with ggplot2</h1>
-<h4 class="date"><em>15 September, 2017</em></h4>
+<h4 class="date"><em>03 October, 2018</em></h4>
 
 </div>
 
@@ -368,32 +409,32 @@ data(&quot;nsher&quot;)</code></pre>
 summary(ple4)</code></pre>
 <pre><code>An object of class &quot;FLStock&quot;
 
-Name: Plaice in IV 
-Description: Imported from a VPA file. ( N:\Projecten\ICES WG\Demersale werkgroep  [...] 
+Name: PLE 
+Description: Plaice in IV. ICES WGNSSK 2018. FLAAP 
 Quant: age 
 Dims:  age  year    unit    season  area    iter
-    10  52  1   1   1   1   
+    10  61  1   1   1   1   
 
 Range:  min max pgroup  minyear maxyear minfbar maxfbar 
-    1   10  10  1957    2008    2   6   
+    1   10  10  1957    2017    2   6   
 
-catch         : [ 1 52 1 1 1 1 ], units =  t 
-catch.n       : [ 10 52 1 1 1 1 ], units =  10^3 
-catch.wt      : [ 10 52 1 1 1 1 ], units =  kg 
-discards      : [ 1 52 1 1 1 1 ], units =  t 
-discards.n    : [ 10 52 1 1 1 1 ], units =  10^3 
-discards.wt   : [ 10 52 1 1 1 1 ], units =  kg 
-landings      : [ 1 52 1 1 1 1 ], units =  t 
-landings.n    : [ 10 52 1 1 1 1 ], units =  10^3 
-landings.wt   : [ 10 52 1 1 1 1 ], units =  kg 
-stock         : [ 1 52 1 1 1 1 ], units =  t 
-stock.n       : [ 10 52 1 1 1 1 ], units =  10^3 
-stock.wt      : [ 10 52 1 1 1 1 ], units =  kg 
-m             : [ 10 52 1 1 1 1 ], units =  m 
-mat           : [ 10 52 1 1 1 1 ], units =   
-harvest       : [ 10 52 1 1 1 1 ], units =  f 
-harvest.spwn  : [ 10 52 1 1 1 1 ], units =   
-m.spwn        : [ 10 52 1 1 1 1 ], units =   </code></pre>
+catch         : [ 1 61 1 1 1 1 ], units =  t 
+catch.n       : [ 10 61 1 1 1 1 ], units =  1000 
+catch.wt      : [ 10 61 1 1 1 1 ], units =  kg 
+discards      : [ 1 61 1 1 1 1 ], units =  t 
+discards.n    : [ 10 61 1 1 1 1 ], units =  1000 
+discards.wt   : [ 10 61 1 1 1 1 ], units =  kg 
+landings      : [ 1 61 1 1 1 1 ], units =  t 
+landings.n    : [ 10 61 1 1 1 1 ], units =  1000 
+landings.wt   : [ 10 61 1 1 1 1 ], units =  kg 
+stock         : [ 1 61 1 1 1 1 ], units =  t 
+stock.n       : [ 10 61 1 1 1 1 ], units =  1000 
+stock.wt      : [ 10 61 1 1 1 1 ], units =  kg 
+m             : [ 10 61 1 1 1 1 ], units =  m 
+mat           : [ 10 61 1 1 1 1 ], units =   
+harvest       : [ 10 61 1 1 1 1 ], units =  f 
+harvest.spwn  : [ 10 61 1 1 1 1 ], units =   
+m.spwn        : [ 10 61 1 1 1 1 ], units =   </code></pre>
 <p>By calling <code>as.data.frame()</code> on an <code>FLStock</code>, the list is collapsed to a dataframe that than can be plotted by selecting the right dimensions in terms of slot, age, iter, etc.. :</p>
 <pre class="r"><code>head(as.data.frame(ple4))</code></pre>
 <table>
@@ -418,7 +459,7 @@ m.spwn        : [ 10 52 1 1 1 1 ], units =   </code></pre>
 <td align="left">all</td>
 <td align="left">unique</td>
 <td align="left">1</td>
-<td align="right">78423</td>
+<td align="right">78360</td>
 </tr>
 <tr class="even">
 <td align="left">catch</td>
@@ -428,7 +469,7 @@ m.spwn        : [ 10 52 1 1 1 1 ], units =   </code></pre>
 <td align="left">all</td>
 <td align="left">unique</td>
 <td align="left">1</td>
-<td align="right">88240</td>
+<td align="right">88785</td>
 </tr>
 <tr class="odd">
 <td align="left">catch</td>
@@ -438,7 +479,7 @@ m.spwn        : [ 10 52 1 1 1 1 ], units =   </code></pre>
 <td align="left">all</td>
 <td align="left">unique</td>
 <td align="left">1</td>
-<td align="right">109238</td>
+<td align="right">105186</td>
 </tr>
 <tr class="even">
 <td align="left">catch</td>
@@ -448,7 +489,7 @@ m.spwn        : [ 10 52 1 1 1 1 ], units =   </code></pre>
 <td align="left">all</td>
 <td align="left">unique</td>
 <td align="left">1</td>
-<td align="right">117138</td>
+<td align="right">117975</td>
 </tr>
 <tr class="odd">
 <td align="left">catch</td>
@@ -458,7 +499,7 @@ m.spwn        : [ 10 52 1 1 1 1 ], units =   </code></pre>
 <td align="left">all</td>
 <td align="left">unique</td>
 <td align="left">1</td>
-<td align="right">118331</td>
+<td align="right">119541</td>
 </tr>
 <tr class="even">
 <td align="left">catch</td>
@@ -468,7 +509,7 @@ m.spwn        : [ 10 52 1 1 1 1 ], units =   </code></pre>
 <td align="left">all</td>
 <td align="left">unique</td>
 <td align="left">1</td>
-<td align="right">125272</td>
+<td align="right">126290</td>
 </tr>
 </tbody>
 </table>
@@ -477,7 +518,7 @@ m.spwn        : [ 10 52 1 1 1 1 ], units =   </code></pre>
 <h2><code>FLQuant</code></h2>
 <p>Passing an <code>FLQuant</code> object to ggplot, we can specify the names of the dimensions as variables in the plot, where <code>data</code> refers to the column storing the actual numeric values. For example, to plot <em>data</em> (the <em>catch</em> slot from <code>ple4</code> in this case) against year, we could use</p>
 <pre class="r"><code>ggplot(data = catch(ple4), aes(year, data)) + geom_point() + geom_line() + ylab(&quot;Catch (t)&quot;) + xlab(&quot;Year&quot;)</code></pre>
-<p><img src="ggplotFL_plotting_FLR_objects_with_ggplot2_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="ggplotFL_plotting_FLR_objects_with_ggplot2_files/figure-html/plotflquant-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>where we pass directly an <code>FLQuant</code> object for the <em>data</em> argument in <code>ggplot</code>, specify an aesthetic mapping (<code>aes(year, data)</code>), and add both points (<code>geom_point()</code>) and lines (<code>geom_line()</code>), together with the appropriate axis labels.</p>
 </div>
 <div id="flquants" class="section level2">
@@ -513,7 +554,7 @@ Overall <code>ggplot</code> of an <code>FLStock</code> object, faceted by slot.
 <h2><code>FLQuant</code></h2>
 <p>The standard <code>plot()</code> method for <code>FLQuant</code> defined in <code>ggplotFL</code> uses the faceting capabilities of <code>ggplot</code> to better present some of the multiple dimensions of these objects. If any dimension, other than year and iter, has length greater than one, it will be added to the formula used by <code>facet_grid</code>. For example, an <code>FLQuant</code> with dimensions</p>
 <pre class="r"><code>dim(catch.n(ple4))</code></pre>
-<pre><code>[1] 10 52  1  1  1  1</code></pre>
+<pre><code>[1] 10 61  1  1  1  1</code></pre>
 <p>will generate a plot with a time series by year of the data it contains, with horizontal facets for the only dimension, other than year, of length greater than 1 (here age).</p>
 <pre class="r"><code>plot(catch.n(ple4))</code></pre>
 <div class="figure" style="text-align: center">
@@ -562,7 +603,7 @@ Wrap-based ggplot2-based plot for an FLQuants object with multiple iterations, a
 </div>
 <div id="flstock-1" class="section level2">
 <h2><code>FLStock</code></h2>
-<p>The <code>ggplotFL</code> version of the standard plot for the <code>FLStock</code> class contains the time series of recruitment (obtained by calling <code>rec()</code>), SSB (<code>ssb()</code>), catch (<code>catch()</code>), and fishing morality or harvest for selected ages(<code>fbar()</code>). The four panels are now arranged in a 4-row matrix to better display the trends in the time series.</p>
+<p>The <code>ggplotFL</code> version of the standard plot for the <code>FLStock</code> class contains the time series of recruitment (obtained by calling <code>rec()</code>), SSB (<code>ssb()</code>), catch (<code>catch()</code>), and fishing mortality or harvest for selected ages(<code>fbar()</code>). The four panels are now arranged in a 4-row matrix to better display the trends in the time series.</p>
 <pre class="r"><code>plot(ple4)</code></pre>
 <div class="figure" style="text-align: center">
 <img src="ggplotFL_plotting_FLR_objects_with_ggplot2_files/figure-html/pfls-1.png" alt="A ggplot2 version of the standard plot() for FLStock, as applied to `ple4`" width="672" />
@@ -670,17 +711,17 @@ head(fdf, 3)</code></pre>
 <tr class="odd">
 <td align="right">1</td>
 <td align="left">10%</td>
-<td align="right">2.412</td>
+<td align="right">2.238</td>
 </tr>
 <tr class="even">
 <td align="right">2</td>
 <td align="left">10%</td>
-<td align="right">2.315</td>
+<td align="right">2.432</td>
 </tr>
 <tr class="odd">
 <td align="right">3</td>
 <td align="left">10%</td>
-<td align="right">2.540</td>
+<td align="right">2.379</td>
 </tr>
 </tbody>
 </table>
@@ -763,11 +804,11 @@ ggplot(dat, aes(year, as.factor(age), size=resid)) +
 <div id="software-versions" class="section level2">
 <h2>Software Versions</h2>
 <ul>
-<li>R version 3.4.1 (2017-06-30)</li>
-<li>FLCore: 2.6.5</li>
-<li>ggplotFL: 2.6.1</li>
-<li>ggplot2: 2.2.1</li>
-<li><strong>Compiled</strong>: Fri Sep 15 15:56:13 2017</li>
+<li>R version 3.5.1 (2018-07-02)</li>
+<li>FLCore: 2.6.9.9007</li>
+<li>ggplotFL: 2.6.4.9002</li>
+<li>ggplot2: 3.0.0</li>
+<li><strong>Compiled</strong>: Wed Oct 3 11:46:47 2018</li>
 </ul>
 </div>
 <div id="license" class="section level2">

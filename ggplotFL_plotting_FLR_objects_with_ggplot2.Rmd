@@ -148,7 +148,7 @@ plot(fqs) + facet_wrap(~qname, scales="free")
 
 ## `FLStock`
 
-The `ggplotFL` version of the standard plot for the `FLStock` class contains the time series of recruitment (obtained by calling `rec()`), SSB (`ssb()`), catch (`catch()`), and fishing morality or harvest for selected ages(`fbar()`). The four panels are now arranged in a 4-row matrix to better display the trends in the time series.
+The `ggplotFL` version of the standard plot for the `FLStock` class contains the time series of recruitment (obtained by calling `rec()`), SSB (`ssb()`), catch (`catch()`), and fishing mortality or harvest for selected ages(`fbar()`). The four panels are now arranged in a 4-row matrix to better display the trends in the time series.
 
 ```{r, pfls,  fig.cap="A ggplot2 version of the standard plot() for FLStock, as applied to `ple4`"}
 plot(ple4)

@@ -16,14 +16,14 @@ data("ple4")
 data("ple4sex")
 data("nsher")
 
-## ------------------------------------------------------------------------
+## ----ple4----------------------------------------------------------------
 # summary of the FLStock
 summary(ple4)
 
-## ------------------------------------------------------------------------
+## ----dfple4--------------------------------------------------------------
 head(as.data.frame(ple4))
 
-## ------------------------------------------------------------------------
+## ----plotflquant---------------------------------------------------------
 ggplot(data = catch(ple4), aes(year, data)) + geom_point() + geom_line() + ylab("Catch (t)") + xlab("Year")
 
 ## ---- ggflqs, echo=TRUE, fig.cap="Facet wrap line plot of time series from an FLQuants object."----

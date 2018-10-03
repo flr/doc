@@ -25,7 +25,7 @@ docs/R/%.R: %.Rmd
 	@R -e "knitr::purl('$<', output='$@')"
 
 setup:
-	R -e "install.packages(c('captioner', 'printr'))"
+	R -e "install.packages(c('captioner', 'printr', 'rmarkdown', 'knitr'))"
 
 clean:
 	rm -f *.html
