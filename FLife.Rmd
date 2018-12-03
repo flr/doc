@@ -1,16 +1,13 @@
 ---
 title: "Life History Relationships"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
-output: html_document
-vignette: >
-  %\VignetteIndexEntry{FLife}
-  %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
+output:
 github_document:
-    mathjax: TRUE
-bibliography: refs.bib
-tags: FLife FLR
-license: Creative Commons Attribution-ShareAlike 4.0 International Public License
+  mathjax: TRUE
+pdf_document:
+  fig_width: 6 
+  fig_height: 4 
+  toc: yes
+bibliography: bibliography.bib
 ---
 
 
@@ -243,10 +240,6 @@ logistic(age,FLPar(a50=4,ato95=1,asym=1.0))
 sigmoid( age,FLPar(a50=4,ato95=1))
 ```
 
-
-### Natural Mortality
-
-Many estimators have been propose for M, based on growth and reproduction,  see @kenchington2014natural.
 
 ### Natural Mortality
 
@@ -904,7 +897,7 @@ ggplot(ctc)+
 
 ## Acknowledgements
 
-This vignette and many of the methods documented in it were developed under the MyDas project funded by the Irish exchequer and EMFF 2014-2020. The overall aim of MyDas is to develop and test a range of assessment models and methods to establish Maximum Sustainable Yield (MSY) reference points (or proxy MSY reference points) across the spectrum of data-limited stocks.
+This vignette and the methods documented in it were developed under the MyDas project funded by the Irish exchequer and EMFF 2014-2020. The overall aim of MyDas is to develop and test a range of assessment models and methods to establish Maximum Sustainable Yield (MSY) reference points (or proxy MSY reference points) across the spectrum of data-limited stocks.
 
 # References {#References}
 

@@ -6,3 +6,5 @@ docs/pdf/*_files/
 docs/Makefile
 docs/bibliography.bib
 docs/R/ini.R
+doc.Rproj
+refs.bib

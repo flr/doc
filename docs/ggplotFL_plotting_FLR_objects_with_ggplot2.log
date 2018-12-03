@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2018.8.20)  4 SEP 2018 11:48
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2018.8.20)  3 OCT 2018 11:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1053,7 +1053,7 @@ l.285 ...ggplot2_files/figure-latex/plotflquant-1}
 Here is how much of TeX's memory you used:
  13195 strings out of 494953
  191816 string characters out of 6180977
- 296252 words of memory out of 5000000
+ 296248 words of memory out of 5000000
  16233 multiletter control sequences out of 15000+600000
  68935 words of font info for 81 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
