@@ -37,6 +37,8 @@ navbar:
           href: Natural_mortality_modelling_in_FLa4a.html
         - text: "Stock assessment using eXtended Survivors Analysis with FLXSA"
           href: Stock_assessment_using_eXtended_Survivors_Analysis_with_FLXSA.html
+        - text: "Life History Modelling"
+          href: FLife.html
     - text: "Advice"
       icon: fa-tachometer
       menu:
