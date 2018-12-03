@@ -19,6 +19,7 @@ title: "FLR Tutorials"
 - [Modelling growth and its uncertainty in FLa4a](Modelling_growth_and_its_uncertainty_in_FLa4a.html)
 - [Natural mortality modelling in FLa4a](Natural_mortality_modelling_in_FLa4a.html)
 - [Stock assessment using eXtended Survivors Analysis with FLXSA](Stock_assessment_using_eXtended_Survivors_Analysis_with_FLXSA.html)
+- [Life History Relationships](FLife.html)
 
 ## Management Advice
 
