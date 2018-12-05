@@ -30,7 +30,7 @@ library(knitr)
 opts_chunk$set(echo    =TRUE,
                eval    =TRUE,
                cache   =!FALSE,
-               cache.path="cache/",
+               cache.path="cache/mpb",
                prompt  =FALSE,
                comment =NA,
                message =FALSE,
@@ -38,7 +38,7 @@ opts_chunk$set(echo    =TRUE,
                warnings=FALSE,
                fig.height=4.5,
                fig.width =4.5,
-               fig.path  ="tex/")
+               fig.path  ="tex/mpb/")
 ```
 
 ```{r,echo=FALSE}
@@ -48,7 +48,7 @@ options(warn=-1)
 library(ggplotFL)
 library(plyr)
 library(reshape)
-library(mpb)
+library(mpb)  
 
 theme_set(theme_bw())
 options(digits=3)
@@ -148,7 +148,7 @@ ggplot(as.data.frame(cpue))+
 Starting values for the parameters are required. The defaults assume that $r$ is 0.5, the production function is symetric (i.e. p=1) and the $b0$ ratio of the initial biomass to $k$ is 1. MSY should be the same order of magnitude as the catch and so carry capacity ($k$) can be calculated if a guess for $r$ is provided. 
 
 ```{r fitGuess2,size="tiny"}
-params(bd)["k"]=mpb:::guessK(params(bd)["r"],mean(catch(bd),na.rm=T),params(bd)["p"])
+params(bd)["k"]=guessK(params(bd)["r"],mean(catch(bd),na.rm=T),params(bd)["p"])
 ```
 
 Parameters are also required for catchability ($q$) and the CV for the CPUE indices; if the population parameters are known then the stock can be calculated from the catch and initial values for $q$ and the CV derived.
@@ -179,7 +179,7 @@ Since the true parameter values are known the fit can be checked
 params(bdHat)  
 params(bdHat)/params(bd)
 
-plot(mpb:::biodyns(list("True"=bd,"Hat"=bdHat)))+
+plot(as(list("True"=bd,"Hat"=bdHat),"biodyns"))+
   theme(legend.position="bottom")+
   theme_bw()
 ```
@@ -262,9 +262,6 @@ Likelihood profiles are useful to check that you are actually at a global soluti
 
 The control slot can be used to produce a profile, i.e. fix a parameter or parameters for a range of values and then find the maximum likelihood by estimating the other parameters.
 
-```{r}
-save(bdHat,cpue,file="/home/laurence/Desktop/tmp/tst.RData") 
-```
 
 1D
 ```{r prfl, fig.margin=TRUE, fig.height=3, fig.cap="Likelihood profile for r"}
@@ -304,7 +301,7 @@ setControl(bdHat)=params(bdHat)
 bdHat@control[3:4,"phase"]=-1
 bdHat=fit(bdHat,cpue)
 
-sims=mpb:::biodyns(list("True"=bd,"Best Fit"=bdHat))
+sims=as(list("True"=bd,"Best Fit"=bdHat),"biodyns")
 ```
 
 There are various ways to estimate undercertainty in parameter estimates and quantities derived from them, i.e. use the covariance matrix provided by a maximum likelihood fit, bootstrapping, the jack knife or Bayesian methods such as Monte Carlo Markov Chain,
@@ -356,7 +353,7 @@ Marginal densities for stock
 boot=stock(sims[["Bootstrap"]])[,39]
 
 set.seed(7890) 
-jack=mpb:::randJack(500,stock(sims[[  "Best Fit"]])[,39],
+jack=randJack(500,stock(sims[[  "Best Fit"]])[,39],
                   stock(sims[["Jack Knife"]])[,39])
 
 bnow=rbind(data.frame(Method="boot",stock=c(boot)),
@@ -403,48 +400,46 @@ Use simulated data to run annual, tri-annual, F bound and TAC bounded HCRs
 
 Annual
 ```{r hcr1}
-source('~/Desktop/flr/mpb/R/biodyn-hcr.R')
-
 bd=window(sim(),end=29)
-for (i in seq(29,49,1))
-  bd=fwd(bd,harvest=mpb:::hcr(bd,yr=i-1,hyr=i+1:2))
-simHCR=mpb:::biodyns(list("Annual"=bd))
+for (i in seq(28,49,1))
+  bd=fwd(bd,harvest=hcr(bd,yr=i-1,hyr=i+1:2))
+
+simHCR=as(list("Annual"=bd),"biodyns")
 ```
 
 Tri-annual
 ```{r hcr}
-source('~/Desktop/flr/mpb/R/biodyn-hcr.R')
-
 bd=window(bd,end=29)
-for (i in seq(29,49,3))
-  bd=fwd(bd,harvest=mpb:::hcr(bd,yr=i,hyr=i+1:3))
+for (i in seq(28,49,3))
+  bd=fwd(bd,harvest=hcr(bd,yr=i,hyr=i+1:3))
 simHCR["Triennial"]=bd
 ```
 
 Bound on F
 ```{r hcrF}
 bd=window(bd,end=29)
-for (i in seq(29,49,3))
-  bd=fwd(bd,harvest=mpb:::hcr(bd,yr=i,byr=i,hyr=i+1:3,bndF=c(0.9,1.1)))
+for (i in seq(28,49,3))
+  bd=fwd(bd,harvest=hcr(bd,yr=i,byr=i,hyr=i+1:3,bndF=c(0.9,1.1)))
 simHCR["bound F"]=bd
 ```
 
 Bound on catch
 ```{r hcrY}
 bd=window(bd,end=29)
-for (i in seq(29,49,3))
-  bd=fwd(bd,catch=mpb:::hcr(bd,yr=i,hyr=i+1:3,tac=TRUE,bndTac=c(0.9,1.1)))
+for (i in seq(28,49,3))
+  bd=fwd(bd,catch  =hcr(bd,yr=i,byr=i-1,hyr=i+1:3,tac=TRUE,bndTac=c(0.9,1.1)))
+
 simHCR["bound TAC"]=bd
 ```
 
-```{r hcrPlot, fig.margin=TRUE,fig.width=4, fig.height=4,fig.cap="Plots of projections", eval=FALSE}
+```{r hcrPlot, fig.margin=TRUE,fig.width=4, fig.height=4,fig.cap="Plots of projections"}
 plot(simHCR)+
   theme_bw()+
   theme(legend.position="bottom")
 ```
 
 Process Error and Harvest Control Rule
-```{r MC,fig.margin=TRUE,fig.width=6,fig.height=6, eval=FALSE}
+```{r MC,fig.margin=TRUE,fig.width=6,fig.height=6}
 set.seed(7890)
 pe=rlnorm(500,FLQuant(0,dimnames=list(year=1:50)),0.5)
 
@@ -464,9 +459,27 @@ plot(bd)+
 \newpage
 
 
-# To Dos
-
 ## Advice
+
+```{r kobe2,fig.margin=TRUE,fig.width=6,fig.height=6}
+library(plyr)
+library(mpb)  
+library(reshape)
+library(kobe)
+
+trks=kobe(simHCR[["Annual"]],what="trks")
+
+kobePhase()+
+    geom_path( aes(stock,harvest),col="blue",data=subset(trks,pctl=="50%"))
+```
+
+```{r kobe3,fig.margin=TRUE,fig.width=6,fig.height=6}
+trks=ldply(simHCR,kobe,what="trks")
+
+kobePhase()+
+    geom_path( aes(stock,harvest,col=.id),data=subset(trks,pctl=="50%"))
+```
+
 ## MSE
 
 ```{r mse,eval=FALSE}
@@ -489,8 +502,6 @@ mseBiodyn
 <!-- ```{r uncertaintyMCMC2, fig.height=4,fig.margin=TRUE,eval=FALSE} -->
 <!-- acf(c(params(sims[["MCMC"]])["r"])) -->
 <!-- ``` -->
-
-
 
 <!-- ```{r ref,eval=FALSE,echo=FALSE} -->
 <!-- bdHat@mng -->
@@ -554,26 +565,3 @@ mseBiodyn
 
 
 
-<!-- # Advice -->
-
-<!-- ```{r MCkobe,fig.margin=TRUE,fig.width=6,fig.height=6, eval=FALSE} -->
-<!-- library(plyr) -->
-<!-- library(mpb) -->
-<!-- library(reshape) -->
-<!-- library(kobe) -->
-<!-- bd=sim() -->
-
-<!-- trks=kobe(bd,what="trks") -->
-<!-- trks=mdply(data.frame(Year=seq(33,49,3)),  -->
-<!--            function(Year) subset(trks,year<=Year)) -->
-
-<!-- pts =mdply(data.frame(Year=seq(33,49,3)),function(Year) -->
-<!--                  kobe(bd,year=Year,what="pts")) -->
-
-<!-- kobePhase()+     -->
-<!--     #geom_line(aes(stock,harvest),data=hcrPlot(bd), -->
-<!--     #          col="brown",size=1.5)                             +     -->
-<!--     geom_path( aes(stock,harvest),data=subset(trks,pctl=="50%"),col="blue")+ -->
-<!--     geom_point(aes(stock,harvest),data=subset(pts,year>=33),size=.3,col="cyan")    + -->
-<!--     facet_wrap(~Year) -->
-<!-- ``` -->

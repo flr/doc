@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Laurence Kell" />
+
+
+<title>Biomass Dynamic Management Procedures</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="http://flr-project.org">
+    <span class="fa fa-home"></span>
+     
+    FLR
+  </a>
+</li>
+<li>
+  <a href="index.html">
+    <span class="fa fa-info"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-play-circle-o"></span>
+     
+    Intro
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A_quick_introduction_to_FLR.html">A quick introduction to FLR</a>
+    </li>
+    <li>
+      <a href="An_overview_of_the_FLCore_classes.html">An overview of the FLCore classes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-database"></span>
+     
+    Input
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Loading_your_data_into_FLR.html">Loading your data into FLR</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-magic"></span>
+     
+    Modelling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Modelling_stock_recruitment_with_FLSR.html">Modelling stock recruitment with FLSR</a>
+    </li>
+    <li>
+      <a href="Statistical_catch_at_age_models_in_FLa4a.html">Statistical catch at age models in FLa4a</a>
+    </li>
+    <li>
+      <a href="Modelling_growth_and_its_uncertainty_in_FLa4a.html">Modelling growth and its uncertainty in FLa4a</a>
+    </li>
+    <li>
+      <a href="Natural_mortality_modelling_in_FLa4a.html">Natural mortality modelling in FLa4a</a>
+    </li>
+    <li>
+      <a href="Stock_assessment_using_eXtended_Survivors_Analysis_with_FLXSA.html">Stock assessment using eXtended Survivors Analysis with FLXSA</a>
+    </li>
+    <li>
+      <a href="FLife.html">Life History Modelling</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-tachometer"></span>
+     
+    Advice
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Running_Medium_Term_Forecasts_with_FLash.html">Running Medium Term Forecasts with FLash</a>
+    </li>
+    <li>
+      <a href="Short_Term_Forecasting_for_advice_using_FLash.html">Short Term Forecasting for advice using FLash</a>
+    </li>
+    <li>
+      <a href="Forecasting_on_the_Medium_Term_for_advice_using_FLasher.html">Forecasting on the Medium Term for advice using FLasher</a>
+    </li>
+    <li>
+      <a href="Reference_points_for_fisheries_management_with_FLBRP.html">Reference points for fisheries management with FLBRP</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-cogs"></span>
+     
+    MSE
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-cogs"></span>
+     
+    FLBEIA
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+    <li>
+      <a href="Conditioning_FLBEIA.html">Conditioning FLBEIA using Smart Conditioning Functions</a>
+    </li>
+    <li>
+      <a href="FLBEIA_A_Simple_Example.html">A simple example on how to use FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_An_Example_with_multiple_dimensions.html">A simple example with multiple dimensions in FLBEIA</a>
+    </li>
+    <li>
+      <a href="Using_Assessment_models_in_the_MP_FLBEIA.html">Using Stock Assessment models in the Management procedure of FLBEIA</a>
+    </li>
+    <li>
+      <a href="Testing_Management_Strategies_in_FLBEIA.html">Testing different Management Strategies in FLBEIA</a>
+    </li>
+    <li>
+      <a href="Data_Poor_MSE_in_FLBEIA.html">Data Limited MSE in FLBEIA</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-area-chart"></span>
+     
+    Plotting
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="ggplotFL_plotting_FLR_objects_with_ggplot2.html">ggplotFL, plotting FLR objects with ggplot2</a>
+    </li>
+    <li>
+      <a href="Plotting_FLR_objects_using_lattice.html">Plotting FLR objects using lattice</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-puzzle-piece"></span>
+     
+    Internals
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Units_of_measurement_in_FLR_objects.html">Units of measurement in FLR objects</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="http://github.com/flr/doc/issues">
+    <span class="fa fa-question fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Biomass Dynamic Management Procedures</h1>
+<h4 class="author"><em>Laurence Kell</em></h4>
+<h4 class="date"><em>August 13th, 2016</em></h4>
+
+</div>
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>The <code>mpb</code> package implements biomass based methods for stock assessment and simulation testing using Management Strategy Evaluation (MSE).</p>
+<p>The main processes influencing the dynamics of exploited populations are gains due to growth and recruitment and losses due to fishing and natural mortality. In a biomass dynamic stock assessment model recruitment, growth and natural mortality are simplified into a single production function (<span class="math inline">\(P\)</span>), for example that of <span class="citation">Pella and Tomlinson (<a href="#ref-pella1969generalized">1969</a>)</span>.</p>
+
+
+<p>The dynamics are determined by the population growth rate (<span class="math inline">\(r\)</span>, in the abscence of density dependence) and the shape of the production function (<span class="math inline">\(p\)</span>). if <span class="math inline">\(p=1\)</span> then the maximum sustainable yield (MSY) is found halfway between 0 and virgin biomass (<span class="math inline">\(K\)</span>); as p deccreases MSY shifts to the left. There is seldom suffcient infomation in the catch data to estimate even these few parameters and so additional data are required, e.g. time series of relative abundance from catch per unit effort (CPUE), or surveys.</p>
+<p>The provision of fisheries management advice requires the assessment of stock status relative to reference points, the prediction of the response of a stock to management, and checking that predictions are consistent with reality. Biomass dynamic models have been criticised as being too simplistic to capture the actual population dynamics, however, if a simple model can provide robust advice on stock status and the response of a stock to management why use anything more complicated <span class="citation">(Ludwig and Walters <a href="#ref-ludwig1985age">1985</a>)</span>? For example the Pella-Tomlinson model is used by the IWC to set catch limits. Neither the form of the model nor its parameters are meant to provide an accurate representation of the dynamics of the population. Rather, it has been demonstrated by simulation that when a biomass dynamic model is used as part of a management strategy with a harvest control rule (HCR) it allows the robust calculation and setting of catches limits <span class="citation">Butterworth and Punt (<a href="#ref-butterworth1999experiences">1999</a>)</span>.</p>
+</div>
+<div id="biodyn-class" class="section level1">
+<h1><code>biodyn</code> Class</h1>
+<p>The main class is <code>biodyn</code>, which has methods for importing data, exporting results, fitting models, checking diagnostics, plotting, estimation of uncertainly, projection, simulating HCRs, and for the provision of advice. The robustness of the methods can be simulation tested using MSE. <code>biodyn</code> also includes slots for catch, parameters, historical stock status, reference points, diagnostics, and summary statistics (use <code>??biodyn</code> for more information)</p>
+<p>An object can be created in various way, e.g. using the constructor</p>
+<pre class="r"><code>bd=biodyn()</code></pre>
+<p>or by coercion from another class</p>
+<pre class="r"><code>data(ple4)
+bd=as(ple4,&quot;biodyn&quot;)</code></pre>
+<p>or using an existing text file such as the input file of ASPIC and then coercing the <code>aspic</code> object into an object of the <code>mpb</code> class</p>
+<pre class="r"><code>asp=aspic(&quot;aspic.inp&quot;)
+bd =as(asp,&quot;biodyn&quot;)</code></pre>
+<p>Objects for use in simulation can also be created</p>
+<pre class="r"><code>bd=sim()</code></pre>
+<div id="plotting" class="section level2">
+<h2>Plotting</h2>
+<p> are important for examining objects, exploring data, summarising results, checking outputs, and diagnosing problems.</p>
+<pre class="r"><code>bd=window(sim(),end=49)
+plot(bd)+
+  theme_bw()</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Management_procedure_biomass_dynamic_files/figure-html/plot-1.png" alt="Production function with simulated time series" width="384" />
+<p class="caption">
+Production function with simulated time series
+</p>
+</div>
+<p><code>mpb</code> uses <code>ggplot2</code> as this allows the basic plots to be modified as required, for example a trajectory can be added to the plot of the production function</p>
+<pre class="r"><code>plotProduction(bd)+
+  geom_path( aes(stock,catch),
+             model.frame(FLQuants(bd,&quot;stock&quot;,&quot;catch&quot;)))+
+  geom_point(aes(stock,catch),
+             model.frame(FLQuants(bd,&quot;stock&quot;,&quot;catch&quot;)))+
+  theme_bw()+theme(legend.position=&quot;none&quot;)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Management_procedure_biomass_dynamic_files/figure-html/plotProduction-1.png" alt="Simulated CPUE series" width="672" />
+<p class="caption">
+Simulated CPUE series
+</p>
+</div>
+</div>
+</div>
+<div id="estimation" class="section level1">
+<h1>Estimation</h1>
+<p> can be done using either maximum likelihood or Monte Carlo Markov Chain (MCMC) simulations. Simulation can help to check robustness by allowing estimated values to be compared with the ones used to generate the data.</p>
+<pre class="r"><code>bd=sim()</code></pre>
+<p>A CPUE series is needed for fitting and can be simulated using mid year biomass and adding error.</p>
+<pre class="r"><code>cpue=(stock(bd)[,-dims(bd)$year]+
+      stock(bd)[,-1])/2
+set.seed(7890)
+cpue=rlnorm(1,log(cpue),.2)
+
+ggplot(as.data.frame(cpue))+
+  geom_point(aes(year,data))+
+  geom_line(aes(year,data),col=&quot;salmon&quot;,
+            data=as.data.frame(stock(bd)))+
+  theme_bw()</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Management_procedure_biomass_dynamic_files/figure-html/fitU-1.png" alt="Simulated CPUE series" width="672" />
+<p class="caption">
+Simulated CPUE series
+</p>
+</div>
+<p>Starting values for the parameters are required. The defaults assume that <span class="math inline">\(r\)</span> is 0.5, the production function is symetric (i.e. p=1) and the <span class="math inline">\(b0\)</span> ratio of the initial biomass to <span class="math inline">\(k\)</span> is 1. MSY should be the same order of magnitude as the catch and so carry capacity (<span class="math inline">\(k\)</span>) can be calculated if a guess for <span class="math inline">\(r\)</span> is provided.</p>
+<pre class="r"><code>params(bd)[&quot;k&quot;]=guessK(params(bd)[&quot;r&quot;],mean(catch(bd),na.rm=T),params(bd)[&quot;p&quot;])</code></pre>
+<p>Parameters are also required for catchability (<span class="math inline">\(q\)</span>) and the CV for the CPUE indices; if the population parameters are known then the stock can be calculated from the catch and initial values for <span class="math inline">\(q\)</span> and the CV derived.</p>
+<pre class="r"><code>setParams(bd)=cpue
+params(bd)</code></pre>
+<pre><code>An object of class &quot;FLPar&quot;
+params
+      r       k       p      b0      q1  sigma1 
+  0.500 818.740   1.000   1.000   0.993   0.202 
+units:  NA </code></pre>
+<p>Before fitting the <code>control</code> slot has to be provided with the initial guesses, upper and lower bounds (<code>min</code> and <code>max</code>), and the <code>phase</code> for each parameter.</p>
+<pre class="r"><code>setControl(bd)=params(bd)
+control(bd)</code></pre>
+<pre><code>An object of class &quot;FLPar&quot;
+        option
+params   phase     min       val       max      
+  r         1.0000    0.0500    0.5000    5.0000
+  k         1.0000   81.8740  818.7397 8187.3967
+  p        -1.0000    0.1000    1.0000   10.0000
+  b0       -1.0000    0.1000    1.0000   10.0000
+  q1       -2.0000    0.0993    0.9925    9.9254
+  sigma1   -2.0000    0.0202    0.2021    2.0214
+units:  NA </code></pre>
+<p>Difficult to estimate parameters may be fixed by setting the <code>phase</code> (e.g. for <span class="math inline">\(B_0\)</span> and p) to &lt;0, while parameters can be sequentially estimated by setting phase &gt;0.</p>
+<div id="maximum-likelihood" class="section level2">
+<h2>Maximum Likelihood</h2>
+<p> can be performed using maximum likelihood</p>
+<pre class="r"><code>control(bd)[&quot;r&quot;,1]=2  
+bdHat=fit(bd,cpue)  </code></pre>
+<p>Since the true parameter values are known the fit can be checked</p>
+<pre class="r"><code>params(bdHat)  </code></pre>
+<pre><code>An object of class &quot;FLPar&quot;
+params
+      r       k       p      b0      q1  sigma1 
+  0.567 897.301   1.000   1.000   1.091   0.200 
+units:  NA </code></pre>
+<pre class="r"><code>params(bdHat)/params(bd)</code></pre>
+<pre><code>An object of class &quot;FLPar&quot;
+params
+     r      k      p     b0     q1 sigma1 
+ 1.135  1.096  1.000  1.000  1.099  0.988 
+units:  NA </code></pre>
+<pre class="r"><code>plot(as(list(&quot;True&quot;=bd,&quot;Hat&quot;=bdHat),&quot;biodyns&quot;))+
+  theme(legend.position=&quot;bottom&quot;)+
+  theme_bw()</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Management_procedure_biomass_dynamic_files/figure-html/fitcheck-1.png" alt="A comparison of the true and fitted time series" width="672" />
+<p class="caption">
+A comparison of the true and fitted time series
+</p>
+</div>
+</div>
+</div>
+<div id="diagnostics" class="section level1">
+<h1>Diagnostics</h1>
+<p> diagnostics are important for replicability, by ensuring that a global solution has actually been found and that assumptions arnt violated, so when the assessment is repeated you get a similar result.</p>
+<div id="residuals" class="section level2">
+<h2>Residuals</h2>
+<p>Patterns in residuals from the fits of the CPUE to stock abundance may indicate a violation of models assumptions. Which may result in biased estimates of parameters, reference points and stock trends. While variance estimates obtained from bootstrapping assume that residuals are Independently and Identically Distributed (i.i.d.).</p>
+<p>The residuals are in the <code>diags</code> slot.</p>
+<pre class="r"><code>head(bdHat@diags)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">name</th>
+<th align="right">year</th>
+<th align="right">obs</th>
+<th align="right">hat</th>
+<th align="right">residual</th>
+<th align="right">residualLag</th>
+<th align="right">qqx</th>
+<th align="right">qqy</th>
+<th align="right">qqHat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1</td>
+<td align="right">1</td>
+<td align="right">1061</td>
+<td align="right">979</td>
+<td align="right">0.081</td>
+<td align="right">-0.139</td>
+<td align="right">0.206</td>
+<td align="right">0.081</td>
+<td align="right">0.031</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="right">2</td>
+<td align="right">846</td>
+<td align="right">972</td>
+<td align="right">-0.139</td>
+<td align="right">-0.176</td>
+<td align="right">-0.478</td>
+<td align="right">-0.139</td>
+<td align="right">-0.132</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="right">3</td>
+<td align="right">800</td>
+<td align="right">955</td>
+<td align="right">-0.176</td>
+<td align="right">0.119</td>
+<td align="right">-0.723</td>
+<td align="right">-0.176</td>
+<td align="right">-0.191</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="right">4</td>
+<td align="right">1051</td>
+<td align="right">933</td>
+<td align="right">0.119</td>
+<td align="right">-0.056</td>
+<td align="right">0.478</td>
+<td align="right">0.119</td>
+<td align="right">0.096</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="right">5</td>
+<td align="right">861</td>
+<td align="right">911</td>
+<td align="right">-0.056</td>
+<td align="right">0.107</td>
+<td align="right">-0.206</td>
+<td align="right">-0.056</td>
+<td align="right">-0.067</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="right">6</td>
+<td align="right">988</td>
+<td align="right">887</td>
+<td align="right">0.107</td>
+<td align="right">0.170</td>
+<td align="right">0.366</td>
+<td align="right">0.107</td>
+<td align="right">0.069</td>
+</tr>
+</tbody>
+</table>
+<p>Checking the distribution of residuals can be done by plotting the obsevered quantiles against the predicted quantiles from the assumed distribution using Q-Q plots. These compare a sample of data (the residuals) on the vertical axis to a statistical population (e.g. from a normal distribution) on the horizontal axis. Any nonlinear patterns may imply that the data are not normally distributed i.e. <span class="math inline">\(X ~ N(0,1)\)</span>, for example a systematic departure from a straight line may indicate skewness or over or under dispersion.</p>
+<pre class="r"><code>rsdl=bdHat@diags
+ggplot(rsdl)                                           +
+  geom_point( aes(qqx,qqy))                            +
+  stat_smooth(aes(qqx,qqHat),method=&quot;lm&quot;,se=T,fill=&quot;blue&quot;, alpha=0.1) +
+  theme_bw()+theme(legend.position=&quot;bottom&quot;)               </code></pre>
+<div class="figure" style="text-align: center">
+<img src="Management_procedure_biomass_dynamic_files/figure-html/diagQQ-1.png" alt="Quantile-quantile plot to compare residual distribution with the normal distribution." width="384" />
+<p class="caption">
+Quantile-quantile plot to compare residual distribution with the normal distribution.
+</p>
+</div>
+<p>It is assumed that an index is proportional to the stock so when plotting the observed against the fitted values the points should fall around the <span class="math inline">\(y=x\)</span> line, if they do not then the index may not be a good proxy for the stock trend.</p>
+<pre class="r"><code>library(diags)
+
+ggplot(with(rsdl, data.frame(obs=diags:::stdz(obs),hat=diags:::stdz(hat))))   +
+    geom_abline(aes(slope=1,intercept=0))                     +
+    geom_point( aes(obs,hat))                                 +
+    stat_smooth(aes(obs,hat),method=&quot;lm&quot;, se=F)               +
+    theme_bw()+theme(legend.position=&quot;bottom&quot;)                +
+    xlab(&quot;Fitted&quot;) + ylab(&quot;Observed&quot;)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Management_procedure_biomass_dynamic_files/figure-html/diagHat-1.png" alt="Observed CPUE verses fitted, blue line is a linear resgression fitted to points, black the y=x line." width="672" />
+<p class="caption">
+Observed CPUE verses fitted, blue line is a linear resgression fitted to points, black the y=x line.
+</p>
+</div>
+<p>To look for systematic patterns the residuals can be plotted by year, a lowess smoother helps to identify if the proxy doesnt agree with the estimated stock trend based on the catch</p>
+<pre class="r"><code>dat=transform(subset(rsdl,!is.na(residual), 
+                     residual=diags::stdz(residual,na.rm=T)))
+
+ggplot(aes(year,residual),data=dat)  +
+  geom_hline(aes(yintercept=0))      +
+  geom_point()                       +
+  stat_smooth(method=&quot;loess&quot;,se=F)   +
+  theme_bw()+theme(legend.position=&quot;bottom&quot;)                </code></pre>
+<div class="figure" style="text-align: center">
+<img src="Management_procedure_biomass_dynamic_files/figure-html/diagYr-1.png" alt="Residuals by year, with lowess smoother" width="672" />
+<p class="caption">
+Residuals by year, with lowess smoother
+</p>
+</div>
+<p>It is also assumed that variance of the index does not vary with the mean, this can be checked by plotting the residuals against the fitted values.</p>
+<pre class="r"><code>ggplot(aes(hat, residual),
+       data=subset(rsdl,!is.na(hat) &amp; !is.na(residual)))   +
+  geom_hline(aes(yintercept=0))         +
+  geom_point()                          +
+  stat_smooth(method=&quot;loess&quot;,se=F)      +
+  theme_bw()+theme(legend.position=&quot;bottom&quot;)               </code></pre>
+<div class="figure" style="text-align: center">
+<img src="Management_procedure_biomass_dynamic_files/figure-html/diagVar-1.png" alt="Plot of residuals against fitted value, to check variance relationship." width="672" />
+<p class="caption">
+Plot of residuals against fitted value, to check variance relationship.
+</p>
+</div>
+<p>It is assumed that the residuals are not autocorrelated, which can be checked by plotting the residuals against each other with a lag of 1. Significant autocorrelations could be due to an increase in catchability with time, which may result in a more optimistic estimate of current stock status as a decline in the stock may be masked by an increase in catchability.</p>
+<pre class="r"><code>sum(rsdl$residual^2)</code></pre>
+<pre><code>[1] 1.96</code></pre>
+<pre class="r"><code>ggplot(rsdl)                                              +
+  geom_point( aes(residual,residualLag))                  +
+  stat_smooth(aes(residual,residualLag),method=&quot;lm&quot;,se=F) +
+  geom_hline(aes(yintercept=0))     +
+  xlab(expression(Residual[t]))     + 
+  ylab(expression(Residual[t+1]))   +
+  theme_bw()+theme(legend.position=&quot;bottom&quot;)                 </code></pre>
+<div class="figure" style="text-align: center">
+<img src="Management_procedure_biomass_dynamic_files/figure-html/diagAR-1.png" alt="Plot of autocorrelation, i.e. $residual_{t+1}$ verses $residual_{t}$." width="384" />
+<p class="caption">
+Plot of autocorrelation, i.e. <span class="math inline">\(residual_{t+1}\)</span> verses <span class="math inline">\(residual_{t}\)</span>.
+</p>
+</div>
+
+</div>
+<div id="profiles" class="section level2">
+<h2>Profiles</h2>
+<p>Likelihood profiles are useful to check that you are actually at a global solution and not stuck on a small hill with your back to the mountain. They are also useful for evaluating the infomation content of the data and whether different data sets are telling you different things and you need to ask more questions to determine the truth.</p>
+<p>The control slot can be used to produce a profile, i.e. fix a parameter or parameters for a range of values and then find the maximum likelihood by estimating the other parameters.</p>
+<p>1D</p>
+<pre class="r"><code>bdHat=fit(bdHat,cpue)
+setControl(bdHat)=params(bdHat)
+res=profile(bdHat,which=&#39;r&#39;,fixed=c(&#39;b0&#39;,&#39;p&#39;),range=seq(0.95,1.03,.002))</code></pre>
+<pre><code>[1] 1</code></pre>
+<pre class="r"><code>ggplot(subset(res,ll&lt;0))+
+  geom_line(aes(r,ll))  +
+  theme_bw()</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Management_procedure_biomass_dynamic_files/figure-html/prfl-1.png" alt="Likelihood profile for r" width="672" />
+<p class="caption">
+Likelihood profile for r
+</p>
+</div>
+<pre class="r"><code>control(bdHat)[&quot;r&quot;,&quot;phase&quot;]=1
+bdHat=fit(bdHat,cpue)
+setControl(bdHat)=params(bdHat)
+res=profile(bdHat,which=&#39;k&#39;,fixed=c(&#39;b0&#39;,&#39;p&#39;),range=seq(0.95,1.03,.002))
+ggplot(subset(res,ll&lt;0))+
+  geom_line(aes(k,ll))  +
+  theme_bw()</code></pre>
+
+</div>
+</div>
+<div id="uncertainty" class="section level1">
+<h1>Uncertainty</h1>
+<p>A main objective of stock assessment is to estimate uncertainly in stock status. This requires estimates of distributions as well as point estimates. As an example a catch and cpue are simulated and fitted using <code>biodyn</code>.</p>
+<pre class="r"><code>bd   =window(sim(),end=39)
+cpue=(stock(bd)[,-dims(bd)$year]+
+      stock(bd)[,-1])/2
+set.seed(7890)
+cpue=rlnorm(1,log(cpue),.2)
+bdHat=bd
+
+setParams( bdHat)=cpue
+setControl(bdHat)=params(bdHat)
+bdHat@control[3:4,&quot;phase&quot;]=-1
+bdHat=fit(bdHat,cpue)
+
+sims=as(list(&quot;True&quot;=bd,&quot;Best Fit&quot;=bdHat),&quot;biodyns&quot;)</code></pre>
+<p>There are various ways to estimate undercertainty in parameter estimates and quantities derived from them, i.e. use the covariance matrix provided by a maximum likelihood fit, bootstrapping, the jack knife or Bayesian methods such as Monte Carlo Markov Chain,</p>
+<div id="variancecovariance-matrix" class="section level2">
+<h2>Variance/Covariance Matrix</h2>
+<p>Fitting using maximum likelihood provides the covariance matrix for the parameters. Only the <span class="math inline">\(r\)</span> and <span class="math inline">\(k\)</span> are of interest, as <span class="math inline">\(p\)</span> and <span class="math inline">\(b0\)</span> were fixed and <span class="math inline">\(q\)</span> and <span class="math inline">\(sigma\)</span> are nusiance parameters, i.e. are not of immediate interest but which must be accounted for in the analysis.</p>
+<pre class="r"><code>v=vcov(  bdHat)[c(&quot;r&quot;,&quot;k&quot;),c(&quot;r&quot;,&quot;k&quot;),1]
+params(bdHat)[c(&quot;r&quot;,&quot;k&quot;)]</code></pre>
+<pre><code>An object of class &quot;FLPar&quot;
+params
+      r       k 
+  0.578 882.149 
+units:  NA </code></pre>
+<pre class="r"><code>#refs=mvn(500,p,v)</code></pre>
+</div>
+<div id="the-bootstrap" class="section level2">
+<h2>The Bootstrap</h2>
+<p>The Bootstrap can be used to simulate CPUE series replicates and the model refitted.</p>
+<pre class="r"><code>set.seed(7890)
+cpueBoot      =boot(bdHat)
+
+sims[&quot;Bootstrap&quot;]=fit(bdHat,cpueBoot)</code></pre>
+</div>
+<div id="jack-knife" class="section level2">
+<h2>Jack knife</h2>
+<p>The Jack knife is a relatively quick procedure</p>
+<pre class="r"><code>bdJK =fit(bdHat,FLQuant(jackknife(cpue)))
+
+sims[&quot;Jack Knife&quot;]=bdJK</code></pre>
+<pre class="r"><code>plot(sims)+
+  theme_bw()</code></pre>
+<p><img src="Management_procedure_biomass_dynamic_files/figure-html/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
+
+</div>
+<div id="stock-status" class="section level2">
+<h2>Stock Status</h2>
+<p>The Precautionary Approach requires stock status to be estimated relative to reference points. The covariance matrix can be used to estimate uncertainty in derived quantities, i.e. those used for management such as <span class="math inline">\(F:F_{MSY}\)</span>.</p>
+<p>Marginal densities for stock</p>
+<pre class="r"><code>boot=stock(sims[[&quot;Bootstrap&quot;]])[,39]
+
+set.seed(7890) 
+jack=randJack(500,stock(sims[[  &quot;Best Fit&quot;]])[,39],
+                  stock(sims[[&quot;Jack Knife&quot;]])[,39])
+
+bnow=rbind(data.frame(Method=&quot;boot&quot;,stock=c(boot)),
+           data.frame(Method=&quot;jack&quot;,stock=c(jack)))
+  
+ggplot(bnow)+ 
+  geom_density(aes(x=stock, y=..count..), position = &quot;stack&quot;,fill=&quot;red&quot;)+
+  facet_wrap(~Method,scale=&quot;free_y&quot;,ncol=1)+
+  geom_vline(aes(xintercept=c(stock(sims[[&quot;Best Fit&quot;]])[,&quot;39&quot;])))+
+  theme_bw()</code></pre>
+<p>Kobe Phase Plot</p>
+<pre class="r"><code>library(kobe)
+
+kb=rbind(data.frame(Method=&quot;Boot&quot;,kobe(sims[[&quot;Bootstrap&quot;]], what=&quot;pts&quot;)),
+         data.frame(Method=&quot;Jack&quot;,kobe(sims[[&quot;Jack Knife&quot;]],what=&quot;pts&quot;)))
+             
+ggplot(kb)+ 
+  geom_point(aes(stock,harvest))+
+  facet_wrap(~Method,scale=&quot;free_y&quot;,ncol=1)+
+  theme_bw()</code></pre>
+</div>
+<div id="projections" class="section level2">
+<h2>Projections</h2>
+<p>Once stock parameters and status has been estimated then projections need to be conducted to inform management.</p>
+<pre class="r"><code>set.seed(7890)
+harvest=rlnorm(100,log(harvest(bdHat))[,-dims(bdHat)$year],.1)
+bdHat =fwd(bdHat,harvest=harvest)
+
+plot(bdHat,worm=c(2,8))+    
+  theme(legend.position=&quot;bottom&quot;)+
+  theme_bw()</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Management_procedure_biomass_dynamic_files/figure-html/fdwd-1.png" alt="Projection" width="384" />
+<p class="caption">
+Projection
+</p>
+</div>
+</div>
+<div id="harvest-control-rules" class="section level2">
+<h2>Harvest Control Rules</h2>
+<p>Use simulated data to run annual, tri-annual, F bound and TAC bounded HCRs</p>
+<p>Annual</p>
+<pre class="r"><code>bd=window(sim(),end=29)
+for (i in seq(28,49,1))
+  bd=fwd(bd,harvest=hcr(bd,yr=i-1,hyr=i+1:2))
+
+simHCR=as(list(&quot;Annual&quot;=bd),&quot;biodyns&quot;)</code></pre>
+<p>Tri-annual</p>
+<pre class="r"><code>bd=window(bd,end=29)
+for (i in seq(28,49,3))
+  bd=fwd(bd,harvest=hcr(bd,yr=i,hyr=i+1:3))
+simHCR[&quot;Triennial&quot;]=bd</code></pre>
+<p>Bound on F</p>
+<pre class="r"><code>bd=window(bd,end=29)
+for (i in seq(28,49,3))
+  bd=fwd(bd,harvest=hcr(bd,yr=i,byr=i,hyr=i+1:3,bndF=c(0.9,1.1)))
+simHCR[&quot;bound F&quot;]=bd</code></pre>
+<p>Bound on catch</p>
+<pre class="r"><code>bd=window(bd,end=29)
+for (i in seq(28,49,3))
+  bd=fwd(bd,catch  =hcr(bd,yr=i,byr=i-1,hyr=i+1:3,tac=TRUE,bndTac=c(0.9,1.1)))
+
+simHCR[&quot;bound TAC&quot;]=bd</code></pre>
+<pre class="r"><code>plot(simHCR)+
+  theme_bw()+
+  theme(legend.position=&quot;bottom&quot;)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="Management_procedure_biomass_dynamic_files/figure-html/hcrPlot-1.png" alt="Plots of projections" width="384" />
+<p class="caption">
+Plots of projections
+</p>
+</div>
+<p>Process Error and Harvest Control Rule</p>
+<pre class="r"><code>set.seed(7890)
+pe=rlnorm(500,FLQuant(0,dimnames=list(year=1:50)),0.5)
+
+bd=window(sim(),end=30)
+bd.=bd
+bd@stock =propagate(bd@stock, 500)
+bd=fwd(bd,harvest=harvest(bd)[,2:30],pe=pe)
+
+for (i in seq(30,48,1))
+  bd=fwd(bd,
+         catch=hcr(bd,yr=i,hyr=i+1,tac=TRUE,bndTac=c(0.9,1.1)),
+         pe   =pe)
+
+plot(bd)+
+  theme_bw()</code></pre>
+<p><img src="Management_procedure_biomass_dynamic_files/figure-html/MC-1.png" width="576" style="display: block; margin: auto;" /> </p>
+</div>
+<div id="advice" class="section level2">
+<h2>Advice</h2>
+<pre class="r"><code>library(plyr)
+library(mpb)  
+library(reshape)
+library(kobe)
+
+trks=kobe(simHCR[[&quot;Annual&quot;]],what=&quot;trks&quot;)
+
+kobePhase()+
+    geom_path( aes(stock,harvest),col=&quot;blue&quot;,data=subset(trks,pctl==&quot;50%&quot;))</code></pre>
+<p><img src="Management_procedure_biomass_dynamic_files/figure-html/kobe2-1.png" width="576" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>trks=ldply(simHCR,kobe,what=&quot;trks&quot;)
+
+kobePhase()+
+    geom_path( aes(stock,harvest,col=.id),data=subset(trks,pctl==&quot;50%&quot;))</code></pre>
+<p><img src="Management_procedure_biomass_dynamic_files/figure-html/kobe3-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+<div id="mse" class="section level2">
+<h2>MSE</h2>
+<pre class="r"><code>mseBiodyn</code></pre>
+
+</div>
+</div>
+<div id="references" class="section level1">
+<h1>References</h1>
+<!-- ## MCMC -->
+<!-- Monte Carlo Markov Chain -->
+<!-- ```{r uncertaintyMCMC, eval=FALSE} -->
+<!-- sims["MCMC"]=fit(bdHat,cpue,cmdOps=c("-mcmc 1000000, -mcsave 5000")) -->
+<!-- ``` -->
+<!-- Diagnostics need to be run to make sure that the MCMC has actually estimated a stationary distribution. -->
+<!-- ```{r uncertaintyMCMC2, fig.height=4,fig.margin=TRUE,eval=FALSE} -->
+<!-- acf(c(params(sims[["MCMC"]])["r"])) -->
+<!-- ``` -->
+<!-- ```{r ref,eval=FALSE,echo=FALSE} -->
+<!-- bdHat@mng -->
+<!-- ``` -->
+<!-- ```{r ref2,eval=FALSE} -->
+<!-- bdHat@mngVcov -->
+<!-- ``` -->
+<!-- ```{r ref3,echo=FALSE,eval=FALSE,fig.margin=TRUE,fig.width=4,fig.height=6,fig.cap=""} -->
+<!-- currentState   =bdHat@mng[c("bbmsy","ffmsy"),"hat",drop=T] -->
+<!-- currentStateVar=bdHat@mngVcov[c("bbmsy","ffmsy"), -->
+<!--                               c("bbmsy","ffmsy"),drop=T] -->
+<!-- refs=mvrnorm(100,currentState,currentStateVar) -->
+<!-- ggplot(data=as.data.frame(refs))+ -->
+<!--   geom_histogram(aes(x=bbmsy))+ -->
+<!--   theme_bw() -->
+<!-- ``` -->
+<!-- likelihood components -->
+<!-- ```{r prflLike, fig.margin=TRUE, fig.height=4, fig.width=4, fig.cap="Likelihood profile by data conmponent, i.e. CPUE series"} -->
+<!-- bd=sim() -->
+<!-- set.seed(7890) -->
+<!-- Us  =FLQuants("Unbiased"     = -->
+<!--                 rlnorm(1,log((stock(bd)[,-dims(bd)$year]+ -->
+<!--                               stock(bd)[,-1])/2),0.2), -->
+<!--               "Increase in q"= -->
+<!--                 rlnorm(1,log((stock(bd)[,-dims(bd)$year]+ -->
+<!--                               stock(bd)[,-1])/2),0.2)) -->
+<!-- setParams( bd)=Us -->
+<!-- setControl(bd)=params(bd) -->
+<!-- bd@control[3:4,"phase"]=-1 -->
+<!-- bd=fit(bd,index=Us) -->
+<!-- bd@control[,c("min")]=bd@params*0.1 -->
+<!-- bd@control[,c("val")]=bd@params -->
+<!-- bd@control[,c("max")]=bd@params*10 -->
+<!-- prfl=profile(bd,which='r',index=Us, -->
+<!--              range=seq(0.975,1.05,.001)) -->
+<!-- ggplot(prfl)+ -->
+<!--   geom_path(aes(r,ll,group=index,col=index))+ -->
+<!--   facet_wrap(~index,scale="free",ncol=1)          + -->
+<!--   theme(legend.position="bottom")+ -->
+<!--   theme_bw() -->
+<!-- ``` -->
+<!-- Profile Slot -->
+<!-- ```{r prflADMB,echo=FALSE,eval=FALSE} -->
+<!-- bd=fit(bdHat,cpue,cmdOps="-lprof") -->
+<!-- prf=subset(bd@profile, param %in% c("bbmsy","ffmsy")) -->
+<!-- prf=data.frame(What="Profile",t(daply(prf, .(param), with, sample(value,500,prob=p,replace=T)))) -->
+<!-- names(prf)[2:3]=c("Stock","Harvest") -->
+<!-- ``` -->
+<div id="refs" class="references">
+<div id="ref-butterworth1999experiences">
+<p>Butterworth, DS, and AE Punt. 1999. “Experiences in the Evaluation and Implementation of Management Procedures.” <em>ICES J. Mar. Sci.</em> 56 (6). Oxford University Press: 985–98.</p>
+</div>
+<div id="ref-ludwig1985age">
+<p>Ludwig, Donald, and Carl J Walters. 1985. “Are Age-Structured Models Appropriate for Catch-Effort Data?” <em>Can. J. Fish. Aquat. Sci.</em> 42 (6). NRC Research Press: 1066–72.</p>
+</div>
+<div id="ref-pella1969generalized">
+<p>Pella, J.J., and P.K. Tomlinson. 1969. <em>A Generalized Stock Production Model</em>. Inter-American Tropical Tuna Commission.</p>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
