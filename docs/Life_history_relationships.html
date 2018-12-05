@@ -438,7 +438,7 @@ ggplot(as.data.frame(len))+
   geom_line(aes(age,data,col=iter))+
   theme(legend.position=&quot;none&quot;)</code></pre>
 <div class="figure">
-<img src="../tex/FLife/length-1.png" alt="Von Bertalanffy growth curves." width="768" />
+<img src="Life_history_relationships_files/figure-html/length-1.png" alt="Von Bertalanffy growth curves." width="768" />
 <p class="caption">
 Von Bertalanffy growth curves.
 </p>
@@ -451,7 +451,7 @@ Von Bertalanffy growth curves.
 <div id="life-history-parameters" class="section level2">
 <h2>Life History Parameters</h2>
 <div class="figure">
-<img src="../tex/FLife/pair-plot-1.png" alt="Relationship between life history parameters in the teleost dataset." width="768" />
+<img src="Life_history_relationships_files/figure-html/pair-plot-1.png" alt="Relationship between life history parameters in the teleost dataset." width="768" />
 <p class="caption">
 Relationship between life history parameters in the teleost dataset.
 </p>
@@ -486,7 +486,7 @@ Relationship between life history parameters in the teleost dataset.
 <div id="growth-1" class="section level3">
 <h3>Growth</h3>
 <p>gompertz, richards, vonB</p>
-<p><img src="../tex/FLife/growth-1.png" width="768" /></p>
+<p><img src="Life_history_relationships_files/figure-html/growth-1.png" width="768" /></p>
 </div>
 <div id="ogives" class="section level3">
 <h3>Ogives</h3>
@@ -713,7 +713,7 @@ units:  NA </code></pre>
 </div>
 <div id="natural-mortality-2" class="section level4">
 <h4>Natural Mortality</h4>
-<p><img src="../tex/FLife/m-gislason-1.png" width="768" /></p>
+<p><img src="Life_history_relationships_files/figure-html/m-gislason-1.png" width="768" /></p>
 </div>
 <div id="stock-recruitment" class="section level4">
 <h4>Stock recruitment</h4>
@@ -761,13 +761,13 @@ ggplot(FLQuants(eql,&quot;m&quot;,&quot;catch.sel&quot;,&quot;mat&quot;,&quot;ca
   facet_wrap(~qname,scale=&quot;free&quot;)+
   scale_x_continuous(limits=c(0,15))</code></pre>
 <div class="figure">
-<img src="../tex/FLife/eql-1.png" alt="Age-vectors of growthm natural mortality, maturity and selection pattern" width="768" />
+<img src="Life_history_relationships_files/figure-html/eql-1.png" alt="Age-vectors of growthm natural mortality, maturity and selection pattern" width="768" />
 <p class="caption">
 Age-vectors of growthm natural mortality, maturity and selection pattern
 </p>
 </div>
 <div class="figure">
-<img src="../tex/FLife/plot-1.png" alt="Equilibrium curves and reference points." width="768" />
+<img src="Life_history_relationships_files/figure-html/plot-1.png" alt="Equilibrium curves and reference points." width="768" />
 <p class="caption">
 Equilibrium curves and reference points.
 </p>
@@ -785,13 +785,13 @@ units:  NA NA NA NA NA NA NA </code></pre>
 <p>ricker <span class="math inline">\(r = aSe^{-bS}\)</span></p>
 <p>cushing <span class="math inline">\(r=aS^b\)</span></p>
 <div class="figure">
-<img src="../tex/FLife/fig3-1.png" alt="Stock recruitment relationships for a steepness of 0.75 and vigin biomass of 1000" width="768" />
+<img src="Life_history_relationships_files/figure-html/fig3-1.png" alt="Stock recruitment relationships for a steepness of 0.75 and vigin biomass of 1000" width="768" />
 <p class="caption">
 Stock recruitment relationships for a steepness of 0.75 and vigin biomass of 1000
 </p>
 </div>
 <div class="figure">
-<img src="../tex/FLife/fig4-1.png" alt="Production curves, Yield v SSB, for a steepness of 0.75 and vigin biomass of 1000." width="768" />
+<img src="Life_history_relationships_files/figure-html/fig4-1.png" alt="Production curves, Yield v SSB, for a steepness of 0.75 and vigin biomass of 1000." width="768" />
 <p class="caption">
 Production curves, Yield v SSB, for a steepness of 0.75 and vigin biomass of 1000.
 </p>
@@ -815,7 +815,7 @@ ggplot(as.data.frame(m))+
    theme(legend.position=&quot;none&quot;)+
     scale_x_continuous(limits=c(0,15))</code></pre>
 <div class="figure">
-<img src="../tex/FLife/m-density-dependence-1.png" alt="Density Dependence in M" width="768" />
+<img src="Life_history_relationships_files/figure-html/m-density-dependence-1.png" alt="Density Dependence in M" width="768" />
 <p class="caption">
 Density Dependence in M
 </p>
@@ -830,7 +830,7 @@ ggplot(as.data.frame(mat))+
     theme(legend.position=&quot;none&quot;)+
     scale_x_continuous(limits=c(0,15))</code></pre>
 <div class="figure">
-<img src="../tex/FLife/Maturity-density-dependence-1.png" alt="Density Dependence in M" width="768" />
+<img src="Life_history_relationships_files/figure-html/Maturity-density-dependence-1.png" alt="Density Dependence in M" width="768" />
 <p class="caption">
 Density Dependence in M
 </p>
@@ -838,18 +838,18 @@ Density Dependence in M
 </div>
 <div id="noise" class="section level2">
 <h2>Noise</h2>
-<p>Methods to simulate random noise with autocorrelation, e.g. by age or cohort <img src="../tex/FLife/fig9-1.png" width="768" /></p>
-<p><img src="../tex/FLife/fig10-1.png" width="768" /></p>
+<p>Methods to simulate random noise with autocorrelation, e.g. by age or cohort <img src="Life_history_relationships_files/figure-html/fig9-1.png" width="768" /></p>
+<p><img src="Life_history_relationships_files/figure-html/fig10-1.png" width="768" /></p>
 </div>
 <div id="random-noise-in-r-m-and-mat" class="section level2">
 <h2>Random Noise in R, M and Mat</h2>
 </div>
 <div id="ar-noise-in-r-m-and-mat" class="section level2">
 <h2>AR Noise in R, M and Mat</h2>
-<p><img src="../tex/FLife/ssbAR-1.png" width="960" /></p>
-<p><img src="../tex/FLife/spectAR-1.png" width="768" /></p>
+<p><img src="Life_history_relationships_files/figure-html/ssbAR-1.png" width="960" /></p>
+<p><img src="Life_history_relationships_files/figure-html/spectAR-1.png" width="768" /></p>
 <div class="figure">
-<img src="../tex/FLife/fig13-1.png" alt="Cohort Effects" width="960" />
+<img src="Life_history_relationships_files/figure-html/fig13-1.png" alt="Cohort Effects" width="960" />
 <p class="caption">
 Cohort Effects
 </p>
@@ -858,7 +858,7 @@ Cohort Effects
 <div id="mse-using-empirical-hcr" class="section level2">
 <h2>MSE using empirical HCR</h2>
 <div class="figure">
-<img src="../tex/FLife/fig14-1.png" alt="MSE using empirical HCR" width="576" />
+<img src="Life_history_relationships_files/figure-html/fig14-1.png" alt="MSE using empirical HCR" width="576" />
 <p class="caption">
 MSE using empirical HCR
 </p>
@@ -887,7 +887,7 @@ a and b can be estimated by a regression analysis where
 4   4 56560  60416 0.1119
 5   5 31888  36990 0.1031
 6   6 10988  22647 0.0580</code></pre>
-<p><img src="../tex/FLife/unnamed-chunk-9-1.png" width="768" /></p>
+<p><img src="Life_history_relationships_files/figure-html/unnamed-chunk-9-1.png" width="768" /></p>
 <div id="catch-curve-analysis" class="section level3">
 <h3>Catch curve analysis</h3>
 <pre class="r"><code>data(ple4)
@@ -896,7 +896,7 @@ ctc=ddply(ctc,.(year), with, cc(age=age,n=data))
 ctc=ddply(transform(ctc,decade=factor(10*(year%/%10))),.(decade,age),with,data.frame(sel=mean(sel)))
 ggplot(ctc)+
   geom_line(aes(age,sel,colour=decade))</code></pre>
-<p><img src="../tex/FLife/unnamed-chunk-10-1.png" width="768" /></p>
+<p><img src="Life_history_relationships_files/figure-html/unnamed-chunk-10-1.png" width="768" /></p>
 <p><a href="#top">Back to Top</a></p>
 </div>
 </div>
@@ -909,7 +909,7 @@ ggplot(ctc)+
 <li>The latest version of <code>FLife</code> can always be installed using the <code>devtools</code> package, by calling</li>
 </ul>
 <pre class="r"><code>    library(devtools)
-    install_github(&quot;lauriekell/FLife&quot;)</code></pre>
+    install_github(&quot;flr/FLife&quot;)</code></pre>
 <p>`</p>
 <div id="software-versions" class="section level2">
 <h2>Software Versions</h2>
@@ -917,8 +917,8 @@ ggplot(ctc)+
 <li>R version 3.5.1 (2018-07-02)</li>
 <li>FLCore: 2.6.10</li>
 <li>FLPKG:</li>
-<li><strong>Compiled</strong>: Tue Dec 4 16:22:47 2018</li>
-<li><strong>Git Hash</strong>: 29d05db</li>
+<li><strong>Compiled</strong>: Wed Dec 5 08:37:25 2018</li>
+<li><strong>Git Hash</strong>: 2e0d9af</li>
 </ul>
 </div>
 <div id="author-information" class="section level2">

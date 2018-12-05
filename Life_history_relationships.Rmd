@@ -14,8 +14,7 @@ bibliography: bibliography.bib
 ```{r knitr_init, echo=FALSE, results="hide"}
 library(knitr)
 ## Global options
-opts_chunk$set(cache     =TRUE,
-               cache.path="../cache/FLife/",
+opts_chunk$set(cache     =FALSE,
                echo      =FALSE,
                eval      =TRUE,
                prompt    =FALSE,
@@ -24,8 +23,7 @@ opts_chunk$set(cache     =TRUE,
                warning   =FALSE,
                tidy      =TRUE,
                fig.height=6,
-               fig.width =8,
-               fig.path  ="../tex/FLife/")
+               fig.width =8)
 
 options(digits=3)
 
@@ -879,7 +877,7 @@ ggplot(ctc)+
 * The latest version of `FLife` can always be installed using the `devtools` package, by calling
 ```{r, devtools, echo=TRUE, eval=FALSE}
 	library(devtools)
-	install_github("lauriekell/FLife")
+	install_github("flr/FLife")
 ```
 `
 
