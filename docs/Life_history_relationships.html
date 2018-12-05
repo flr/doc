@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Life History Relationships</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="http://flr-project.org">
+    <span class="fa fa-home"></span>
+     
+    FLR
+  </a>
+</li>
+<li>
+  <a href="index.html">
+    <span class="fa fa-info"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-play-circle-o"></span>
+     
+    Intro
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A_quick_introduction_to_FLR.html">A quick introduction to FLR</a>
+    </li>
+    <li>
+      <a href="An_overview_of_the_FLCore_classes.html">An overview of the FLCore classes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-database"></span>
+     
+    Input
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Loading_your_data_into_FLR.html">Loading your data into FLR</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-magic"></span>
+     
+    Modelling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Modelling_stock_recruitment_with_FLSR.html">Modelling stock recruitment with FLSR</a>
+    </li>
+    <li>
+      <a href="Statistical_catch_at_age_models_in_FLa4a.html">Statistical catch at age models in FLa4a</a>
+    </li>
+    <li>
+      <a href="Modelling_growth_and_its_uncertainty_in_FLa4a.html">Modelling growth and its uncertainty in FLa4a</a>
+    </li>
+    <li>
+      <a href="Natural_mortality_modelling_in_FLa4a.html">Natural mortality modelling in FLa4a</a>
+    </li>
+    <li>
+      <a href="Stock_assessment_using_eXtended_Survivors_Analysis_with_FLXSA.html">Stock assessment using eXtended Survivors Analysis with FLXSA</a>
+    </li>
+    <li>
+      <a href="FLife.html">Life History Modelling</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-tachometer"></span>
+     
+    Advice
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Running_Medium_Term_Forecasts_with_FLash.html">Running Medium Term Forecasts with FLash</a>
+    </li>
+    <li>
+      <a href="Short_Term_Forecasting_for_advice_using_FLash.html">Short Term Forecasting for advice using FLash</a>
+    </li>
+    <li>
+      <a href="Forecasting_on_the_Medium_Term_for_advice_using_FLasher.html">Forecasting on the Medium Term for advice using FLasher</a>
+    </li>
+    <li>
+      <a href="Reference_points_for_fisheries_management_with_FLBRP.html">Reference points for fisheries management with FLBRP</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-cogs"></span>
+     
+    MSE
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-cogs"></span>
+     
+    FLBEIA
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+    <li>
+      <a href="Conditioning_FLBEIA.html">Conditioning FLBEIA using Smart Conditioning Functions</a>
+    </li>
+    <li>
+      <a href="FLBEIA_A_Simple_Example.html">A simple example on how to use FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_An_Example_with_multiple_dimensions.html">A simple example with multiple dimensions in FLBEIA</a>
+    </li>
+    <li>
+      <a href="Using_Assessment_models_in_the_MP_FLBEIA.html">Using Stock Assessment models in the Management procedure of FLBEIA</a>
+    </li>
+    <li>
+      <a href="Testing_Management_Strategies_in_FLBEIA.html">Testing different Management Strategies in FLBEIA</a>
+    </li>
+    <li>
+      <a href="Data_Poor_MSE_in_FLBEIA.html">Data Limited MSE in FLBEIA</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-area-chart"></span>
+     
+    Plotting
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="ggplotFL_plotting_FLR_objects_with_ggplot2.html">ggplotFL, plotting FLR objects with ggplot2</a>
+    </li>
+    <li>
+      <a href="Plotting_FLR_objects_using_lattice.html">Plotting FLR objects using lattice</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-puzzle-piece"></span>
+     
+    Internals
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Units_of_measurement_in_FLR_objects.html">Units of measurement in FLR objects</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="http://github.com/flr/doc/issues">
+    <span class="fa fa-question fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Life History Relationships</h1>
+
+</div>
+
+
+<p><a href="#top"></a></p>
+<p><a href="#Packages">Packages</a></p>
+<p><a href="#Quick%20Start">Quick Start</a></p>
+<p><a href="#Methods">Methods</a></p>
+<p><a href="#Simulation">Simulation</a></p>
+<p><a href="#Estimation">Estimation</a></p>
+<p><a href="#More">More Information</a></p>
+<p><a href="#References">References</a></p>
+<p>Life history traits include growth rate; age and size at sexual maturity; the temporal pattern or schedule of reproduction; the number, size, and sex ratio of offspring; the distribution of intrinsic or extrinsic mortality rates (e.g., patterns of senescence); and patterns of dormancy and dispersal. These traits contribute directly to age-specific survival and reproductive functions.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> The <strong>FLife</strong> package has a variety of methods for modelling life history traits and functional forms for processes for use in fish stock assessment and for conducting Management Strategy Evaluation (MSE).</p>
+<p>These relationships have many uses, for example in age-structured population models, functional relationships for these processes allow the calculation of the population growth rate and have been used to to develop priors in stock assesments and to parameterise ecological models.</p>
+<p>The <strong>FLife</strong> package has methods for modelling functional forms, for simulating equilibrium <code>FLBRP</code> and dynamic stock objects <code>FLStock</code>.</p>
+<div id="Packages" class="section level1">
+<h1>Packages</h1>
+<p><code>FLife</code>, as with all FLR packages, is designed to use and augment a variety of other packages, e.g. <code>ggplot2</code> for plotting</p>
+<pre class="r"><code>library(ggplot2)
+library(GGally)</code></pre>
+<p><code>reshape</code> and <code>plyr</code> for data manipulation</p>
+<pre class="r"><code>library(reshape)
+library(plyr)</code></pre>
+<p>as well as the other FLR packages</p>
+<pre class="r"><code>library(FLCore)
+library(ggplotFL)
+
+library(FLBRP)
+library(FLasher)
+
+#library(FLAssess)</code></pre>
+<p>and those such as <code>popbio</code> for analysing age or stage based population matrix models.</p>
+<pre class="r"><code>library(popbio)</code></pre>
+<p><a href="#top">Back to Top</a></p>
+</div>
+<div id="QuickStart" class="section level1">
+<h1>Quick Start</h1>
+<p>This section provide a quick way to get running and overview of what functions are available, their potential use, and where to seek help. More details are given in later sections.</p>
+<p>The simplest way to obtain <strong>FLife</strong> is to install it from the <code>FLR</code> repository via the R console:</p>
+<pre class="r"><code>install.packages(&quot;FLife&quot;, repos = &quot;http://flr-project.org/R&quot;)</code></pre>
+<p>See help(install.packages) for more details.</p>
+<p>After installing the <strong>FLife</strong> package, you need to load it</p>
+<pre class="r"><code>library(FLife)</code></pre>
+<p>There is an example teleost dataset used for illustration and as a test dataset, alternatively you can load your own data.</p>
+<pre class="r"><code>data(teleost)</code></pre>
+<p>The dataset contains life history parameters for a range of bony fish species and families, i.e. von Bertalanffy growth parameters (<span class="math inline">\(L_{\infty}, k, t_0\)</span>), length at 50% mature (<span class="math inline">\(L_{50}\)</span>), and the length weight relationship (<span class="math inline">\(a, b\)</span>).</p>
+<p>When loading a new dataset it is always a good idea to run a sanity check e.g.</p>
+<pre class="r"><code>is(teleost)</code></pre>
+<pre><code>[1] &quot;FLPar&quot;     &quot;array&quot;     &quot;structure&quot; &quot;vector&quot;   </code></pre>
+<p>The <code>teleost</code> object can be used to create vectors or other objects with values by age using <strong>FLife</strong> methods, e.g. to construct a growth curve for hutchen (<em>Hucho hucho</em>)</p>
+<pre class="r"><code>vonB(1:10,teleost[,&quot;Hucho hucho&quot;])</code></pre>
+<pre><code> [1]  29.0  40.8  51.5  61.1  69.9  77.8  84.9  91.4  97.3 102.6</code></pre>
+<div id="plotting" class="section level3">
+<h3>Plotting</h3>
+<p>Plotting is done using <strong>ggplot2</strong> which provides a powerful alternative paradigm for creating both simple and complex plots in R using the <em>Grammar of Graphics</em><a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> The idea of the grammar is to specify the individual building blocks of a plot and then to combine them to create the desired graphic<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a>.</p>
+<p>The <strong>ggplot</strong> methods expects a <code>data.frame</code> for its first argument, <code>data</code> (this has been overloaded by <strong>ggplotFL</strong> to also accept FLR objects); then a geometric object <code>geom</code> that specifies the actual marks put on to a plot and an aesthetic that is “something you can see” have to be provided. Examples of geometic Objects (geom) include points (geom_point, for scatter plots, dot plots, etc), lines (geom_line, for time series, trend lines, etc) and boxplot (geom_boxplot, for, well, boxplots!). Aesthetic mappings are set with the aes() function and, examples include, position (i.e., on the x and y axes), color (“outside” color), fill (“inside” color), shape (of points), linetype and size.</p>
+<pre class="r"><code>age=FLQuant(1:20,dimnames=list(age=1:20))
+len=vonB(age,teleost)
+
+ggplot(as.data.frame(len))+
+  geom_line(aes(age,data,col=iter))+
+  theme(legend.position=&quot;none&quot;)</code></pre>
+<div class="figure">
+<img src="../tex/FLife/length-1.png" alt="Von Bertalanffy growth curves." width="768" />
+<p class="caption">
+Von Bertalanffy growth curves.
+</p>
+</div>
+<p><a href="#top">Back to Top</a></p>
+</div>
+</div>
+<div id="Methods" class="section level1">
+<h1>Methods</h1>
+<div id="life-history-parameters" class="section level2">
+<h2>Life History Parameters</h2>
+<div class="figure">
+<img src="../tex/FLife/pair-plot-1.png" alt="Relationship between life history parameters in the teleost dataset." width="768" />
+<p class="caption">
+Relationship between life history parameters in the teleost dataset.
+</p>
+</div>
+<div id="growth" class="section level3">
+<h3>Growth</h3>
+<p>Consider the von Bertalanffy growth equation</p>
+<p><span class="math display">\[ L_t = L_\infty (1 - e^{(-kt-t_0)})\]</span></p>
+<p>where <span class="math inline">\(L_t\)</span> is length at time t, <span class="math inline">\(L_\infty\)</span> the asymptotic maximum length, <span class="math inline">\(k\)</span> the growth coefficient, and <span class="math inline">\(t_0\)</span> the time at which an individual would, if it possible, be of zero length.</p>
+<p>As <span class="math inline">\(L_\infty\)</span> increases <span class="math inline">\(k\)</span> declines. in other words at a given length a large species will grow faster than a small species. for example <span class="citation">Gislason, Pope, et al. (2008)</span> proposed the relationship</p>
+<p><span class="math display">\[k=3.15L_{\infty}^{-0.64}\]</span></p>
+<p>There also appears to be empirical relationship between <span class="math inline">\(t_0\)</span> and <span class="math inline">\(L_{\infty}\)</span> and <span class="math inline">\(k\)</span> i.e.</p>
+<p><span class="math display">\[log(-t_0) = -0.3922 - 0.2752 log(L_{\infty}) - 1.038 log(k)\]</span></p>
+<p>Therefore for a value of <span class="math inline">\(L_{\infty}\)</span> or even <span class="math inline">\(L_{max}\)</span> the maximum size observered as <span class="math inline">\(L_{\infty}=0.95L_{max}\)</span> then all the growth parameters can be recovered.</p>
+</div>
+<div id="maturity" class="section level3">
+<h3>Maturity</h3>
+<p>There is also a relationship between <span class="math inline">\(L_{50}\)</span> the length at which 50% of individuals are mature</p>
+<p><span class="math display">\[l_{50}=0.72L_{\infty}^{0.93}\]</span></p>
+<p>and even between the length weight relationship</p>
+<p><span class="math display">\[W=aL^b\]</span></p>
+</div>
+<div id="natural-mortality" class="section level3">
+<h3>Natural Mortality</h3>
+<p>For larger species securing sufficient food to maintain a fast growth rate may entail exposure to a higher natural mortality <span class="citation">Gislason, Daan, et al. (2008)</span>. While many small demersal species seem to be partly protected against predation by hiding, cryptic behaviour, being flat or by possessing spines have the lowest rates of natural mortality <span class="citation">Griffiths and Harrod (2007)</span>. Hence, at a given length individuals belonging to species with a high <span class="math inline">\(L_{\infty}\)</span> may generally be exposed to a higher M than individuals belonging to species with a low <span class="math inline">\(L_{\infty}\)</span>.</p>
+<p><span class="math display">\[ log(M) = 0.55-1.61log(L) + 1.44log(L_{\infty}) + log(k)\]</span></p>
+</div>
+</div>
+<div id="functional-forms" class="section level2">
+<h2>Functional forms</h2>
+<p>In <strong>FLIfe</strong> there are methods for creating growth curves, maturity ogives and natural mortality vectors, selection patterns, and other ogives. All these methods are used to create <code>FLQuant</code> objects.</p>
+<div id="growth-1" class="section level3">
+<h3>Growth</h3>
+<p>gompertz, richards, vonB</p>
+<p><img src="../tex/FLife/growth-1.png" width="768" /></p>
+</div>
+<div id="ogives" class="section level3">
+<h3>Ogives</h3>
+<p>dnormal, knife, logistic, sigmoid</p>
+<pre class="r"><code>dnormal( age,FLPar(a1=4,sl=2,sr=5000))</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+    year
+age  1      
+  0  0.06250
+  1  0.21022
+  2  0.50000
+  3  0.84090
+  4  1.00000
+  5  1.00000
+  6  1.00000
+  7  1.00000
+  8  1.00000
+  9  1.00000
+  10 1.00000
+
+units:   </code></pre>
+<pre class="r"><code>knife(   age,FLPar(a1=4))</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+    year
+age  1
+  0  0
+  1  0
+  2  0
+  3  0
+  4  1
+  5  1
+  6  1
+  7  1
+  8  1
+  9  1
+  10 1
+
+units:   </code></pre>
+<pre class="r"><code>logistic(age,FLPar(a50=4,ato95=1,asym=1.0))</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+    year
+age  1         
+  0  7.6733e-06
+  1  1.4577e-04
+  2  2.7624e-03
+  3  5.0000e-02
+  4  5.0000e-01
+  5  9.5000e-01
+  6  9.9724e-01
+  7  9.9985e-01
+  8  9.9999e-01
+  9  1.0000e+00
+  10 1.0000e+00
+
+units:  proportion </code></pre>
+<pre class="r"><code>sigmoid( age,FLPar(a50=4,ato95=1))</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+    year
+age  1         
+  0  7.6733e-06
+  1  1.4577e-04
+  2  2.7624e-03
+  3  5.0000e-02
+  4  5.0000e-01
+  5  9.5000e-01
+  6  9.9724e-01
+  7  9.9985e-01
+  8  9.9999e-01
+  9  1.0000e+00
+  10 1.0000e+00
+
+units:   </code></pre>
+</div>
+<div id="natural-mortality-1" class="section level3">
+<h3>Natural Mortality</h3>
+<p>Many estimators have been propose for M, based on growth and reproduction, see <span class="citation">Kenchington (2014)</span>.</p>
+<div id="age-at-maturity-a_50" class="section level4">
+<h4>Age at maturity <span class="math inline">\(a_{50}\)</span></h4>
+<p>Rikhter and Efanov</p>
+<p><span class="math display">\[M=\frac{1.521}{a_{50}^{0.72}}-0.155\]</span> Jensen</p>
+<p><span class="math display">\[M=\frac{1.65}{a_{50}}\]</span></p>
+</div>
+<div id="growth-2" class="section level4">
+<h4>Growth</h4>
+<p>Jensen</p>
+<p><span class="math display">\[M=1.5k\]</span></p>
+<p>Griffiths and Harrod</p>
+<p><span class="math display">\[M=1.406W_{\infty}^{-0.096}k^{0.78}\]</span> where <span class="math inline">\(W_{\infty}=\alpha L_{\infty}^{\beta}\)</span></p>
+<p>Djabali</p>
+<p><span class="math display">\[M=1.0661L_{\infty}^{-0.1172}k^{0.5092}\]</span></p>
+</div>
+<div id="growth-and-length-at-maturity-l_50" class="section level4">
+<h4>Growth and length at maturity <span class="math inline">\(L_{50}\)</span></h4>
+<p>Roff</p>
+<p><span class="math display">\[M=3kL_{\infty}\frac{(1-\frac{L_{50}}{L_{\infty}})}{L_{50}}\]</span></p>
+<p>Rikhter and Efanov</p>
+<p><span class="math display">\[M=\frac{\beta k}{e^{k(a_{50}-t_0)}-1}\]</span> where <span class="math inline">\(a_{50}=t_0+\frac{log(1-\frac{L_{50}}{L_{\infty}})}{-k}\)</span></p>
+</div>
+<div id="varing-by-length" class="section level4">
+<h4>Varing by length</h4>
+<p>Gislason</p>
+<p><span class="math display">\[M_L=1.73L^{-1.61}L_{\infty}^{1.44}k\]</span></p>
+<p>Charnov</p>
+<p><span class="math display">\[M_L=k\frac{L_{\infty}}{L}^{1.5}\]</span></p>
+</div>
+<div id="varying-by-weight" class="section level4">
+<h4>Varying by weight</h4>
+<p>Peterson and Wroblewsk</p>
+<p><span class="math display">\[M_W=1.28W^{-0.25}\]</span></p>
+<p>Lorenzen</p>
+<p><span class="math display">\[M_W=3W^{-0.288}\]</span></p>
+</div>
+<div id="senescence" class="section level4">
+<h4>Senescence</h4>
+</div>
+</div>
+<div id="conversions" class="section level3">
+<h3>Conversions</h3>
+<p>ages, len2wt, wt2len</p>
+<pre><code>, , unit = unique, season = all, area = unique
+
+    year
+age  1957 1958 1959 1960 1961
+  1   1    1    1    1    1  
+  2   2    2    2    2    2  
+  3   3    3    3    3    3  
+  4   4    4    4    4    4  
+  5   5    5    5    5    5  
+  6   6    6    6    6    6  
+  7   7    7    7    7    7  
+  8   8    8    8    8    8  
+  9   9    9    9    9    9  
+  10 10   10   10   10   10  
+
+      [ ...  51 years]
+
+    year
+age  2013 2014 2015 2016 2017
+  1   1    1    1    1    1  
+  2   2    2    2    2    2  
+  3   3    3    3    3    3  
+  4   4    4    4    4    4  
+  5   5    5    5    5    5  
+  6   6    6    6    6    6  
+  7   7    7    7    7    7  
+  8   8    8    8    8    8  
+  9   9    9    9    9    9  
+  10 10   10   10   10   10  </code></pre>
+<pre><code>, , unit = unique, season = all, area = unique
+
+    year
+age  1957    1958    1959    1960    1961   
+  1   7.2432  7.4290  7.6631  7.2432  7.1791
+  2  10.0662  9.7610 10.1961 10.3540  9.9329
+  3  11.6225 12.1644 12.0046 12.1869 12.2760
+  4  13.4257 13.9591 13.8208 13.9591 14.5180
+  5  14.8125 14.4704 14.8730 15.3827 14.9926
+  6  16.9270 16.4112 16.7507 16.7388 16.9037
+  7  19.3008 17.9360 18.6626 18.4984 17.9567
+  8  18.9639 19.8150 19.0009 19.3633 19.0470
+  9  20.3601 19.9415 20.8623 20.3682 19.8234
+  10 20.9386 21.1419 20.7777 20.9386 20.8852
+
+      [ ...  51 years]
+
+    year
+age  2013    2014    2015    2016    2017   
+  1   7.5478  7.8297  6.2145  6.6943  6.8399
+  2  10.2281 10.1316  8.6624  8.7066  8.8366
+  3  11.5230 11.6471 10.6266 10.5373 10.9696
+  4  12.7650 12.6411 12.7445 12.5571 12.1869
+  5  14.7361 14.6123 14.0778 13.7507 13.9248
+  6  15.2406 15.6049 14.7820 14.8730 14.9330
+  7  16.3116 16.3740 15.5912 15.6049 15.3120
+  8  17.0196 16.9154 16.3241 16.3116 16.6069
+  9  18.7767 16.6069 16.6911 16.8569 16.8217
+  10 16.7269 18.3214 16.5948 17.2579 17.7263</code></pre>
+<p>Generation of missing life history relationships</p>
+<pre class="r"><code>par=lhPar(FLPar(linf=100))
+par</code></pre>
+<pre><code>An object of class &quot;FLPar&quot;
+params
+     linf         k        t0         a         b     ato95       a50 
+ 100.0000    0.1653   -0.1138    0.0003    3.0000    1.0000    4.3462 
+     asym        bg        m1        m2        a1        sl        sr 
+   1.0000    3.0000  217.3564   -1.6100    5.3462    1.0000 5000.0000 
+        s         v 
+   0.9000 1000.0000 
+units:  cm </code></pre>
+<p>There are relationships between the life history parameters and size, growth, maturation, natural mortality and productivity, as seen in the following.</p>
+</div>
+<div id="simulation" class="section level3">
+<h3>Simulation</h3>
+<p>lhPar, lhEql</p>
+</div>
+</div>
+<div id="function-forms" class="section level2">
+<h2>Function Forms</h2>
+</div>
+<div id="population-dynamics" class="section level2">
+<h2>Population dynamics</h2>
+<div id="ecological" class="section level3">
+<h3>Ecological</h3>
+<p>leslie, r</p>
+<div id="life-history-traits" class="section level4">
+<h4>life history traits</h4>
+<pre><code>An object of class &quot;FLPar&quot;
+iters:  145 
+
+params
+               linf                   k                  t0 
+45.100000(28.02114)  0.246667( 0.17297) -0.143333( 0.13590) 
+                l50                   a                   b 
+22.100000(11.71254)  0.011865( 0.00776)  3.010000( 0.15271) 
+units:  NA </code></pre>
+</div>
+<div id="natural-mortality-2" class="section level4">
+<h4>Natural Mortality</h4>
+<p><img src="../tex/FLife/m-gislason-1.png" width="768" /></p>
+</div>
+<div id="stock-recruitment" class="section level4">
+<h4>Stock recruitment</h4>
+</div>
+<div id="fishery" class="section level4">
+<h4>Fishery</h4>
+</div>
+</div>
+<div id="reference-points" class="section level3">
+<h3>Reference points</h3>
+<p>lopt, loptAge</p>
+</div>
+<div id="density-dependence" class="section level3">
+<h3>Density Dependence</h3>
+<p>matdd, mdd</p>
+</div>
+<div id="parameter-estination" class="section level3">
+<h3>Parameter estination</h3>
+<p>moment, powh</p>
+</div>
+<div id="stationarity" class="section level3">
+<h3>Stationarity</h3>
+<p>rod</p>
+</div>
+<div id="random-variables" class="section level3">
+<h3>Random variables</h3>
+<p>rnoise</p>
+</div>
+<div id="reference-points-1" class="section level3">
+<h3>Reference points</h3>
+<pre class="r"><code>data(ple4)
+rodFn=FLife:::rodFn
+refs(ple4)</code></pre>
+</div>
+</div>
+</div>
+<div id="Simulation" class="section level1">
+<h1>Simulation</h1>
+<div id="simulation-of-equilibrium-values-and-reference-points" class="section level2">
+<h2>Simulation of equilibrium values and reference points</h2>
+<pre class="r"><code>eql=lhEql(par)
+
+ggplot(FLQuants(eql,&quot;m&quot;,&quot;catch.sel&quot;,&quot;mat&quot;,&quot;catch.wt&quot;))+
+  geom_line(aes(age,data))+
+  facet_wrap(~qname,scale=&quot;free&quot;)+
+  scale_x_continuous(limits=c(0,15))</code></pre>
+<div class="figure">
+<img src="../tex/FLife/eql-1.png" alt="Age-vectors of growthm natural mortality, maturity and selection pattern" width="768" />
+<p class="caption">
+Age-vectors of growthm natural mortality, maturity and selection pattern
+</p>
+</div>
+<div class="figure">
+<img src="../tex/FLife/plot-1.png" alt="Equilibrium curves and reference points." width="768" />
+<p class="caption">
+Equilibrium curves and reference points.
+</p>
+</div>
+<pre><code>An object of class &quot;FLPar&quot;
+params
+      r      rc     msy    lopt      sk    spr0  sprmsy 
+ 0.3938  0.1385 58.5952 63.6029  0.1972  0.1518  0.0333 
+units:  NA NA NA NA NA NA NA </code></pre>
+<p>Creation of FLBRP objects</p>
+</div>
+<div id="stock-recruitment-relationships" class="section level2">
+<h2>Stock recruitment relationships</h2>
+<p>bevholt <span class="math inline">\(r = \frac{aS}{b + ssb}\)</span></p>
+<p>ricker <span class="math inline">\(r = aSe^{-bS}\)</span></p>
+<p>cushing <span class="math inline">\(r=aS^b\)</span></p>
+<div class="figure">
+<img src="../tex/FLife/fig3-1.png" alt="Stock recruitment relationships for a steepness of 0.75 and vigin biomass of 1000" width="768" />
+<p class="caption">
+Stock recruitment relationships for a steepness of 0.75 and vigin biomass of 1000
+</p>
+</div>
+<div class="figure">
+<img src="../tex/FLife/fig4-1.png" alt="Production curves, Yield v SSB, for a steepness of 0.75 and vigin biomass of 1000." width="768" />
+<p class="caption">
+Production curves, Yield v SSB, for a steepness of 0.75 and vigin biomass of 1000.
+</p>
+</div>
+</div>
+<div id="density-dependence-1" class="section level2">
+<h2>Density Dependence</h2>
+<p>Modelling density dependence in natural mortality and fecundity.</p>
+<pre class="r"><code>data(teleost)
+par=teleost[,&quot;Hucho hucho&quot;]
+par=lhPar(par)
+hutchen=lhEql(par)
+ 
+scale=stock.n(hutchen)[,25]%*%stock.wt(hutchen)
+scale=(stock.n(hutchen)%*%stock.wt(hutchen)%-%scale)%/%scale
+ 
+m=mdd(stock.wt(hutchen),par=FLPar(m1=.2,m2=-0.288),scale,k=.5)   
+
+ggplot(as.data.frame(m))+
+   geom_line(aes(age,data,col=factor(year)))+
+   theme(legend.position=&quot;none&quot;)+
+    scale_x_continuous(limits=c(0,15))</code></pre>
+<div class="figure">
+<img src="../tex/FLife/m-density-dependence-1.png" alt="Density Dependence in M" width="768" />
+<p class="caption">
+Density Dependence in M
+</p>
+</div>
+<pre class="r"><code>scale=stock.n(hutchen)[,25]%*%stock.wt(hutchen)
+scale=(stock.n(hutchen)%*%stock.wt(hutchen)%-%scale)%/%scale
+
+mat=matdd(ages(scale),par,scale,k=.5)   
+ 
+ggplot(as.data.frame(mat))+
+    geom_line(aes(age,data,col=factor(year)))+
+    theme(legend.position=&quot;none&quot;)+
+    scale_x_continuous(limits=c(0,15))</code></pre>
+<div class="figure">
+<img src="../tex/FLife/Maturity-density-dependence-1.png" alt="Density Dependence in M" width="768" />
+<p class="caption">
+Density Dependence in M
+</p>
+</div>
+</div>
+<div id="noise" class="section level2">
+<h2>Noise</h2>
+<p>Methods to simulate random noise with autocorrelation, e.g. by age or cohort <img src="../tex/FLife/fig9-1.png" width="768" /></p>
+<p><img src="../tex/FLife/fig10-1.png" width="768" /></p>
+</div>
+<div id="random-noise-in-r-m-and-mat" class="section level2">
+<h2>Random Noise in R, M and Mat</h2>
+</div>
+<div id="ar-noise-in-r-m-and-mat" class="section level2">
+<h2>AR Noise in R, M and Mat</h2>
+<p><img src="../tex/FLife/ssbAR-1.png" width="960" /></p>
+<p><img src="../tex/FLife/spectAR-1.png" width="768" /></p>
+<div class="figure">
+<img src="../tex/FLife/fig13-1.png" alt="Cohort Effects" width="960" />
+<p class="caption">
+Cohort Effects
+</p>
+</div>
+</div>
+<div id="mse-using-empirical-hcr" class="section level2">
+<h2>MSE using empirical HCR</h2>
+<div class="figure">
+<img src="../tex/FLife/fig14-1.png" alt="MSE using empirical HCR" width="576" />
+<p class="caption">
+MSE using empirical HCR
+</p>
+</div>
+<p><a href="#top">Back to Top</a></p>
+</div>
+</div>
+<div id="Estimation" class="section level1">
+<h1>Estimation</h1>
+<p>Life history parameters can also be used to estimate quantities of use in stock assessment</p>
+<p><span class="citation">Beverton and Holt (1956)</span> developed a method to estimate life history and population parameters length data. e.g.</p>
+<span class="math display">\[\begin{equation}Z=K\frac{L_{\infty}-\overline{L}}{\overline{L}-L^\prime} \end{equation}\]</span>
+<p>Based on which <span class="citation">Powell (1979)</span> developed a method, extended by <span class="citation">Wetherall, Polovina, and Ralston (1987)</span>, to estimate growth and mortality parameters. This assumes that the right hand tail of a length frequency distribution was determined by the asymptotic length <span class="math inline">\(L_{\infty}\)</span> and the ratio between Z and the growth rate k.</p>
+<p>The Beverton and Holt methods assumes good estimates for K and <span class="math inline">\(L_{\infty}\)</span>, while the Powell-Wetherall method only requires an estimate of K, since <span class="math inline">\(L_{\infty}\)</span> is estimated by the method as well as Z/K.These method therefore provide estimates for each distribution of Z/K, if K is unknown and Z if K is known.<br />
+%As well as assuming that growth follows the von Bertalanffy growth function, it is also assumed that the population is in a steady state with constant exponential mortality, no changes in selection pattern of the fishery and constant recruitment. In the Powell-Wetherall method <span class="math inline">\(L^\prime\)</span> can take any value between the smallest and largest sizes. Equation 1 then provides a series of estimates of Z and since</p>
+<span class="math display">\[\begin{equation}\overline{L}-L^\prime=a+bL^{\prime} \end{equation}\]</span>
+a and b can be estimated by a regression analysis where
+<span class="math display">\[\begin{equation}b=\frac{-K}{Z+K} \end{equation}\]</span>
+<span class="math display">\[\begin{equation}a=-bL_{\infty} \end{equation}\]</span>
+<p>Therefore plotting <span class="math inline">\(\overline{L}-L^\prime\)</span> against <span class="math inline">\(L^\prime\)</span> therefore provides an estimate of <span class="math inline">\(L_{\infty}\)</span> and Z/K</p>
+<p>Plotting <span class="math inline">\(\overline{L}-L^\prime\)</span> against <span class="math inline">\(L^\prime\)</span> provides an estimate of <span class="math inline">\(L_{\infty}\)</span> and Z/k, since <span class="math inline">\(L_{\infty}=-a/b\)</span> and <span class="math inline">\(Z/k=\frac{-1-b}{b}\)</span>. If k is known then it also provides an estimate of Z ( ).</p>
+<pre><code>  age   obs    hat    sel
+1   1 42703 263252 0.0194
+2   2 40141 161176 0.0298
+3   3 79353  98680 0.0962
+4   4 56560  60416 0.1119
+5   5 31888  36990 0.1031
+6   6 10988  22647 0.0580</code></pre>
+<p><img src="../tex/FLife/unnamed-chunk-9-1.png" width="768" /></p>
+<div id="catch-curve-analysis" class="section level3">
+<h3>Catch curve analysis</h3>
+<pre class="r"><code>data(ple4)
+ctc=as.data.frame(catch.n(ple4))
+ctc=ddply(ctc,.(year), with, cc(age=age,n=data))
+ctc=ddply(transform(ctc,decade=factor(10*(year%/%10))),.(decade,age),with,data.frame(sel=mean(sel)))
+ggplot(ctc)+
+  geom_line(aes(age,sel,colour=decade))</code></pre>
+<p><img src="../tex/FLife/unnamed-chunk-10-1.png" width="768" /></p>
+<p><a href="#top">Back to Top</a></p>
+</div>
+</div>
+<div id="More" class="section level1">
+<h1>More Information</h1>
+<ul>
+<li>You can submit bug reports, questions or suggestions on <code>FLife</code> at the <code>FLife</code> issue page,<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a> or on the <em>FLR</em> mailing list.</li>
+<li>Or send a pull request to <a href="https://github.com/lauriekell/FLife/" class="uri">https://github.com/lauriekell/FLife/</a></li>
+<li>For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage.<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a></li>
+<li>The latest version of <code>FLife</code> can always be installed using the <code>devtools</code> package, by calling</li>
+</ul>
+<pre class="r"><code>    library(devtools)
+    install_github(&quot;lauriekell/FLife&quot;)</code></pre>
+<p>`</p>
+<div id="software-versions" class="section level2">
+<h2>Software Versions</h2>
+<ul>
+<li>R version 3.5.1 (2018-07-02)</li>
+<li>FLCore: 2.6.10</li>
+<li>FLPKG:</li>
+<li><strong>Compiled</strong>: Tue Dec 4 16:22:47 2018</li>
+<li><strong>Git Hash</strong>: 29d05db</li>
+</ul>
+</div>
+<div id="author-information" class="section level2">
+<h2>Author information</h2>
+<p><strong>Laurence KELL</strong>. <a href="mailto:laurie@seaplusplus.co.uk">laurie@seaplusplus.co.uk</a></p>
+</div>
+<div id="acknowledgements" class="section level2">
+<h2>Acknowledgements</h2>
+<p>This vignette and the methods documented in it were developed under the MyDas project funded by the Irish exchequer and EMFF 2014-2020. The overall aim of MyDas is to develop and test a range of assessment models and methods to establish Maximum Sustainable Yield (MSY) reference points (or proxy MSY reference points) across the spectrum of data-limited stocks.</p>
+</div>
+</div>
+<div id="References" class="section level1">
+<h1>References</h1>
+<p><a href="#top">Back to Top</a></p>
+<div id="refs" class="references">
+<div id="ref-beverton1956review">
+<p>Beverton, R.J.H., and S.J. Holt. 1956. “Review of Method for Estimating Mortality Rates in Exploited Fish Populations, with Special Reference to Sources of Bias in Catch Sampling.” <em>Rapports et Proces-Verbaux.</em> 140 (1): 67–83.</p>
+</div>
+<div id="ref-gislason2008does">
+<p>Gislason, H., N. Daan, JC Rice, and JG Pope. 2008. “Does Natural Mortality Depend on Individual Size.” <em>ICES</em>.</p>
+</div>
+<div id="ref-gislason2008coexistence">
+<p>Gislason, H., J.G. Pope, J.C. Rice, and N. Daan. 2008. “Coexistence in North Sea Fish Communities: Implications for Growth and Natural Mortality.” <em>ICES J. Mar. Sci.</em> 65 (4): 514–30.</p>
+</div>
+<div id="ref-griffiths2007natural">
+<p>Griffiths, David, and Chris Harrod. 2007. “Natural Mortality, Growth Parameters, and Environmental Temperature in Fishes Revisited.” <em>Canadian Journal of Fisheries and Aquatic Sciences</em> 64 (2). NRC Research Press: 249–55.</p>
+</div>
+<div id="ref-kenchington2014natural">
+<p>Kenchington, Trevor J. 2014. “Natural Mortality Estimators for Information-Limited Fisheries.” <em>Fish and Fisheries</em> 15 (4). Wiley Online Library: 533–62.</p>
+</div>
+<div id="ref-powell1979estimation">
+<p>Powell, David G. 1979. “Estimation of Mortality and Growth Parameters from the Length Frequency of a Catch [Model].” <em>Rapports et Proces-Verbaux Des Reunions</em> 175.</p>
+</div>
+<div id="ref-wetherall1987estimating">
+<p>Wetherall, JA, JJ Polovina, and S. Ralston. 1987. “Estimating Growth and Mortality in Steady-State Fish Stocks from Length-Frequency Data.” <em>ICLARM Conf. Proc</em>, 53–74.</p>
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p><a href="http://www.oxfordbibliographies.com/view/document/obo-9780199830060/obo-9780199830060-0016.xml" class="uri">http://www.oxfordbibliographies.com/view/document/obo-9780199830060/obo-9780199830060-0016.xml</a><a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>Wilkinson, L. 1999. <em>The Grammar of Graphics</em>, Springer. <a href="http://dx.doi.org/10.1007/978-3-642-21551-3_13">doi 10.1007/978-3-642-21551-3_13</a>.<a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p><a href="http://tutorials.iq.harvard.edu/R/Rgraphics/Rgraphics.html" class="uri">http://tutorials.iq.harvard.edu/R/Rgraphics/Rgraphics.html</a><a href="#fnref3">↩</a></p></li>
+<li id="fn4"><p><a href="https://github.com/lauriekell/FLife/issues" class="uri">https://github.com/lauriekell/FLife/issues</a><a href="#fnref4">↩</a></p></li>
+<li id="fn5"><p><a href="http://flr-project.org" class="uri">http://flr-project.org</a><a href="#fnref5">↩</a></p></li>
+</ol>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

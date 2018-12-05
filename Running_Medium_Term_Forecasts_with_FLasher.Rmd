@@ -222,12 +222,12 @@ The timing of spawning and fishing are controlled by the *m.spwn* and *harvest.s
 Here we set a target SSB for the end of the timestep
 
 ```{r, ex3a}
-final_ssb <- 100000
-ctrl_ssb <- fwdControl(list(year=2009, quant = "ssb_end", value=final_ssb))
+final_ssb <- 500000
+ctrl_ssb <- fwdControl(list(year=2018, quant = "ssb_end", value=final_ssb))
 ple4_ssb <- fwd(ple4_mtf, control=ctrl_ssb, sr = ple4_sr)
 # Calculate the final SSB to check the target has been hit
 survivors <- stock.n(ple4_ssb) * exp(-harvest(ple4_ssb) - m(ple4_ssb))
-quantSums((survivors * stock.wt(ple4_ssb) * mat(ple4_ssb))[,ac(2009)])
+quantSums((survivors * stock.wt(ple4_ssb) * mat(ple4_ssb))[,ac(2018)])
 ```
 
 ### Targets at the time of spawning
