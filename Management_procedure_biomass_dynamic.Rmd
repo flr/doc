@@ -1,44 +1,22 @@
 ---
 title: "Biomass Dynamic Management Procedures"
 author: "Laurence Kell"
-date: "August 13th, 2016"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-    tufte::tufte_handout:
-    citation_package: natbib
-    latex_engine: xelatex
-bibliography: /home/laurence/Desktop/refs.bib
-link-citations: yes
-vignette: >
-  %\VignetteIndexEntry{mpb}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+  github_document:
+    mathjax: TRUE
+  pdf_document:
+    fig_width: 6 
+    fig_height: 4 
+bibliography: bibliography.bib
 ---
 
 
-```{r, ini, echo=FALSE, results='hide', message=FALSE, warnings=FALSE, cache=FALSE,eval=!FALSE}
+```{r, ini, echo=FALSE, results='hide', message=FALSE, warnings=FALSE, cache=FALSE}
 library(knitr)
 source("R/ini.R")
-
 options(digits=3)
-
 iFig=0
-```
-
-```{r knitr_init, echo=FALSE, results="hide", eval=FALSE}
-library(knitr)
-## Global options
-opts_chunk$set(echo    =TRUE,
-               eval    =TRUE,
-               cache   =!FALSE,
-               cache.path="cache/mpb",
-               prompt  =FALSE,
-               comment =NA,
-               message =FALSE,
-               tidy    =FALSE,
-               warnings=FALSE,
-               fig.height=4.5,
-               fig.width =4.5,
-               fig.path  ="tex/mpb/")
 ```
 
 ```{r,echo=FALSE}
@@ -60,22 +38,22 @@ sink()
 
 The `mpb` package implements biomass based methods for stock assessment and simulation testing using Management Strategy Evaluation (MSE).
 
-The main processes influencing the dynamics of exploited populations are gains due to growth and recruitment and losses due to fishing and natural mortality. In a biomass dynamic stock assessment model recruitment, growth and natural mortality are simplified into a single production function ($P$), for example that of @pella1969generalized.
+The main processes influencing the dynamics of exploited populations are gains due to growth and recruitment and losses due to fishing and natural mortality. In a biomass dynamic stock assessment model recruitment, growth and natural mortality are simplified into a single production function ($P$), for example that of [@pella1969generalized].
 
-\begin{marginfigure}
+\begin{figure}
 \begin{equation}  B_{t+1}=B_{t}-C_{t}+P_{t}\end{equation}  
 \caption{Biomass next year equals the biomass this year less catches and plus production.}
-\end{marginfigure}
+\end{figure}
 
-\begin{marginfigure}
+\begin{figure}
 \begin{equation}\frac{r}{p}\cdot~B(1-(\frac{B}{K})^p)\end{equation}  
 \caption{Production function.}
-\end{marginfigure}
+\end{figure}
 
 The dynamics are determined by the population growth rate ($r$, in the abscence of density dependence) and the shape of the production function ($p$). if $p=1$ then the maximum sustainable yield (MSY) is found halfway between 0 and virgin biomass ($K$); as p deccreases MSY shifts to the left.
 There is seldom suffcient infomation in the catch data to estimate even these few parameters and so additional data are required, e.g. time series of relative abundance from catch per unit effort (CPUE), or surveys.
 
-The provision of fisheries management advice requires the assessment of stock status relative to reference points, the prediction of the response of a stock to management, and checking that predictions are consistent with reality. Biomass dynamic models have been criticised as being too simplistic to capture the actual population dynamics, however, if a simple model can provide robust advice on stock status and the response of a stock to management why use anything more complicated  [@ludwig1985age]?  For example the Pella-Tomlinson model is used by the IWC to set catch limits. Neither the form of the model nor its parameters are meant to provide an accurate representation of the dynamics of the population. Rather, it has been demonstrated by simulation that when a biomass dynamic model is used as part of a management strategy with a harvest control rule (HCR) it allows the robust calculation and setting of catches limits @butterworth1999experiences. 
+The provision of fisheries management advice requires the assessment of stock status relative to reference points, the prediction of the response of a stock to management, and checking that predictions are consistent with reality. Biomass dynamic models have been criticised as being too simplistic to capture the actual population dynamics, however, if a simple model can provide robust advice on stock status and the response of a stock to management why use anything more complicated  [@ludwig1985age]?  For example the Pella-Tomlinson model is used by the IWC to set catch limits. Neither the form of the model nor its parameters are meant to provide an accurate representation of the dynamics of the population. Rather, it has been demonstrated by simulation that when a biomass dynamic model is used as part of a management strategy with a harvest control rule (HCR) it allows the robust calculation and setting of catches limits [@butterworth1999experiences]. 
 
 # `biodyn` Class
 
@@ -105,7 +83,7 @@ bd=sim()
 
 ## Plotting
 
-\newthought{Plots} are important for examining objects, exploring data, summarising results, checking outputs, and diagnosing problems. 
+**Plots** are important for examining objects, exploring data, summarising results, checking outputs, and diagnosing problems. 
 ```{r plot, fig.margin=TRUE, fig.width=4, fig.height=5, fig.cap="Production function with simulated time series"}
 bd=window(sim(),end=49)
 plot(bd)+
@@ -124,7 +102,7 @@ plotProduction(bd)+
 
 # Estimation
 
-\newthought{Fitting to data} can be done using either maximum likelihood or Monte Carlo Markov Chain (MCMC) simulations. Simulation can help to check robustness by allowing estimated values to be compared with the ones used to generate the data.
+**Fitting to data** can be done using either maximum likelihood or Monte Carlo Markov Chain (MCMC) simulations. Simulation can help to check robustness by allowing estimated values to be compared with the ones used to generate the data.
 
 ```{r fit, echo=TRUE, fig.margin=TRUE, fig.height=4, fig.cap="Simulated stock"}
 bd=sim()
@@ -167,7 +145,7 @@ Difficult to estimate parameters may be fixed by setting the `phase` (e.g. for $
 
 ## Maximum Likelihood
 
-\newthought{Estimation} can be performed using maximum likelihood
+**Estimation** can be performed using maximum likelihood
 ```{r fitrun,fig.margin=TRUE,fig.width=4,fig.height=6}
 control(bd)["r",1]=2  
 bdHat=fit(bd,cpue)  
@@ -186,7 +164,7 @@ plot(as(list("True"=bd,"Hat"=bdHat),"biodyns"))+
 
 # Diagnostics
 
-\newthought{Goodness of fit} diagnostics are important for replicability, by ensuring that a global solution has actually been found and that assumptions arnt violated, so when the assessment is repeated you get a similar result.
+**Goodness of fit** diagnostics are important for replicability, by ensuring that a global solution has actually been found and that assumptions arnt violated, so when the assessment is repeated you get a similar result.
 
 ## Residuals
 Patterns in residuals from the fits of the CPUE to stock abundance may indicate a violation of models assumptions. Which may result in biased estimates of parameters, reference points and stock trends. While variance estimates obtained from bootstrapping assume that residuals are Independently and Identically Distributed (i.i.d.).

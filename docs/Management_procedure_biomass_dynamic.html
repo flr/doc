@@ -377,7 +377,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Biomass Dynamic Management Procedures</h1>
 <h4 class="author"><em>Laurence Kell</em></h4>
-<h4 class="date"><em>August 13th, 2016</em></h4>
+<h4 class="date"><em>06 December, 2018</em></h4>
 
 </div>
 
@@ -385,11 +385,11 @@ $(document).ready(function () {
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
 <p>The <code>mpb</code> package implements biomass based methods for stock assessment and simulation testing using Management Strategy Evaluation (MSE).</p>
-<p>The main processes influencing the dynamics of exploited populations are gains due to growth and recruitment and losses due to fishing and natural mortality. In a biomass dynamic stock assessment model recruitment, growth and natural mortality are simplified into a single production function (<span class="math inline">\(P\)</span>), for example that of <span class="citation">Pella and Tomlinson (<a href="#ref-pella1969generalized">1969</a>)</span>.</p>
+<p>The main processes influencing the dynamics of exploited populations are gains due to growth and recruitment and losses due to fishing and natural mortality. In a biomass dynamic stock assessment model recruitment, growth and natural mortality are simplified into a single production function (<span class="math inline">\(P\)</span>), for example that of <span class="citation">(Pella and Tomlinson 1969)</span>.</p>
 
 
 <p>The dynamics are determined by the population growth rate (<span class="math inline">\(r\)</span>, in the abscence of density dependence) and the shape of the production function (<span class="math inline">\(p\)</span>). if <span class="math inline">\(p=1\)</span> then the maximum sustainable yield (MSY) is found halfway between 0 and virgin biomass (<span class="math inline">\(K\)</span>); as p deccreases MSY shifts to the left. There is seldom suffcient infomation in the catch data to estimate even these few parameters and so additional data are required, e.g. time series of relative abundance from catch per unit effort (CPUE), or surveys.</p>
-<p>The provision of fisheries management advice requires the assessment of stock status relative to reference points, the prediction of the response of a stock to management, and checking that predictions are consistent with reality. Biomass dynamic models have been criticised as being too simplistic to capture the actual population dynamics, however, if a simple model can provide robust advice on stock status and the response of a stock to management why use anything more complicated <span class="citation">(Ludwig and Walters <a href="#ref-ludwig1985age">1985</a>)</span>? For example the Pella-Tomlinson model is used by the IWC to set catch limits. Neither the form of the model nor its parameters are meant to provide an accurate representation of the dynamics of the population. Rather, it has been demonstrated by simulation that when a biomass dynamic model is used as part of a management strategy with a harvest control rule (HCR) it allows the robust calculation and setting of catches limits <span class="citation">Butterworth and Punt (<a href="#ref-butterworth1999experiences">1999</a>)</span>.</p>
+<p>The provision of fisheries management advice requires the assessment of stock status relative to reference points, the prediction of the response of a stock to management, and checking that predictions are consistent with reality. Biomass dynamic models have been criticised as being too simplistic to capture the actual population dynamics, however, if a simple model can provide robust advice on stock status and the response of a stock to management why use anything more complicated <span class="citation">(Ludwig and Walters 1985)</span>? For example the Pella-Tomlinson model is used by the IWC to set catch limits. Neither the form of the model nor its parameters are meant to provide an accurate representation of the dynamics of the population. Rather, it has been demonstrated by simulation that when a biomass dynamic model is used as part of a management strategy with a harvest control rule (HCR) it allows the robust calculation and setting of catches limits <span class="citation">(Butterworth and Punt 1999)</span>.</p>
 </div>
 <div id="biodyn-class" class="section level1">
 <h1><code>biodyn</code> Class</h1>

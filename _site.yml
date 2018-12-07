@@ -37,8 +37,8 @@ navbar:
           href: Natural_mortality_modelling_in_FLa4a.html
         - text: "Stock assessment using eXtended Survivors Analysis with FLXSA"
           href: Stock_assessment_using_eXtended_Survivors_Analysis_with_FLXSA.html
-        - text: "Life History Modelling"
-          href: FLife.html
+        - text: "Life history relationships"
+          href: Life_history_relationships.html
     - text: "Advice"
       icon: fa-tachometer
       menu:
@@ -55,6 +55,8 @@ navbar:
       menu:
         - text: "An introduction to MSE using FLR"
           href: An_introduction_to_MSE_using_FLR.html
+        - text: "Biomass Dynamic Management Procedures"
+          href: Management_procedure_biomass_dynamic.html
     - text: "FLBEIA"
       icon: fa-cogs
       menu:
