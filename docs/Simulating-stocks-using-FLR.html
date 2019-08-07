@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Simulating Fish Stocks using FLR</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { background-color: #f8f8f8; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="http://flr-project.org">
+    <span class="fa fa-home"></span>
+     
+    FLR
+  </a>
+</li>
+<li>
+  <a href="index.html">
+    <span class="fa fa-info"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-play-circle-o"></span>
+     
+    Intro
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A_quick_introduction_to_FLR.html">A quick introduction to FLR</a>
+    </li>
+    <li>
+      <a href="An_overview_of_the_FLCore_classes.html">An overview of the FLCore classes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-database"></span>
+     
+    Input
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Loading_your_data_into_FLR.html">Loading your data into FLR</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-magic"></span>
+     
+    Modelling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Modelling_stock_recruitment_with_FLSR.html">Modelling stock recruitment with FLSR</a>
+    </li>
+    <li>
+      <a href="Statistical_catch_at_age_models_in_FLa4a.html">Statistical catch at age models in FLa4a</a>
+    </li>
+    <li>
+      <a href="Modelling_growth_and_its_uncertainty_in_FLa4a.html">Modelling growth and its uncertainty in FLa4a</a>
+    </li>
+    <li>
+      <a href="Natural_mortality_modelling_in_FLa4a.html">Natural mortality modelling in FLa4a</a>
+    </li>
+    <li>
+      <a href="Stock_assessment_using_eXtended_Survivors_Analysis_with_FLXSA.html">Stock assessment using eXtended Survivors Analysis with FLXSA</a>
+    </li>
+    <li>
+      <a href="Using_information_on_life_history_relationships.html">Using information on Life History relationships</a>
+    </li>
+    <li>
+      <a href="Life_history_relationships.html">Life history relationships</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-tachometer"></span>
+     
+    Advice
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Running_Medium_Term_Forecasts_with_FLash.html">Running Medium Term Forecasts with FLash</a>
+    </li>
+    <li>
+      <a href="Short_Term_Forecasting_for_advice_using_FLash.html">Short Term Forecasting for advice using FLash</a>
+    </li>
+    <li>
+      <a href="Forecasting_on_the_Medium_Term_for_advice_using_FLasher.html">Forecasting on the Medium Term for advice using FLasher</a>
+    </li>
+    <li>
+      <a href="Reference_points_for_fisheries_management_with_FLBRP.html">Reference points for fisheries management with FLBRP</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-cogs"></span>
+     
+    MSE
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+    <li>
+      <a href="Management_procedure_biomass_dynamic.html">Biomass Dynamic Management Procedures</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-cogs"></span>
+     
+    FLBEIA
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+    <li>
+      <a href="Conditioning_FLBEIA.html">Conditioning FLBEIA using Smart Conditioning Functions</a>
+    </li>
+    <li>
+      <a href="FLBEIA_A_Simple_Example.html">A simple example on how to use FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_An_Example_with_multiple_dimensions.html">A simple example with multiple dimensions in FLBEIA</a>
+    </li>
+    <li>
+      <a href="Using_Assessment_models_in_the_MP_FLBEIA.html">Using Stock Assessment models in the Management procedure of FLBEIA</a>
+    </li>
+    <li>
+      <a href="Testing_Management_Strategies_in_FLBEIA.html">Testing different Management Strategies in FLBEIA</a>
+    </li>
+    <li>
+      <a href="Data_Poor_MSE_in_FLBEIA.html">Data Limited MSE in FLBEIA</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-area-chart"></span>
+     
+    Plotting
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="ggplotFL_plotting_FLR_objects_with_ggplot2.html">ggplotFL, plotting FLR objects with ggplot2</a>
+    </li>
+    <li>
+      <a href="Plotting_FLR_objects_using_lattice.html">Plotting FLR objects using lattice</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-puzzle-piece"></span>
+     
+    Internals
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Units_of_measurement_in_FLR_objects.html">Units of measurement in FLR objects</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="http://github.com/flr/doc/issues">
+    <span class="fa fa-question fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Simulating Fish Stocks using FLR</h1>
+<h4 class="date">07 August, 2019</h4>
+
+</div>
+
+
+<pre><code>## Warning: replacing previous import &#39;ggplot2::%+%&#39; by &#39;FLCore::%+%&#39; when
+## loading &#39;ggplotFL&#39;</code></pre>
+<div id="simulating-fish-stocks-using-flr" class="section level1">
+<h1>Simulating fish stocks using FLR</h1>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>We will show you how to simulate stocks from scratch using the libraries <a href="http://www.flr-project.org/FLife/">FLife</a> and <a href="http://www.flr-project.org/FLasher/">FLasher</a> from the <a href="http://www.flr-project.org/">Fisheries Library in R</a>. The combination of those two libraries allows the user to initiate and project a fishstock based on the understanding of life-history theory <em>(quote the big cahuna)</em>. This tutorial is structured in two parts; the first part shows the quick way and the second part highlights the flexibility of the method.</p>
+<p>We will use <code>FLife</code> to setup the stock and <code>FLasher</code> to project the stock. The process can be summarised as follows:</p>
+<ol style="list-style-type: decimal">
+<li>Setting life-history parameters for stock.
+<ul>
+<li>at least one parameter needs to be set: L<sub>∞</sub>.</li>
+<li>rest of parameters is calculated using <em>big cahuna</em>’s relationship.</li>
+<li>creation of a simulation-setup object.</li>
+</ul></li>
+<li>Calculation of equilibrium states of fish stocks using life-history parameters.
+<ul>
+<li>the simulation-setup object is used to calculate stock parameters at a range of fisheries mortalities.</li>
+</ul></li>
+<li>Forward projections, using a single stock at equilibrium.
+<ul>
+<li>fisheries trajectories are defined</li>
+<li>Stock-recruitment functions are defined.</li>
+<li>Deviances are added.</li>
+</ul></li>
+</ol>
+</div>
+</div>
+<div id="simple-simulation-of-a-model-with-default-parameters" class="section level1">
+<h1>Simple simulation of a model with default parameters</h1>
+<p>First we need to load both libraries:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">library</span>(FLife)</a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="kw">library</span>(FLasher)</a></code></pre></div>
+<div id="setting-life-history-parameters" class="section level2">
+<h2>Setting life-history parameters</h2>
+<p>To initialise a stock is to use the function <code>FLPar()</code> specifying the argument <code>linf</code> to create a <em>FLPar</em>-object for a given L<sub>∞</sub> (asymptotic length parameter of the von Bertalanffy growth curve). The function <code>lhPar()</code> will extend the required attributes using the <em>big cahuna</em>’s life history relationships. The resulting <em>FLPar</em>-object contains the life history parameters required to create a <em>FLBRP</em>-object using <code>lhEql()</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">(par &lt;-<span class="st"> </span><span class="kw">FLPar</span>(<span class="dt">linf =</span> <span class="dv">100</span>))</a></code></pre></div>
+<pre><code>An object of class &quot;FLPar&quot;
+params
+linf 
+ 100 
+units:  NA </code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">(qpar &lt;-<span class="st"> </span><span class="kw">lhPar</span>(par))</a></code></pre></div>
+<pre><code>An object of class &quot;FLPar&quot;
+params
+     linf         k        t0         a         b     ato95       a50 
+ 100.0000    0.1653   -0.1138    0.0003    3.0000    1.0000    4.3462 
+     asym        bg        m1        m2        a1        sl        sr 
+   1.0000    3.0000  217.3564   -1.6100    5.3462    1.0000 5000.0000 
+        s         v 
+   0.9000 1000.0000 
+units:  cm </code></pre>
+<p>Now the simulation-setup object needs to be created using <code>lhEql()</code>, which upon closer inspection contains all the “at-age” information required to create the stock in the next step. In this particular case the stock model will use 41 age classes. The fisheries mortalities (F<sub> bar</sub> = <code>seq(0, F_crash, length.out = 101)</code>) are stored as “years” in the object, which is confusing but should not bother the user. The next step will use each fisheries mortality separately and calculate a stock-size at equilibrium for that specific <em>F</em>. The overall selectivity is a combination of two quantities: <code>landings.sel</code> and <code>discards.sel</code>. They are fixed at this stage (to default if not specified) and will be used for the entire projection. Means to change the levels of F<sub>bar</sub> and the selectivity during the simulation will be shown further down.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">eql &lt;-<span class="st"> </span><span class="kw">lhEql</span>(qpar)</a>
+<a class="sourceLine" id="cb7-2" title="2"></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="kw">summary</span>(qpar)</a></code></pre></div>
+<pre><code>An object of class &quot;FLPar&quot;</code></pre>
+<pre><code>An object of class &quot;FLPar&quot;
+params
+     linf         k        t0         a         b     ato95       a50 
+ 100.0000    0.1653   -0.1138    0.0003    3.0000    1.0000    4.3462 
+     asym        bg        m1        m2        a1        sl        sr 
+   1.0000    3.0000  217.3564   -1.6100    5.3462    1.0000 5000.0000 
+        s         v 
+   0.9000 1000.0000 
+units:  cm </code></pre>
+</div>
+<div id="calculation-of-equilibrium-states-of-fish-stocks-using-life-history-parameters" class="section level2">
+<h2>Calculation of equilibrium states of fish stocks using life-history parameters</h2>
+<p>This step is very simple. All it it requires is the following little code:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">stk &lt;-<span class="st"> </span><span class="kw">as</span>(eql, <span class="st">&quot;FLStock&quot;</span>)</a></code></pre></div>
+<p>At this point the reader is invited to browse the <em>FLStock_</em>-object at his leisure using <code>str(stk)</code>. We will show the output of <code>summary(stk)</code> as it is all that is required to highlight what has happened:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">summary</span>(stk)</a></code></pre></div>
+<pre><code>An object of class &quot;FLStock&quot;
+
+Name:  
+Description:  
+Quant: age 
+Dims:  age  year    unit    season  area    iter
+    41  101 1   1   1   1   
+
+Range:  min max pgroup  minyear maxyear minfbar maxfbar 
+    0   40  40  1   101 1   40  
+
+catch         : [ 1 101 1 1 1 1 ], units =  NA 
+catch.n       : [ 41 101 1 1 1 1 ], units =  NA 
+catch.wt      : [ 41 101 1 1 1 1 ], units =  NA 
+discards      : [ 1 101 1 1 1 1 ], units =  NA 
+discards.n    : [ 41 101 1 1 1 1 ], units =  NA 
+discards.wt   : [ 41 101 1 1 1 1 ], units =  NA 
+landings      : [ 1 101 1 1 1 1 ], units =  NA 
+landings.n    : [ 41 101 1 1 1 1 ], units =  NA 
+landings.wt   : [ 41 101 1 1 1 1 ], units =  NA 
+stock         : [ 1 101 1 1 1 1 ], units =  NA 
+stock.n       : [ 41 101 1 1 1 1 ], units =  NA 
+stock.wt      : [ 41 101 1 1 1 1 ], units =  NA 
+m             : [ 41 101 1 1 1 1 ], units =  NA 
+mat           : [ 41 101 1 1 1 1 ], units =   
+harvest       : [ 41 101 1 1 1 1 ], units =  f 
+harvest.spwn  : [ 41 101 1 1 1 1 ], units =   
+m.spwn        : [ 41 101 1 1 1 1 ], units =   </code></pre>
+<p>In contrast to the <code>eql</code> object, the new stock object has 101 “yearly” entries (read stock levels at 101 different <em>F<sub>bar</sub></em>s). The quantities, that are calculated for each age class, have a “41” at the first position (<em>e.g.</em> <code>catch.n</code>) since we specified 41 age classes. The compunded quantities contain a “1” at the first position (<em>e.g.</em> <code>catch</code>) as they are applicable to or the result of all classes. The plot of the stock object is a good summary:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">plot</span>(stk)</a></code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="Simulating-stocks-using-FLR_files/figure-html/unnamed-chunk-6-1.png" alt="Line plots from our stock object." width="672" />
+<p class="caption">
+Line plots from our stock object.
+</p>
+</div>
+<p>The x-axis is an index of the <em>F<sub>bar</sub></em> sequence specified in <code>eql</code> and <strong>not</strong> of time. As such the figure should be read in columns: for a given <em>F<sub>bar</sub></em> the catch, SSB and recruitment will be in equilibrium at a the level indicated on the plot. The creation of the stock-object also changed <em>F<sub>bar</sub></em> to <em>F<sub>age</sub></em> via a selection-at-age curve.</p>
+<p>This selectivity curve is not available separately in this particular object (<em>FLStock</em>) and is implied in the distribution of <em>F<sub>age</sub></em>. This is important as we see later: in order to create an unfished stock, one needs to use a stock with a tiny amount of fisheries mortality (<em>i.e. F<sub>bar</sub></em> &lt; 0.1) to maintain the selectivity pattern within the stock-object. As we will see later, we <strong>can</strong> forward project using zero fisheries mortality. However, if we choose the unfished parameter space generated within <code>stk</code> we will not be able to introduce fisheries mortality during the projection stage as the selectivity for all age groups will be 0.</p>
+</div>
+<div id="forward-projections-using-a-single-stock-at-equilibrium." class="section level2">
+<h2>Forward projections, using a single stock at equilibrium.</h2>
+<p>In this section we will proiject/simulate the stock for 100 years using the previously generated <em>FLStock</em>-object (<code>stk</code>). The first step is to create an output object into which we will project the stock. As mentioned before, we must use a stock at equilibrium with a minimum of fisheries mortality in order to maintain the selection structure. As the index of <code>stk</code> are linked to fisheries mortalities, we will use the second realisation <code>stk[,2]</code> (as the first is <em>F<sub>bar</sub></em> = 0, which can be checked by <code>fbar(stk[,1])</code>).</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">omStore &lt;-<span class="st"> </span><span class="kw">fwdWindow</span>(stk[,<span class="dv">2</span>], eql, <span class="dt">end =</span> <span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="kw">summary</span>(omStore)</a></code></pre></div>
+<pre><code>An object of class &quot;FLStock&quot;
+
+Name:  
+Description:  
+Quant: age 
+Dims:  age  year    unit    season  area    iter
+    41  99  1   1   1   1   
+
+Range:  min max pgroup  minyear maxyear minfbar maxfbar 
+    0   40  40  2   100 1   40  
+
+catch         : [ 1 99 1 1 1 1 ], units =  NA 
+catch.n       : [ 41 99 1 1 1 1 ], units =  NA 
+catch.wt      : [ 41 99 1 1 1 1 ], units =  NA 
+discards      : [ 1 99 1 1 1 1 ], units =  NA 
+discards.n    : [ 41 99 1 1 1 1 ], units =  NA 
+discards.wt   : [ 41 99 1 1 1 1 ], units =  NA 
+landings      : [ 1 99 1 1 1 1 ], units =  NA 
+landings.n    : [ 41 99 1 1 1 1 ], units =  NA 
+landings.wt   : [ 41 99 1 1 1 1 ], units =  NA 
+stock         : [ 1 99 1 1 1 1 ], units =  NA 
+stock.n       : [ 41 99 1 1 1 1 ], units =  NA 
+stock.wt      : [ 41 99 1 1 1 1 ], units =  NA 
+m             : [ 41 99 1 1 1 1 ], units =  NA 
+mat           : [ 41 99 1 1 1 1 ], units =   
+harvest       : [ 41 99 1 1 1 1 ], units =  f 
+harvest.spwn  : [ 41 99 1 1 1 1 ], units =   
+m.spwn        : [ 41 99 1 1 1 1 ], units =   </code></pre>
+<p>In this storage object are also the relevant parameters for each year and age class. Some of the parameters can be changed prior to the projections as we will see later. In order to project we need to specify two more functions/paramter: the stock-recruitment relationship and the trajectory of <em>F<sub>bar</sub></em>. As this is the simplest of projections, we will use the default Beverton-Holt stock-recruitment function, parameterised according to the <em>big cahuna</em>’s relationships:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">bhm &lt;-<span class="st"> </span><span class="kw">as</span>(eql, <span class="st">&quot;predictModel&quot;</span>)</a>
+<a class="sourceLine" id="cb16-2" title="2">nssb &lt;-<span class="st"> </span><span class="kw">FLQuant</span>(<span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">2000</span>, <span class="dt">length=</span><span class="dv">100</span>))</a>
+<a class="sourceLine" id="cb16-3" title="3"></a>
+<a class="sourceLine" id="cb16-4" title="4"><span class="kw">ggplot</span>(<span class="kw">model.frame</span>(<span class="kw">FLQuants</span>(<span class="dt">ssb=</span>nssb, <span class="dt">bevholt=</span><span class="kw">predict</span>(bhm, <span class="dt">ssb=</span>nssb))),</a>
+<a class="sourceLine" id="cb16-5" title="5">  <span class="kw">aes</span>(<span class="dt">x=</span>ssb, <span class="dt">y=</span>bevholt)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>()</a></code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="Simulating-stocks-using-FLR_files/figure-html/unnamed-chunk-8-1.png" alt="The Beverton-Holt stock-recruitment model used to simulate the stocks." width="672" />
+<p class="caption">
+The Beverton-Holt stock-recruitment model used to simulate the stocks.
+</p>
+</div>
+<p>As for the fishing mortality, we shall fix it at <em>F<sub>MSY</sub></em> for the entire run.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1">FMSY &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">fmsy</span>(eql))</a>
+<a class="sourceLine" id="cb17-2" title="2">hfc &lt;-<span class="st"> </span><span class="kw">fwdControl</span>(<span class="dt">year=</span><span class="dv">3</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">quant=</span><span class="st">&quot;f&quot;</span>, <span class="dt">value=</span>FMSY)</a></code></pre></div>
+<p>Note we start at year 3 rather than year 1 or 2. This is due to the internal implementation; when we used the crutch replacing years with levels of <em>F<sub>bar</sub></em> and then picked the second <em>F<sub>bar</sub></em>, internally the first two slots are filled. This is not a big issue as long we remember to make the time series long enough and cut off the unwanted early years.</p>
+<p>Now we are ready to project a stock, in a deterministic fashion as no noise has been added.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1">OpMod &lt;-<span class="st"> </span><span class="kw">fwd</span>(omStore, <span class="dt">sr =</span> bhm, <span class="dt">control =</span> hfc)</a>
+<a class="sourceLine" id="cb18-2" title="2"></a>
+<a class="sourceLine" id="cb18-3" title="3"><span class="kw">plot</span>(OpMod)</a></code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="Simulating-stocks-using-FLR_files/figure-html/unnamed-chunk-10-1.png" alt="Fish-stock behaviour over time. Note the deterministic nature as well as the artefact at the first data point. The artefact is a result of the way the simulation is initialised. See further down how to remove it." width="672" />
+<p class="caption">
+Fish-stock behaviour over time. Note the deterministic nature as well as the artefact at the first data point. The artefact is a result of the way the simulation is initialised. See further down how to remove it.
+</p>
+</div>
+</div>
+</div>
+<div id="doing-stuff-to-stocks" class="section level1">
+<h1>Doing stuff to stocks</h1>
+<div id="changing-life-history-parameters" class="section level2">
+<h2>Changing life history parameters</h2>
+<p>We will show how to change and implement different life history parameters during the setup (<em>i.e.</em> during the first step). As before we use <code>FLPar</code> to set the initial life history parameters.</p>
+<p>The parameters available in a <em>FLpar</em>-object are:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Parameter</th>
+<th align="center">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">linf</td>
+<td align="center">L<sub> ∞ </sub> von Bertalanffy</td>
+</tr>
+<tr class="even">
+<td align="left">k</td>
+<td align="center">k von Bertalanffy</td>
+</tr>
+<tr class="odd">
+<td align="left">t0</td>
+<td align="center">size at t<sub>0</sub> von Bertalanffy</td>
+</tr>
+<tr class="even">
+<td align="left">a</td>
+<td align="center">length-weight relationship</td>
+</tr>
+<tr class="odd">
+<td align="left">b</td>
+<td align="center">length-weight relationship</td>
+</tr>
+<tr class="even">
+<td align="left">ato96</td>
+<td align="center">age @ 95% maturity *</td>
+</tr>
+<tr class="odd">
+<td align="left">a50</td>
+<td align="center">age @ 50% maturity</td>
+</tr>
+<tr class="even">
+<td align="left">asym</td>
+<td align="center">no idea</td>
+</tr>
+<tr class="odd">
+<td align="left">bg</td>
+<td align="center">no idea</td>
+</tr>
+<tr class="even">
+<td align="left">m1</td>
+<td align="center">natural mortality parameter for function</td>
+</tr>
+<tr class="odd">
+<td align="left">m2</td>
+<td align="center">same (but not equal) as m1</td>
+</tr>
+<tr class="even">
+<td align="left">a1</td>
+<td align="center">no idea</td>
+</tr>
+<tr class="odd">
+<td align="left">sl</td>
+<td align="center">selectivity @ age **</td>
+</tr>
+<tr class="even">
+<td align="left">sr</td>
+<td align="center">Stock Recruitment Function</td>
+</tr>
+<tr class="odd">
+<td align="left">s</td>
+<td align="center">Steepnes Bev-Holt</td>
+</tr>
+<tr class="even">
+<td align="left">v</td>
+<td align="center">Virgin Biomass</td>
+</tr>
+</tbody>
+</table>
+<p>* age at 95% maturity is used as an offset to the age at which 50% maturity occurs.</p>
+<p>** selectivity at age parameter, σ<sup>2</sup> of lefthand limb of double normal distribution</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1">par &lt;-<span class="st"> </span><span class="kw">FLPar</span>(<span class="dt">linf=</span><span class="dv">90</span>, <span class="dt">a=</span><span class="fl">0.00001</span>, <span class="dt">sl=</span><span class="dv">1</span>, <span class="dt">sr=</span><span class="dv">2000</span>, <span class="dt">a1=</span><span class="dv">4</span>, <span class="dt">s=</span><span class="fl">0.65</span>, <span class="dt">v=</span><span class="dv">1000</span>)</a>
+<a class="sourceLine" id="cb19-2" title="2">parg &lt;-<span class="st"> </span><span class="kw">lhPar</span>(par)</a>
+<a class="sourceLine" id="cb19-3" title="3"></a>
+<a class="sourceLine" id="cb19-4" title="4">range &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">min=</span><span class="dv">1</span>, <span class="dt">max=</span><span class="dv">10</span>, <span class="dt">minfbar =</span><span class="dv">3</span>, <span class="dt">maxfbar =</span> <span class="dv">6</span>, <span class="dt">plusgroup=</span><span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb19-5" title="5">eql &lt;-<span class="st"> </span><span class="kw">lhEql</span>(parg, <span class="dt">range=</span>range)</a></code></pre></div>
+<p>In this case we changed some life history parameters with FLPar and estimated the other required parameters using lhPar. In the following step, we restricted our age groups to 10 in total, starting at age 1 not 0. The plusgroup is in the 10th age group. If we do change the number of age groups, we also need to specify the minimum and maximum fully selected age classes using minfbar and maxfbar. Once this is all set, we use lhEql to create the simulation-setup object. For the simulation and projection, the syntax will be exactly the same as before:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1">stk &lt;-<span class="st"> </span><span class="kw">as</span>(eql, <span class="st">&quot;FLStock&quot;</span>)</a>
+<a class="sourceLine" id="cb20-2" title="2">omStore &lt;-<span class="st"> </span><span class="kw">fwdWindow</span>(stk[,<span class="dv">2</span>], eql, <span class="dt">end=</span><span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb20-3" title="3">bhm &lt;-<span class="st"> </span><span class="kw">as</span>(eql, <span class="st">&quot;predictModel&quot;</span>)</a>
+<a class="sourceLine" id="cb20-4" title="4"></a>
+<a class="sourceLine" id="cb20-5" title="5">FMSY &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">fmsy</span>(eql))</a>
+<a class="sourceLine" id="cb20-6" title="6">hfc &lt;-<span class="st"> </span><span class="kw">fwdControl</span>(<span class="dt">year=</span><span class="dv">3</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">quant=</span><span class="st">&quot;f&quot;</span>, <span class="dt">value =</span> FMSY)</a>
+<a class="sourceLine" id="cb20-7" title="7">OpMod &lt;-<span class="st"> </span><span class="kw">fwd</span>(omStore, <span class="dt">sr =</span> bhm, <span class="dt">control =</span> hfc)</a>
+<a class="sourceLine" id="cb20-8" title="8"><span class="kw">plot</span>(OpMod[,<span class="op">-</span><span class="dv">1</span>,,,,]) <span class="co">#removing the data artefact</span></a></code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="Simulating-stocks-using-FLR_files/figure-html/unnamed-chunk-12-1.png" alt="Stock with different life history parameters and the first-year artefact removed." width="672" />
+<p class="caption">
+Stock with different life history parameters and the first-year artefact removed.
+</p>
+</div>
+<p>The following chunk of code needs to be run before the code below will work.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1">par &lt;-<span class="st"> </span><span class="kw">FLPar</span>(<span class="dt">linf=</span><span class="dv">90</span>, <span class="dt">a=</span><span class="fl">0.00001</span>, <span class="dt">sl=</span><span class="dv">1</span>, <span class="dt">sr=</span><span class="dv">2000</span>, <span class="dt">a1=</span><span class="dv">4</span>, <span class="dt">s=</span><span class="fl">0.65</span>, <span class="dt">v=</span><span class="dv">1000</span>)</a>
+<a class="sourceLine" id="cb21-2" title="2">parg &lt;-<span class="st"> </span><span class="kw">lhPar</span>(par)</a>
+<a class="sourceLine" id="cb21-3" title="3"></a>
+<a class="sourceLine" id="cb21-4" title="4">range &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">min=</span><span class="dv">1</span>, <span class="dt">max=</span><span class="dv">10</span>, <span class="dt">minfbar =</span><span class="dv">3</span>, <span class="dt">maxfbar =</span> <span class="dv">6</span>, <span class="dt">plusgroup=</span><span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb21-5" title="5">eql &lt;-<span class="st"> </span><span class="kw">lhEql</span>(parg, <span class="dt">range=</span>range)</a>
+<a class="sourceLine" id="cb21-6" title="6">stk &lt;-<span class="st"> </span><span class="kw">as</span>(eql, <span class="st">&quot;FLStock&quot;</span>)</a>
+<a class="sourceLine" id="cb21-7" title="7">omStore &lt;-<span class="st"> </span><span class="kw">fwdWindow</span>(stk[,<span class="dv">2</span>], eql, <span class="dt">end=</span><span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb21-8" title="8">bhm &lt;-<span class="st"> </span><span class="kw">as</span>(eql, <span class="st">&quot;predictModel&quot;</span>)</a>
+<a class="sourceLine" id="cb21-9" title="9"></a>
+<a class="sourceLine" id="cb21-10" title="10">FMSY &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">fmsy</span>(eql))</a>
+<a class="sourceLine" id="cb21-11" title="11">hfc &lt;-<span class="st"> </span><span class="kw">fwdControl</span>(<span class="dt">year=</span><span class="dv">3</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">quant=</span><span class="st">&quot;f&quot;</span>, <span class="dt">value=</span>FMSY)</a></code></pre></div>
+</div>
+<div id="changing-natural-mortality-m" class="section level2">
+<h2>Changing natural mortality (<em>M</em>)</h2>
+<p>Natural mortality (M) is not that easily specified. Due to the way the FLBRP-object is coded, we must write a function that specifies natural mortality by either (a) age, (b) length, (c) weight. There are two default funtions <em>gislason</em> (length) and <em>lorenzen</em> (weight). Creating an <code>FLBRP</code>-object using the default <code>lorenzen</code> method:</p>
+<pre><code>eql &lt;- lhEql(parg, range=range, m = lorenzen)</code></pre>
+<p>We are not obligated to use the coded functions, as long as we respect a few simple rules. The function must have two arguments, of which one must be <code>params</code>. The second argument must be one of the following three: <em>age</em>, <em>length</em>, <em>weight</em>. Although <code>params</code> <strong>must</strong> be included, there is no necessity to use it within the function. Here are two examples:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1"><span class="co"># length based function with the use of params</span></a>
+<a class="sourceLine" id="cb23-2" title="2">mJensen &lt;-<span class="st"> </span><span class="cf">function</span>(length, params){</a>
+<a class="sourceLine" id="cb23-3" title="3">  length[]=params[<span class="st">&quot;a50&quot;</span>]</a>
+<a class="sourceLine" id="cb23-4" title="4">  <span class="fl">1.45</span> <span class="op">/</span><span class="st"> </span>length</a>
+<a class="sourceLine" id="cb23-5" title="5">}</a>
+<a class="sourceLine" id="cb23-6" title="6">eql &lt;-<span class="st"> </span><span class="kw">lhEql</span>(parg, <span class="dt">range=</span>range, <span class="dt">m =</span> mJensen)</a>
+<a class="sourceLine" id="cb23-7" title="7"></a>
+<a class="sourceLine" id="cb23-8" title="8"><span class="co"># age based equation without use of params</span></a>
+<a class="sourceLine" id="cb23-9" title="9">mFun &lt;-<span class="st"> </span><span class="cf">function</span>(age, params){</a>
+<a class="sourceLine" id="cb23-10" title="10"> (<span class="fl">0.2</span><span class="op">+</span><span class="st"> </span><span class="fl">1.64</span><span class="op">*</span><span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span>age))</a>
+<a class="sourceLine" id="cb23-11" title="11">}</a>
+<a class="sourceLine" id="cb23-12" title="12">eql &lt;-<span class="st"> </span><span class="kw">lhEql</span>(parg, <span class="dt">range=</span>range, <span class="dt">m =</span> mFun)</a></code></pre></div>
+</div>
+<div id="changing-fisheries-mortality-f" class="section level2">
+<h2>Changing fisheries mortality (<em>F</em>)</h2>
+<p>The fisheries mortality is changed by specifying different values in the <code>fwdControl()</code> function (it is assumed <code>eql</code> has already been generated):</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" title="1">ifc &lt;-<span class="st"> </span><span class="kw">fwdControl</span>(<span class="dt">year=</span><span class="dv">3</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">quant=</span><span class="st">&quot;f&quot;</span>, <span class="dt">value=</span><span class="kw">c</span>(((<span class="dv">2</span><span class="op">*</span>FMSY)<span class="op">/</span><span class="dv">100</span>) <span class="op">*</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">3</span><span class="op">:</span><span class="dv">100</span>)))</a>
+<a class="sourceLine" id="cb24-2" title="2"></a>
+<a class="sourceLine" id="cb24-3" title="3">OpMod &lt;-<span class="st"> </span><span class="kw">fwd</span>(omStore, <span class="dt">sr =</span> bhm, <span class="dt">control=</span>ifc)</a>
+<a class="sourceLine" id="cb24-4" title="4"><span class="kw">plot</span>(OpMod[,<span class="op">-</span><span class="dv">1</span>,,,,])</a></code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="Simulating-stocks-using-FLR_files/figure-html/unnamed-chunk-16-1.png" alt="Fish stock with increasing fisheries mortality to a maximum of 2 x FMSY." width="672" />
+<p class="caption">
+Fish stock with increasing fisheries mortality to a maximum of 2 x FMSY.
+</p>
+</div>
+<p>The value that is changed is <em>F<sub>bar</sub></em>, the selectivity is not affected by this. Your imagination is the limit when it comes to set fisheries mortality levels. A pattern often used is the “rollercoaster” - up, stable, down:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1">rfc &lt;-<span class="st"> </span><span class="kw">fwdControl</span>(<span class="dt">year=</span><span class="dv">3</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">quant=</span><span class="st">&quot;f&quot;</span>, <span class="dt">value=</span><span class="kw">c</span>(<span class="kw">rep</span>(FMSY,<span class="dv">50</span>), (FMSY <span class="op">+</span><span class="st"> </span>((FMSY<span class="op">/</span><span class="dv">10</span>)<span class="op">*</span><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>))), <span class="kw">rep</span>(<span class="dv">2</span><span class="op">*</span>FMSY, <span class="dv">20</span>), (<span class="dv">2</span><span class="op">*</span>FMSY <span class="op">-</span><span class="st"> </span>(((<span class="fl">1.1</span> <span class="op">*</span><span class="st"> </span>FMSY)<span class="op">/</span><span class="dv">10</span>)<span class="op">*</span><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>))), <span class="kw">rep</span>(FMSY, <span class="dv">8</span>)))</a>
+<a class="sourceLine" id="cb25-2" title="2"></a>
+<a class="sourceLine" id="cb25-3" title="3">OpMod &lt;-<span class="st"> </span><span class="kw">fwd</span>(omStore, <span class="dt">sr =</span> bhm, <span class="dt">control=</span>rfc)</a>
+<a class="sourceLine" id="cb25-4" title="4"><span class="kw">plot</span>(OpMod[,<span class="op">-</span><span class="dv">1</span>,,,,])</a></code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="Simulating-stocks-using-FLR_files/figure-html/unnamed-chunk-17-1.png" alt="Fish stock simulated using a &quot;rollercoaster&quot; fishing behviour. The fishing mortality increases to two times FMSY, remains at that level and then reduces to 1.1 x FMSY." width="672" />
+<p class="caption">
+Fish stock simulated using a “rollercoaster” fishing behviour. The fishing mortality increases to two times FMSY, remains at that level and then reduces to 1.1 x FMSY.
+</p>
+</div>
+</div>
+<div id="selectivity" class="section level2">
+<h2>Selectivity</h2>
+<p>Selectivity can be set by altering the <code>harvest</code> attribute of the output object known as <code>omStore</code> in our case:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" title="1">omStore &lt;-<span class="st"> </span><span class="kw">fwdWindow</span>(stk[,<span class="dv">2</span>], eql, <span class="dt">end=</span><span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb26-2" title="2"><span class="kw">harvest</span>(omStore) &lt;-<span class="st">  </span><span class="kw">c</span>(<span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="dv">1</span>, <span class="fl">0.8</span>, <span class="fl">0.65</span>, <span class="fl">0.55</span>, <span class="kw">rep</span>(<span class="fl">0.5</span>,<span class="dv">4</span>))</a>
+<a class="sourceLine" id="cb26-3" title="3"><span class="kw">harvest</span>(omStore)[,<span class="kw">c</span>(<span class="dv">75</span><span class="op">:</span><span class="dv">99</span>)] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>, <span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="dv">1</span>, <span class="fl">0.8</span>, <span class="fl">0.65</span>, <span class="fl">0.55</span>, <span class="kw">rep</span>(<span class="fl">0.5</span>,<span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb26-4" title="4"></a>
+<a class="sourceLine" id="cb26-5" title="5">moo &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">harvest</span>(omStore))</a>
+<a class="sourceLine" id="cb26-6" title="6"><span class="kw">plot</span>(data<span class="op">~</span>age, moo, <span class="dt">type =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;selectivity&quot;</span>)</a>
+<a class="sourceLine" id="cb26-7" title="7"><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">77</span>)) <span class="kw">lines</span>(data<span class="op">~</span>age, moo[moo<span class="op">$</span>year <span class="op">==</span><span class="st"> </span>i,], <span class="dt">col =</span> i, <span class="dt">lwd =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb26-8" title="8"><span class="kw">legend</span>(<span class="st">&quot;bottomright&quot;</span>, <span class="dt">legend =</span> <span class="kw">c</span>(<span class="st">&quot;selectivity before shift&quot;</span>, <span class="st">&quot;selectivity after shift&quot;</span>), <span class="dt">col =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">77</span>), <span class="dt">lwd =</span> <span class="dv">2</span>)</a></code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="Simulating-stocks-using-FLR_files/figure-html/unnamed-chunk-18-1.png" alt="Shift in selectivity at age." width="672" />
+<p class="caption">
+Shift in selectivity at age.
+</p>
+</div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" title="1">OpMod &lt;-<span class="st"> </span><span class="kw">fwd</span>(omStore, <span class="dt">sr =</span> bhm, <span class="dt">control=</span>rfc)</a>
+<a class="sourceLine" id="cb27-2" title="2"><span class="kw">plot</span>(OpMod[,<span class="op">-</span><span class="dv">1</span>,,,,])</a></code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="Simulating-stocks-using-FLR_files/figure-html/unnamed-chunk-19-1.png" alt="Fish stock with shift in selectivity at year 75." width="672" />
+<p class="caption">
+Fish stock with shift in selectivity at year 75.
+</p>
+</div>
+</div>
+</div>
+<div id="adding-stochasticity-to-the-runs" class="section level1">
+<h1>Adding stochasticity to the runs</h1>
+<p>We are showing the methodology to add uncertainty in the recruitment process as well as the fishing mortality. To add uncertainty in natural mortality, I assume that you would could do this by modifying the function above, but it has not been tried <strong>THERE BE DRAGONS</strong> (and let us know how you got on).</p>
+<p>In both cases the deviances have to be sampled outside of the FLxxx-process and then added to the parameters. For the recruitment process there is a handy argument within <code>fwd()</code>, called <code>deviances</code>. There are two ways of introducing deviations from the recruitment curve (we are assuming that we created a omStore object already):</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" title="1">lndev03 &lt;-<span class="st"> </span><span class="kw">rlnorm</span>(<span class="dv">1</span>, <span class="kw">FLQuant</span>(<span class="dv">0</span>, <span class="dt">dimnames=</span><span class="kw">list</span>(<span class="dt">year=</span><span class="dv">3</span><span class="op">:</span><span class="dv">100</span>)), <span class="fl">0.3</span>)</a>
+<a class="sourceLine" id="cb28-2" title="2">OpMod &lt;-<span class="st"> </span><span class="kw">fwd</span>(omStore, <span class="dt">sr=</span>bhm, <span class="dt">control=</span>hfc, <span class="dt">deviances=</span>lndev03)</a>
+<a class="sourceLine" id="cb28-3" title="3"></a>
+<a class="sourceLine" id="cb28-4" title="4"><span class="co">## or ##</span></a>
+<a class="sourceLine" id="cb28-5" title="5"></a>
+<a class="sourceLine" id="cb28-6" title="6">lndev03 &lt;-<span class="st"> </span><span class="kw">rlnorm</span>(<span class="dv">100</span>, <span class="dv">0</span>, <span class="fl">0.7</span>)</a>
+<a class="sourceLine" id="cb28-7" title="7"></a>
+<a class="sourceLine" id="cb28-8" title="8">OpMod &lt;-<span class="st"> </span><span class="kw">fwd</span>(omStore, <span class="dt">sr=</span>bhm, <span class="dt">control=</span>hfc, <span class="dt">deviances=</span><span class="kw">FLQuant</span>(lndev03, <span class="dt">dimnames=</span><span class="kw">list</span>(<span class="dt">year=</span><span class="dv">3</span><span class="op">:</span><span class="dv">100</span>)))</a>
+<a class="sourceLine" id="cb28-9" title="9"></a>
+<a class="sourceLine" id="cb28-10" title="10"><span class="kw">plot</span>(OpMod[,<span class="op">-</span><span class="dv">1</span>,,,,])</a></code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="Simulating-stocks-using-FLR_files/figure-html/unnamed-chunk-20-1.png" alt="Added stochasticity in recruitment." width="672" />
+<p class="caption">
+Added stochasticity in recruitment.
+</p>
+</div>
+<p>This can be used to produce any kind of deviations from the stock-recruitment function, e.g. pulse recruitment:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" title="1">nrPu &lt;-<span class="st"> </span><span class="dv">12</span></a>
+<a class="sourceLine" id="cb29-2" title="2">pDev &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">1</span>, (<span class="dv">100</span> <span class="dv">-2</span>))</a>
+<a class="sourceLine" id="cb29-3" title="3"></a>
+<a class="sourceLine" id="cb29-4" title="4"><span class="co">#setting the years of the pulses around a mean number of years</span></a>
+<a class="sourceLine" id="cb29-5" title="5">s1 &lt;-<span class="kw">cumsum</span>(<span class="kw">rlnorm</span>(nrPu, <span class="dv">0</span>, <span class="fl">.3</span>)<span class="op">*</span>(<span class="dv">100</span><span class="op">/</span>(nrPu<span class="op">+</span><span class="dv">3</span>)))</a>
+<a class="sourceLine" id="cb29-6" title="6">s1a &lt;-<span class="st"> </span><span class="kw">round</span>(s1)[s1 <span class="op">&lt;</span><span class="dv">100</span>]</a>
+<a class="sourceLine" id="cb29-7" title="7"></a>
+<a class="sourceLine" id="cb29-8" title="8"><span class="co"># setting the pulses</span></a>
+<a class="sourceLine" id="cb29-9" title="9">pDev[s1a] &lt;-<span class="st"> </span><span class="dv">6</span><span class="op">*</span><span class="kw">rlnorm</span>(<span class="kw">length</span>(s1a),<span class="dv">0</span>,<span class="fl">0.6</span>)</a>
+<a class="sourceLine" id="cb29-10" title="10">puMod &lt;-<span class="st"> </span><span class="kw">fwd</span>(omStore, <span class="dt">sr=</span>bhm, <span class="dt">control=</span>hfc, <span class="dt">deviances=</span><span class="kw">FLQuant</span>(pDev, <span class="dt">dimnames =</span> <span class="kw">list</span>(<span class="dt">year =</span> <span class="dv">3</span><span class="op">:</span><span class="dv">100</span>)))</a>
+<a class="sourceLine" id="cb29-11" title="11"></a>
+<a class="sourceLine" id="cb29-12" title="12"><span class="kw">plot</span>(puMod[,<span class="op">-</span><span class="dv">1</span>,,,,])</a></code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="Simulating-stocks-using-FLR_files/figure-html/unnamed-chunk-21-1.png" alt="Stochastic pulse recruitment events." width="672" />
+<p class="caption">
+Stochastic pulse recruitment events.
+</p>
+</div>
+<p>Adding noise to fisheries mortality is done by altering the control object that controls the fishing pattern. We use a similar method as described above, except we add noise to the average fishing patter:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" title="1">FMSY &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">fmsy</span>(eql))</a>
+<a class="sourceLine" id="cb30-2" title="2"></a>
+<a class="sourceLine" id="cb30-3" title="3">ranfc &lt;-<span class="st"> </span><span class="kw">fwdControl</span>(<span class="dt">year=</span><span class="dv">3</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">quant=</span><span class="st">&quot;f&quot;</span>, <span class="dt">value=</span> <span class="fl">1.5</span> <span class="op">*</span><span class="st"> </span>FMSY <span class="op">*</span><span class="kw">rlnorm</span>(<span class="dv">98</span>,<span class="dv">0</span>,<span class="fl">0.2</span>))</a>
+<a class="sourceLine" id="cb30-4" title="4"></a>
+<a class="sourceLine" id="cb30-5" title="5">OpMod &lt;-<span class="st"> </span><span class="kw">fwd</span>(omStore, <span class="dt">sr =</span> bhm, <span class="dt">control=</span>ranfc)</a>
+<a class="sourceLine" id="cb30-6" title="6"></a>
+<a class="sourceLine" id="cb30-7" title="7"><span class="kw">plot</span>(OpMod[,<span class="op">-</span><span class="dv">1</span>,,,,])</a></code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="Simulating-stocks-using-FLR_files/figure-html/unnamed-chunk-22-1.png" alt="Stochasticity in fishing mortality" width="672" />
+<p class="caption">
+Stochasticity in fishing mortality
+</p>
+</div>
+<div id="bringing-it-all-together" class="section level2">
+<h2>Bringing it all together</h2>
+<p>A stock with a lot of stuff going on, see if you can identify it from the code:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" title="1"><span class="kw">set.seed</span>(<span class="dv">5432</span>)</a>
+<a class="sourceLine" id="cb31-2" title="2"></a>
+<a class="sourceLine" id="cb31-3" title="3">par &lt;-<span class="st"> </span><span class="kw">FLPar</span>(<span class="dt">linf=</span><span class="dv">90</span>, <span class="dt">a=</span><span class="fl">0.00001</span>, <span class="dt">sl=</span><span class="dv">1</span>, <span class="dt">sr=</span><span class="dv">2000</span>, <span class="dt">a1=</span><span class="dv">4</span>, <span class="dt">s=</span><span class="fl">0.65</span>, <span class="dt">v=</span><span class="dv">1000</span>)</a>
+<a class="sourceLine" id="cb31-4" title="4">parg &lt;-<span class="st"> </span><span class="kw">lhPar</span>(par)</a>
+<a class="sourceLine" id="cb31-5" title="5"></a>
+<a class="sourceLine" id="cb31-6" title="6">range &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">min=</span><span class="dv">1</span>, <span class="dt">max=</span><span class="dv">10</span>, <span class="dt">minfbar =</span><span class="dv">3</span>, <span class="dt">maxfbar =</span> <span class="dv">6</span>, <span class="dt">plusgroup=</span><span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb31-7" title="7">mFun &lt;-<span class="st"> </span><span class="cf">function</span>(age, params){</a>
+<a class="sourceLine" id="cb31-8" title="8"> (<span class="fl">0.2</span><span class="op">+</span><span class="st"> </span><span class="fl">1.64</span><span class="op">*</span><span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span>age))</a>
+<a class="sourceLine" id="cb31-9" title="9">}</a>
+<a class="sourceLine" id="cb31-10" title="10">eql &lt;-<span class="st"> </span><span class="kw">lhEql</span>(parg, <span class="dt">range=</span>range, <span class="dt">m =</span> mFun)</a>
+<a class="sourceLine" id="cb31-11" title="11"></a>
+<a class="sourceLine" id="cb31-12" title="12">stk &lt;-<span class="st"> </span><span class="kw">as</span>(eql, <span class="st">&quot;FLStock&quot;</span>)</a>
+<a class="sourceLine" id="cb31-13" title="13">bhm &lt;-<span class="st"> </span><span class="kw">as</span>(eql, <span class="st">&quot;predictModel&quot;</span>)</a>
+<a class="sourceLine" id="cb31-14" title="14"></a>
+<a class="sourceLine" id="cb31-15" title="15">omStore &lt;-<span class="st"> </span><span class="kw">fwdWindow</span>(stk[,<span class="dv">2</span>], eql, <span class="dt">end=</span><span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb31-16" title="16"></a>
+<a class="sourceLine" id="cb31-17" title="17"></a>
+<a class="sourceLine" id="cb31-18" title="18"><span class="kw">harvest</span>(omStore) &lt;-<span class="st">  </span><span class="kw">c</span>(<span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="dv">1</span>, <span class="fl">0.8</span>, <span class="fl">0.65</span>, <span class="fl">0.55</span>, <span class="kw">rep</span>(<span class="fl">0.5</span>,<span class="dv">4</span>))</a>
+<a class="sourceLine" id="cb31-19" title="19"><span class="kw">harvest</span>(omStore)[,<span class="kw">c</span>(<span class="dv">75</span><span class="op">:</span><span class="dv">99</span>)] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>, <span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="dv">1</span>, <span class="fl">0.8</span>, <span class="fl">0.65</span>, <span class="fl">0.55</span>, <span class="kw">rep</span>(<span class="fl">0.5</span>,<span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb31-20" title="20"></a>
+<a class="sourceLine" id="cb31-21" title="21">nrPu &lt;-<span class="st"> </span><span class="dv">12</span></a>
+<a class="sourceLine" id="cb31-22" title="22">pDev &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="dv">1</span>, (<span class="dv">100</span> <span class="dv">-2</span>))</a>
+<a class="sourceLine" id="cb31-23" title="23"></a>
+<a class="sourceLine" id="cb31-24" title="24"><span class="co">#setting the years of the pulses around a mean number of years</span></a>
+<a class="sourceLine" id="cb31-25" title="25">s1 &lt;-<span class="kw">cumsum</span>(<span class="kw">rlnorm</span>(nrPu, <span class="dv">0</span>, <span class="fl">.3</span>)<span class="op">*</span>(<span class="dv">100</span><span class="op">/</span>(nrPu<span class="op">+</span><span class="dv">3</span>)))</a>
+<a class="sourceLine" id="cb31-26" title="26">s1a &lt;-<span class="st"> </span><span class="kw">round</span>(s1)[s1 <span class="op">&lt;</span><span class="dv">100</span>]</a>
+<a class="sourceLine" id="cb31-27" title="27"></a>
+<a class="sourceLine" id="cb31-28" title="28"><span class="co"># setting the pulses</span></a>
+<a class="sourceLine" id="cb31-29" title="29">pDev[s1a] &lt;-<span class="st"> </span><span class="dv">6</span><span class="op">*</span><span class="kw">rlnorm</span>(<span class="kw">length</span>(s1a),<span class="dv">0</span>,<span class="fl">0.6</span>)</a>
+<a class="sourceLine" id="cb31-30" title="30"></a>
+<a class="sourceLine" id="cb31-31" title="31">moo &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">rep</span>(FMSY,<span class="dv">50</span>), (FMSY <span class="op">+</span><span class="st"> </span>((FMSY<span class="op">/</span><span class="dv">10</span>)<span class="op">*</span><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>))), <span class="kw">rep</span>(<span class="dv">2</span><span class="op">*</span>FMSY, <span class="dv">20</span>), (<span class="dv">2</span><span class="op">*</span>FMSY <span class="op">-</span><span class="st"> </span>(((<span class="fl">1.1</span> <span class="op">*</span><span class="st"> </span>FMSY)<span class="op">/</span><span class="dv">10</span>)<span class="op">*</span><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>))), <span class="kw">rep</span>(FMSY, <span class="dv">8</span>))</a>
+<a class="sourceLine" id="cb31-32" title="32">ranfc &lt;-<span class="st"> </span><span class="kw">fwdControl</span>(<span class="dt">year=</span><span class="dv">3</span><span class="op">:</span><span class="dv">100</span>, <span class="dt">quant=</span><span class="st">&quot;f&quot;</span>, <span class="dt">value=</span> moo <span class="op">*</span><span class="st"> </span><span class="kw">rlnorm</span>(<span class="dv">98</span>,<span class="dv">0</span>,<span class="fl">0.2</span>))</a>
+<a class="sourceLine" id="cb31-33" title="33"></a>
+<a class="sourceLine" id="cb31-34" title="34"></a>
+<a class="sourceLine" id="cb31-35" title="35">OpMod &lt;-<span class="st"> </span><span class="kw">fwd</span>(omStore, <span class="dt">sr =</span> bhm, <span class="dt">deviances=</span><span class="kw">FLQuant</span>(pDev, <span class="dt">dimnames =</span> <span class="kw">list</span>(<span class="dt">year =</span> <span class="dv">3</span><span class="op">:</span><span class="dv">100</span>)), <span class="dt">control=</span>ranfc)</a>
+<a class="sourceLine" id="cb31-36" title="36"></a>
+<a class="sourceLine" id="cb31-37" title="37"><span class="co">#removing the first year</span></a>
+<a class="sourceLine" id="cb31-38" title="38"><span class="kw">plot</span>(OpMod[,<span class="op">-</span><span class="dv">1</span>,,,,])</a></code></pre></div>
+<p><img src="Simulating-stocks-using-FLR_files/figure-html/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="more-information" class="section level1">
+<h1>More information</h1>
+<ul>
+<li>You can submit bug reports, questions or suggestions on this tutorial at <a href="https://github.com/flr/doc/issues" class="uri">https://github.com/flr/doc/issues</a>.</li>
+<li>Or send a pull request to <a href="https://github.com/flr/doc/" class="uri">https://github.com/flr/doc/</a></li>
+<li>For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <a href="http://flr-project.org" class="uri">http://flr-project.org</a>.</li>
+</ul>
+<div id="software-versions" class="section level2">
+<h2>Software Versions</h2>
+<ul>
+<li>R version 3.6.1 (2019-07-05)</li>
+<li>FLCore: 2.6.13.9006</li>
+<li>ggplotFL: 0.5.3.9002</li>
+<li>ggplot2: 3.2.1</li>
+<li><strong>Compiled</strong>: Wed Aug 7 14:58:08 2019</li>
+</ul>
+</div>
+<div id="license" class="section level2">
+<h2>License</h2>
+<p>This document is licensed under the <a href="https://creativecommons.org/licenses/by-sa/4.0">Creative Commons Attribution-ShareAlike 4.0 International</a> license.</p>
+</div>
+<div id="author-information" class="section level2">
+<h2>Author information</h2>
+<p><strong>Christoph Konrad</strong>, <strong>Iago MOSQUEIRA</strong>. European Commission Joint Research Centre (JRC), Ispra VA, Italy. <a href="https://ec.europa.eu/jrc/" class="uri">https://ec.europa.eu/jrc/</a></p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
