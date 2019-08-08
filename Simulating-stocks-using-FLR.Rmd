@@ -21,6 +21,7 @@ license: Creative Commons Attribution-ShareAlike 4.0 International Public Licens
 library(knitr)
 library(ggplotFL)
 source("R/ini.R")
+options(tinytex.verbose = TRUE)
 ```
 
 Simulating fish stocks using FLR
@@ -35,7 +36,7 @@ We will show you how to simulate stocks from scratch using the libraries [FLife]
 We will use `FLife` to setup the stock and `FLasher` to project the stock. The process can be summarised as follows:
 
 1. Setting life-history parameters for stock.
-    * at least one parameter needs to be set: L<sub>&infin;</sub>. 
+    * at least one parameter needs to be set: $L_\infty$. 
     * rest of parameters is calculated using *big cahuna*'s relationship.
     * creation of a simulation-setup object.
 2. Calculation of equilibrium states of fish stocks using life-history parameters.
@@ -56,7 +57,7 @@ library(FLasher)
 
 ## Setting life-history parameters
 
-To initialise a stock is to use the function `FLPar()` specifying the argument `linf` to create a *FLPar*-object for a given L<sub>&infin;</sub> (asymptotic length parameter of the von Bertalanffy growth curve). The function `lhPar()` will extend the required attributes using the *big cahuna*'s life history relationships. The resulting *FLPar*-object contains the life history parameters required to create a *FLBRP*-object using `lhEql()`.
+To initialise a stock is to use the function `FLPar()` specifying the argument `linf` to create a *FLPar*-object for a given $L_\infty$ (asymptotic length parameter of the von Bertalanffy growth curve). The function `lhPar()` will extend the required attributes using the *big cahuna*'s life history relationships. The resulting *FLPar*-object contains the life history parameters required to create a *FLBRP*-object using `lhEql()`.
 
 ```{r, echo = TRUE, results = 'show'}
 (par <- FLPar(linf = 100))
@@ -64,7 +65,7 @@ To initialise a stock is to use the function `FLPar()` specifying the argument `
 (qpar <- lhPar(par))
 ```
 
-Now the simulation-setup object needs to be created using `lhEql()`, which upon closer inspection contains all the "at-age" information required to create the stock in the next step. In this particular case the stock model will use 41 age classes. The fisheries mortalities (F<sub> bar</sub> = ` seq(0, F_crash, length.out = 101)`) are stored as "years" in the object, which is confusing but should not bother the user. The next step will use each fisheries mortality separately and calculate a stock-size at equilibrium for that specific *F*. The overall selectivity is a combination of two quantities: `landings.sel` and `discards.sel`. They are fixed at this stage (to default if not specified) and will be used for the entire projection. Means to change the levels of F<sub>bar</sub> and the selectivity during the simulation will be shown further down.
+Now the simulation-setup object needs to be created using `lhEql()`, which upon closer inspection contains all the "at-age" information required to create the stock in the next step. In this particular case the stock model will use 41 age classes. The fisheries mortalities (`F_bar =  seq(0, F_crash, length.out = 101)`) are stored as "years" in the object, which is confusing but should not bother the user. The next step will use each fisheries mortality separately and calculate a stock-size at equilibrium for that specific *F*. The overall selectivity is a combination of two quantities: `landings.sel` and `discards.sel`. They are fixed at this stage (to default if not specified) and will be used for the entire projection. Means to change the levels of `F_bar` and the selectivity during the simulation will be shown further down.
 
 ```{r, echo = TRUE}
 eql <- lhEql(qpar)
@@ -83,26 +84,24 @@ stk <- as(eql, "FLStock")
 
 At this point the reader is invited to browse the *FLStock_*-object at his leisure using `str(stk)`. We will show the output of `summary(stk)` as it is all that is required to highlight what has happened:
 
-```{r}
+```{r summarystk}
 summary(stk)
 ```
 
-In contrast to the `eql` object, the new stock object has 101 "yearly" entries (read stock levels at 101 different *F<sub>bar</sub>*s). The quantities, that are calculated for each age class, have a "41" at the first position (*e.g.* `catch.n`) since we specified 41 age classes. The compunded quantities contain a "1" at the first position (*e.g.* `catch`) as they are applicable to or the result of all classes. The plot of the stock object is a good summary:
+In contrast to the `eql` object, the new stock object has 101 "yearly" entries (read stock levels at 101 different `Fbar` levels). The quantities, that are calculated for each age class, have a "41" at the first position (*e.g.* `catch.n`) since we specified 41 age classes. The compounded quantities contain a "1" at the first position (*e.g.* `catch`) as they are applicable to or the result of all classes. The plot of the stock object is a good summary:
 
-```{r, fig.cap="Line plots from our stock object."}
+```{r, plotstk, fig.cap="Line plots from our stock object."}
 plot(stk)
 ```
 
-The x-axis is an index of the *F<sub>bar</sub>* sequence specified in `eql` and **not** of time. As such the figure should be read in columns: for a given *F<sub>bar</sub>* the catch, SSB and recruitment will be in equilibrium at a the level indicated on the plot. The creation of the stock-object also changed *F<sub>bar</sub>* to *F<sub>age</sub>* via a selection-at-age curve. 
+The x-axis is an index of the *`Fbar`* sequence specified in `eql` and **not** of time. As such the figure should be read in columns: for a given *`Fbar`* the catch, SSB and recruitment will be in equilibrium at a the level indicated on the plot. The creation of the stock-object also changed *`Fbar`* to `Fage`* via a selection-at-age curve. 
   
   
-This selectivity curve is not available separately in this particular object (*FLStock*) and is implied in the distribution of *F<sub>age</sub>*. This is important as we see later: in order to create an unfished stock, one needs to use a stock with a tiny amount of fisheries mortality (*i.e. F<sub>bar</sub>* &lt; 0.1) to maintain the selectivity pattern within the stock-object. As we will see later, we **can** forward project using zero fisheries mortality. However, if we choose the unfished parameter space generated within `stk` we will not be able to introduce fisheries mortality during the projection stage as the selectivity for all age groups will be 0.
+This selectivity curve is not available separately in this particular object (*FLStock*) and is implied in the distribution of `Fbar`*. This is important as we see later: in order to create an unfished stock, one needs to use a stock with a tiny amount of fisheries mortality (*i.e. $F_{_{bar} \le 0.1}$) to maintain the selectivity pattern within the stock-object. As we will see later, we **can** forward project using zero fisheries mortality. However, if we choose the unfished parameter space generated within `stk` we will not be able to introduce fisheries mortality during the projection stage as the selectivity for all age groups will be 0.
 
- 
-  
 ## Forward projections, using a single stock at equilibrium.
 
-In this section we will proiject/simulate the stock for 100 years using the previously generated *FLStock*-object (`stk`). The first step is to create an output object into which we will project the stock. As mentioned before, we must use a stock at equilibrium with a minimum of fisheries mortality in order to maintain the selection structure. As the index of `stk` are linked to fisheries mortalities, we will use the second realisation `stk[,2]` (as the first is *F<sub>bar</sub>* = 0, which can be checked by `fbar(stk[,1])`). 
+In this section we will proiject/simulate the stock for 100 years using the previously generated *FLStock*-object (`stk`). The first step is to create an output object into which we will project the stock. As mentioned before, we must use a stock at equilibrium with a minimum of fisheries mortality in order to maintain the selection structure. As the index of `stk` are linked to fisheries mortalities, we will use the second realisation `stk[,2]` (as the first is `Fbar` = 0, which can be checked by `fbar(stk[,1])`). 
 
 ```{r}
 omStore <- fwdWindow(stk[,2], eql, end = 100)
@@ -110,7 +109,7 @@ summary(omStore)
 
 ```
 
-In this storage object are also the relevant parameters for each year and age class. Some of the parameters can be changed prior to the projections as we will see later. In order to project we need to specify two more functions/paramter: the stock-recruitment relationship and the trajectory of *F<sub>bar</sub>*. As this is the simplest of projections, we will use the default Beverton-Holt stock-recruitment function, parameterised according to the *big cahuna*'s relationships:
+In this storage object are also the relevant parameters for each year and age class. Some of the parameters can be changed prior to the projections as we will see later. In order to project we need to specify two more functions/paramter: the stock-recruitment relationship and the trajectory of *`Fbar`*. As this is the simplest of projections, we will use the default Beverton-Holt stock-recruitment function, parameterised according to the *big cahuna*'s relationships:
 
 ```{r, fig.cap = "The Beverton-Holt stock-recruitment model used to simulate the stocks."}
 bhm <- as(eql, "predictModel")
@@ -118,18 +117,16 @@ nssb <- FLQuant(seq(1, 2000, length=100))
 
 ggplot(model.frame(FLQuants(ssb=nssb, bevholt=predict(bhm, ssb=nssb))),
   aes(x=ssb, y=bevholt)) + geom_line()
-
-  
 ```
 
+As for the fishing mortality, we shall fix it at *$F_{MSY}$* for the entire run. 
 
-As for the fishing mortality, we shall fix it at *F<sub>MSY</sub>* for the entire run. 
 ```{r}
 FMSY <- c(fmsy(eql))
 hfc <- fwdControl(year=3:100, quant="f", value=FMSY)
 ```
 
-Note we start at year 3 rather than year 1 or 2. This is due to the internal implementation; when we used the crutch replacing years with levels of *F<sub>bar</sub>* and then picked the second *F<sub>bar</sub>*, internally the first two slots are filled. This is not a big issue as long we remember to make the time series long enough and cut off the unwanted early years. 
+Note we start at year 3 rather than year 1 or 2. This is due to the internal implementation; when we used the crutch replacing years with levels of `Fbar` and then picked the second `Fbar`, internally the first two slots are filled. This is not a big issue as long we remember to make the time series long enough and cut off the unwanted early years. 
 
 Now we are ready to project a stock, in a deterministic fashion as no noise has been added.
 
@@ -146,13 +143,13 @@ plot(OpMod)
 
 We will show how to change and implement different life history parameters during the setup (*i.e.* during the first step). As before we use `FLPar` to set the initial life history parameters. 
 
-The parameters available in a *FLpar*-object are:
+The parameters available in a `FLPar` object are:
 
 |Parameter|Description      |
 |:--------|:---------------:|
-|linf     |L<sub> &infin; </sub> von Bertalanffy|
+|linf     |$L_\infty$ von Bertalanffy|
 |k        |k von Bertalanffy         |
-|t0       |size at t<sub>0</sub> von Bertalanffy   |
+|t0       |size at $t_0$ von Bertalanffy   |
 |a        |length-weight relationship|
 |b        |length-weight relationship|
 |ato96    |age @ 95% maturity \*   |
@@ -252,7 +249,7 @@ plot(OpMod[,-1,,,,])
 ```
 
 
-The value that is changed is *F<sub>bar</sub>*, the selectivity is not affected by this. Your imagination is the limit when it comes to set fisheries mortality levels. A pattern often used is the "rollercoaster" - up, stable, down:
+The value that is changed is *`Fbar`*, the selectivity is not affected by this. Your imagination is the limit when it comes to set fisheries mortality levels. A pattern often used is the "rollercoaster" - up, stable, down:
 
 ```{r, fig.cap = "Fish stock simulated using a \"rollercoaster\" fishing behviour. The fishing mortality increases to two times FMSY, remains at that level and then reduces to 1.1 x FMSY."}
 rfc <- fwdControl(year=3:100, quant="f", value=c(rep(FMSY,50), (FMSY + ((FMSY/10)*c(1:10))), rep(2*FMSY, 20), (2*FMSY - (((1.1 * FMSY)/10)*c(1:10))), rep(FMSY, 8)))
@@ -399,6 +396,6 @@ This document is licensed under the [Creative Commons Attribution-ShareAlike 4.0
 
 ## Author information
 
-**Christoph Konrad**, **Iago MOSQUEIRA**. European Commission Joint Research Centre (JRC), Ispra VA, Italy. <https://ec.europa.eu/jrc/>
+**Christoph KONRAD**. European Commission Joint Research Centre (JRC), Ispra VA, Italy. <https://ec.europa.eu/jrc/>
 
-
+**Iago MOSQUEIRA**. Wageningen Marine Research, Ijmuiden, Netherlands.<https://www.wur.nl/en/Research-Results/Research-Institutes/marine-research.htm>
