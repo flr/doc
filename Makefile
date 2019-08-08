@@ -14,18 +14,18 @@ main: $(HTMLS) $(RS) $(PDFS)
 
 docs/%.html: %.Rmd _site.yml
 	@echo "$< -> $@"
-	@R -e "rmarkdown::render_site('$<', envir=new.env())" -e "if('FLash' %in% loadedNamespaces()) detach(package:FLash)"
+	@R --vanilla -e "rmarkdown::render_site('$<', envir=new.env())" -e "if('FLash' %in% loadedNamespaces()) detach(package:FLash)"
 
 docs/pdf/%.pdf: %.Rmd
 	@echo "$< -> $@"
-	@R -e "knitr::opts_chunk[['set']](dev = 'pdf')" -e "rmarkdown::render('$<', output_format='$(PDFSTYLE)', output_file='$@', clean=TRUE)"
+	@R --vanilla -e "knitr::opts_chunk[['set']](dev = 'pdf')" -e "rmarkdown::render('$<', output_format='$(PDFSTYLE)', output_file='$@', clean=TRUE)"
 
 docs/R/%.R: %.Rmd
 	@echo "$< -> $@"
-	@R -e "knitr::purl('$<', output='$@')"
+	@R --vanilla -e "knitr::purl('$<', output='$@')"
 
 setup:
-	R -e "install.packages(c('captioner', 'printr', 'rmarkdown', 'knitr'))"
+	R --vanilla -e "install.packages(c('captioner', 'printr', 'rmarkdown', 'knitr'))"
 
 clean:
 	rm -f *.html
