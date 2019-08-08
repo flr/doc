@@ -163,60 +163,61 @@ plot(landsn)
 In a similar way, we can now convert the input *data.frame*, containing data for four data elements, as specified in the `slots` column, into an *FLStock* object, `ple4`
 
 ```{r, convertple4}
-ple4 <- as.FLStock(dat)
+nple4 <- as.FLStock(dat)
 
-summary(ple4)
+summary(nple4)
 ```
 
 To complete this *FLStock* object we will need to specify the natural mortality, *m*, in this case as a constant value of 0.1 for all ages and years,
 
-```{r, ple4m}
-m(ple4) <- 0.1
+```{r, nple4m}
+m(nple4) <- 0.1
 ```
 
 the proportion of natural and fishing mortality that takes place before spawning, assumed to be zero in both cases,
 
-```{r, ple4spwn}
-m.spwn(ple4) <- harvest.spwn(ple4) <- 0
+```{r, nple4spwn}
+m.spwn(nple4) <- harvest.spwn(nple4) <- 0
 ```
 
 and the maturity at age, as the proportion mature, as a vector repeated for all years.
 
-```{r, ple4mat}
-mat(ple4) <- c(0, 0.5, 0.5, rep(1, 7))
+```{r, nple4mat}
+mat(nple4) <- c(0, 0.5, 0.5, rep(1, 7))
 ```
 
 We now must compute the overall landings and discards, in biomass, from the age-disaggregated values,
 
-```{r, ple4compute}
-landings(ple4) <- computeLandings(ple4)
-discards(ple4) <- computeDiscards(ple4)
+```{r, nple4compute}
+landings(nple4) <- computeLandings(nple4)
+discards(nple4) <- computeDiscards(nple4)
 ```
 
 and then the catch slots from both landings and discards
 
-```{r, ple4catch}
-catch(ple4) <- computeCatch(ple4, slot="all")
+```{r, nple4catch}
+catch(nple4) <- computeCatch(nple4, slot="all")
 ```
 
 The mean weigth-at-age in the stock needs to be provided. In this case we will assume it is the same as the one computed from the catch sampling programme
 
-```{r, ple4stockwt}
-stock.wt(ple4) <- catch.wt(ple4)
+```{r, nple4stockwt}
+stock.wt(nple4) <- catch.wt(nple4)
 ```
 
 We finalize by specifying the fully selected age range, used in the calculation of an overall index of fishing mortality, for example as the mean, using  `fbar()`, or as the maximum value, using `fapex()` across those ages. This information is part of the object's *range*.
 
-```{r, ple4range}
-range(ple4, c("minfbar", "maxfbar")) <- c(2, 6)
+```{r, nple4range}
+range(nple4, c("minfbar", "maxfbar")) <- c(2, 6)
 ```
 
 If we now inspect the resulting object we can see that all calculated slots have been assigned the corresponding *units* of measurement, except for those that will hold the estimates coming from a stock assessment model: *stock*, *stock.n* and *stock.wt* for the estimates of abundance, and *harvest* for the estimates of fishing mortality at age.
 
-```{r, ple4}
-summary(ple4)
+```{r, nple4}
+summary(nple4)
 
-plot(metrics(ple4, Catch=catch, Landings=landings))
+plot(metrics(nple4, Catch=catch, Landings=landings))
+data(ple4)
 ```
 
 ### More information
@@ -449,19 +450,20 @@ The [FLash package](http://flr-project.org/FLash) contains the current implement
 library(FLash)
 ```
 
-The key element in the *FLash* interface is the *fwdControl* class, which allows us to specify the targets and limits that we want the stock to achieve or remain within. But first we need to make some assumptions about the future values of certain quantities, both on the biology (natural mortality, maturity) and the fishery (selectivity, proportion of discards). A common approach for this kind of forecast is to use averages over the last few years (tipycally three) for certain quantities. This can be done in *FLR* using the `stf` method in the *FLBRP* package.
+The key element in the *FLash* interface is the *fwdControl* class, which allows us to specify the targets and limits that we want the stock to achieve or remain within. But first we need to make some assumptions about the future values of certain quantities, both on the biology (natural mortality, maturity) and the fishery (selectivity, proportion of discards). A common approach for this kind of forecast is to use averages over the last few years (tipycally three) for certain quantities. This can be done in *FLR* using the `stf` method in the *FLash* package.
 
 ```{r, stf}
-proj <- FLBRP:::stf(stk)
+library(FLash)
+proj <- stf(stk)
 ```
 
-Our new object extends up to 2011, and the values for certain stocks have been extended using the mean of the last three years, for example for the weight-at-age in the stock
+Our new object extends up to 2020, and the values for certain stocks have been extended using the mean of the last three years, for example for the weight-at-age in the stock
 
 ```{r, stfstockwt}
-stock.wt(proj)[, ac(2006:2011)]
+stock.wt(proj)[, ac(2011:2020)]
 ```
 
-We can now construct a `fwdControl` object that projects the stock as if catches in the current year, 2009 in this case, were those of the agreed TAC, 85,000 t, and F was then kept in 2010 and 2011 at the same levels as in 2008. The main component of a *fwdControl* object is a *data.frame* that must at least contains columns for
+We can now construct a `fwdControl` object that projects the stock as if catches in the current year, 2018 in this case, were those of the agreed TAC, 85,000 t, and F was then kept in 2019 and 2020 at the same levels as in 2017. The main component of a *fwdControl* object is a *data.frame* that must at least contains columns for
 
 - *year*
 - *quantity*, the quantity to be projected, for example `ssb`, `f` or `catch`
@@ -469,8 +471,8 @@ We can now construct a `fwdControl` object that projects the stock as if catches
 
 ```{r, fwdcontrol}
 TAC <- 85000
-Flevel <- fbar(stk)[,"2008"]
-ctrl <- fwdControl(data.frame(year=2009:2011, quantity=c("catch", "f", "f"), val=c(TAC, Flevel, Flevel)))
+Flevel <- fbar(stk)[,"2017"]
+ctrl <- fwdControl(data.frame(year=2018:2020, quantity=c("catch", "f", "f"), val=c(TAC, Flevel, Flevel)))
 ```
 
 Now the `fwd` method will carry ou the projection using those three object: stock, stock-recruitment and control
@@ -482,7 +484,7 @@ proj <- fwd(proj, control=ctrl, sr=plsr)
 and the results can be visualized
 
 ```{r, fwdplot}
-plot(proj) + geom_vline(aes(xintercept=2008.5), linetype=2)
+plot(proj) + geom_vline(aes(xintercept=2017.5), linetype=2)
 ```
 
 ### More information
