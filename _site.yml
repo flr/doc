@@ -74,6 +74,8 @@ navbar:
           href: FLBEIA_Checking_inputs.html
         - text: "Using Stock Assessment models in the Management procedure of FLBEIA"
           href: Using_Assessment_models_in_the_MP_FLBEIA.html
+        - text: "Including SS3 assessment within the Management Procedure of FLBEIA"
+          href: FLBEIA_Incorporating_SS3assessment_MP.html
         - text: "Testing different Management Strategies in FLBEIA"
           href: Testing_Management_Strategies_in_FLBEIA.html
         - text: "Data Limited MSE in FLBEIA"

@@ -38,6 +38,7 @@ title: "FLR Tutorials"
 - [A simple example with multiple dimensions in FLBEIA](FLBEIA_An_Example_with_multiple_dimensions.html)
 - [Checking FLBEIA inputs](FLBEIA_Checking_inputs.html)
 - [Using Stock Assessment models in the Managemnt procedure of FLBEIA](Using_Assessment_models_in_the_MP_FLBEIA.html)
+- [Including SS3 assessment within the Management Procedure of FLBEIA](FLBEIA_Incorporating_SS3assessment_MP.html)
 - [Testing different Management Strategies in FLBEIA](Testing_Management_Strategies_in_FLBEIA.html)
 - [Data Limited MSE in FLBEIA](Data_Poor_MSE_in_FLBEIA.html)
 
