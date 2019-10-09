@@ -313,7 +313,7 @@ Now profits are positive, this simulation will be the base case.
 ### Price Dynamics
 
 The current price function is `fixedprice`: prices are given as input data and are unchanged within the simulation. 
-Now change we will change the price dynamics: we will implement an `elasticPrice` model in one fleet `fl1` and stock `stk2`.  For a detailed description of this function see page 19 of the  [Manual](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf ).
+Now change we will change the price dynamics: we will implement an `elasticPrice` model in one fleet `fl1` and stock `stk2`.  For a detailed description of this function see page 19 of the  [Manual](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf).
 The dynamics price function implemented in FLBEIA is described in Kraak et al. [2004]. This function uses a base price and base landings to calculate the new price using an elasticity parameter. If the base landings are bigger than current landings the price is increased and decreased if the contrary occurs. Although price is stored at metier and stock level in `FLFleetsExt`,this function assumes that is common to all metiers within a fleet and it is calculated at fleet level.
 
 ```{r echo=TRUE, results = "hide"}
@@ -512,7 +512,7 @@ print(p)
 
 ### Capital dynamics
 
-The current capital function in `fixedCapital`, where the capacity and catchability are given as input data and are unchanged within the simulation. Now change the capital function and implement the `SCD` function. In this simple function catchability is not updated, it is an input parameter, and only capacity is updated depending on some economic indicators. For more detailed information of this function, see the page 20 of the  [Manual](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf).
+The current capital function in `fixedCapital`, where the capacity and catchability are given as input data and are unchanged within the simulation. Now change the capital function and implement the `SCD` function. In this simple function catchability is not updated, it is an input parameter, and only capacity is updated depending on some economic indicators. For more detailed information of this function, see the page 20 of the  [Manual](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf).
 
 
 Firstly define neccessary variables.:
@@ -564,7 +564,7 @@ There are no differences between scenarios because in SCD investment in new vess
 
 ## Visualizing results with flbeiaApp
 
-Currently is under development, but soon you will be able to run the `flbeiaApp` to built an interactive web applications for visualizing data. Currently this a preliminary version or beta versión of the `flbeiaApp`.
+Currently is under development, but soon you will be able to run the `flbeiaApp` to built an interactive web applications for visualizing data. Currently this a preliminary version or beta versi?n of the `flbeiaApp`.
 
 ```{r echo=TRUE,  eval=FALSE}
 multi_simul <- list(SM, SM_1, SM_2, SM_3, SM_4, SM_5)

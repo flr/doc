@@ -86,7 +86,7 @@ ls()
 sapply(ls(), function(x) class(get(x)))
 ```
 
-The exact way to define the objects used to set the simulation is described in the **FLBEIA** manual. The manual can be download from [Manual](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf), within the 'doc' folder of the package installation or typing `help(package = FLBEIA)` in the R console. The description of objects stored in `one` is detailed below.
+The exact way to define the objects used to set the simulation is described in the **FLBEIA** manual. The manual can be download from [Manual](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf), within the 'doc' folder of the package installation or typing `help(package = FLBEIA)` in the R console. The description of objects stored in `one` is detailed below.
 
   * `oneBio`: A FLBiols object that contains biological information of _stk1_ relative to 'real' biological population within the OM.
     
@@ -96,7 +96,7 @@ The exact way to define the objects used to set the simulation is described in t
 
   * `oneFL`: It is a FLFleetExt object that contains information relative to the fleet `_fl1_` (effort, costs, capacity...) and information relative to the metier  `_met1_` (effort share, varaible costs, parameters of the Cobb Douglas function).
 
-  * `oneFlC`: The basic structure of the fleets.ctrl object; the effort dynamics is Simple Mixed Fisheries Behaviour `SMFB`. `SMFB` is a simplified version of the behavior of fleets that work in a mixed fisheries framework. The function is seasonal and assumes that effort share among metiers is given as input parameter. There are also other effort models defined in FLBEIA [`fixedEffort`, `SSFB`, `MaxProfit`, `MaxProfitSeq`]. See the [Manual](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf) for detailed description. In this example the capacity, catchability and price are given as input data and are unchanged within the simulation. Summarizing, the fleet catches yearly exactly the adviced TAC and there is no exit-entry of vessels in the fishery.  
+  * `oneFlC`: The basic structure of the fleets.ctrl object; the effort dynamics is Simple Mixed Fisheries Behaviour `SMFB`. `SMFB` is a simplified version of the behavior of fleets that work in a mixed fisheries framework. The function is seasonal and assumes that effort share among metiers is given as input parameter. There are also other effort models defined in FLBEIA [`fixedEffort`, `SSFB`, `MaxProfit`, `MaxProfitSeq`]. See the [Manual](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf) for detailed description. In this example the capacity, catchability and price are given as input data and are unchanged within the simulation. Summarizing, the fleet catches yearly exactly the adviced TAC and there is no exit-entry of vessels in the fishery.  
     
   * `oneCv`: All variables needed for the capital dynamics are stored (fuel costs, capital costs, number of vessels, invest share, number of vessels, maximum fishing days by vessel...). The capital model is defined in `oneFlC` as `fixedCapital`.
 
@@ -110,7 +110,7 @@ The exact way to define the objects used to set the simulation is described in t
 
   * `oneObsC`: These type of models are useful when no assessment model is used in the next step of the MP and management advice is just based on the population 'observed' in this step. A `perfecObs` model is defined. This function does not introduce any observation uncertainty in the observation of the different quantities stored in the `FLStock` or `FLFLeetsExt` objects. 
   
-  * `oneSR`: The stock recruitment relationship, not needed in the case of population aggregated in biomass. The model is `bevholtAR1`, a regression stock recruitment model with autoregressive normal log residuals of first order. There are several SR models available in FLR and FLBEIA: `geomean`, `bevholt`, `ricker`, `segreg`, `shepherd`, `rickerAR1`, `segregAR1`, `cushing`, `bevholtSV`, `rickerSV`, `segregSV`, `shepherdSV`, `cushingSV`, `rickerCa`, `hockstick`, `redfishRecModel` and `ctRec`. All these models are detailed in the [Manual](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf).
+  * `oneSR`: The stock recruitment relationship, not needed in the case of population aggregated in biomass. The model is `bevholtAR1`, a regression stock recruitment model with autoregressive normal log residuals of first order. There are several SR models available in FLR and FLBEIA: `geomean`, `bevholt`, `ricker`, `segreg`, `shepherd`, `rickerAR1`, `segregAR1`, `cushing`, `bevholtSV`, `rickerSV`, `segregSV`, `shepherdSV`, `cushingSV`, `rickerCa`, `hockstick`, `redfishRecModel` and `ctRec`. All these models are detailed in the [Manual](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf).
   
 In the code below we call to `FLBEIA` with the arguments stored in `one` dataset. It takes less than a minute to run up to 2025.  
 
