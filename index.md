@@ -36,6 +36,7 @@ title: "FLR Tutorials"
 - [Conditioning FLBEIA using Smart Conditioning Functions](Conditioning_FLBEIA.html)
 - [A simple example on how to use FLBEIA](FLBEIA_A_Simple_Example.html)
 - [A simple example with multiple dimensions in FLBEIA](FLBEIA_An_Example_with_multiple_dimensions.html)
+- [Checking FLBEIA inputs](FLBEIA_Checking_inputs.html)
 - [Using Stock Assessment models in the Managemnt procedure of FLBEIA](Using_Assessment_models_in_the_MP_FLBEIA.html)
 - [Testing different Management Strategies in FLBEIA](Testing_Management_Strategies_in_FLBEIA.html)
 - [Data Limited MSE in FLBEIA](Data_Poor_MSE_in_FLBEIA.html)
