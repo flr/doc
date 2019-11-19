@@ -1,0 +1,497 @@
+---
+title: "Smart Conditioning II"
+header-includes: \usepackage{graphicx}
+output:
+  html_document:
+    collapsed: no
+    number_sections: yes
+    theme: united
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+  github_document:
+    mathjax: yes
+tags:
+  license: Creative Commons Attribution-ShareAlike 4.0 International Public License
+---
+
+<center>
+  ![FLBEIAlogo](./images/FLBEIA_logo.png)
+</center>
+
+
+
+```{r, ini, echo=FALSE, results='hide', message=FALSE}
+# This chunk set the document environment, so it is hidden
+library(knitr)
+knitr::opts_chunk$set(fig.align="center",
+                      message=FALSE, warning=FALSE, echo=TRUE, cache=FALSE)
+options(width=50)
+set.seed(1423)
+```
+
+
+
+# Aim 
+
+**FLBEIA**  [@garcia2017] provides a battery of tutorials for learning how to use this software. 
+This is the fifth tutorial of **FLBEIA** and it is a practical guide about the conditioning  **FLBEIA** using the functions available in the 'Smart Update II' module. It is divided in the following sections:
+
+* Conditioning of the model
+  + The FLBiols object.
+  + The FLFleets object.
+  + The rest of data objects.
+  + The control objects.
+* The validation of the conditioning.
+* The scenarios.
+* The advice.
+
+At the end of the tutorial some exercises are proposed.
+
+
+# Required packages to run this tutorial
+
+To follow this tutorial you should have installed the following packages:
+
+- CRAN: [ggplot2](https://cran.r-project.org/web/packages/ggplot2/index.html)
+        [XLConnect](https://cran.r-project.org/web/packages/XLConnect/index.html)
+        [XLConnectJars](https://cran.r-project.org/web/packages/XLConnectJars/index.html)
+
+- FLR: [FLCore](http://www.flr-project.org/FLCore/), [FLAssess](http://www.flr-project.org/FLAssess/), 
+       [FLash](http://www.flr-project.org/FLash/), [FLBEIA](http://www.flr-project.org/FLBEIA/), 
+       [FLFleet](http://www.flr-project.org/FLFleet/)
+
+If you are using Windows, please use 64-bit R version because some of the packages (mainly FLash) 
+do not work in 32-bit.
+
+```{r, eval=FALSE}
+install.packages( c("ggplot2", "XLConnect", "XLConnectJars"))
+install.packages( c("FLCore", "FLFleet", "FLBEIA", 
+                    "FLash", "FLAssess", "FLXSA"), 
+                  repos="http://flr-project.org/R")
+```
+
+It has to be noted that packages ```FLCore```, ```FLFleets``` and ```FLBEIA``` have to be installed in this exact order, as alternative orders can cause some problems.
+
+Load all the necessary packages.
+```{r, pkgs, results = "hide"}
+library(FLBEIA)
+library(XLConnect)
+library(XLConnectJars)
+library(plyr)
+```
+
+
+# Conditioning of the model
+The most difficult part in the generation of the mixed-fisheries advice is the compilation of the data. There are two main sources of data:
+
+  * The biological data that comes from the stocks assessment working groups.
+  * the catch and effort data at fleet and metier level.
+
+The biological data is easy to get and it is not problematic because the data has been already used by the stock assessment working groups and it is free of errors. However,  although the catch data at fleet and metier level forms the basis for the catch data in the assessment working groups there are usually many issues that make the process of data compilation long and tedious. The  effort data is reported by the member states to the working groups and the catch data is either reported by the member states to the working groups or extracted from Intercatch www.intercatch.dk. The data reported by the member states contains the length of the vessel that is missing in intercatch. Once you have the data,  the first two steps in the generation of the advice are ensuring that:
+
+  * Total catch provided at metier level for each stock match exactly the catch data used in the stock assesment working groups. 
+  * The metier and fleet code names used in the different data files match exactly.
+
+In this tutorial we will obviate these two steps, because they do not contribute to the objective, and will use data files that have already been checked and corrected. 
+
+The functions presented in this tutorial are part of the 'Smart Conditioning II' module of FLBEIA. They provide functions to create the FLBiols, the FLFleets and covars object, for the rest of the objects the functions available in FLCore or  the 'Smart Conditioning I' modules should be used. 
+
+
+The data used in the tutorial corresponds with the Demersal fishery operating in Iberian Coast. The fishery is formed by two countries, Spain and Portugal, and several fleets operating with different gears. An squeme of the case sutdy is shown below
+
+* Stocks:
+  + Hake: 16 age classes and caught by most of the fleets, catches around 13000 tons. the status of the stocks was bad in the last years and it is the most restrictive stocks. 
+  + Monkfish: 30 age classes and caught by most of the fleets, catches around 2500 tons.
+  + Four Spot Megrim: 8 age classes and caught by the trawlers, catches around 2500 tons.
+  + Megrim: 7 age classes and caught by trawlers along with the other megrim, catches around 500 tons.
+
+* Fleets:
+    + SP_GNS: Spanish Gillnetters.
+        - DEF_100_0_0"   
+        - "DEF_60_79_0_0" 
+        - "DEF_80_99_0_0"
+    + PT_GNS: Portuguese Gillnetters.
+        - DEF_0_0_0
+    + PT_GTR: Portuguese Trammel Nets.   
+        - DEF_0_0_0
+    + SP_GTR: Spanish Trammel Nets.        
+        - DEF_0_0_0
+    + SP_LLS: Spanish Longliners       
+        - DEF_0_0_0
+    + PT_MIS: Portuguese miscelaneous.     
+        - MIS_0_0_0_HC
+    + SP_MIS: Spanish miscelaneous.        
+        - MIS_0_0_0_HC
+    + PT_OTB: Portuguese Bottom Otter Trawl.  
+        - CRU_55_0_0
+        - DEF_65_0_0
+    + SP_OTB: Spanish Bottom Otter Trawl.       
+        - DEF_65_0_0
+        - MPD_55_0_0
+    + SP_OTB_24m: Spanish Bottom Otter Trawlers smaller than 24 m.     
+        - MCD_55_0_0
+    + OTH_OTH: A fleet that accounts for the catch not included in the rest of the fleets.      
+        - OTH
+    + SP_PTB: Spanish pair trawlers.   
+        - MPD_55_0_0
+
+
+The FLBiols object in this tutorial is created using the 'Smart Update II' functions available in FLBEIA. These functions are an alternative to the 'Smart Update I' function presented in the tutorial XXX. The functions have been coded to be able to build the FLBiols and FLFleets objects based on the data used by the ICES assessment working groups and Mixed-Fisheries advice working groups as directly as possible.
+
+## The FLBiols object.
+The biological data needed to build the FLBiols objects is taken from and excel file. The data corresponding to each of input factor (number at age, natural mortality,...) is given in a separate sheet in a matrix form. Each sheet contains a matrix with age in rows and year in columns. Data for all the quantities needs to be reported for the whole data series. If some data is not available NA should be used instead. Units (if available) must be stored in the first line and column (A1).
+
+\begin{figure}
+  \centering
+      \includegraphics[width=16cm]{./images/flbeia_smart_update_II/Diapositiva1.jpg}
+      \caption{Excel file with the data needed to condition the FLBiol object }
+      \label{fig:stkdata}
+\end{figure}
+
+The data stored in each fleet is explained in the table below.  Each row corresponds with one sheet in the excel file:
+
+\begin{figure}
+  \centering
+      \includegraphics[width=16cm]{./images/flbeia_smart_update_II/Diapositiva2.jpg}
+      \caption{List of data needed to condition the FLBiol Object. Each row corresponds with onesheet in the excel file.}
+      \label{fig:sheets}
+\end{figure}
+
+Firts we download the data from the FLR we page using R commands
+
+```{r echo=TRUE, eval=TRUE}
+dir <- tempdir()
+download.file("http://www.flr-project.org/doc/src/", file.path(dir, "flbeia_smart_cond_II.zip"))
+unzip(file.path(dir, "flbeia_smart_cond_II.zip"), exdir=dir)
+```
+
+
+Once the data is prepared in excel format it is imported into an FLBiol object using the create.biol.arrays function. The function is applied in an stock-by-stock basis and then the objects are joing in a single FLBiols object using the function with the same name. In the process of conditioning the model it is extremely important to be consistent in the name used along the whole process. This is why we recommend using names as standard as possible. For stock for example the use of the FAO codes with three letters is highly recommended. 
+
+```{r echo=TRUE, eval=TRUE}
+stknms <- c('HKE', 'LDB', 'MEG', 'MON')
+
+hke <- create.biol.arrays('./src/flbeia_smart_cond_II/stocks/HKE2017.xlsx', name = 'HKE',
+                   ages = 0:15, hist.yrs = 1982:2017 , sim.yrs = 2018:2025, 
+                   fbar = c(1,3), mean.yrs = 2015:2017, excel = TRUE)
+
+mon <- create.biol.arrays('./src/flbeia_smart_cond_II/stocks/MON2017.xlsx', name = 'MON',
+                          ages = 0:30, hist.yrs = 1980:2017 , sim.yrs = 2018:2025,
+                           fbar = c(1,8), mean.yrs = 2015:2017,  excel = TRUE)
+ldb <- create.biol.arrays('./src/flbeia_smart_cond_II/stocks/LDB2017.xlsx', name = 'LDB',
+                          ages = 0:7, hist.yrs = 1986:2017 , sim.yrs = 2018:2025, 
+                          fbar = c(2,4), mean.yrs = 2015:2017, excel = TRUE)
+
+meg <- create.biol.arrays('./src/flbeia_smart_cond_II/stocks/MEG2017.xlsx', name = 'MEG',
+                          ages = 1:7, hist.yrs = 1986:2017 , sim.yrs = 2018:2025, 
+                          fbar = c(2,4),mean.yrs = 2015:2017, excel = TRUE)
+```
+
+
+We join all the objects in a sigle FLBiols and we extend it until 2025 applying the window function at FLBiol object level.
+
+```{r echo=TRUE, eval=TRUE}
+biols <- list(HKE = hke, MON = mon, LDB = ldb, MEG = meg)
+
+biols <- FLBiols(lapply(biols, function(x) window(x, 2000,2025)))
+```
+
+For some stocks we change the weight in the projection to use the one used by the assessment working group to generate the single stock TAC advice.
+
+```{r echo=TRUE, eval=TRUE}
+biols$HKE@wt[, ac(2018:2020)] <- c(0.00, 0.05, 0.30, 0.87, 1.71, 2.72, 3.81, 4.93, 6.04, 
+                                   7.11, 8.15, 9.13, 10.02, 10.82, 11.51, 12.39)
+biols$LDB@wt[,ac(2018:2020)]  <- c(0.004,	0.024,	0.044,	0.071,	0.1,	0.131,	0.162,	
+                                   0.218)
+biols$MEG@wt[,ac(2018:2020)]  <- c(0.038, 0.089, 0.134, 0.180, 0.222, 0.2840, 0.396)
+```
+
+### Stock assessments with iterations 
+Stocks assessed for example with Bayesian models do not only provide point estimates of the parameters but also their join probability distribution in the form of multiple iterations. If an stock is assessed with a bayesian model FLBEIA should be conditioned using a big enough number of iterations to represent the inherent uncertainty properly. In this case,  instead of using an excel file with different sheets we can use a R list with 13 arrays. Each array corresponds with the sheets in the excel file  ("n", "wt", "mat", "fec", "m", "spwn", "f", "caa", "laa", "daa", "wl" and "wd"). Each of these arrays must have dimension [na,ny,ni] where 'na' corresponds with the number of ages, 'ny' with the number of years and 'ni' with the number of iterations. In the call to the 'create.biol.arrays' the name of the workspace where the data is stored is used and the name of the list must be called 'data'.  
+
+    
+                      
+## The FLFleets object
+
+To create the fleets, we will use the 'create.fleets.arrays' function. The R help page for this function provides some useful information.
+
+```{r echo=TRUE, eval=TRUE}
+?create.fleets.arrays
+```
+
+The function uses catch and effort data in the same format used in the WKMIXFISH as shown in Figures \ref{fig:catch} and \ref{fig:effort}. The fleets and metiers names used in both files must match. The country column is not mandatory but the rest are. Aa the metier column is mandatory, the case where a fleet does not have metiers corresponds with a fleet with a single metier case, in this case the same name can be used for the metier and the fleet. The landings and discards are given in total weight. Any unit can be used for the landings and discards but the units used must be coherent along all the objects used. For example, the units of the product of numbers at age and weight at age in the 'FLBiols' object must be the same as the units of the catch and landings in the catch data file. In the case of effort, for example, the units used are free, but the units used in all the indicator related with effort, variable cost for instance, must be coherent. 
+
+\begin{figure}
+  \centering
+      \includegraphics[width=16cm]{./images/flbeia_smart_update_II/Diapositiva4.jpg}
+      \caption{Catch data file.}
+      \label{fig:catch_file}
+\end{figure}
+
+
+\begin{figure}
+  \centering
+      \includegraphics[width=16cm]{./images/flbeia_smart_update_II/Diapositiva5.jpg}
+      \caption{Effort data file.}
+      \label{fig:effort_file}
+\end{figure}
+
+
+The arguments 'flnms', 'flt_mt_nms' and 'flt_mt_stk_nms' are used to let R know  which is the structure of the fleet. As they are bit long we build them outside the function.
+
+
+
+```{r echo=TRUE, eval=TRUE}
+# fleet names
+flnms <-  c('SP_GNS', 'PT_GNS', 'PT_GTR', 'SP_GTR', 'SP_LLS', 'PT_MIS', 'SP_MIS',
+            'PT_OTB', 'SP_OTB', 'SP_OTB_24m', 'OTH_OTH', 'SP_PTB')
+
+# List with the metiers for each fleet
+flt_mt_nms <- list(SP_GNS = c("DEF_100_0_0", "DEF_60_79_0_0", "DEF_80_99_0_0"),
+                   PT_GNS = "DEF_0_0_0", 
+                   PT_GTR = "DEF_0_0_0", 
+                   SP_GTR = "DEF_60_79_0_0",
+                   SP_LLS = "DEF_0_0_0", 
+                   PT_MIS = "MIS_0_0_0_HC", 
+                   SP_MIS = "MIS_0_0_0_HC",
+                   PT_OTB = c("CRU_55_0_0", "DEF_65_0_0"),
+                   SP_OTB = c("DEF_65_0_0", "MPD_55_0_0"),
+                   SP_OTB_24m = "MCD_55_0_0", 
+                   OTH_OTH = "OTH",
+                   SP_PTB = "MPD_55_0_0")
+
+# List of list with the stocks caugth by each metier for each fleet
+flt_mt_stk_nms <- list(SP_GNS = list(DEF_100_0_0 = c("HKE", "LDB", "MEG", "MON"),
+                                     DEF_60_79_0_0 = c("HKE", "LDB", "MEG", "MON"),
+                                     DEF_80_99_0_0 = c("HKE", "LDB", "MEG", "MON")),
+                       PT_GNS = list(DEF_0_0_0 = c("HKE", "LDB", "MEG", "MON")),
+                       PT_GTR = list(DEF_0_0_0 = c("HKE", "LDB", "MEG", "MON")),
+                       SP_GTR = list(DEF_60_79_0_0 = c("HKE", "LDB", "MEG", "MON")),
+                       SP_LLS = list(DEF_0_0_0 = c("HKE", "LDB",  "MON")),
+                       PT_MIS = list(MIS_0_0_0_HC = c("HKE", "LDB", "MEG", "MON")),
+                       SP_MIS = list(MIS_0_0_0_HC = c("HKE", "LDB", "MEG", "MON")),
+                       PT_OTB = list(CRU_55_0_0 = c("HKE", "LDB", "MEG", "MON"),
+                                     DEF_65_0_0 = c("HKE", "LDB", "MEG", "MON")),
+                       SP_OTB = list(DEF_65_0_0 = c("HKE", "LDB", "MEG", "MON"),
+                                     MPD_55_0_0 = c("HKE", "LDB", "MEG", "MON")),
+                       SP_OTB_24m = list(MCD_55_0_0 = c("HKE", "LDB", "MEG", "MON")),
+                       OTH_OTH = list(OTH = c("HKE", "LDB", "MEG", "MON")),
+                       SP_PTB = list(MPD_55_0_0 = c("HKE", "LDB", "MEG", "MON")))
+```
+
+Stock data files are used to fill the 'landings.wt' and 'discards.wt' slots in the FLCatch slots of the FLFleet object. 
+
+
+```{r echo=TRUE, eval=TRUE}
+# stock data file  names
+stk_objs <- c("./src/flbeia_smart_cond_II/stocks/HKE2017.xlsx", "./src/flbeia_smart_cond_II/stocks/LDB2017.xlsx", 
+              "./src/flbeia_smart_cond_II/stocks/MEG2017.xlsx", "./src/flbeia_smart_cond_II/stocks/MON2017.xlsx" )
+names(stk_objs) <- c('HKE', 'LDB', 'MEG', 'MON')
+stk_objs
+```
+
+To call the function 'create.fleets.arrays' to create the FLFleets object we have to decide how to condition the catch at age at metier level. There are 4 different ways of conditioning the landings and discards at age, depenending on data availability. The options are stock dependent so we can use different options for each stock. In the options one to three is extremely important that the sum of the catch at ages provided are equal to the overall catch at age.
+
+*	Catch at age data is available at m?tier level for all the m?tiers included in the CS.
+*	Catch at age data is only available at fleet level.
+*	Catch at age data is disaggregated but the segments dot not correspond exactly with the m?tiers/fleets considered in the case study.
+*	Catch at age data is only available at stock level.
+
+In each case the excel files must be named differently. In the first option, the most complete one, we need to provide an excel file for each fleet, and within the file there must be a sheet for each of the metiers as shown in Figure \ref{fig:CAA_opt1}. The file name must be equal to 'CAA_' followed by the name of the fleet and with the '.xlsx' suffix. In turn, the sheets of the excel file must match exactly the name fo the metiers.   
+
+\begin{figure}
+  \centering
+      \includegraphics[width=16cm]{./images/flbeia_smart_update_II/Diapositiva6.jpg}
+      \caption{Catch at age data file for option 1, catch at age provided at metier level.}
+      \label{fig:CAA_opt1}
+\end{figure}
+
+In the second option the catch at age data is provided at fleet level. As in option one the file name must be equal to 'CAA_' followed by the name of the fleet and with the '.xlsx' suffix. In this case the file must have only one sheet with the name of the fleet (Figure \ref{fig:CAA_opt2}). The partial catches at metier level, (metier catch divided by the fleet catch), are used to divided the overal catch at age by metier
+
+\begin{figure}
+  \centering
+      \includegraphics[width=16cm]{./images/flbeia_smart_update_II/Diapositiva7.jpg}
+      \caption{Catch at age data file for option 2, catch at age provided at fleet level.}
+      \label{fig:CAA_opt2}
+\end{figure}
+
+The third option is quite useful because usually the catch at age data is available at different level. In this case only one file per stock is provided. The file name must be equal to 'CAA_' followed by the name of the *stock* and with the '.xlsx' suffix. Within the file each fleet must be named with the name of the fleet segment it represents (Figure \ref{fig:CAA_opt3}). Then, it is neccesary to inform R about the correspondence of the segments with the metiers in the FLFleet object as shown in Figure \ref{fig:CAA_opt3a}. Then, the partial catches at metier level are used to divided the overal catch at age by metier. Sometimes, in this case it is not easy to ensure that the catch at age obtained summing up the catch at age at fleet level corresponds exactly with the overall catch at age. Hence, there will be differences in the selection pattern of the fleet and the fishing mortality,
+
+
+\begin{figure}
+  \centering
+      \includegraphics[width=16cm]{./images/flbeia_smart_update_II/Diapositiva8.jpg}
+      \caption{Catch at age data file for option 3, catch at age provided at segment level level.}
+      \label{fig:CAA_opt3}
+\end{figure}
+
+
+\begin{figure}
+  \centering
+      \includegraphics[width=16cm]{./images/flbeia_smart_update_II/Diapositiva9.jpg}
+      \caption{Table with the correspondences between the fleet segments used to provide the catch at age data and the metiers in the fleet data.}
+      \label{fig:CAA_opt3a}
+\end{figure}
+
+Option 4 is the most basic option. The catch at age is provided at overall level and then it is divided among metiers assuming the same distribution by age. The partial catches at metier level are used to divided the overal catch at age by metier. The file name must be equal to 'CAA_' followed by the name of the *stock* and with the '.xlsx' suffix
+
+\begin{figure}
+  \centering
+      \includegraphics[width=16cm]{./images/flbeia_smart_update_II/Diapositiva10.jpg}
+      \caption{Catch at age data file for option 4, catch at age provided at metier level.}
+      \label{fig:CAA_opt4}
+\end{figure}
+
+In all the cases each excel sheet has two matrices with the number of columns equal to the number of historical years and the number of rows equal to the number of age groups. The first matrix corresponds with the landings at age and the second matrix,both *separated by a single row*, with the discards at age. 
+
+
+In this call to the 'create.fleets.arrays' function we will not condition the price, only the effort and the catches.
+
+\newpage 
+
+```{r echo=TRUE, eval=TRUE, results = "hide"}
+# Create the fleets object
+fleets <- create.fleets.arrays(stk_objs,                               
+                             caa_objs = c("caa_HKE.xlsx", "caa_LDB.xlsx", 
+                                          "caa_MEG.xlsx", "caa_MON.xlsx"),
+                             caa_objs_path ='./src/flbeia_smart_cond_II/fleets/',
+                             catch_obj     = './src/flbeia_smart_cond_II/fleets/catch.csv',
+                             effort_obj    = './src/flbeia_smart_cond_II/fleets/effort.csv',
+                             flt_obj = NULL,
+                             stk_nms =  c('HKE', 'LDB', 'MEG', 'MON'),
+                             flt_nms = flnms,
+                             flt_mt_nms = flt_mt_nms,
+                             flt_mt_stk_nms = flt_mt_stk_nms,
+                             ages = list(HKE = ac(0:15), MON = ac(0:30), 
+                                         MEG = ac(1:7), LDB = ac(0:7)),
+                             hist.yrs = 2000:2017,
+                             sim.yrs = 2018:2025,
+                             mean.yrs = 2015:2017,
+                             caa_flt_mt_correspondences = NULL, 
+                             paa_flt_mt_correspondences = NULL,
+                             caaOpt = c(HKE = 4, LDB = 4, MEG = 4, MON = 4),
+                             update_price = FALSE,
+                             priceOpt = NULL,
+                             excel = TRUE)
+```
+
+
+Now we have to calculate the catchabilitis by age for all the fleets and metiers. 'create.fleets.arrays' functions assumes that the 'alpha' and 'beta' parameters of the Cobb-Douglass function are equal to one and calculates the catchability euqal to the ratio between the catch at age at metier level and the product of the biomass in the middle of the total effort and the effort share in the metier. The retention ogives are calculated from the historical data as the rati between the landings at ate and the catch at age. For the projection the mean of the last three years is used.
+
+```{r echo=TRUE, eval=TRUE,  results = "hide"}
+fleets <- calculate.q.sel.flrObjs(biols, fleets, NULL, 
+                                  mean.yrs = ac(2015:2017), sim.yrs = ac(2018:2025))
+```
+
+
+Check that the object has been built correctly.
+
+```{r echo=TRUE, eval=TRUE}
+validObject(fleets)
+```
+
+
+
+## The Economic  data.
+
+### Price
+Once the FLFleets object has been created we can fillin the economic slots with the economic data. Price data is filled with the same function 'create.fleets.arrays'. We could have fill in the price dat together with the catch data. But we can do it separately as shown here. We have to turn of the  'update_catch_effort' and 'update_weight' arguments and turn on the 'update_price'. The conditionin of the price is done in the same way it is done for catch at age. Furthermore, the 4 options available for catch at age are also available for price. In this case we will use different options for each stock, for hake and monkfish the option 3 and for the megrims de option 4. In the case of price, in the data files there is only one matrix for the price and the shape is the same used for landings at age. 
+
+```{r echo=TRUE, eval=TRUE,  results = "hide"}
+# Update the object with the price data
+fleets <- create.fleets.arrays(flt_obj = fleets,
+                               price_objs = c('paa_HKE.xlsx', 'paa_MEG.xlsx', 
+                                              'paa_LDB.xlsx', 'paa_MON.xlsx'), 
+                               price_objs_path = './src/flbeia_smart_cond_II/fleets/', 
+                               priceOpt = c(HKE = 3, LDB = 4, MEG = 4, MON = 3),
+                               paa_flt_mt_correspondences = './src/flbeia_smart_cond_II/fleets/price_correspondences.xlsx',
+                               update_catch_effort = FALSE, 
+                               update_price = TRUE, 
+                               update_weight = FALSE,
+                               hist.yrs = 2000:2017, sim.yrs = 2018:2025, 
+                               mean.yrs = 2015:2017,
+                               excel = TRUE)
+
+```
+
+###  Economic Indicators
+
+Figure \ref{fig:tab_ecoData} shows the economic indicators used in FLBEIA at fleet and metier level. The 'create.ecoData' can be used to fill in the objects. The economic data is stored in two different objects, the FLFleets object and the covars object.
+
+The FLFleet object has the following economic slots:
+
+* fcost: An slot at fleet level with the fixed costs. It is given at vessel level, that is in an annual implementation it constains the annual fixed costs of a vessel in the corresponding fleet.
+* crewshare: An slot at fleet level with the proportion of the gross value that is used to pay the crew.
+* vcost: An slot at metier level that  measures the associated cost per unit of effort. 
+* capacity: The maixmum effort that a fleet can exert in a given time period.
+
+\begin{figure}
+  \centering
+      \includegraphics[width=16cm]{./images/flbeia_smart_update_II/table_eco.jpg}
+      \caption{Economic indicators at fleet and metier level used in FLBEIA.}
+      \label{fig:tab_ecoData}
+\end{figure}
+
+
+The help page provides some information in the use of the function.
+```{r echo=TRUE, eval=TRUE}
+?create.ecoData
+```
+
+
+The economic indicators are provided in an excel file with one sheet per fleet, see Figure\ref{fig:ecoData}. In turn, in each sheet the yearly data at fleet and metier level is provided. The fleet level indicators are provided in the fleet column and then there must be one column per metier with the economic indicators at fleet level.
+
+
+\begin{figure}
+  \centering
+      \includegraphics[width=16cm]{./images/flbeia_smart_update_II/Diapositiva11.jpg}
+      \caption{Shape of the file used to pass the economic data at fleet and metier level to FLBEIA.}
+      \label{fig:ecoData}
+\end{figure}
+
+
+In the function call we need to provide the name and path of the excel file with the data, the FLFleets object and historicall years, the years used to calculat the mean  and the projection years. The function provides a list with two objects, the fleets object with the updated FLFleets object and a covars object with a list of FLQuants with the economic indicators.
+
+```{r echo=TRUE, eval=TRUE}
+
+ecoD <- create.ecoData('./src/flbeia_smart_cond_II/fleets/economic_data.xlsx', fleets,
+                       hist.yrs = 2005:2017, mean.yrs = 2017, 
+                       sim.yrs = 2018:2025)
+
+covars <- ecoD$covars
+fleets <- ecoD$fleets
+```
+
+
+
+Finally, modify the weights in some of the stocks to match the values used by the assessment working group.
+
+```{r echo=TRUE, eval=TRUE}
+for(fl in names(fleets)){
+  for(mt in names(fleets[[fl]]@metiers)){
+    if('LDB' %in% catchNames(fleets[[fl]])){
+      fleets[[fl]]@metiers[[mt]]@catches[['LDB']]@landings.wt[,ac(2018:2020)]  <- c(0.002,	
+                                    0.034,	0.069,	0.086,	0.106,	0.133,	0.162,	0.218)
+      fleets[[fl]]@metiers[[mt]]@catches[['LDB']]@discards.wt[,ac(2018:2020)]  <-  c(0.004,	
+                                       0.024,	0.041,	0.054,	0.069,	0.094, 0.116,	0.094)
+    }
+    
+  if('MEG' %in% catchNames(fleets[[fl]])){
+      fleets[[fl]]@metiers[[mt]]@catches[['MEG']]@landings.wt[,ac(2018:2020)]  <- c(0.064,	
+                                              0.098,	0.135,	0.18,	0.222,	0.284,	0.396)
+      fleets[[fl]]@metiers[[mt]]@catches[['MEG']]@discards.wt[,ac(2018:2020)]  <-  c(0.035,	
+                                                0.062,	0.091,	0.125,	0.062,	0.038,	0)
+  }  
+  }
+}
+
+```
+
+
+
+
+
+
+
