@@ -35,12 +35,12 @@ Finally, another simple example but with three iterations, named ```oneIt```, is
 
 # Help & Manual
 
-***FLBEIA*** includes extensive facilities for accessing documentation and searching for help. ***FLBEIA*** manual can be download from [Github](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf) or within the 'doc' folder of the package installation. Additionally, the ```help()``` function and ```?``` help operator in R provide access to the documentation pages. Typing ```help(package = FLBEIA)``` in the R console you access to the documentation for package ```FLBEIA``` , user guides and help pages. For example, typing ```help(bioSum)``` in the R console you access to help page of summary functions for the FLBEIA output. 
+***FLBEIA*** includes extensive facilities for accessing documentation and searching for help. ***FLBEIA*** manual can be download from [Github](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf) or within the 'doc' folder of the package installation. Additionally, the ```help()``` function and ```?``` help operator in R provide access to the documentation pages. Typing ```help(package = FLBEIA)``` in the R console you access to the documentation for package ```FLBEIA``` , user guides and help pages. For example, typing ```help(bioSum)``` in the R console you access to help page of summary functions for the FLBEIA output. 
 
-The exact way to define the objects used to set the simulation is described in the [FLBEIA manual](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf).
+The exact way to define the objects used to set the simulation is described in the [FLBEIA manual](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf).
 Nevertheless, the objects to set the simulation do not need to be defined for the following examples, 
 as the datasets ```one``` and ```oneIt``` from the FLBEIA package will be used.
-For details on these objects, see [FLBEIA manual, Section 5.2](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf) 
+For details on these objects, see [FLBEIA manual, Section 5.2](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf) 
 or type ```?FLBEIA``` in the R console.
 
 To see all the datasets available in the **FLBEIA** package:
@@ -496,7 +496,7 @@ TAC_mean <- mean(oneAdv$TAC[,ac(2007:2009),])
 oneAdv2$TAC[,ac(2010:2025),] <- TAC_mean 
 ```
 
-```create.advice.ctrl``` function creates the advice control object. For a complete list of the function arguments, see [**FLBEIA** manual](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf) 
+```create.advice.ctrl``` function creates the advice control object. For a complete list of the function arguments, see [**FLBEIA** manual](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf) 
 
 There is another way to complet the TAC with the mean of the last three historic years then ```fixedAdvice``` is used. When ```fixedAdvice```  is set, ```create.advice.ctrl``` complete the TAC of projection years with the mean of the last three historic years.
 ```{r eval=FALSE}

@@ -107,7 +107,7 @@ data(one)
 ls()
 ```
 
-The smart conditioning functions are listed and described in the [Manual](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf) of **FLBEIA**, within the 'doc' folder of the package installation or typing ```help(package = FLBEIA)``` in the R console. The description of the smart conditioning functions are  listed below.
+The smart conditioning functions are listed and described in the [Manual](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf) of **FLBEIA**, within the 'doc' folder of the package installation or typing ```help(package = FLBEIA)``` in the R console. The description of the smart conditioning functions are  listed below.
 
 * ```create.biols.data```: It generates a ```FLBiol``` object for each stock, and includes all of them in a ```FLBiols``` object. It returns an object that could be used as ```biols``` argument in ```FLBEIA``` function. The function filled historical data of weight, abundance, natural mortality, fecundity, spawning, maturity and recruitment. In the projection years, weight, natural mortality, fecundity, maturity and spawning, are assumed equal to the average of the historical years that the user specifies in ```stk_biol.proj.avg.yrs```. 
 

@@ -35,12 +35,12 @@ In this tutorial a simple case study, named ```multi``` is explored and run in `
 
 # Help & Manual
 
-***FLBEIA*** includes extensive facilities for accessing documentation and searching for help. ***FLBEIA*** manual can be download from [Github](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf) or within the 'doc' folder of the package installation. Additionally, the ```help()``` function and ```?``` help operator in R provide access to the documentation pages. Typing ```help(package = FLBEIA)``` in the R console you access to the documentation for package ```FLBEIA``` , user guides and help pages. For example, typing ```help(bioSum)``` in the R console you access to help page of summary functions for the FLBEIA output. 
+***FLBEIA*** includes extensive facilities for accessing documentation and searching for help. ***FLBEIA*** manual can be download from [Github](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf) or within the 'doc' folder of the package installation. Additionally, the ```help()``` function and ```?``` help operator in R provide access to the documentation pages. Typing ```help(package = FLBEIA)``` in the R console you access to the documentation for package ```FLBEIA``` , user guides and help pages. For example, typing ```help(bioSum)``` in the R console you access to help page of summary functions for the FLBEIA output. 
 
-The exact way to define the objects used to set the simulation is described in the [FLBEIA manual](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf).
+The exact way to define the objects used to set the simulation is described in the [FLBEIA manual](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf).
 Nevertheless, the objects to set the simulation do not need to be defined for the following examples, 
 as the datasets ```one``` and ```oneIt``` from the FLBEIA package will be used.
-For details on these objects, see [FLBEIA manual, Section 5.2](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf) 
+For details on these objects, see [FLBEIA manual, Section 5.2](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf) 
 or type ```?FLBEIA``` in the R console.
 
 To see all the datasets available in the **FLBEIA** package:
@@ -426,7 +426,7 @@ print(p)
 ### Price Dynamics
 
 The price function is ```fixedprice```: prices are given as input data and are unchanged within the simulation. 
-Now change the price dynamics defining ```elasticPrice``` model in one fleet ```fl1``` and stock ```stk2```.  For a detailed description of this function see page 19 of the  [Manual](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf ).
+Now change the price dynamics defining ```elasticPrice``` model in one fleet ```fl1``` and stock ```stk2```.  For a detailed description of this function see page 19 of the  [Manual](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf ).
 The price dynamics function implemented in FLBEIA is described in Kraak et al. [2004]. This function set a base price and base landings to calculate the new price using an elasticity parameter. If the base landings are bigger than current landings the price is increased and decreased if the contrary occurs. Although price is stored at metier and stock level in ```FLFleetsExt```,this function assumes that is common to all metiers within a fleet and it is calculated at fleet level.
 
 ```{r echo=TRUE, results = "hide"}
@@ -623,7 +623,7 @@ print(p)
 
 ### Capital dynamics
 
-The current capital function in ```fixedCapital```, where the capacity and catchability are given as input data and are unchanged within the simulation. Now change the capital function and implement the ```SCD```function. In this simple function catchability is not updated, it is an input parameter, and only capacity is updated depending on some economic indicators. For more detailed information of this function, see the page 20 of the  [Manual](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf).
+The current capital function in ```fixedCapital```, where the capacity and catchability are given as input data and are unchanged within the simulation. Now change the capital function and implement the ```SCD```function. In this simple function catchability is not updated, it is an input parameter, and only capacity is updated depending on some economic indicators. For more detailed information of this function, see the page 20 of the  [Manual](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf).
 
 
 Firstly define requiered variables.:

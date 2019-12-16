@@ -19,7 +19,7 @@ bibliography: bibliography.bib
 ---
 
 <center>
-  ![FLBEIAlogo](c:/use/Dropbox/FLBEIA_Course/Tutorials/FLBEIA-1000px.transparente_small.png)
+  ![FLBEIAlogo](./images/FLBEIA_logo.png)
 </center>
 
 <!-- Sys.setlocale("LC_TIME", "C") -->

@@ -37,11 +37,11 @@ And finally, it is described how to simulate spatial and/or temporal closures.
 Additionally, some exercises are proposed.
 
 The exact way to define the objects used to set the simulation is described in the **FLBEIA** manual. 
-This manual can be download from [GitHub](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf), 
+This manual can be download from [GitHub](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf), 
 within the 'doc' folder of the package installation or typing ```help(package = FLBEIA)``` in the R console.
 Nevertheless, the objects to set the simulation doesn't need to be defined for the following examples, 
 as the datasets ```oneIt``` and ```multi``` from the FLBEIA package will be used.
-For details on these objects, see [FLBEIA tutorial, Section 5.2](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf) 
+For details on these objects, see [FLBEIA tutorial, Section 5.2](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf) 
 or type ```?FLBEIA``` in the R console.
 
 To see all the datasets available in the **FLBEIA** package:
@@ -87,7 +87,7 @@ This example shows how to change the HCR used in the Management Procedure (MP).
 In this case, the Operating Model (OM) runs annually and it is formed by a single age-structured stock 
 and an unique fleet which activity is performed in an unique m?tier. In the Management Procedure (MP), 
 the fleet dynamics is assumed to be a Simple Mixed Fisheries behaviour (for details, see information on 
-SMFB function in the [**FLBEIA** manual](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf), 
+SMFB function in the [**FLBEIA** manual](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf), 
 the stock is observed without error, there is not assessment carried out and the ICES HCR [@ices2009] 
 is used to se the TAC yearly.
 
@@ -143,7 +143,7 @@ oneItObsCIndBio$stk1$indObs
 
 Now we need to set the control parameters for this new HCR, for more details on the control parameters 
 required for the different HCRs available, see the 
-[**FLBEIA** manual](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf).
+[**FLBEIA** manual](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf).
 In this particular case, we have to indicate the name of the index to be used, the reference points (i.e. alpha and beta) and the type of rule [options: 2 or 4, see HCRs from @deOliveira2010].
 
 ```{r echo=TRUE, eval=TRUE}
@@ -286,7 +286,7 @@ data(oneIt) # load the dataset
 ## Exploring the data
 
 Initial assumption on effort, when conditioning the objects using the easy/smart conditioning functions 
-([**FLBEIA** manual](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf), Chapter 5), 
+([**FLBEIA** manual](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf), Chapter 5), 
 is that the effort in the projection period is the mean effort of a range of years
 (determined by the user). Afterwards, when running the simulation, depending on the function selected
 to simulate the fleet dynamics this effort is recalculated, except for the case when selecting 
@@ -440,7 +440,7 @@ data(oneIt) # load the dataset
 ## Exploring the data
 
 Initial assumption on catchability, when conditioning the objects using the easy/smart conditioning
-functions (see [FLBEIA tutorial](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf)), 
+functions (see [FLBEIA tutorial](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf)), 
 is that the effort in the projection period is the mean 
 effort of a range of years (determined by the user). 
 
@@ -598,7 +598,7 @@ In the Management Procedure (MP),
 the fleet dynamics is assumed to be of fixed effort and a Simple Mixed Fisheries behaviour,
 respectively for each of the fleets
 (for details, see information on fixedEffort and SMFB functions in the
-[**FLBEIA** manual](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf),
+[**FLBEIA** manual](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf),
 the stocks are observed without error, there is not assessment carried out
 and different functions are are used to set the TAC yearly for each stock.
 
@@ -636,7 +636,7 @@ For simulating spatial or temporal closures, the fleet effort and/or the efforts
 should be reassigned to the appropriate values.
 
 Initial assumption on catchability, when conditioning the objects using the easy/smart conditioning
-functions (see [FLBEIA tutorial](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf)), 
+functions (see [FLBEIA tutorial](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf)), 
 is that the effort in the projection period is the mean 
 effort of a range of years (determined by the user). 
 

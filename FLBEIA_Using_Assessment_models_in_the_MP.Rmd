@@ -46,7 +46,7 @@ management is applied from the mid-season of one year to the mid-season of the n
 Simulations with multi-annual advice is also possible.
 
 The exact way to define the objects used to set the simulation is described in the **FLBEIA** manual. 
-This manual can be downloaded from [GitHub](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf), 
+This manual can be downloaded from [GitHub](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf), 
 within the 'doc' folder of the package installation or typing `help(package = FLBEIA)` in the R console.
 Nevertheless, the objects to set the simulation doesn't need to be defined for the following examples, 
 as the dataset `one` from the FLBEIA package will be used.
@@ -123,7 +123,7 @@ depending on the inclusion or not of the assessement in the MP.
 
 For more details on these functions and the related control objects 
 see Sections 4.3.6-4.3.8 and Table C.5 in the 
-[**FLBEIA** manual](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf). 
+[**FLBEIA** manual](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf). 
 
   
 
@@ -154,7 +154,7 @@ This example represents a simulation without assessment in the Management Proced
 In this case, the Operating Model (OM) runs annually and it is formed by a single age-structured stock 
 and an unique fleet which activity is performed in an unique metier. In the Management Procedure (MP), 
 the fleet dynamics is assumed to be a Simple Mixed Fisheries behaviour (for details, see information on 
-SMFB function in the [**FLBEIA** manual](https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf), 
+SMFB function in the [**FLBEIA** manual](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf), 
 the stock is observed without error, there is not assessment carried out and the ICES HCR [@ices2009] 
 is used to set the TAC yearly.
 

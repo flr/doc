@@ -19,7 +19,7 @@ bibliography: bibliography.bib
 ---
 
 <center>
-  ![FLBEIAlogo](c:/use/Dropbox/FLBEIA_Course/Tutorials/FLBEIA-1000px.transparente_small.png)
+  ![FLBEIAlogo](./images/FLBEIA_logo.png)
 </center>
 <!-- <img src="//172.21.10.13/comun$/AZTIMAR/FLBEIA/logo/FLBEIA-1000px.transparente_small.png" > -->
 
