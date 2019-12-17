@@ -27,7 +27,7 @@ include_graphics('images/FLBEIA_logo.png')
 
 # Aim 
 
-***FLBEIA*** provides a battery of tutorials for learning how to use this software. This tutorial is a practical guide about one simple implementation of ```FLBEIA```.  The aim of this example is to become familiar with the objects necessary to carry out bio-economics  impact assessments of fisheries management strategies.
+***FLBEIA*** provides a battery of tutorials for learning how to use this software. This tutorial is a practical guide about one simple implementation of ```FLBEIA```.  The aim of this example is to become familiar with the objects necessary to carry out bio-economic impact assessments of fisheries management strategies.
 
 In this tutorial a simple example on how to run ```FLBEIA``` is presented. This simple example is named as ```one```. The outputs of applaying ```FLBEIA``` to ```one``` example are analized, summarized and plotted. Once the user has understood the structure and outputs of ```FLBEIA```, let's start playing! We will run, plot and analyse several scenarios.
 
@@ -55,7 +55,7 @@ To follow this tutorial you should have installed the following packages:
 - CRAN: [ggplot2](https://cran.r-project.org/web/packages/ggplot2/index.html)
 - FLR: [FLCore](http://www.flr-project.org/FLCore/), [FLAssess](http://www.flr-project.org/FLAssess/), 
        [FLash](http://www.flr-project.org/FLash/), [FLBEIA](http://www.flr-project.org/FLBEIA/), 
-       [FLFleet](http://www.flr-project.org/FLFleet/), [ggplotFL](http://www.flr-project.org/ggplotFL/
+       [FLFleet](http://www.flr-project.org/FLFleet/), [ggplotFL](http://www.flr-project.org/ggplotFL/)
 
 If you are using Windows, please use 64-bit R version because some of the packages do not work in 32-bit.
 
@@ -68,7 +68,7 @@ install.packages( c("FLCore", "FLFleet", "FLBEIA", "ggplotFL",
 
 It has to be noted that packages ```FLCore```, ```FLFleets``` and ```FLBEIA``` have to be installed in this exact order, as alternative orders can cause some problems.
 
-The last version (not consolidated version -under development-) of FLBEIA can be installed from GitHub. 
+The last version (not consolidated version -under development-) of FLBEIA can be installed from [GitHub](https://github.com/flr/FLBEIA/). 
 ```{r echo=FALSE, eval=FALSE}
 library(devtools)
 install_github('FLR/FLBEIA')
@@ -78,13 +78,7 @@ Load all the necessary packages.
 ```{r, pkgs, results = "hide"}
 # This chunk loads all necessary packages.
 library(FLBEIA)
-library(FLCore)
-library(FLFleet)
-library(FLXSA)
-library(FLash)
-library(ggplotFL)
 library(tidyr)
-library(labeling)
 ```
 
 
@@ -97,7 +91,7 @@ Two examples are explored in this tutorial. In ```Example 1``` we will play with
     + Population dynamics: Age structured population growth
     + Stock recruitment model: Beverthon and Holt
     + Fleet dynamics: Simple Mixed Fisheries Behaviour
-    + Covariates dynamics: No covariates
+    + Covariates dynamics: no covariates
     
 * Management procedure:
     + Observation: perfect observation
@@ -140,13 +134,13 @@ Below you can find the description of objects stored in ```one```:
   * ```oneMainC```: A list of settings to control the behaviour of FLBEIA function setting the initial and final year of the proyection period.
   
 
-  * ```oneFL```: A _FLFleetExt_ object that contains information relative to the fleet ```fl1``` (effort, costs, capacity...) and information relative to the metier  ```met1``` (effort share, varaible costs, parameters of the Cobb Douglas function).
+  * ```oneFL```: A _FLFleetExt_ object that contains information relative to the fleet ```fl1``` (effort, costs, capacity...) and information relative to the metier  ```met1``` (effort share, variable costs, parameters of the Cobb Douglas function).
 
 
-  * ```oneFlC```: A list of settings that control the fleet dynamics. The effort dynamics for fl1 is _Simple Mixed fisheries behaviour_ (```SMFB```). The function ```SMFB``` is a simplified version of the behavior of fleets that work in a mixed fisheries framework. It is seasonal and assumes that effort share among metiers is given as input parameter. There are also other effort models defined in FLBEIA [```fixedEffort```, ```SSFB```, ```MaxProfit```]. In this example capacity, catchability and price are given as input data and are unchanged within the simulation (```fixedPrice```). Summarizing, the fleet catches yearly exactly the adviced TAC and there is no exit-entry of vessels in the fishery (```fixedCapital```).  
+  * ```oneFlC```: A list of settings that control the fleet dynamics. The effort dynamics for fl1 is _Simple Mixed fisheries behaviour_ (```SMFB```). The function ```SMFB``` is a simplified version of the behavior of fleets that work in a mixed fisheries framework. It is seasonal and assumes that effort share among metiers is given as input parameter. There are also other effort models defined in FLBEIA (```fixedEffort```, ```SSFB```, ```MaxProfit```). In this example, capacity, catchability and price are given as input data and are unchanged within the simulation (```fixedPrice```). Summarizing, the fleet catches yearly exactly the advised TAC and there is no exit-entry of vessels in the fishery (```fixedCapital```).  
     
     
-  * ```oneCv```: List with all variables needed for the capital dynamics (fuel costs, capital costs, number of vessels, invest share, number of vessels, maximum fishing days by vessel...). However, in this case, the capital model is defined in ```oneFlC``` as ```fixedCapital```, i.e., there is no any change in the capital dimension.
+  * ```oneCv```: List with all variables needed for the capital dynamics (fuel costs, capital costs, number of vessels, invest share, number of vessels, maximum fishing days by vessel...). However, in this case, the capital model is defined in ```oneFlC``` as ```fixedCapital``` (i.e. there is no any change in the capital dimension).
 
     
   * ```oneCvC```: A list of settings that control the capital dynamics. In this case, covariates are given as input data and are unchanged within the simulation (i.e. ```fixedCovar```).   
@@ -163,7 +157,7 @@ Below you can find the description of objects stored in ```one```:
 
   * ```oneObsC```: A list of settings that control the observation process. A ```perfectObs``` model is defined in this case. This function does not introduce any observation uncertainty in the observation of the different quantities stored in the ```FLBiols``` and ```FLFLeetsExt``` objects. 
 
-  * ```oneSR```: Information on the stock recruitment relationship, not needed in the case of population aggregated in biomass. The model is ```bevholtAR1```, a segmented regression stock-recruitment model with autoregressive normal log residuals of first order. There are several SR models available in FLR and FLBEIA: ```geomean```, ```bevholt```, ```ricker```, ```segreg```, ```shepherd```, ```rickerAR1```, ```segregAR1```, ```cushing```, ```bevholtSV```, ```rickerSV```, ```segregSV```, ```shepherdSV```, ```cushingSV```, ```rickerCa```, ```hockstick```, ```redfishRecModel``` and ```ctRec```?.
+  * ```oneSR```: Information on the stock recruitment relationship, not needed in the case of population aggregated in biomass. The model is ```bevholtAR1```, a segmented regression stock-recruitment model with autoregressive normal log residuals of first order. There are several SR models available in FLR and FLBEIA: ```geomean```, ```bevholt```, ```ricker```, ```segreg```, ```shepherd```, ```rickerAR1```, ```segregAR1```, ```cushing```, ```bevholtSV```, ```rickerSV```, ```segregSV```, ```shepherdSV```, ```cushingSV```, ```rickerCa```, ```hockstick```, ```redfishRecModel``` and ```ctRec```.
   
 
 ##  Run FLBEIA
@@ -212,30 +206,31 @@ The quantile version of the summaries,  (```bioSumQ```, ```fltSumQ```, etc.), re
 * __fltSum__, __fltSumQ__: Data frame with indicators at fleet level. Indicators are: "capacity", "catch", "costs", "discards", "discRat", "effort", "fcosts", "gva", "grossValue", "landings", "fep", "nVessels", "price", "grossSurplus", "netProfit", "quotaUpt",   "salaries", "vcosts" and "profitability". Definition of economics  indicators:
 
     + discRat: Discount rate.
-    + grossValue: value of landings (landings x prices)
+    + fcosts: fixed costs.
+    + grossValue: value of landings (landings x prices).
     + Operating costs: Landing Fee x Gross value + Fuel cost x Effort + Other variable costs x effort + Fixed costs x Vessel.
-    + Gross Value added: Gross value - Operating Costs
-    + fep: Full equity profit defined as Gross Surplus - depreciation costs
+    + gva: Gross Value added = Gross value - Operating Costs.
+    + fep: Full equity profit defined as Gross Surplus - depreciation costs.
     + grossSurplus: Gross value added - Labour costs, where Labour costs: share of the landings x Gross value + Fixed labour costs x Crew.
     + Oportunity costs: Capital x interest rate free of risk.
-    + netProfit: fep - Oportunity costs
+    + netProfit: fep - Oportunity costs.
     + quotaUpt: Quota uptaken.
-    + profitability: grossSurplut/Gross Value
+    + profitability: grossSurplus/Gross Value.
     
 
 *  __fltStkSum__, __fltStkSumQ__ : Data frame with indicators at fleet and stock level. Indicators are: "landings", "discards", "catch", "price", "quotaUpt", "tacshare", "discRat" and "quota".
 
 * __npv__: A data frame with the net present value per fleet over the selected range of years.
 
-* __mtSum__, __mtSumQ__ : Data frame with indicators at fleet level. Indicators are: "effshare", "effort", "income" and "vcost".
+* __mtSum__, __mtSumQ__ : Data frame with indicators at fleet and metier level. Indicators are: "effshare", "effort", "income" and "vcost".
 
-* __mtStkSum__, __mtStkSumQ__ : Data frame with indicators at fleet and metier level. Indicators are: "catch", "discards", "discRat", "landings" and "price".
+* __mtStkSum__, __mtStkSumQ__ : Data frame with indicators at fleet, metier and stock level. Indicators are: "catch", "discards", "discRat", "landings" and "price".
 
 * __riskSum__: A data frame with the risk indicators. Indicators are: "pBlim", "pBpa" and "pPrflim".
 
-* __vesselSum__, __vesselSumQ__: Data frame with Indicators at vessel level. Indicators are: "catch", "costs", "discards", "discRat", "effort", "fcosts", "gva", "income", "landings", "netProfit", "price", "profits", "quotaUpt", "salaries", "vcosts" and "profitability".
+* __vesselSum__, __vesselSumQ__: Data frame with indicators at vessel level for each fleet. Indicators are: "catch", "costs", "discards", "discRat", "effort", "fcosts", "gva", "income", "landings", "netProfit", "price", "profits", "quotaUpt", "salaries", "vcosts" and "profitability".
 
-* __vesselStkSum__, __vesselStkSumQ__: Data frame with indicators at vessel and stock level. Indicators are: "landings", "discards", "catch", "price", "quotaUpt", "tacshare", "discRat" and "quota".
+* __vesselStkSum__, __vesselStkSumQ__: Data frame with indicators at vessel and stock level for each fleet. Indicators are: "landings", "discards", "catch", "price", "quotaUpt", "tacshare", "discRat" and "quota".
 
 * __summary_flbeia__: An array with four dimensions: stock, year, iteration, indicator. Indicators are: "recruitment", "ssb", "f", "biomass", "catch", "landings" and "discards".
 
@@ -249,8 +244,8 @@ s0_adv    <- advSum(s0, long = TRUE)           # DF of management advice (TAC).
 s0$fleets <- setUnitsNA(s0$fleets)
 s0_flt    <- fltSum(s0, long = TRUE)           # DF of economics indicators at fleet level.
 s0_fltStk <- fltStkSum(s0, long = TRUE)        # DF of indicators at fleet and stock level.
-s0_mt     <- mtSum(s0, long = TRUE)            # DF of indicators at fleet.
-s0_mtStk  <- mtStkSum(s0, long = TRUE)         # DF of indicators at fleet and metier level.
+s0_mt     <- mtSum(s0, long = TRUE)            # DF of indicators at fleet and metier level.
+s0_mtStk  <- mtStkSum(s0, long = TRUE)         # DF of indicators at fleet, metier and stock level.
 s0_vessel <- vesselSum(s0, long = TRUE)        # DF of indicators at vessel level.
 s0_vesselStk <- vesselStkSum(s0, long = TRUE)  # DF of indicators at vessel and stock level.
 s0_npv  <- npv(s0, y0 = '2014')   # DF of net present value per fleet over the selected range of years.
@@ -270,14 +265,14 @@ head(s0_risk); unique(s0_risk$indicator)
 
 ### Wide format.
 ```{r echo=TRUE, eval=TRUE, results = "hide"}
-s0_bio_w    <- bioSum(s0, long = FALSE, years = ac(2016:2020))            
-s0_adv_w    <- advSum(s0, long = FALSE, years = ac(2016:2020))             
-s0_flt_w    <- fltSum(s0, long = FALSE, years = ac(2016:2025))
-s0_fltStk_w <- fltStkSum(s0, long = FALSE, years = ac(2016:2020))          
-s0_mt_w     <- mtSum(s0, long = FALSE, years = ac(2016:2020))             
-s0_mtStk_w  <- mtStkSum(s0, long = FALSE, years = ac(2016:2020))           
-s0_vessel_w <- vesselSum(s0, long = FALSE, years = ac(2016:2020))
-s0_vesselStk_w <- vesselStkSum(s0, long = FALSE, years = ac(2016:2020))       
+s0_bio_w    <- bioSum(s0, years = ac(2016:2020))            
+s0_adv_w    <- advSum(s0, years = ac(2016:2020))             
+s0_flt_w    <- fltSum(s0, years = ac(2016:2025))
+s0_fltStk_w <- fltStkSum(s0, years = ac(2016:2020))          
+s0_mt_w     <- mtSum(s0, years = ac(2016:2020))             
+s0_mtStk_w  <- mtStkSum(s0, years = ac(2016:2020))           
+s0_vessel_w <- vesselSum(s0, years = ac(2016:2020))
+s0_vesselStk_w <- vesselStkSum(s0, years = ac(2016:2020))       
 
 # Exploring data frames
 head(s0_bio_w, 2)
@@ -353,15 +348,16 @@ proj.yr           <- 2010
 last.yr           <- 2025  
 yrs <- c(first.yr=first.yr,proj.yr=proj.yr,last.yr=last.yr)
 stks <- c('stk1')
-  
-ssb <-  ssb(oneBio[[1]])[,as.character(first.yr:(proj.yr-1)),1,1]
-rec <-  oneBio[[1]]@n[1,as.character(first.yr:(proj.yr-1)),]
-sr.segreg <- fmle(FLSR(model="segregAR1",ssb = ssb, rec = rec))
+
+# As age 1 recruitment --> R_{y+1} = f(SSB_{y})
+ssb <-  ssb(oneBio[[1]])[,as.character(first.yr:(proj.yr-2)),1,1]
+rec <-  oneBio[[1]]@n[1,as.character((first.yr+1):(proj.yr-1)),]
+sr.segreg <- fmle(FLSR(model="segreg", ssb = ssb, rec = rec))
 
 # Introduce the new model and its parameters in SR object.
 SRs.segreg <- oneSR
 SRs.segreg[[1]]@params[,,,] <- sr.segreg@params[,] 
-SRs.segreg[[1]]@model <- 'segregAR1'
+SRs.segreg[[1]]@model <- 'segreg'
 
 #Run FLBEIA with the new SR function.
 s1 <- FLBEIA(biols = oneBio, SRs = SRs.segreg , BDs = NULL, fleets = oneFl, #covars = oneCv,         
@@ -496,9 +492,9 @@ TAC_mean <- mean(oneAdv$TAC[,ac(2007:2009),])
 oneAdv2$TAC[,ac(2010:2025),] <- TAC_mean 
 ```
 
-```create.advice.ctrl``` function creates the advice control object. For a complete list of the function arguments, see [**FLBEIA** manual](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf) 
+```create.advice.ctrl``` function creates the advice control object. For a complete list of the function arguments, see [**FLBEIA** manual](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf).
 
-There is another way to complet the TAC with the mean of the last three historic years then ```fixedAdvice``` is used. When ```fixedAdvice```  is set, ```create.advice.ctrl``` complete the TAC of projection years with the mean of the last three historic years.
+There is another way to complet the TAC with the mean of the last three historic years when ```fixedAdvice``` is used. When ```fixedAdvice```  is set, ```create.advice.ctrl``` completes the TAC of projection years with the mean of the last three historic years.
 ```{r eval=FALSE}
 ?create.advice.ctrl # see function documentation
 ```
@@ -547,7 +543,10 @@ In scenario s0 the effort dynamics is a Simple Mixed Fisheries Behaviour ```SMFB
 
 ```{r echo=TRUE, eval=TRUE,  fig.width = 3.5, fig.height = 3.5, results = "hide"}
 oneFlC1 <- oneFlC 
-oneFlC1$fl1$effort.model <- 'fixedEffort' # Note that the effort of projection period is equal to the average effort of years 2007:2009.
+oneFlC1$fl1$effort.model <- 'fixedEffort' 
+
+oneFl$fl1@effort # Note that the effort of projection period is equal to the average effort of years 2007:2009.
+
 s5 <- FLBEIA(biols = oneBio, SRs = oneSR , BDs = NULL, fleets = oneFl, #covars = oneCv,         
             indices = NULL, advice = oneAdv, main.ctrl = oneMainC, biols.ctrl = oneBioC,      
             fleets.ctrl = oneFlC1, covars.ctrl = oneCvC, obs.ctrl = oneObsC, 
@@ -632,7 +631,7 @@ print(p1)
 
 ## Visualizing results with FLBEIAShiny
 
-There is available R package ```FLBEIAShiny```, to built an interactive web application for a smart visualizing of FLBEIA data and output. This packege is currently available from [Github](https://github.com/flr/FLBEIAShiny).
+There is available R package ```FLBEIAShiny```, to built an interactive web application for a smart visualizing of FLBEIA data and output. This package is currently available from [Github](https://github.com/flr/FLBEIAShiny).
 ```{r echo=TRUE,  eval=FALSE}
 
 scnms <-c('s0', 's1', 's2', 's3', 's4', 's5', 's6')
@@ -654,7 +653,7 @@ flbeiaApp( flbeiaObjs = flbeiaObjs, RefPts = RefPts, years = ac(2000:2025),
 
 # EXAMPLE 2: three iterations.
 
-This example is simila to the first example, but in this case we use objects with three iterations. 
+This example is similar to the first example, but in this case we use objects with three iterations. 
 
 
 ## Load data
