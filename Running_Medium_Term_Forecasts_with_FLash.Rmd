@@ -92,7 +92,7 @@ We may want to change some of these assumptions but for the moment we will use t
 # Set up a 10 year MTF
 ple4_mtf <- stf(ple4, nyears = 10)
 ```
-Now the stock goes up to 2018:
+Now the stock goes up to 2027:
 
 ```{r, summarymtf}
 summary(ple4_mtf)
@@ -121,13 +121,13 @@ Here is some quick revision.
 We will set the future F at F status quo (again) and we assume that F status quo is the mean of the last 4 years
 
 ```{r, feg1}
-f_status_quo <- mean(fbar(ple4)[,as.character(2005:2008)])
+f_status_quo <- mean(fbar(ple4)[,as.character(2014:2017)])
 f_status_quo
 ```
 
 Make the control *data.frame* including all the years of the projection:
 ```{r, feg2}
-ctrl_target <- data.frame(year = 2009:2018,
+ctrl_target <- data.frame(year = 2018:2027,
 			  quantity = "f",
 			  val = f_status_quo)
 ```
@@ -150,27 +150,27 @@ Run fwd() with our three ingredients
 ple4_f_sq <- fwd(ple4_mtf, ctrl = ctrl_f, sr = ple4_sr)
 ```
 
-What just happened? We plot the stock from the year 2000.
+What just happened? We plot the stock from the year 2010.
 
 ```{r, fegplot}
-plot(window(ple4_f_sq, start=2000))
+plot(window(ple4_f_sq, start=2010))
 ```
 
 The future Fs are as we set in the control object (good):
 
 ```{r, feg5}
-fbar(ple4_f_sq)[,ac(2005:2018)]
+fbar(ple4_f_sq)[,ac(2017:2027)]
 ```
 
 What about recruitment? Remember we are now using a Beverton-Holt model.
 
 ```{r, feg6}
-rec(ple4_f_sq)[,ac(2005:2018)]
+rec(ple4_f_sq)[,ac(2017:2027)]
 ```
 
 The recruitment is not constant but is not changing very much. That's because the fitted model looks flat REF BACK TO THE SRR FIGURE.
 
-# Example 2: A decreasing catch target #{ex2}
+# Example 2: A decreasing catch target 
 
 In this example we introduce two new things:
 
@@ -183,7 +183,7 @@ In this example, the TAC (the total catch of the stock) is reduced 10% each year
 We create a vector of future catches based on the catch in 2008:
 
 ```{r, ceg1}
-future_catch <- c(catch(ple4)[,"2008"]) * 0.9^(1:10)
+future_catch <- c(catch(ple4)[,"2017"]) * 0.9^(1:10)
 future_catch
 ```
 
@@ -192,7 +192,7 @@ We create the *fwdControl* object, setting the quantity to `catch` and passing i
 ```{r, ceg2}
 ctrl_catch <- fwdControl(
 	data.frame(
-		year=2009:2018,
+		year=2018:2027,
 		quantity = "catch",
 		val=future_catch))
 ```
@@ -212,7 +212,7 @@ ple4_catch <- fwd(ple4_mtf, ctrl_catch, sr = ple4_sr)
 And take a look at the results:
 
 ```{r, cegplot}
-plot(window(ple4_catch, start=2000))
+plot(window(ple4_catch, start=2010))
 ```
 
 The decreasing catch targets have been hit. Note that F has to be similarly reduced to hit the catch targets, resulting in a surge in SSB.
@@ -236,45 +236,45 @@ Setting an SSB target in a year is the equivalent of setting an SSB target for t
 The result is that you have to be careful with the years in the control object when setting a target based on the stock abundance.
 
 This is best illustrated with a simple example of a one year projection.
-If we want to hit an SSB target in 2009 (i.e. the SSB at the start of 2009 etc), we actually set it in the control object as being for 2008 as it is in 2008 that the F will be found that hits the SSB in 2009.
+If we want to hit an SSB target in 2018 (i.e. the SSB at the start of 2018 etc), we actually set it in the control object as being for 2017 as it is in 2017 that the F will be found that hits the SSB in 2018.
 In this example we want the future SSB to be high (we could have used **FLBRP** to come up with a suitable value, e.g. Bmsy but here we just pick a value).
 
 ```{r, seg2}
-future_ssb <- 150000
-ctrl_ssb <- fwdControl(data.frame(year=2008, quantity = "ssb", val=future_ssb))
+future_ssb <- 500000
+ctrl_ssb <- fwdControl(data.frame(year=2017, quantity = "ssb", val=future_ssb))
 ctrl_ssb
 ple4_ssb <- fwd(ple4_mtf, ctrl_ssb, sr = ple4_sr)
 ```
 
-Remember, we have effectively set an SSB target for the very end of 2008 but we do not see this in the **FLStock** until the very beginning of 2009.
-The result is that we can see that the SSB target has been hit, but not until 2009.
+Remember, we have effectively set an SSB target for the very end of 2017 but we do not see this in the **FLStock** until the very beginning of 2018.
+The result is that we can see that the SSB target has been hit, but not until 2018.
 
 ```{r, seg3}
-ssb(ple4_ssb)[,ac(2005:2009)]
+ssb(ple4_ssb)[,ac(2017:2018)]
 ```
 
 ## A longer projection
 
 Here we run a longer projection with a constant SSB target.
-The future stock object, `ple4_mtf`, only goes up to 2018. This means that in the control object we can only set an SSB target up to 2017.
-Setting an SSB target for 2018 would try to hit the SSB at the start of 2019 which is outside of our stock object, resulting in an error (try it, if you want).
+The future stock object, `ple4_mtf`, only goes up to 2027. This means that in the control object we can only set an SSB target up to 2026.
+Setting an SSB target for 2027 would try to hit the SSB at the start of 2028 which is outside of our stock object, resulting in an error (try it, if you want).
 
 ```{r, seg4}
-future_ssb <- 300000
-ctrl_ssb <- fwdControl(data.frame(year=2008:2017, quantity = "ssb", val=future_ssb))
+future_ssb <- 500000
+ctrl_ssb <- fwdControl(data.frame(year=2017:2026, quantity = "ssb", val=future_ssb))
 ple4_ssb <- fwd(ple4_mtf, ctrl_ssb, sr = ple4_sr)
 ```
 
-The SSB has been hit upto 2018.
+The SSB has been hit upto 2027.
 
 ```{r, seg5}
-ssb(ple4_ssb)[,ac(2005:2018)]
+ssb(ple4_ssb)[,ac(2016:2027)]
 ```
 
-Note: we have to ignore the F and removals (catch, landings and discards) in 2018 as these have not been included in the projection and still hold their initial values.
+Note: we have to ignore the F and removals (catch, landings and discards) in 2027 as these have not been included in the projection and still hold their initial values.
 
 ```{r, seg6}
-plot(window(ple4_ssb, start=2000, end=2017))
+plot(window(ple4_ssb, start=2010, end=2027))
 ```
 
 # Example 4:  Relative catch target
@@ -286,14 +286,14 @@ This allows us to set the target value RELATIVE to the value in another year.
 We do this by using the `rel.year` column in the control object (the year that the target is relative to).
 The `val` column now holds the relative value, not the absolute value.
 
-Here we set catches in the projection years to be 90% of the catches in the previous year, i.e. we want the catche in 2009 to be 0.9 * value in 2008 etc.
+Here we set catches in the projection years to be 90% of the catches in the previous year, i.e. we want the catches in 2018 to be 0.9 * value in 2017 etc.
 
 ```{r, rceg1}
 ctrl_rel_catch <- fwdControl(
-	data.frame(year = 2009:2018,
+	data.frame(year = 2018:2027,
 		   quantity = "catch",
 		   val = 0.9,
-		   rel.year = 2008:2017))
+		   rel.year = 2017:2026))
 ```
 
 When we look at the control object we can see that an extra column, `rel.year`, appears:
@@ -310,8 +310,8 @@ ple4_rel_catch <- fwd(ple4_mtf, ctrl_rel_catch, sr = ple4_sr)
 
 ```{r, rceg4}
 catch(ple4_rel_catch)
-catch(ple4_rel_catch)[,ac(2009:2018)] / catch(ple4_rel_catch)[,ac(2008:2017)]
-plot(window(ple4_rel_catch, start = 2001, end = 2018))
+catch(ple4_rel_catch)[,ac(2018:2027)] / catch(ple4_rel_catch)[,ac(2017:2026)]
+plot(window(ple4_rel_catch, start = 2010, end = 2027))
 ```
 
 This is equivalent to the catch example above (LINK TO EXAMPLE 2) but without using absolute values.
@@ -336,7 +336,7 @@ f01
 We'll set our minimum catch to be the mean catch of the last 3 years.
 
 ```{r, meg2}
-min_catch <- mean(catch(ple4_mtf)[,as.character(2006:2008)])
+min_catch <- mean(catch(ple4_mtf)[,as.character(2015:2017)])
 min_catch
 ```
 
@@ -346,12 +346,12 @@ Note that we include a *min = NA* as a column of the F data.frame. This is neces
 ```{r, meg3}
 ctrl_target <- rbind(
     f_df <- data.frame(
-        year = 2009:2018,
+        year = 2018:2027,
         quantity = "f",
         val = f01,
         min = NA),
     catch_df <- data.frame(
-        year = 2009:2018,
+        year = 2018:2027,
         quantity = "catch",
         val = NA,
         min = min_catch)
@@ -388,7 +388,7 @@ What happens? The catch constraint is hit in every year of the projection.
 The projected F decreases but never hits the target F because the minimum catch constraint prevents it from dropping further.
 
 ```{r, meg8}
-plot(window(ple4_min_catch, start = 2001, end = 2018))
+plot(window(ple4_min_catch, start = 2010, end = 2027))
 ```
 
 It is possible to also set a maximum constraint, for example, to prevent F from being too large.
@@ -398,15 +398,15 @@ It is possible to also set a maximum constraint, for example, to prevent F from 
 In this example we use a combination of *relative* targets and *bounds*.
 
 This kind of approach can be used to model a recovery plan.
-For example, we want to decrease F to F0.1 by 2015 (absolute target value) but catches cannot change by more than 15% each year (relative bound).
+For example, we want to decrease F to F0.1 by 2024 (absolute target value) but catches cannot change by more than 10% each year (relative bound).
 This requires careful setting up of the control object.
 Again, we'll bind two data.frames.
 
 We make a vector of the desired F targets using F0.1 we calculated above.
-We set up an F sequence that decreases from the current Fbar in 2008 to F01 in 2015, then F01 until 2018.
+We set up an F sequence that decreases from the current Fbar in 2017 to F01 in 2024, then F01 until 2027.
 
 ```{r, rtbeg1}
-current_fbar <- c(fbar(ple4)[,"2008"])
+current_fbar <- c(fbar(ple4)[,"2017"])
 f_target <- c(seq(from = current_fbar, to = f01, length = 8)[-1], rep(f01, 3))
 f_target
 ```
@@ -423,15 +423,15 @@ Note the use of the *rel.year*, *min* and *max* columns in the catch data.frame.
 ```{r, rtbeg3}
 ctrl_target <- rbind(
     f_df <- data.frame(
-        year = 2009:2018,
+        year = 2018:2027,
         rel.year = NA,
         quantity = "f",
         val = f_target,
         max = NA,
         min = NA),
     catch_df <- data.frame(
-        year = 2009:2018,
-        rel.year = 2008:2017,
+        year = 2018:2027,
+        rel.year = 2017:2026,
         quantity = "catch",
         val = NA,
         max = 1 + rel_catch_bound,
@@ -462,13 +462,13 @@ recovery<-fwd(ple4_mtf, ctrl=ctrl_rel_min_max_catch, sr=ple4_sr)
 What happened? The F decreased and then remains constant, while the catch has changed by only a limited amount each year.
 
 ```{r, rtbeg7}
-plot(window(recovery, start = 2001, end = 2018))
+plot(window(recovery, start = 2010, end = 2027))
 ```
 
 The bounds on the catch are operational in several of the years. They prevent the catch from increasing as well as decreasing too strongly, (allegedly) providing stability to the fishery.
 
 ```{r, rtbeg8}
-catch(recovery)[,ac(2009:2018)] / catch(recovery)[,ac(2008:2017)]
+catch(recovery)[,ac(2018:2027)] / catch(recovery)[,ac(2017:2026)]
 ```
 
 # Projections with stochasticity 
@@ -528,7 +528,7 @@ The residuals are passed in as an **FLQuant** with years and iterations.
 Here we make an empty **FLQuant** that will be filled with residuals.
 
 ```{r, res}
-multi_rec_residuals <- FLQuant(NA, dimnames = list(year=2009:2018, iter=1:niters))
+multi_rec_residuals <- FLQuant(NA, dimnames = list(year=2018:2027, iter=1:niters))
 ```
 We're going to use residuals from the stock-recruitment relationship we fitted at the beginning.
 We can access these using:
@@ -580,15 +580,15 @@ What just happened? We can see that now we have uncertainty in the recruitment e
 This uncertainty feeds into the SSB and, to a lesser extent, the projected F and catch.
 
 ```{r, res7}
-plot(window(ple4_stoch_rec, start = 2001, end = 2018))
+plot(window(ple4_stoch_rec, start = 2010, end = 2027))
 ```
 
 We can see that the projected stock metrics also have uncertainty in them.
 
 ```{r, res8}
-rec(ple4_stoch_rec)[,ac(2008:2018)]
-fbar(ple4_stoch_rec)[,ac(2008:2018)]
-ssb(ple4_stoch_rec)[,ac(2008:2018)]
+rec(ple4_stoch_rec)[,ac(2017:2027)]
+fbar(ple4_stoch_rec)[,ac(2017:2027)]
+ssb(ple4_stoch_rec)[,ac(2017:2027)]
 ```
 
 ## Example 8: stochastic target values
@@ -679,13 +679,13 @@ ple4_catch_iters <- fwd(ple4_mtf, ctrl_catch_iters, sr = ple4_sr)
 What happened?
 
 ```{r, stv11}
-plot(window(ple4_catch_iters, start = 2001, end = 2018))
+plot(window(ple4_catch_iters, start = 2010, end = 2027))
 ```
 
 The projected catches reflect the uncertainty in the target.
 
 ```{r, stv12}
-catch(ple4_catch_iters)[,ac(2008:2018)]
+catch(ple4_catch_iters)[,ac(2017:2027)]
 ```
 
 ## Example 9: A projection with stochastic catch and recruiment
@@ -693,7 +693,7 @@ catch(ple4_catch_iters)[,ac(2008:2018)]
 What is going on with recruitment in the results of the previous example?
 
 ```{r, stv13}
-rec(ple4_catch_iters)[,ac(2008:2018)]
+rec(ple4_catch_iters)[,ac(2017:2027)]
 ```
 Remember that here recruitment is not being driven by random residuals, it is only be driven by SSB.
 The recruitment in year Y is a result of the SSB in year Y-1.
@@ -708,14 +708,14 @@ ple4_catch_iters <- fwd(ple4_mtf, ctrl_catch_iters, sr = ple4_sr, sr.residuals =
 What happened?
 
 ```{r, stv15}
-plot(window(ple4_catch_iters, start = 2001, end = 2018))
+plot(window(ple4_catch_iters, start = 2010, end = 2027))
 ```
 
 The projected recruitment and catches are stochastic.
 
 ```{r, stv16}
-catch(ple4_catch_iters)[,ac(2008:2018)]
-rec(ple4_catch_iters)[,ac(2008:2018)]
+catch(ple4_catch_iters)[,ac(2017:2027)]
+rec(ple4_catch_iters)[,ac(2017:2027)]
 ```
 
 # TO DO

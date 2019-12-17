@@ -143,7 +143,7 @@ Let's make the data.frame
 
 ```{r, eval=TRUE}
 # Set the control object - year, quantity and value for the moment
-ctrl_target <- data.frame(year = 2009:2011, quantity = "f", val = fbar_SQ)
+ctrl_target <- data.frame(year = 2018:2020, quantity = "f", val = fbar_SQ)
 ctrl_f <- fwdControl(ctrl_target)
 ctrl_f
 ```
@@ -198,7 +198,7 @@ discards.n(ple4_sq)[,ac((maxyr_stf-5):maxyr_stf)]
 We can see the projection using a plot here
 
 ```{r, eval=TRUE}
-plot(ple4_sq) + geom_vline(lty=2,xintercept=an(ISOdate(maxyr_stk+1,1,1)))
+plot(ple4_sq) 
 ```
 
 # Short term forecast with many F scenarios
@@ -237,7 +237,7 @@ fbar_scenarios <- rbind(fbar_scenarios, c(fbar_SQ,f01,f01))
 
 ```{r, eval=TRUE}
 # Add some names
-colnames(fbar_scenarios) <- c("2009","2010","2011")
+colnames(fbar_scenarios) <- c("2018","2019","2020")
 rownames(fbar_scenarios) <- c(fbar_multiplier, "f01")
 fbar_scenarios
 ```
@@ -276,12 +276,12 @@ for (scenario in 1:nrow(fbar_scenarios)) {
     # so that F is less limited, and the bound is not hit (not a problem here).
     ple4_fwd <- fwd(ple4_stf, ctrl = ctrl_f, sr = ple4_sr)#, maxF = 10.0)
     ## Check it has worked - uncomment out to check scenario by scenario
-    # plot(ple4_fwd[,ac(2001:2011)])
+    # plot(ple4_fwd[,ac(2010:2020)])
     # Store the result - if you want to, comment out if unnecessary
     stk_stf[[as.character(scenario)]] <- ple4_fwd
 
     # Fill results table
-    stf_results[scenario,1] <- round(fbar(ple4_fwd)[,ac(2011)],3) # final stf year
+    stf_results[scenario,1] <- round(fbar(ple4_fwd)[,ac(2020)],3) # final stf year
     stf_results[scenario,2] <- catch(ple4_fwd)[,ac(maxyr_stk+1)] # 1st stf year
     stf_results[scenario,3] <- catch(ple4_fwd)[,ac(maxyr_stk+2)] # 2nd stf year
     stf_results[scenario,4] <- catch(ple4_fwd)[,ac(maxyr_stk+3)] # final stf year
