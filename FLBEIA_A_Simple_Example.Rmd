@@ -8,6 +8,8 @@ pdf_document:
   fig_width: 6 
   fig_height: 4 
   toc: yes
+tags: [FLBEIA simple example]
+license: Creative Commons Attribution-ShareAlike 4.0 International Public License
 bibliography: bibliography.bib
 ---
 
@@ -169,16 +171,23 @@ s0 <- FLBEIA(biols = oneBio,       # FLBiols object with one FLBiol element for 
                SRs = oneSR,        # A list with one FLSRSim object for stk1.
                BDs = NULL,         # No Biomass dynamics populations in this case.
             fleets = oneFl,        # FLFleets object with one fleet.
-            covars = oneCv,        # Covar is and object with aditional data on fleet (number of vessels, etc).
+            covars = oneCv,        # Covar is and object with aditional data on fleet 
+                                   # (number of vessels, etc).
            indices = NULL,         # Indices not used 
             advice = oneAdv,       # A list with two elements 'TAC' and 'quota.share'
-         main.ctrl = oneMainC,     # A list with one element to define the start and end of the simulation.
-        biols.ctrl = oneBioC,      # A list with one element to select the model to simulate the stock dynamics.
-       fleets.ctrl = oneFlC,       # A list with several elements to select fleet dynamics models and store additional parameters.
+         main.ctrl = oneMainC,     # A list with one element to define the start and 
+                                   # end of the simulation.
+        biols.ctrl = oneBioC,      # A list with one element to select the model to 
+                                   # simulate the stock dynamics.
+       fleets.ctrl = oneFlC,       # A list with several elements to select fleet dynamics
+                                   # models and store additional parameters.
        covars.ctrl = oneCvC,       # A list with several data related to the fleet.
-          obs.ctrl = oneObsC,      # A list with one element to define how the stock observed ("PerfectObs").
-       assess.ctrl = oneAssC,      # A list with one element to define how the stock assessment model used ("NoAssessment").
-       advice.ctrl = oneAdvC)      # A list with one element to define how the TAC advice is obtained ("IcesHCR").
+          obs.ctrl = oneObsC,      # A list with one element to define how the stock 
+                                   # observed ("PerfectObs").
+       assess.ctrl = oneAssC,      # A list with one element to define how the stock 
+                                   # assessment model used ("NoAssessment").
+       advice.ctrl = oneAdvC)      # A list with one element to define how the TAC advice 
+                                   # is obtained ("IcesHCR").
 ```
 
 ```FLBEIA``` function returns a list with several objects, let's print the names of the objects and their classes. 
@@ -372,7 +381,8 @@ plotFLFleets(s1$fleets, pdfnm='s1')
 Plot biomass of s0 ("bevholtAR1") and biomass of s1 ("segreg"),
 ```{r echo=TRUE,  fig.width = 3.5, fig.height = 3.5, eval=TRUE}
 temp <- cbind(matrix(B_flbeia(s0)), matrix(B_flbeia(s1)))
-matplot(temp, x = dimnames( B_flbeia(s1))$year, type = 'l', xlab = 'Year', ylab = 'Biomass')
+matplot(temp, x = dimnames( B_flbeia(s1))$year, type = 'l', 
+        xlab = 'Year', ylab = 'Biomass')
 legend('top', c('s0', 's1'), col = c('black','red'), lty = c(1,2))
 ```
 
@@ -636,7 +646,8 @@ There is available R package ```FLBEIAShiny```, to built an interactive web appl
 
 scnms <-c('s0', 's1', 's2', 's3', 's4', 's5', 's6')
 stknms <- unique(s0_bio$stock)
-RefPts <- expand.grid(indicator=c("Bmsy", "Fmsy", "Bpa", "Blim", "Fpa", "Flim"), scenario=scnms, stock=stknms, value=NA)[,c(3,2,1,4)]
+RefPts <- expand.grid(indicator=c("Bmsy", "Fmsy", "Bpa", "Blim", "Fpa", "Flim"), 
+                      scenario=scnms, stock=stknms, value=NA)[,c(3,2,1,4)]
 RefPts$value <- c( c(800, 0.11, 800, 550, 0.25, 0.50), c(800, 0.2, 800, 550, 0.25, 0.50), 
                    c(800, 0.2, 800, 550, 0.25, 0.50), c(800, 0.2, 800, 550, 0.25, 0.50), 
                    c(800, 0.2, 800, 550, 0.25, 0.50), c(800, 0.2, 800, 550, 0.25, 0.50), 
@@ -671,8 +682,9 @@ The uncertainty is included exclusively in the recluitment and ssb in object ```
 opts_chunk$set(message=FALSE)
 
 s0_it <- FLBEIA(biols = oneItBio, SRs = oneItSR , BDs = NULL, fleets = oneItFl, #covars = oneItCv,         
-            indices = NULL, advice = oneItAdv, main.ctrl = oneItMainC, biols.ctrl = oneItBioC,      
-            fleets.ctrl = oneItFlC, covars.ctrl = oneItCvC, obs.ctrl = oneItObsC, assess.ctrl = oneItAssC, 
+            indices = NULL, advice = oneItAdv, main.ctrl = oneItMainC, 
+            biols.ctrl = oneItBioC, fleets.ctrl = oneItFlC, covars.ctrl = oneItCvC, 
+            obs.ctrl = oneItObsC, assess.ctrl = oneItAssC, 
             advice.ctrl = oneItAdvC) 
 ```
 
@@ -689,7 +701,8 @@ s0_it_mtStk  <- mtStkSum(s0_it, long = TRUE)
 s0_it_vessel <- vesselSum(s0_it, long = TRUE)          
 s0_it_vesselStk <- vesselStkSum(s0_it, long = TRUE)    
 s0_it_npv  <- npv(s0_it, y0 = '2014')     
-s0_it_risk <- riskSum(s0_it, Bpa = c(stk1= 135000), Blim = c(stk1= 96000), Prflim = c(fl1 = 0))
+s0_it_risk <- riskSum(s0_it, Bpa = c(stk1= 135000), Blim = c(stk1= 96000), 
+                      Prflim = c(fl1 = 0))
 ```
 
 Create summary data frames (biological, economic, and catch information) for median and 90% confidence intervals (ie. quantiles 5, 50 and 95). There are several predeterminated functios to sumarize results of ```FLBEIA``` outputs taking into account the uncertainty.
@@ -753,7 +766,8 @@ Use ```FLBEIAShiny``` to build an interactive web applications for visualizing d
 ```{r echo=TRUE,  eval=FALSE}
 scnms <-c('s0_it')
 stknms <- unique(s0_it_bio$stock)
-RefPts <- expand.grid(indicator=c("Bmsy", "Fmsy", "Bpa", "Blim", "Fpa", "Flim"), scenario=scnms, stock=stknms, value=NA)[,c(3,2,1,4)]
+RefPts <- expand.grid(indicator=c("Bmsy", "Fmsy", "Bpa", "Blim", "Fpa", "Flim"), 
+                      scenario=scnms, stock=stknms, value=NA)[,c(3,2,1,4)]
 RefPts$value <- c(c(800, 0.11, 800, 550, 0.25, 0.50))
 
 flbeiaObjs <- list( s0_it = s0_it)
@@ -804,7 +818,6 @@ This document is licensed under the [Creative Commons Attribution-ShareAlike 4.0
 ## Author information
 
 **Marga Andres**. AZTI, Marine Research Unit. Txatxarramendi Ugartea z/g, 48395, Sukarrieta, Bizkaia, Spain. https://www.azti.es/.
-
 
 **FLBEIA team**. AZTI. Marine Reserach Unit. Txatxarramendi Ugartea z/g, 48395, Sukarrieta, Basque Country, Spain.
 **Mail** flbeia@azti.es
