@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Checking FLBEIA inputs</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="http://flr-project.org">
+    <span class="fa fa-home"></span>
+     
+    FLR
+  </a>
+</li>
+<li>
+  <a href="index.html">
+    <span class="fa fa-info"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-play-circle-o"></span>
+     
+    Intro
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A_quick_introduction_to_FLR.html">A quick introduction to FLR</a>
+    </li>
+    <li>
+      <a href="An_overview_of_the_FLCore_classes.html">An overview of the FLCore classes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-database"></span>
+     
+    Input
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Loading_your_data_into_FLR.html">Loading your data into FLR</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-magic"></span>
+     
+    Modelling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Modelling_stock_recruitment_with_FLSR.html">Modelling stock recruitment with FLSR</a>
+    </li>
+    <li>
+      <a href="Statistical_catch_at_age_models_in_FLa4a.html">Statistical catch at age models in FLa4a</a>
+    </li>
+    <li>
+      <a href="Modelling_growth_and_its_uncertainty_in_FLa4a.html">Modelling growth and its uncertainty in FLa4a</a>
+    </li>
+    <li>
+      <a href="Natural_mortality_modelling_in_FLa4a.html">Natural mortality modelling in FLa4a</a>
+    </li>
+    <li>
+      <a href="Stock_assessment_using_eXtended_Survivors_Analysis_with_FLXSA.html">Stock assessment using eXtended Survivors Analysis with FLXSA</a>
+    </li>
+    <li>
+      <a href="Using_information_on_life_history_relationships.html">Using information on Life History relationships</a>
+    </li>
+    <li>
+      <a href="Life_history_relationships.html">Life history relationships</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-tachometer"></span>
+     
+    Advice
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Running_Medium_Term_Forecasts_with_FLash.html">Running Medium Term Forecasts with FLash</a>
+    </li>
+    <li>
+      <a href="Short_Term_Forecasting_for_advice_using_FLash.html">Short Term Forecasting for advice using FLash</a>
+    </li>
+    <li>
+      <a href="Forecasting_on_the_Medium_Term_for_advice_using_FLasher.html">Forecasting on the Medium Term for advice using FLasher</a>
+    </li>
+    <li>
+      <a href="Reference_points_for_fisheries_management_with_FLBRP.html">Reference points for fisheries management with FLBRP</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-cogs"></span>
+     
+    MSE
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+    <li>
+      <a href="Management_procedure_biomass_dynamic.html">Biomass Dynamic Management Procedures</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-cogs"></span>
+     
+    FLBEIA
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Conditioning.html">Conditioning FLBEIA using Smart Conditioning Functions</a>
+    </li>
+    <li>
+      <a href="FLBEIA_A_Simple_Example.html">A simple example on how to use FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_An_Example_with_multiple_dimensions.html">A simple example with multiple dimensions in FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Checking_inputs.html">Checking FLBEIA inputs</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Using_Assessment_models_in_the_MP.html">Using Stock Assessment models in the Management procedure of FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Incorporating_SS3assessment_MP.html">Including SS3 assessment within the Management Procedure of FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Testing_Management_Strategies.html">Testing different Management Strategies in FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Data_Poor_MSE.html">Data Limited MSE in FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Smart_Conditioning_II.html">Smart Conditioning II</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Mixed_Fisheries_Tutorial.html">ICES Mixed Fisheries Advice using FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Bio_Economic_Tutorial.html">Bio-Economic simulation using FLBEIA</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-area-chart"></span>
+     
+    Plotting
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="ggplotFL_plotting_FLR_objects_with_ggplot2.html">ggplotFL, plotting FLR objects with ggplot2</a>
+    </li>
+    <li>
+      <a href="Plotting_FLR_objects_using_lattice.html">Plotting FLR objects using lattice</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-puzzle-piece"></span>
+     
+    Internals
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Units_of_measurement_in_FLR_objects.html">Units of measurement in FLR objects</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="http://github.com/flr/doc/issues">
+    <span class="fa fa-question fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Checking FLBEIA inputs</h1>
+<h4 class="date">26 febrero, 2020</h4>
+
+</div>
+
+
+<p><img src="images/FLBEIA_logo.png" width="20%" style="display: block; margin: auto;" /></p>
+<div id="aim" class="section level1">
+<h1>Aim</h1>
+<p><strong>FLBEIA</strong> <span class="citation">(Garcia et al. 2017)</span> provides a battery of tutorials for learning how to use this software. This <!-- is the thirth  --> tutorial of <strong>FLBEIA</strong> <!-- and it --> is a practical guide about how to check if <strong>FLBEIA</strong> inputs have been correctly defined.</p>
+<p>In this tutorial the functions available for checking input objects of <code>FLBEIA</code> function are presented. It is recommemded to use these functions prior to do the call to the <code>FLBEIA</code> function, in order to avoid some common errors.</p>
+<p>The procedure to create the objects used to run the simulation is described in the <strong>FLBEIA</strong> manual. This manual can be downloaded from <a href="https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf">GitHub</a>, within the ‘doc’ folder of the package installation or typing <code>help(package = FLBEIA)</code> in the R console. For details on these objects, see <a href="https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf">FLBEIA manual, Section 5.2</a>, see tutorial on <a href="http://www.flr-project.org/doc/FLBEIA_A_Simple_Example.html">FLBEIA - Simple example</a> or type <code>?FLBEIA</code> in the R console.</p>
+<p>Nevertheless, it is not neccesary to create the objects to set the simulation because the datasets <code>one</code>, <code>oneIt</code> and <code>multi</code>, available in FLBEIA package will be used.</p>
+<p>To see all the datasets available in the <strong>FLBEIA</strong> package:</p>
+<pre class="r"><code>data(package=&quot;FLBEIA&quot;)</code></pre>
+</div>
+<div id="required-packages-to-run-this-tutorial" class="section level1">
+<h1>Required packages to run this tutorial</h1>
+<p>To follow this tutorial you should have installed the following packages:</p>
+<ul>
+<li>FLR: <a href="http://www.flr-project.org/FLCore/">FLCore</a>, <a href="http://www.flr-project.org/FLFleet/">FLFleet</a></li>
+</ul>
+<pre class="r"><code>install.packages( c(&quot;FLCore&quot;, &quot;FLFleet&quot;, &quot;FLBEIA&quot;), 
+                  repos=&quot;http://flr-project.org/R&quot;)</code></pre>
+<p>It has to be noted that packages <code>FLCore</code>, <code>FLFleet</code> and <code>FLBEIA</code> have to be installed in this exact order, as alternative orders can cause some problems.</p>
+<p>Load all thenecessary packages.</p>
+<pre class="r"><code>library(FLBEIA)</code></pre>
+</div>
+<div id="checking-functions" class="section level1">
+<h1>Checking functions</h1>
+<p>In order to avoid commonly occurring mistakes when conditioning FLBEIA, several functions have been created for checking the input objects of the <code>FLBEIA</code> function.</p>
+<p>There are two types of functions to run the checkings. On the one hand, there are specific functions for some of the input objects of the <code>FLBEIA</code> function (e.g. <code>checkBiols</code>). And on the other hand, a function that allows checking all the input objects at the same time (<code>checkFLBEIAData</code>).</p>
+<div id="checking-specific-input-objects-one-by-one" class="section level2">
+<h2>Checking specific input objects one by one:</h2>
+<p>Available functions for checking an specific input object:</p>
+<ul>
+<li><code>checkBiols</code> : for checking biols argument of FLBEIA function (of class <code>FLBiols</code>).</li>
+<li><code>checkFleets</code> : for checking fleets argument of FLBEIA function (of class <code>FLFleetsExt</code>).</li>
+<li><code>checkSRs</code> : for checking SRs argument of FLBEIA function (list of <code>FLSRsim</code> objects).</li>
+<li><code>checkBDs</code> : for checking BDs argument of FLBEIA function (list of <code>FLBDsim</code> objects).</li>
+<li><code>checkAdvice</code> : for checking advice argument of FLBEIA function (of class <code>list</code> with two <code>FLQuant</code> elements, TAC and quota.share).</li>
+<li><code>checkObsctrl</code>: for checking obs.ctrl argument of FLBEIA function (of class <code>list</code>).</li>
+</ul>
+<p>Let’s see some examples with the FBLEIA datasets. Firstly, we need to load the datasets.</p>
+<pre class="r"><code>  rm(list=ls()) # empty the workspace
+  
+  data(one)     # load the datasets
+  data(oneIt)
+  data(multi)</code></pre>
+<p>In each of the following subsections, the different arguments of the FLBEIA function will be checked.</p>
+<div id="biols-flbiols" class="section level3">
+<h3>biols (<code>FLBiols</code>)</h3>
+<p>FLBEIA data objects <code>oneBio</code>, <code>oneItBio</code> and <code>multiBio</code> should pass the checkings.</p>
+<pre class="r"><code>  checkBiols(oneBio)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>  checkBiols(oneItBio)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>  checkBiols(multiBio)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>They do, so let’s see some examples with incorrect input data.</p>
+<pre class="r"><code>  obj1 &lt;- obj2 &lt;- oneBio
+  
+  mat(obj1$stk1)[1,1,] &lt;- -0.5 # mat &lt; 0
+  checkBiols(obj1)             # returns an error 
+  
+  mat(obj2$stk1)[1,1,] &lt;- 5    # mat &gt; 1
+  checkBiols(obj2)             # returns an error</code></pre>
+</div>
+<div id="fleets-flfleetsext" class="section level3">
+<h3>fleets (<code>FLFleetsExt</code>)</h3>
+<p>We are going now to check if <code>oneFl</code>, <code>oneItFl</code> and <code>multiFl</code> pass the checkings.</p>
+<pre class="r"><code>  checkFleets(oneFl)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>  checkFleets(oneItFl)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>  checkFleets(multiFl)</code></pre>
+<pre><code>## Warning in checkFleets(multiFl): Check capacity if
+## fleets.ctrl[[&#39;fl2&#39;]]$effort.model != &#39;fixedEffort&#39;</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>In this case <code>multiFl</code> passess the checkings, but it returns a warning because there are <code>NA</code> values for capacity in some years. As if we do not fix the effort in the projection, then always an effort threshold is required (the capacity). So if you include an additonal argument in the call to the function (<code>ctrl</code> argument, which corresponds to the fleets.ctrl object), then the function checks which is you effort function in reality and will return an error only if the effort function is different to fixed effort.</p>
+<pre class="r"><code>  checkFleets(multiFl, ctrl = multiFlC) # returns an error</code></pre>
+<p>In this case we get an error because we have <code>NA</code> values for capacity in some of the initial years. However, if we restrict to the projection period, the object will pass the check.</p>
+<pre class="r"><code>  sim.years &lt;- as.numeric(multiMainC$sim.years)
+  checkFleets( window(multiFl, start = sim.years[1]-1, end = sim.years[2]), 
+               ctrl = multiFlC)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>We are going to see some examples with incorrect data that makes the function return an error:</p>
+<pre class="r"><code>  obj1 &lt;- obj2 &lt;- obj3 &lt;- obj4 &lt;- multiFl
+  
+  obj1$fl1@effort[,ac(1990),,1,]
+  obj1$fl1@metiers$met1@effshare[,ac(1990),,1,] &lt;- NA # sum != 1, but effort = 0
+  checkFleets(obj1)                                   # pass the check 
+  
+  obj1$fl1@effort[,ac(1999),,1,]
+  obj1$fl1@metiers$met1@effshare[,ac(1999),,1,] &lt;- 5 # sum != 1, and effort &gt; 0
+  checkFleets(obj1)                                  # returns an error 
+  
+  obj2$fl1@metiers$met1@catches$stk1@landings.sel[] &lt;- 
+    obj2$fl1@metiers$met1@catches$stk1@discards.sel[] &lt;- 0 # landins.sel + discards.sel != 1
+  checkFleets(obj2)                                        # returns an error 
+  
+  obj3$fl1@metiers$met1@catches$stk1@landings.wt[,5,] &lt;- NA   # landings.wt == NA
+  checkFleets(obj3)                                           # returns an error
+  
+  obj3$fl1@metiers$met1@catches$stk1@landings.wt[,5,] &lt;- -0.7 # landings.wt &lt; 0
+  checkFleets(obj3)                                           # returns an error
+  
+  obj4$fl1@metiers$met1@catches$stk1@discards.wt[,5,] &lt;- NA   # discards.wt == NA
+  checkFleets(obj4)                                           # returns an error
+  
+  obj4$fl1@metiers$met1@catches$stk1@discards.wt[,5,] &lt;- -0.1 # discards.wt &lt; 0
+  checkFleets(obj4)                                           # returns an error</code></pre>
+</div>
+<div id="srs-and-bds-list-of-flsrsim-or-flbdsim" class="section level3">
+<h3>SRs and BDs (list of <code>FLSRsim</code> or <code>FLBDsim</code>)</h3>
+<p>We are going now to check if <code>oneSR</code>, <code>oneItSR</code>, <code>multiSR</code> and <code>multiBD</code> pass the checkings.</p>
+<pre class="r"><code>  checkSRs(oneSR)
+  checkSRs(oneItSR)
+  checkSRs(multiSR)
+  checkBDs(multiBD)</code></pre>
+<p>We get errors in some of the cases, but these are due to missing values for uncertainty. These values are due to missing values in the covariate included in the stock-recruitment model, that lead to <code>NA</code> values in the fitted values. However, if we just have a look at the simulation period, objects will be ok.</p>
+<pre class="r"><code>  checkSRs(lapply(oneSR, window, start = sim.years[1]-1, end = sim.years[2]))</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>  checkSRs(lapply(oneItSR, window, start = sim.years[1]-1, end = sim.years[2]))</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>Now we follow with some more examples returning an error:</p>
+<pre class="r"><code># BDs
+
+  obj1 &lt;- obj2 &lt;- obj3 &lt;- multiSR
+
+  obj1$stk1@proportion[,,,1,] &lt;- -1000   # proportions &gt; 0
+  checkSRs(obj1)                         # returns an error
+  
+  obj1$stk1@proportion[,,,1,] &lt;- 1000    # proportions &lt; 1
+  checkSRs(obj1)                         # returns an error
+  
+  obj2$stk1@proportion[,,,1:4,] &lt;- 0.5   # sum proportions = 1
+  checkSRs(obj2)                         # returns an error
+  
+  obj3$stk1@uncertainty[1,1,,1,] &lt;- -0.5 # uncertainty&gt; 0
+  checkSRs(obj3)                         # returns an error
+
+# SRs
+
+  obj1 &lt;- obj2 &lt;- obj3 &lt;- multiBD
+  
+  obj1$stk2@alpha[1,1,] &lt;- 10          # alpha &lt; 1
+  checkBDs(obj1)                       # returns an error
+  
+  obj2$stk2@alpha[1,1,] &lt;- (obj2$stk2@params[&quot;p&quot;,1,1,] / obj2$stk2@params[&quot;r&quot;,1,1,]+1) ^ 
+    (1/obj2$stk2@params[&quot;p&quot;,1,1,]) - 1 # alpha &gt; (p/r+1)^(1/p)
+  checkBDs(obj2)                       # returns an error</code></pre>
+</div>
+<div id="advice-list" class="section level3">
+<h3>advice (<code>list</code>)</h3>
+<p>We check now if <code>oneAdv</code>, <code>oneItAdv</code> and <code>multiAdv</code> pass the checkings.</p>
+<pre class="r"><code>  checkAdvice(oneAdv)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>  checkAdvice(oneItAdv)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>  checkAdvice(multiAdv)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>And we see some examples with incorrect data that makes the function return an error:</p>
+<pre class="r"><code>  obj1 &lt;- multiAdv
+  obj1$quota.share$stk1[,1,] &lt;- 2 # sum quota shares != 1
+  checkAdvice(obj1)               # returns an error</code></pre>
+</div>
+<div id="obs.ctrl-list" class="section level3">
+<h3>obs.ctrl (<code>list</code>)</h3>
+<p>Finally, we will check if <code>oneObsC</code>, <code>oneObsCIndAge</code>, <code>oneObsCIndBio</code>, <code>oneItObsC</code>, <code>oneItObsCIndAge</code>, <code>oneItObsCIndBio</code> and <code>multiObsC</code> pass the checkings.</p>
+<pre class="r"><code>  checkObsctrl(oneObsC)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>  checkObsctrl(oneObsCIndAge)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>  checkObsctrl(oneObsCIndBio)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>  checkObsctrl(oneItObsC)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>  checkObsctrl(oneItObsCIndAge)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>  checkObsctrl(oneItObsCIndBio)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>  checkObsctrl(multiObsC)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>And see some examples with incorrect data that makes the function return an error:</p>
+<pre class="r"><code># Index: total biomass
+
+  obj1 &lt;- oneObsCIndBio
+  
+  obj1$stk1$stkObs$land.bio.error[,1,] &lt;- -0.7 # error &lt; 0
+  checkObsctrl(obj1)                           # returns an error
+
+# Index: numbers at age 
+  
+  obj2 &lt;- oneObsCIndAge
+  
+  obj2$stk1$stkObs$ages.error[1,,,] &lt;- 2 # sum ages.error by age != 1
+  checkObsctrl(obj2)                     # returns an error</code></pre>
+</div>
+</div>
+<div id="checking-all-the-flbeia-input-objects-at-once" class="section level2">
+<h2>Checking all the FLBEIA input objects at once:</h2>
+<p>For checking all the FLBEIA inputs at once, we should use <code>checkFLBEIAData</code> function. In this function, inputs should be the same as the FLBEIA function inputs. And it just calls internally to all the functions detailed in previous section, but restricting the objects to the projection period.</p>
+<p>For example, lets check the inputs from FLBEIA datasets:</p>
+<pre class="r"><code>checkFLBEIAData( biols = oneBio, SRs = oneSR, BDs = NULL, fleets = oneFl,
+                 covars = oneCv, indices = NULL, advice = oneAdv,
+                 main.ctrl = oneMainC, biols.ctrl = oneBioC, fleets.ctrl = oneFlC,
+                 covars.ctrl = oneCvC, obs.ctrl = oneObsC, assess.ctrl = oneAssC, 
+                 advice.ctrl = oneAdvC)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>checkFLBEIAData( biols = oneItBio, SRs = oneItSR, BDs = NULL, fleets = oneItFl,
+                 covars = oneItCv, indices = NULL, advice = oneItAdv,
+                 main.ctrl = oneItMainC, biols.ctrl = oneItBioC, fleets.ctrl = oneItFlC,
+                 covars.ctrl = oneItCvC, obs.ctrl = oneItObsC, assess.ctrl = oneItAssC, 
+                 advice.ctrl = oneItAdvC)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>checkFLBEIAData( biols = multiBio, SRs = multiSR, BDs = multiBD, fleets = multiFl,
+                 covars = multiCv, indices = NULL, advice = multiAdv,
+                 main.ctrl = multiMainC, biols.ctrl = multiBioC, fleets.ctrl = multiFlC,
+                 covars.ctrl = multiCvC, obs.ctrl = multiObsC, assess.ctrl = multiAssC, 
+                 advice.ctrl = multiAdvC)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+</div>
+</div>
+<div id="more-information" class="section level1">
+<h1>More information</h1>
+<ul>
+<li>You can submit bug reports, questions or suggestions on this tutorial at <a href="https://github.com/flr/doc/issues" class="uri">https://github.com/flr/doc/issues</a>.</li>
+<li>Or send a pull request to <a href="https://github.com/flr/doc/" class="uri">https://github.com/flr/doc/</a></li>
+<li>For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <a href="http://flr-project.org" class="uri">http://flr-project.org</a>.</li>
+<li>You can submit bug reports, questions or suggestions specific to <strong>FLBEIA</strong> to <a href="mailto:flbeia@azti.es" class="email">flbeia@azti.es</a>.</li>
+</ul>
+<div id="software-versions" class="section level2">
+<h2>Software Versions</h2>
+<ul>
+<li>R version 3.5.2 (2018-12-20)</li>
+<li>FLCore: 2.6.13</li>
+<li>FLBEIA: 1.15.4</li>
+<li>FLFleet: 2.6.1</li>
+<li>FLash: 2.5.11</li>
+<li>FLAssess: 2.6.3</li>
+<li>FLXSA: 2.6.3</li>
+<li>ggplotFL: 2.6.7</li>
+<li>ggplot2: 3.2.1</li>
+<li><strong>Compiled</strong>: Wed Feb 26 12:27:42 2020</li>
+</ul>
+</div>
+<div id="license" class="section level2">
+<h2>License</h2>
+<p>This document is licensed under the <a href="https://creativecommons.org/licenses/by-sa/4.0">Creative Commons Attribution-ShareAlike 4.0 International</a> license.</p>
+</div>
+<div id="author-information" class="section level2">
+<h2>Author information</h2>
+<p><strong>Sonia Sanchez</strong>. AZTI, Marine Research Unit. Herrera Kaia, Portualdea z/g, 20110, Pasaia, Gipuzkoa, Spain. <a href="https://www.azti.es/" class="uri">https://www.azti.es/</a>.</p>
+<p><strong>FLBEIA team</strong>. AZTI. Marine Reserach Unit. Txatxarramendi Ugartea z/g, 48395, Sukarrieta, Basque Country, Spain. <a href="http://flbeia.azti.es/" class="uri">http://flbeia.azti.es/</a>. <strong>Mail</strong> <a href="mailto:flbeia@azti.es" class="email">flbeia@azti.es</a></p>
+</div>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1 class="unnumbered">References</h1>
+<div id="refs" class="references hanging-indent">
+<div id="ref-garcia2017">
+<p>Garcia, Dorleta, Sonia Sánchez, Raúl Prellezo, Agurtzane Urtizberea, and Marga Andrés. 2017. “FLBEIA: A Simulation Model to Conduct Bio-Economic Evaluation of Fisheries Management Strategies.” <em>SoftwareX</em> 6: 141–47.</p>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

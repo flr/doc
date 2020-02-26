@@ -3,28 +3,16 @@ title: "Checking FLBEIA inputs"
 # author: "Sonia Sanchez and FLBEIA team"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-  html_document:
-    collapsed: no
-    number_sections: yes
-    theme: united
-    toc: yes
-    toc_float: yes
-  github_document:
-    mathjax: yes
-  pdf_document:
-    toc: yes
-tags:
-  license: Creative Commons Attribution-ShareAlike 4.0 International Public License
+github_document:
+  mathjax: TRUE
+pdf_document:
+  fig_width: 6 
+  fig_height: 4 
+  toc: yes
+tags: [FLBEIA inputs]
+license: Creative Commons Attribution-ShareAlike 4.0 International Public License
 bibliography: bibliography.bib
 ---
-
-<center>
-  ![FLBEIAlogo](./images/FLBEIA_logo.png)
-</center>
-<!-- <img src="//172.21.10.13/comun$/AZTIMAR/FLBEIA/logo/FLBEIA-1000px.transparente_small.png" > -->
-
-<!-- Sys.setlocale("LC_TIME", "C") -->
-
 
 ```{r, ini, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
 # This chunk set the document environment, so it is hidden
@@ -35,6 +23,9 @@ options(width=50)
 set.seed(1423)
 ```
 
+```{r echo=FALSE, out.width='20%'}
+include_graphics('images/FLBEIA_logo.png')
+```
 
 # Aim 
 
