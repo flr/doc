@@ -1,13 +1,17 @@
 ---
 title: "Testing Different Management Strategies in the Management Procedure of FLBEIA"
-author: "Sonia Sanchez and FLBEIA team"
+# author: "Sonia Sanchez and FLBEIA team"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-github_document:
+  github_document:
   mathjax: TRUE
 pdf_document:
   fig_width: 6 
   fig_height: 4 
   toc: yes
+tags: [FLBEIA management]
+license: Creative Commons Attribution-ShareAlike 4.0 International Public License
+bibliography: bibliography.bib
 ---
 
 ```{r, ini, echo=FALSE, results='hide', message=FALSE}
@@ -23,6 +27,7 @@ set.seed(1423)
 ```{r echo=FALSE, out.width='20%'}
 include_graphics('images/FLBEIA_logo.png')
 ```
+
 
 # Aim 
 
@@ -771,15 +776,17 @@ Summary plots comparing the different scenarios:
 s40_bio <- rbind( bioSum(s4, scenario='closeNO'), 
                   bioSum(s4a, scenario='closeNorth'), 
                   bioSum(s4a, scenario='closeSson2')) # biological indicators
-plotbioSum( s40_bio, stk.nam='stk1', Blim=Blim.stk1, Bpa=Bpa.stk1, proj.yr=multiMainC$sim.years[['initial']])
-plotbioSum( s40_bio, stk.nam='stk2', Blim=Blim.stk2, Bpa=Bpa.stk2, proj.yr=multiMainC$sim.years[['initial']])
+plotbioSum( s40_bio, stk.nam='stk1', Blim=Blim.stk1, Bpa=Bpa.stk1, 
+            proj.yr=multiMainC$sim.years[['initial']])
+plotbioSum( s40_bio, stk.nam='stk2', Blim=Blim.stk2, Bpa=Bpa.stk2, 
+            proj.yr=multiMainC$sim.years[['initial']])
 ```
 
 ```{r echo=TRUE, eval=TRUE, fig.width = 8, fig.height = 5}
 # - economic summary at metier level
-s40_mt <- rbind( mtSum(s4, scenario='closeNO'), 
-                 mtSum(s4a, scenario='closeNorth'), 
-                 mtSum(s4b, scenario='closeSson2')) # indicators at fleet level
+s40_mt <- rbind( mtSum(s4, scenario='closeNO', long = TRUE), 
+                 mtSum(s4a, scenario='closeNorth', long = TRUE), 
+                 mtSum(s4b, scenario='closeSson2', long = TRUE)) # indicators at fleet level
 s40_mt$year <- as.numeric(s40_mt$year)
 s40_mt$flmt <- paste( s40_mt$fleet, s40_mt$metier, sep='_')
 p <- ggplot( data=s40_mt, aes(x=year, y=value, color=scenario)) + 
@@ -795,11 +802,14 @@ print(p)
 
 ```{r echo=TRUE, eval=TRUE, fig.width = 7, fig.height = 4}
 # - risk summary
-s4_risk  <- riskSum(  s4, Bpa = c(stk1=Bpa.stk1,stk2=Bpa.stk2), Blim = c(stk1=Blim.stk1,stk2=Blim.stk2), 
+s4_risk  <- riskSum( s4, Bpa = c(stk1=Bpa.stk1,stk2=Bpa.stk2), 
+                     Blim = c(stk1=Blim.stk1,stk2=Blim.stk2), 
                      Prflim = c(fl1=0,fl2=0), scenario = 'closeNO')
-s4a_risk <- riskSum( s4a, Bpa = c(stk1=Bpa.stk1,stk2=Bpa.stk2), Blim = c(stk1=Blim.stk1,stk2=Blim.stk2), 
+s4a_risk <- riskSum( s4a, Bpa = c(stk1=Bpa.stk1,stk2=Bpa.stk2), 
+                     Blim = c(stk1=Blim.stk1,stk2=Blim.stk2), 
                      Prflim = c(fl1=0,fl2=0), scenario='closeNorth')
-s4b_risk <- riskSum( s4b, Bpa = c(stk1=Bpa.stk1,stk2=Bpa.stk2), Blim = c(stk1=Blim.stk1,stk2=Blim.stk2), 
+s4b_risk <- riskSum( s4b, Bpa = c(stk1=Bpa.stk1,stk2=Bpa.stk2), 
+                     Blim = c(stk1=Blim.stk1,stk2=Blim.stk2), 
                      Prflim = c(fl1=0,fl2=0), scenario='closeSson2')
 s40_risk <- rbind( s4_risk, s4a_risk, s4b_risk) # risk indicators
 s40_risk$year <- as.numeric(s40_risk$year)
@@ -1020,13 +1030,15 @@ oneItFl3b[['fl1']]@metiers[['met1']]@catches[['stk1']]@landings.sel[3,sim.yrs,] 
 oneItFl3b[['fl1']]@metiers[['met1']]@catches[['stk1']]@discards.sel[3,sim.yrs,] <- 0.25
 
 # Comparison plot for selectivities:
-d3  <- as.data.frame(apply(oneItFl[['fl1']]@metiers[['met1']]@catches[['stk1']]@catch.q[,sim.yrs[1],,],
+adf <- as.data.frame
+d3  <- adf(apply(oneItFl[['fl1']]@metiers[['met1']]@catches[['stk1']]@catch.q[,sim.yrs[1],,],
                           1:5,quantile,0.5))
-d3a <- as.data.frame(apply(oneItFl3a[['fl1']]@metiers[['met1']]@catches[['stk1']]@catch.q[,sim.yrs[1],,],
+d3a <- adf(apply(oneItFl3a[['fl1']]@metiers[['met1']]@catches[['stk1']]@catch.q[,sim.yrs[1],,],
                           1:5,quantile,0.5))
-d3b <- as.data.frame(apply(oneItFl3b[['fl1']]@metiers[['met1']]@catches[['stk1']]@catch.q[,sim.yrs[1],,],
+d3b <- adf(apply(oneItFl3b[['fl1']]@metiers[['met1']]@catches[['stk1']]@catch.q[,sim.yrs[1],,],
                           1:5,quantile,0.5))
-d30_q <- rbind( data.frame(d3,case='bc'), data.frame(d3a,case='netBig'), data.frame(d3b,case='netSmall'))
+d30_q <- rbind( data.frame(d3,case='bc'), data.frame(d3a,case='netBig'), 
+                data.frame(d3b,case='netSmall'))
 p <- ggplot( data=d30_q, aes(x=age, y=data, color=case)) +
   geom_line() +
   theme_bw() +
@@ -1038,7 +1050,7 @@ p <- ggplot( data=d30_q, aes(x=age, y=data, color=case)) +
 print(p)
 
 ## Run FLBEIA
-# Net size decrease (netSmall): 10% increase of selectivity for ages 4-10 relative to the mean 2006-2008
+# Net size decrease (netSmall): 10% increase selectivity (ages 4-10) relative to 2006-2008 mean
 #                               + 50% ages 1-2 catch discarded and 25% of age 3
 s3b <- FLBEIA( biols       = oneItBio,   # FLBiols: FLBiol for stk1.
                SRs         = oneItSR,    # List: FLSRSim for stk1.
@@ -1070,8 +1082,8 @@ s30_flt <- rbind( s30_flt,
 plotfltSum( s30_flt, proj.yr=oneItMainC$sim.years[['initial']])
 
 # - risk summary
-s3b_risk <- riskSum( s3b, Bpa = c(stk1=Bpa.stk1), Blim = c(stk1=Blim.stk1), Prflim = c(fl1 = 0), 
-                     scenario='netSmall')
+s3b_risk <- riskSum( s3b, Bpa = c(stk1=Bpa.stk1), Blim = c(stk1=Blim.stk1), 
+                     Prflim = c(fl1 = 0), scenario='netSmall')
 s30_risk <- rbind( s30_risk, s3b_risk) # risk indicators
 s30_risk$year <- as.numeric(s30_risk$year)
 p <- ggplot( data=s30_risk, aes(x=year, y=value, color=scenario)) + 
@@ -1130,6 +1142,8 @@ print(p)
 This document is licensed under the [Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0) license.
 
 ## Author information
+
+**Sonia Sanchez**. AZTI, Marine Research Unit. Herrera Kaia, Portualdea z/g, 20110, Pasaia, Gipuzkoa, Spain. https://www.azti.es/.
 
 **FLBEIA team**. AZTI. Marine Reserach Unit. Txatxarramendi Ugartea z/g, 48395, Sukarrieta, Basque Country, Spain.
 **Mail** flbeia@azti.es
