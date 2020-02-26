@@ -1,6 +1,7 @@
 ---
 title: "Conditioning FLBEIA in Data Limited Situations: BoB Stripped Mullet"
-author: "Dorleta Garcia and FLBEIA team"
+# author: "Dorleta Garcia and FLBEIA team"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
 github_document:
   mathjax: TRUE
@@ -8,6 +9,8 @@ pdf_document:
   fig_width: 6 
   fig_height: 4 
   toc: yes
+tags: [FLBEIA data limited]
+license: Creative Commons Attribution-ShareAlike 4.0 International Public License
 ---
 
 ```{r, ini, echo=FALSE, results='hide', message=FALSE}
@@ -45,6 +48,11 @@ library(corrplot)
 library(ggplot2)
 library(gtools)
 library(fishmethods)
+```
+
+```{r, avoidError, echo=FALSE, results='hide', message=FALSE}
+# Avoid error if kobe library loaded
+density <- stats::density
 ```
 
 # The Case Study: Stripped Red Mullet in the Bay of Biscay
@@ -142,14 +150,14 @@ mur_spict <- fit.spict(murDat)
 
 Updated time series of biomass. The absolute values and trends obtained are quite similar to those obtained with the longer time series.
 
-```{r ff biomass, fig.height= 10/2.54, fig.width =  16/2.54, fig.cap = 'Relative Biomass estimated by SPiCT with shortened time series.'}
+```{r fig:ff_biomass, fig.height= 10/2.54, fig.width =  16/2.54, fig.cap = 'Relative Biomass estimated by SPiCT with shortened time series.'}
 par(mfrow = c(1,2))
  plotspict.bbmsy(mur_spict)
  plotspict.biomass(mur_spict, qlegend = FALSE, stamp = F)
 ```
  
 For fishing mortality the same happens. The resulting time series are almost identical to those obtained in the initial fit.  
-```{r ff f, fig.height= 10/2.54, fig.width =  16/2.54, fig.cap = 'Absolute fishing mortality estimated by SPiCT.'}
+```{r fig:ff_f, fig.height= 10/2.54, fig.width =  16/2.54, fig.cap = 'Absolute fishing mortality estimated by SPiCT.'}
 par(mfrow = c(1,2))
  plotspict.f(mur_spict, qlegend = FALSE)
  plotspict.ffmsy(mur_spict, qlegend = FALSE)
@@ -157,7 +165,7 @@ par(mfrow = c(1,2))
 ```
 
 The uncertainty around catch is low with the new fit too.
-```{r ff catch, fig.height= 10/2.54, fig.width =  14/2.54, fig.cap = 'Catch estimated by SPiCT using the shortened time series. The horizontal line corresponds with the MSY.'}
+```{r fig:ff_catch, fig.height= 10/2.54, fig.width =  14/2.54, fig.cap = 'Catch estimated by SPiCT using the shortened time series. The horizontal line corresponds with the MSY.'}
  plotspict.catch(mur_spict, qlegend = FALSE)
 ```
 
@@ -207,13 +215,15 @@ Due to the big uncertainty in the parameter estimates, in the random sampling, w
 RandPar_flbeia     <- matrix(NA, 1000,3, dimnames = list(iter = 1:1000, c('r', 'K', 'p')))
 
 # Growth parameter r
-RandPar_flbeia[,1] <- (RandPar_SPict[,'m']*RandPar_SPict[,'n']^(RandPar_SPict[,'n']/(RandPar_SPict[,'n']-1)))/RandPar_SPict[,'K'] 
+RandPar_flbeia[,1] <- (RandPar_SPict[,'m']*RandPar_SPict[,'n']^(RandPar_SPict[,'n']/(RandPar_SPict[,'n']-1))) /
+                      RandPar_SPict[,'K'] 
 # K
 RandPar_flbeia[,2] <- RandPar_SPict[,'K'] 
 # p
 RandPar_flbeia[,3] <- RandPar_SPict[,'n'] - 1
 # Remove not viable iterations
-remiter <- unique(c(which((RandPar_flbeia[,'p']/RandPar_flbeia[,'r']) <  -1), which(RandPar_flbeia[,'r']>  2)))
+remiter <- unique(c(which((RandPar_flbeia[,'p']/RandPar_flbeia[,'r']) <  -1), 
+                    which(RandPar_flbeia[,'r']>  2)))
 RandPar_flbeia <- RandPar_flbeia[-remiter,]
 # Identify the valid iterations and select the first 100.
 Niter <- Nit <- 20
@@ -338,7 +348,7 @@ To calculate fishing mortality we use the `M.empirical` function from `fishmetho
 
 ```{r natmort, results = TRUE}
 Ms <- M.empirical(Linf = Linf, 
-            Kl = K, T = 16, tmax = 10,
+            Kl = K, TC = 16, tmax = 10,
             tm = 0.5, method = c(1,  3, 4, 5, 10, 11))
 
 Ms
@@ -367,7 +377,9 @@ pristineBio <- c(prod(sr_params[1])*exp(-(0:9)*M),sum(c(sr_params[1])*exp(-(10:1
 To project the initial population we need a selectivity at age. To calculate it the only data we have is the length distribution of the catch in one 2016. We assume that the same length distribution can be applied to the whole period. We use von bertalanffy and  knife-edge model to calculate age distribution from length distribution. This result in the following catch profile in weight:
 
 ```{r catch_profile_w}
-caw_prop <- c(age0 = 0.000, age1 = 0.194, age2 = 0.172, age3 = 0.335, age4 = 0.193, age5 = 0.031, age6 = 0.019, age7 = 0.032, age8 = 0.008, age9 = 0.006, age10 = 0.011)
+caw_prop <- c(age0 = 0.000, age1 = 0.194, age2 = 0.172, age3 = 0.335, age4 = 0.193, 
+              age5 = 0.031, age6 = 0.019, age7 = 0.032, age8 = 0.008, age9 = 0.006, 
+              age10 = 0.011)
 ```
 
 We take the total catch in the first year, 1975, divide it by age using the profile and transform it into numbers using the mean weight at age calculated before:
@@ -392,11 +404,22 @@ for(a in 0:10){
 We will use all the information we have generated to construct a `FLStock` object. First we will create the `FLQuants` with the right dimension for each quantity. We will assume that the main source of uncertainty is in the selectivity along the whole period. We will use the standardized fishing mortality in 1975 as a proxy for mean selectivity and we will use dirichlet distribution with coefficient of variation equal to 30% to introduce the uncertainty.   
 
 ```{r stk}
-mq <- FLQuant(M, dim = c(11,40,1,1,1,Niter),dimnames = list(age = 0:10, year = 1975:2014, unit = 'unique', season = 'all', area = 'unique', iter = 1:Niter))
-matq <- FLQuant(mat, dim = c(11,40,1,1,1,Niter),dimnames = list(age = 0:10, year = 1975:2014, unit = 'unique', season = 'all', area = 'unique', iter = 1:Niter))
-mwaq <- FLQuant(mwa/1000, dim = c(11,40,1,1,1,Niter),dimnames = list(age = 0:10, year = 1975:2014, unit = 'unique', season = 'all', area = 'unique', iter =1:Niter))
-hspwn <- mspwn <- dnq <-  FLQuant(0, dim = c(11,40,1,1,1,Niter),dimnames = list(age = 0:10, year = 1975:2014, unit = 'unique', season = 'all', area = 'unique', iter = 1:Niter))
-catch.flq <- FLQuant(catch[,8], dim = c(1,40,1,1,1,Niter),dimnames = list(quant = 'all', year = 1975:2014, unit = 'unique', season = 'all', area = 'unique', iter = 1:Niter))
+mq <- FLQuant(M, dim = c(11,40,1,1,1,Niter), 
+              dimnames = list(age = 0:10, year = 1975:2014, unit = 'unique', 
+                              season = 'all', area = 'unique', iter = 1:Niter))
+matq <- FLQuant(mat, dim = c(11,40,1,1,1,Niter), 
+                dimnames = list(age = 0:10, year = 1975:2014, unit = 'unique', 
+                                season = 'all', area = 'unique', iter = 1:Niter))
+mwaq <- FLQuant(mwa/1000, dim = c(11,40,1,1,1,Niter), 
+                dimnames = list(age = 0:10, year = 1975:2014, unit = 'unique', 
+                                season = 'all', area = 'unique', iter =1:Niter))
+hspwn <- mspwn <- dnq <-  FLQuant(0, dim = c(11,40,1,1,1,Niter), 
+                                  dimnames = list(age = 0:10, year = 1975:2014, 
+                                                  unit = 'unique', season = 'all', 
+                                                  area = 'unique', iter = 1:Niter))
+catch.flq <- FLQuant(catch[,8], dim = c(1,40,1,1,1,Niter), 
+                     dimnames = list(quant = 'all', year = 1975:2014, unit = 'unique', 
+                                     season = 'all', area = 'unique', iter = 1:Niter))
 
 sel         <- fa75/max(fa75)
 
@@ -406,9 +429,13 @@ alphas <- (alpha1/sel[3])*sel[-(1:2)]
 sel <- cbind(0,1,(rdirichlet(Niter*40,alphas)))
 sel <- array(t(sel),c(11,40,Niter))
 
-harvest <- FLQuant(sel, dim = c(11,40,1,1,1,Niter),dimnames = list(age = 0:10, year = 1975:2014, unit = 'unique', season = 'all', area = 'unique', iter = 1:Niter))
+harvest <- FLQuant(sel, dim = c(11,40,1,1,1,Niter), 
+                   dimnames = list(age = 0:10, year = 1975:2014, unit = 'unique', 
+                                   season = 'all', area = 'unique', iter = 1:Niter))
 
-stk <- FLStock(name = 'mur', mwaq, catch = catch.flq, catch.wt = mwaq, landings.wt = mwaq, discards.wt = mwaq, stock.wt = mwaq, m = mq, mat = matq, harvest.spwn = hspwn, m.spwn = mspwn, discards.n = dnq, harvest = harvest)
+stk <- FLStock(name = 'mur', mwaq, catch = catch.flq, catch.wt = mwaq, landings.wt = mwaq, 
+               discards.wt = mwaq, stock.wt = mwaq, m = mq, mat = matq, harvest.spwn = hspwn, 
+               m.spwn = mspwn, discards.n = dnq, harvest = harvest)
 
 units(harvest(stk)) <- 'f'
 ```
@@ -416,7 +443,8 @@ units(harvest(stk)) <- 'f'
 Using the information generated until now we can use the function `ypr` in `fishmethods` library to calculate $F_{\text{max}}$ and $F_{0.1}$ reference points:
 
 ```{r brp}
-brp_lh <- ypr(age = 0:10, wgt = mwa/1000,partial = fa75/max(fa75), M = M, plus = TRUE, oldest = 10, maxF = 10, incrF = 0.01, graph = FALSE)
+brp_lh <- ypr(age = 0:10, wgt = mwa/1000,partial = fa75/max(fa75), M = M, plus = TRUE, 
+              oldest = 10, maxF = 10, incrF = 0.01, graph = FALSE)
 ```
 
 Finally we will reconstruct the history of the stock, catch, numbers and fishing mortality at age. Each year we calculate the fishing mortality multiplier that minimizes the difference between the observed total catch and then total catch derived from Baranov catch equation using the numbers at age at the start of the year, the natural mortality and the selection pattern. Then we calculate the abundance at the start of next year using the exponential survival equation with the natural mortality and the fishing mortality obtained.    
@@ -442,10 +470,14 @@ for(i in 1:Niter){
   
   z0 <- m0 + stk.sc0@harvest[,yr-1,,,,i]
 
-  stk.sc0@stock.n[-c(1,na),yr,,,,i]  <-      stk.sc0@stock.n[-c(na-1,na),yr-1,,,,i]*exp(-z0[-c(na-1,na),,,,])
-  stk.sc0@stock.n[na,yr,,,,i]        <- stk.sc0@stock.n[na-1,yr-1,,,,i]*exp(-z0[na-1,,,,,]) + stk.sc0@stock.n[na,yr-1,,,,i]*exp(-z0[na,,,,,])
-  stk.sc0@stock.n[1,yr,,,,i]         <- ssb(stk.sc0)[,yr-1,,,,i, drop=T]*sr_params[1]/(ssb(stk.sc0)[,yr-1,,,,i, drop=T] + sr_params[2])
-  stk.sc0@catch.n[,yr-1,,,,i] <- (stk.sc0@harvest[,yr-1,,,,i]/z0)*(1-exp(-z0))*stk.sc0@stock.n[,yr-1,,,,i] 
+  stk.sc0@stock.n[-c(1,na),yr,,,,i] <- stk.sc0@stock.n[-c(na-1,na),yr-1,,,,i]*
+                                        exp(-z0[-c(na-1,na),,,,])
+  stk.sc0@stock.n[na,yr,,,,i]       <- stk.sc0@stock.n[na-1,yr-1,,,,i]*exp(-z0[na-1,,,,,]) + 
+                                        stk.sc0@stock.n[na,yr-1,,,,i]*exp(-z0[na,,,,,])
+  stk.sc0@stock.n[1,yr,,,,i]        <- ssb(stk.sc0)[,yr-1,,,,i, drop=T]*sr_params[1]/
+                                        (ssb(stk.sc0)[,yr-1,,,,i, drop=T] + sr_params[2])
+  stk.sc0@catch.n[,yr-1,,,,i] <- (stk.sc0@harvest[,yr-1,,,,i]/z0)*(1-exp(-z0))*
+                                  stk.sc0@stock.n[,yr-1,,,,i] 
         
   }}
 ```
@@ -467,11 +499,19 @@ For the operating model (OM) we will generate two sets of objects, one derived f
 First we create four empty 'FLQuant' objects (the basic FLR data structure) with the dimensions of the case study to help in the conditioning process. Two of them have no age dimension and the other two do.
 
 ```{r}
-flq  <- FLQuant(1, dim = c(1,51,1,1,1,Niter), dimnames = list(quant = 'all', year = 1978:2028, unit = 'unique', season = 'all', area = 'unique', iter = 1:Niter))
-flq0 <- FLQuant(0, dim = c(1,51,1,1,1,Niter), dimnames = list(quant = 'all', year = 1978:2028, unit = 'unique', season = 'all', area = 'unique', iter = 1:Niter))
+flq  <- FLQuant(1, dim = c(1,51,1,1,1,Niter), 
+                dimnames = list(quant = 'all', year = 1978:2028, unit = 'unique', 
+                                season = 'all', area = 'unique', iter = 1:Niter))
+flq0 <- FLQuant(0, dim = c(1,51,1,1,1,Niter), 
+                dimnames = list(quant = 'all', year = 1978:2028, unit = 'unique', 
+                                season = 'all', area = 'unique', iter = 1:Niter))
 
-flqa  <- FLQuant(1, dim = c(11,51,1,1,1,Niter), dimnames = list(age = 0:10, year = 1978:2028, unit = 'unique', season = 'all', area = 'unique', iter = 1:Niter))
-flqa0 <- FLQuant(0, dim = c(11,51,1,1,1,Niter), dimnames = list(age = 0:10, year = 1978:2028, unit = 'unique', season = 'all', area = 'unique', iter = 1:Niter))
+flqa  <- FLQuant(1, dim = c(11,51,1,1,1,Niter), 
+                 dimnames = list(age = 0:10, year = 1978:2028, unit = 'unique', 
+                                 season = 'all', area = 'unique', iter = 1:Niter))
+flqa0 <- FLQuant(0, dim = c(11,51,1,1,1,Niter), 
+                 dimnames = list(age = 0:10, year = 1978:2028, unit = 'unique', 
+                                 season = 'all', area = 'unique', iter = 1:Niter))
 ```
 
 
@@ -480,13 +520,17 @@ flqa0 <- FLQuant(0, dim = c(11,51,1,1,1,Niter), dimnames = list(age = 0:10, year
 The FLBDsim object is a class defined in FLBEIA package to store the parameters and the data necessary to simulate biomass dynamic populations. This object will be used only in the case of biomass dynamic OM. First we create an object with the correct dimensions in the FLQuant slots and then we fill in the slots with the data generated before.
 
 ```{r}
-murBD <- FLBDsim(name = 'mur', desc = 'Striped Red Mullet in Bay of Biscay', biomass= flq, catch = flq, uncertainty = flq, gB = flq)
+murBD <- FLBDsim(name = 'mur', desc = 'Striped Red Mullet in Bay of Biscay', 
+                 biomass= flq, catch = flq, uncertainty = flq, gB = flq)
 
 murBD@biomass[,ac(1997:2014)]      <- t(Best)
 murBD@catch[,ac(1997:2014)]        <- t(Cest)
 murBD@uncertainty[,ac(2014:2028)]  <- rlnorm(Niter*15,0,RandPar_SPict[valid_iters,'sdb']) 
-murBD@params[]            <- expand(FLQuant(t(RandPar_flbeia[1:Niter,c(1,3,2)]),dim = c(3,1,1,1,1,Niter), dimnames = list(par = c('r', 'K', 'p'), iter = 1:Niter)), year = 1978:2028)
-murBD@alpha    <- array((murBD@params['p',,,]/murBD@params['r',,,]+1)^(1/murBD@params['p',,,]), dim = c(51,1,Niter))
+murBD@params[] <- expand(FLQuant(t(RandPar_flbeia[1:Niter,c(1,3,2)]),dim = c(3,1,1,1,1,Niter), 
+                                 dimnames = list(par = c('r', 'K', 'p'), iter = 1:Niter)), 
+                         year = 1978:2028)
+murBD@alpha    <- array((murBD@params['p',,,]/murBD@params['r',,,]+1)^
+                          (1/murBD@params['p',,,]), dim = c(51,1,Niter))
 ```
 
 In some iterations it happen that the estimated catch in 2014 is higher than the sum of the biomass at the start of the years and the growth of the population along this year. To avoid the problem we decrease the catch to 90\% of the sum of biomass and growth.
@@ -513,7 +557,8 @@ murBD@catch[,ac(2014)] <- C14
 The `FLSRsim` object is a class defined in FLBEIA package to store the parameters and the data necessary to simulate recruitment in age structured populations. This object will be used only in the case of age structured BOM. First we create an object with the correct dimensions in the FLQuant slots and then we fill in the slots with the data generated before.
 
 ```{r}
-murSR <- FLSRsim(name = 'mur', desc = 'Striped Red Mullet in Bay of Biscay', ssb= flq, model = 'bevholt')
+murSR <- FLSRsim(name = 'mur', desc = 'Striped Red Mullet in Bay of Biscay', ssb= flq, 
+                 model = 'bevholt')
 
 murSR@ssb[]      <- ssb(stk.sc0)
 murSR@rec[]      <- stk.sc0@stock.n[1,]
@@ -529,7 +574,8 @@ In the case of biomass dynamic populations the only relevant information is stor
 ```{r}
 biols.bd <- FLBiols(mur = FLBiol(name = 'mur', 
                               desc = 'Striped Red Mullet in Bay of Biscay',
-                             range = c(min = 1, max = 1, plusgroup = 1, minyear = 1978, maxyear = 2028, minfbar = 1, maxfbar = 1),
+                             range = c(min = 1, max = 1, plusgroup = 1, minyear = 1978, 
+                                       maxyear = 2028, minfbar = 1, maxfbar = 1),
                               n    = murBD@biomass, 
                               wt   = flq, 
                               fec  = predictModel(mat = flq, model = ~mat), 
@@ -542,7 +588,8 @@ In the case of age structured  populations all the  information is relevant.
 ```{r}
 biols.age <- FLBiols(mur = FLBiol(name = 'mur', 
                               desc = 'Striped Red Mullet in Bay of Biscay',
-                             range = c(min = 0, max = 10, plusgroup = 10, minyear = 1978, maxyear = 2028, minfbar = 1, maxfbar = 2),
+                             range = c(min = 0, max = 10, plusgroup = 10, minyear = 1978, 
+                                       maxyear = 2028, minfbar = 1, maxfbar = 2),
                               n    = stk.sc0@stock.n, 
                               wt   = stk.sc0@stock.wt, 
                               fec  = predictModel(mat = stk.sc0@mat, model = ~mat), 
@@ -564,25 +611,30 @@ FLBEIA uses an extended version of the `FLFleet` object defined in `FLFleet` pac
 We will create two different objects one for biomass dynamic population and the other for the age structured one. First we build the FLCatchExt object:
 
 ```{r}
-cc <- FLCatchExt(name = 'mur', alpha = flq, beta = flq, landings = murBD@catch, landings.n = murBD@catch, landings.wt = flq, 
-           discards.wt = flq, landings.sel = flq, discards.sel = flq0, discards = flq0, discards.n = flq0)
+cc <- FLCatchExt(name = 'mur', 
+                 alpha = flq, beta = flq, 
+                 landings = murBD@catch, landings.n = murBD@catch, landings.wt = flq, 
+                 discards = flq0, discards.n = flq0, discards.wt = flq, 
+                 landings.sel = flq, discards.sel = flq0)
 ```
 
 Now we built the whole `FLFleetsExt` object:
 ```{r}
 fleets.bd <- FLFleetsExt(fl = FLFleetExt(name = 'fl', effort= flq, capacity = flq*1e12,
-                           metiers =  FLMetiersExt(mt = FLMetierExt(name = 'mt', effshare = flq, 
+                           metiers = FLMetiersExt(mt = FLMetierExt(name = 'mt', effshare = flq, 
                                      catches = FLCatchesExt(mur = cc)))))
 fleets.bd[[1]]@metiers[[1]]@catches[[1]]@catch.q <- murBD@catch/murBD@biomass
 
-fleets.bd[[1]]@metiers[[1]]@catches[[1]]@catch.q[,ac(2015:2028)] <- expand(yearMeans(fleets.bd[[1]]@metiers[[1]]@catches[[1]]@catch.q[,ac(2005:2014)]), year = 2015:2028) 
+fleets.bd[[1]]@metiers[[1]]@catches[[1]]@catch.q[,ac(2015:2028)] <- 
+  expand(yearMeans(fleets.bd[[1]]@metiers[[1]]@catches[[1]]@catch.q[,ac(2005:2014)]), 
+         year = 2015:2028) 
 ```
 
 Now we create the age structured stock using the same procedure:
 
 ```{r}
 cc <- FLCatchExt(name = 'mur', 
-                 alpha = flqa, beta = flqa, landings.n = stk.sc0@catch.n,
+                 alpha = flqa, beta = flqa, 
                  landings = stk.sc0@catch, landings.n = stk.sc0@catch.n, 
                  landings.wt = biols.age[['mur']]@wt, 
                  discards = flq0, discards.n = flqa0, 
@@ -590,12 +642,14 @@ cc <- FLCatchExt(name = 'mur',
                  landings.sel = flqa, discards.sel = flqa0)
 
 fleets.age <- FLFleetsExt(fl = FLFleetExt(name = 'fl', effort= flq, capacity = flq*1e12,
-                           metiers =  FLMetiersExt(mt = FLMetierExt(name = 'mt', effshare = flq, 
-                                     catches = FLCatchesExt(mur = cc)))))
+                           metiers =  FLMetiersExt(mt = FLMetierExt(name = 'mt', 
+                                     effshare = flq, catches = FLCatchesExt(mur = cc)))))
 
 fleets.age[[1]]@metiers[[1]]@catches[[1]]@catch.q[,ac(1978:2014)] <- stk.sc0@harvest[,ac(1978:2014)]
 
-fleets.age[[1]]@metiers[[1]]@catches[[1]]@catch.q[,ac(2015:2028)] <- expand(yearMeans(fleets.age[[1]]@metiers[[1]]@catches[[1]]@catch.q[,ac(2005:2014)]), year = 2015:2028) 
+fleets.age[[1]]@metiers[[1]]@catches[[1]]@catch.q[,ac(2015:2028)] <- 
+  expand(yearMeans(fleets.age[[1]]@metiers[[1]]@catches[[1]]@catch.q[,ac(2005:2014)]), 
+         year = 2015:2028) 
 ```
 
 ### FLIndices Object
@@ -624,6 +678,7 @@ The advice object is a list used to store the TACs and the quota shares along fl
 # Advice Object 
 advice <- list(TAC = murBD@catch,  quota.share = list(mur = flq))
 dimnames(advice$TAC)[[1]] <- 'mur'
+quant(advice$TAC) <- 'stock'
 advice$TAC[,'2015'] <- mean(murDat$obsC[16:18]) # There is no TAC => last three year mean.
 dimnames(advice$quota.share[[1]])[[1]] <- 'fl'
 ```
@@ -651,23 +706,29 @@ biols.ctrl.age <- create.biols.ctrl(stksnames = 'mur', growth.model = 'ASPG')
 The `fleets.ctrl` object controls the four processes simulated in the fleet operating model, the effort allocation, the catch production, the price formation and the capital dynamics. In the simulations carried out in this work the price and the capital dynamics are maintained fixed, the catch production is simulated using a Cobb-Douglas function and the effort allocation is simulated using `SMFB` model. This model is oriented to describe effort allocation in multistock and multi-metier scenarios. In this case as there is only one stock and one fleet with a single metier the model calculates just the effort that produces exactly the TAC advice for the stock.
 
 ```{r}
-fleets.ctrl.bd <- create.fleets.ctrl(fls = 'fl', fls.stksnames = list(fl = 'mur'), flq = flq, effort.models = c(fl = 'SMFB'),
-                   n.fls.stks = c(fl = 1), capital.models = c(fl = 'fixedCapital'), 
-                   price.models = c(fl = 'fixedPrice'), catch.models = c('CobbDouglasBio'))
+fleets.ctrl.bd <- create.fleets.ctrl(fls = 'fl', fls.stksnames = list(fl = 'mur'), flq = flq, 
+                                     effort.models = c(fl = 'SMFB'), n.fls.stks = c(fl = 1), 
+                                     capital.models = c(fl = 'fixedCapital'), 
+                                     price.models = c(fl = 'fixedPrice'), 
+                                     catch.models = c('CobbDouglasBio'))
 
-fleets.ctrl.age <- create.fleets.ctrl(fls = 'fl', fls.stksnames = list(fl = 'mur'), flq = flq, effort.models = c(fl = 'SMFB'),
-                   n.fls.stks = c(fl = 1), capital.models = c(fl = 'fixedCapital'), 
-                   price.models = c(fl = 'fixedPrice'), catch.models = c('CobbDouglasAge'))
+fleets.ctrl.age <- create.fleets.ctrl(fls = 'fl', fls.stksnames = list(fl = 'mur'), flq = flq, 
+                                      effort.models = c(fl = 'SMFB'), n.fls.stks = c(fl = 1), 
+                                      capital.models = c(fl = 'fixedCapital'), 
+                                      price.models = c(fl = 'fixedPrice'), 
+                                      catch.models = c('CobbDouglasAge'))
 ```
 
 ### obs.ctrl
 The `obs.ctrl` object comprises the neccesary information to simulate the observed data used in the management procedure (MP) to generate the management advice. In this work we will use two different control objects, in the first one the abundance index is observed and in the second one the stock. The abundance index is generated using the `bioInd` function which updates the index slot on the object with the most recent abundance data. In turn, the stock data is generated using the `PerfectObs` function. The `perfectObs` function, as the rest of the functions available to generate stock data, builds and `FLStock` object based on the most recent abundace data. This function apart of biological and catch data, it also fills the `stock.n` and `harvest` slots in the `FLStock` object. This is not possible in the real world where these two slots are estimated by the assessments models. However, if we do not want to test the performance of the assessment model but the harvest control rule itself in isolation , it is useful to have a perfect estimate of the population.     
 
 ```{r}
-obs.ctrl.ind <- create.obs.ctrl(stksnames = 'mur', n.stks.inds = c(mur = 1), stks.indsnames = 'evhoe',indObs.models = c(mur = 'bioInd'))
+obs.ctrl.ind <- create.obs.ctrl(stksnames = 'mur', n.stks.inds = c(mur = 1), 
+                                stks.indsnames = 'evhoe',indObs.models = c(mur = 'bioInd'))
 obs.ctrl.ind[['mur']][['stkObs']][['stkObs.model']] <- 'NoObsStock'
 
-obs.ctrl.stk <- create.obs.ctrl(stksnames = 'mur', n.stks.inds = c(mur = 1), stks.indsnames = 'evhoe', stkObs.models = c(mur = 'perfectObs'))
+obs.ctrl.stk <- create.obs.ctrl(stksnames = 'mur', n.stks.inds = c(mur = 1), 
+                                stks.indsnames = 'evhoe', stkObs.models = c(mur = 'perfectObs'))
 obs.ctrl.stk[['mur']][['indObs']][['evhoe']] <- 'NoObsIndex'
 ```
 
@@ -681,7 +742,8 @@ assess.ctrl <- create.assess.ctrl(stksnames = 'mur', assess.models = 'NoAssessme
 ### advice.ctrl
 Create the advice control object corresponding to the HCR used by ICES for category 3 stock in the data limited framework (DLS).
 ```{r}
-advice.ctrl.dls3 <- create.advice.ctrl(stksnames = 'mur', HCR.models = 'annexIVHCR', index = 'evhoe', iter = Niter)
+advice.ctrl.dls3 <- create.advice.ctrl(stksnames = 'mur', HCR.models = 'annexIVHCR', 
+                                       index = 'evhoe', iter = Niter)
 advice.ctrl.dls3$mur$index <- 'evhoe'
 ```
 
@@ -690,10 +752,12 @@ Now create the advice control tested in Little et al. (2011). The HCR is based o
 ```{r}
 advice.ctrl.little <- advice.ctrl.dls3
 advice.ctrl.little$mur$HCR.model <- 'little2011HCR'
-advice.ctrl.little[['mur']][['ref.pts']] <- matrix(NA, 4,Niter, dimnames = list(c('Ctarg', 'Ilim', 'Itarg', 'Cmax'), 1:Niter))
+advice.ctrl.little[['mur']][['ref.pts']] <- 
+  matrix(NA, 4,Niter, dimnames = list(c('Ctarg', 'Ilim', 'Itarg', 'Cmax'), 1:Niter))
 advice.ctrl.little[['mur']][['ref.pts']]['Ctarg',] <- mur_spict$report$MSY
 advice.ctrl.little[['mur']][['ref.pts']]['Ilim',]  <- min(murDat$obsI, na.rm = TRUE)*1.25
-advice.ctrl.little[['mur']][['ref.pts']]['Itarg',] <- mur_spict$report$Bmsy*median(indices[[1]]@index.q[,1])
+advice.ctrl.little[['mur']][['ref.pts']]['Itarg',] <- 
+  mur_spict$report$Bmsy*median(indices[[1]]@index.q[,1])
 advice.ctrl.little[['mur']][['ref.pts']]['Cmax',]  <- mur_spict$report$MSY
 ```
 
@@ -703,8 +767,10 @@ Create the advice control object corresponding to the HCR used by ICES in the fr
 advice.ctrl.msy <- create.advice.ctrl(stksnames = 'mur', HCR.models = 'IcesHCR', first.yr = 2014, last.yr = 2025, iter = Niter)
 advice.ctrl.msy$mur$AdvCatch         <- c(rep(FALSE, 38), rep(TRUE, 13))
 names(advice.ctrl.msy$mur$AdvCatch)  <- 1978:2028
-advice.ctrl.msy$mur$ref.pts['Blim',]     <- min(get.par("logB", mur_spict, exp = TRUE)[(0:17)*16+1,2])
-advice.ctrl.msy$mur$ref.pts['Btrigger',] <- min(get.par("logB", mur_spict, exp = TRUE)[(0:17)*16+1,2])*1.4
+advice.ctrl.msy$mur$ref.pts['Blim',]     <- 
+  min(get.par("logB", mur_spict, exp = TRUE)[(0:17)*16+1,2])
+advice.ctrl.msy$mur$ref.pts['Btrigger',] <- 
+  min(get.par("logB", mur_spict, exp = TRUE)[(0:17)*16+1,2])*1.4
 advice.ctrl.msy$mur$ref.pts['Fmsy',]     <- mur_spict$report$Fmsy*0.75
 ```
 
@@ -732,48 +798,58 @@ Run FLBEIA in 10 scenarios which differ on:
 
 
 ```{r, message =FALSE}
-dls3.bd <- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleets = fleets.bd, covars = NULL, 
-          indices = list(mur = indices), advice = advice, main.ctrl, biols.ctrl.bd, fleets.ctrl.bd, 
-          covars.ctrl = NULL, obs.ctrl.ind, assess.ctrl, advice.ctrl.dls3) 
+dls3.bd <- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleets = fleets.bd, 
+                  covars = NULL, indices = list(mur = indices), advice = advice, 
+                  main.ctrl, biols.ctrl.bd, fleets.ctrl.bd, covars.ctrl = NULL, 
+                  obs.ctrl.ind, assess.ctrl, advice.ctrl.dls3) 
 
-dls3.age <- FLBEIA(biols = biols.age, SRs = list(mur = murSR), BDs = NULL, fleets = fleets.age, covars = NULL, 
-          indices = list(mur = indices), advice = advice, main.ctrl, biols.ctrl.age, fleets.ctrl.age, 
-          covars.ctrl = NULL, obs.ctrl.ind, assess.ctrl, advice.ctrl.dls3) 
+dls3.age <- FLBEIA(biols = biols.age, SRs = list(mur = murSR), BDs = NULL, fleets = fleets.age, 
+                   covars = NULL, indices = list(mur = indices), advice = advice, 
+                   main.ctrl, biols.ctrl.age, fleets.ctrl.age, covars.ctrl = NULL, 
+                   obs.ctrl.ind, assess.ctrl, advice.ctrl.dls3) 
 
 #main.ctrl[[1]][2] <- 2022
 
-little.bd <- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleets = fleets.bd, covars = NULL, 
-          indices = list(mur = indices), advice = advice, main.ctrl, biols.ctrl.bd, fleets.ctrl.bd, 
-          covars.ctrl = NULL, obs.ctrl.ind, assess.ctrl, advice.ctrl.little) 
+little.bd <- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleets = fleets.bd, 
+                    covars = NULL, indices = list(mur = indices), advice = advice, 
+                    main.ctrl, biols.ctrl.bd, fleets.ctrl.bd, covars.ctrl = NULL, 
+                    obs.ctrl.ind, assess.ctrl, advice.ctrl.little) 
 
-little.age <- FLBEIA(biols = biols.age, SRs = list(mur = murSR), BDs = NULL, fleets = fleets.age, covars = NULL, 
-          indices = list(mur = indices), advice = advice, main.ctrl, biols.ctrl.age, fleets.ctrl.age, 
-          covars.ctrl = NULL, obs.ctrl.ind, assess.ctrl, advice.ctrl.little) 
+little.age <- FLBEIA(biols = biols.age, SRs = list(mur = murSR), BDs = NULL, fleets = fleets.age, 
+                     covars = NULL, indices = list(mur = indices), advice = advice, 
+                     main.ctrl, biols.ctrl.age, fleets.ctrl.age, covars.ctrl = NULL, 
+                     obs.ctrl.ind, assess.ctrl, advice.ctrl.little) 
 
 biols.bd[[1]]@range[1:3] <- NA
-msy.bd <- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleets = fleets.bd, covars = NULL,
-          indices = NULL, advice = advice, main.ctrl, biols.ctrl.bd, fleets.ctrl.bd, 
-          covars.ctrl = NULL, obs.ctrl.stk, assess.ctrl, advice.ctrl.msy)
+msy.bd <- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleets = fleets.bd, 
+                 covars = NULL, indices = NULL, advice = advice, main.ctrl, 
+                 biols.ctrl.bd, fleets.ctrl.bd, covars.ctrl = NULL, 
+                 obs.ctrl.stk, assess.ctrl, advice.ctrl.msy)
 
-msy.age <- FLBEIA(biols = biols.age, BDs = NULL, SRs = list(mur = murSR), fleets = fleets.age, covars = NULL,
-          indices = NULL, advice = advice, main.ctrl, biols.ctrl.age, fleets.ctrl.age, 
-          covars.ctrl = NULL, obs.ctrl.stk, assess.ctrl, advice.ctrl.msy)
+msy.age <- FLBEIA(biols = biols.age, BDs = NULL, SRs = list(mur = murSR), fleets = fleets.age, 
+                  covars = NULL, indices = NULL, advice = advice, 
+                  main.ctrl, biols.ctrl.age, fleets.ctrl.age, covars.ctrl = NULL, 
+                  obs.ctrl.stk, assess.ctrl, advice.ctrl.msy)
 
-little.pa.bd <- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleets = fleets.bd, covars = NULL, 
-          indices = list(mur = indices), advice = advice, main.ctrl, biols.ctrl.bd, fleets.ctrl.bd, 
-          covars.ctrl = NULL, obs.ctrl.ind, assess.ctrl, advice.ctrl.little.pa) 
+little.pa.bd <- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleets = fleets.bd, 
+                       covars = NULL, indices = list(mur = indices), advice = advice, 
+                       main.ctrl, biols.ctrl.bd, fleets.ctrl.bd, covars.ctrl = NULL, 
+                       obs.ctrl.ind, assess.ctrl, advice.ctrl.little.pa) 
 
-little.pa.age <- FLBEIA(biols = biols.age, SRs = list(mur = murSR), BDs = NULL, fleets = fleets.age, covars = NULL, 
-          indices = list(mur = indices), advice = advice, main.ctrl, biols.ctrl.age, fleets.ctrl.age, 
-          covars.ctrl = NULL, obs.ctrl.ind, assess.ctrl, advice.ctrl.little.pa) 
+little.pa.age <- FLBEIA(biols = biols.age, SRs = list(mur = murSR), BDs = NULL, fleets = fleets.age, 
+                        covars = NULL, indices = list(mur = indices), advice = advice, 
+                        main.ctrl, biols.ctrl.age, fleets.ctrl.age, covars.ctrl = NULL, 
+                        obs.ctrl.ind, assess.ctrl, advice.ctrl.little.pa) 
 
-msy.pa.bd <- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleets = fleets.bd, covars = NULL,
-          indices = NULL, advice = advice, main.ctrl, biols.ctrl.bd, fleets.ctrl.bd, 
-          covars.ctrl = NULL, obs.ctrl.stk, assess.ctrl, advice.ctrl.msy.pa) 
+msy.pa.bd <- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleets = fleets.bd, 
+                    covars = NULL, indices = NULL, advice = advice, 
+                    main.ctrl, biols.ctrl.bd, fleets.ctrl.bd, covars.ctrl = NULL, 
+                    obs.ctrl.stk, assess.ctrl, advice.ctrl.msy.pa) 
 
-msy.pa.age <- FLBEIA(biols = biols.age, SRs = list(mur = murSR), BDs = NULL, fleets = fleets.age, covars = NULL,
-          indices = NULL, advice = advice, main.ctrl, biols.ctrl.age, fleets.ctrl.age, 
-          covars.ctrl = NULL, obs.ctrl.stk, assess.ctrl, advice.ctrl.msy.pa)
+msy.pa.age <- FLBEIA(biols = biols.age, SRs = list(mur = murSR), BDs = NULL, fleets = fleets.age, 
+                     covars = NULL, indices = NULL, advice = advice, 
+                     main.ctrl, biols.ctrl.age, fleets.ctrl.age, covars.ctrl = NULL, 
+                     obs.ctrl.stk, assess.ctrl, advice.ctrl.msy.pa)
 ```
 
 
@@ -791,9 +867,11 @@ bio  <- adv  <- risk  <- NULL
 
 for(sc in scenarios){
   res_sc <- get(sc)
-  bio    <- rbind(bio, bioSum(res_sc, scenario = sc, years = ac(1997:2025)))
-  adv    <- rbind(adv, advSum(res_sc, scenario = sc, years = ac(1997:2025)))
-  risk   <- rbind(risk, riskSum(res_sc,scenario = sc, Bpa = c(mur = Bpa), Blim = c(mur = Blim), Prflim = c(fl = 0), years = ac(1997:2025)))
+  bio    <- rbind(bio, bioSum(res_sc, scenario = sc, years = ac(1997:2025), long = TRUE))
+  adv    <- rbind(adv, advSum(res_sc, scenario = sc, years = ac(1997:2025), long = TRUE))
+  risk   <- rbind(risk, riskSum(res_sc,scenario = sc, Bpa = c(mur = Bpa), 
+                                Blim = c(mur = Blim), Prflim = c(fl = 0), 
+                                years = ac(1997:2025)))
 }
 ```
 
@@ -858,6 +936,7 @@ Youen Vermard and IFREMER for providing the abundance index used to fit the SPiC
 * You can submit bug reports, questions or suggestions on this tutorial at <https://github.com/flr/doc/issues>.
 * Alternatively, send a pull request to <https://github.com/flr/doc/>.
 * For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage: <http://flr-project.org>.
+* You can submit bug reports, questions or suggestions specific to **FLBEIA** to <flbeia@azti.es>.
 
 ## Software Versions
 
@@ -874,4 +953,9 @@ This document is licensed under the [Creative Commons Attribution-ShareAlike 4.0
 
 ## Author information
 
-**Dorleta GARCIA**. AZTI Tecnalia. <https://www.azti.es>.
+**Dorleta GARCIA**. AZTI, Marine Research Unit. Txatxarramendi Ugartea z/g, 48395, Sukarrieta, Bizkaia, Spain. https://www.azti.es/.
+
+**FLBEIA team**. AZTI. Marine Reserach Unit. Txatxarramendi Ugartea z/g, 48395, Sukarrieta, Basque Country, Spain.
+**Mail** flbeia@azti.es
+
+
