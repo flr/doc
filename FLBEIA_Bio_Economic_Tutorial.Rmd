@@ -1,26 +1,18 @@
 ---
 title: "Bio-Economic simulation using FLBEIA"
+date: "`r format(Sys.time(), '%d %b, %Y')`"
 output:
-  html_document:
-    collapsed: no
-    number_sections: yes
-    theme: united
-    toc: yes
-    toc_float: yes
-  github_document:
-    mathjax: yes
-  pdf_document:
-    toc: yes
-tags:
-  license: Creative Commons Attribution-ShareAlike 4.0 International Public License
+github_document:
+  mathjax: TRUE
+pdf_document:
+  fig_width: 6 
+  fig_height: 4 
+  toc: yes
+tags: [FLBEIA bio-economy]
+license: Creative Commons Attribution-ShareAlike 4.0 International Public License
+bibliography: bibliography.bib
 header-includes: \usepackage{graphicx}
 ---
-
-<center>
-  ![FLBEIAlogo](./images/FLBEIA_logo.png)
-</center>
-
-
 
 ```{r, ini, echo=FALSE, results='hide', message=FALSE}
 # This chunk set the document environment, so it is hidden
@@ -31,6 +23,9 @@ options(width=50)
 set.seed(1423)
 ```
 
+```{r echo=FALSE, out.width='20%'}
+include_graphics('images/FLBEIA_logo.png')
+```
 
 
 # Aim 
@@ -89,8 +84,10 @@ This tutorial is focused on the bio-economic simulation of fisheries systems usi
 
 ```{r echo=TRUE, eval=TRUE}
 dir <- tempdir()
-download.file("http://www.flr-project.org/doc/src/", file.path(dir, "flbeia_bioeco.zip"))
-unzip(file.path(dir, "flbeia_bioeco.zip"), exdir=dir)
+# download.file("http://www.flr-project.org/doc/src/flbeia_bioeco.zip", 
+#               file.path(dir, "flbeia_bioeco.zip"))
+# unzip(file.path(dir, "flbeia_bioeco.zip"), exdir=dir)
+unzip("src/flbeia_bioeco.zip", exdir=dir)
 ```
 
 ```{r echo=TRUE, eval=TRUE}
@@ -512,11 +509,11 @@ fleets.ctrl.mxpr.price[['NTR_SP']][['HKE']][['pd.La0']][] <-
 fleets.ctrl.mxpr.price[['NTR_SP']][['HOM']][['pd.La0']][] <- 
   fleets.ctrl.mxpr.price[['DTS_SP']][['HOM']][['pd.La0']][] <- yearMeans(landStock(fleets, 'HOM'))
 
-fleets.ctrl.mxpr.price[['DTS_SP']][['HO8']][['pd.La0']][]   <- yearMeans(landStock(fleets, 'HO8'))
+fleets.ctrl.mxpr.price[['DTS_SP']][['HO8']][['pd.La0']][] <- yearMeans(landStock(fleets, 'HO8'))
 
-fleets.ctrl.mxpr.price[['DTS_SP']][['LDB']][['pd.La0']][]   <- yearMeans(landStock(fleets, 'LDB'))
+fleets.ctrl.mxpr.price[['DTS_SP']][['LDB']][['pd.La0']][] <- yearMeans(landStock(fleets, 'LDB'))
 
-fleets.ctrl.mxpr.price[['DTS_SP']][['MEG']][['pd.La0']][]   <- yearMeans(landStock(fleets, 'MEG'))
+fleets.ctrl.mxpr.price[['DTS_SP']][['MEG']][['pd.La0']][] <- yearMeans(landStock(fleets, 'MEG'))
 
 fleets.ctrl.mxpr.price[['NTR_SP']][['MON']][['pd.La0']][] <- 
   fleets.ctrl.mxpr.price[['DTS_SP']][['MON']][['pd.La0']][] <- yearMeans(landStock(fleets, 'MON'))
@@ -654,12 +651,13 @@ mxpr.capDyn <- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets,
 Now analyse the results using the shiny app.
 ```{r echo=TRUE, eval=FALSE, results = 'hide'}
 
-
 bio <- rbind(bioSumQ(bioSum(CnEf, scenario = 'CnEf', years = ac(2000:main.ctrl$sim.years[2]))),
              bioSumQ(bioSum(trad, scenario = 'trad', years = ac(2000:main.ctrl$sim.years[2]))),
              bioSumQ(bioSum(mxpr, scenario = 'MxPr', years = ac(2000:main.ctrl$sim.years[2]))),
-             bioSumQ(bioSum(mxpr.price, scenario = 'MxPr.Price', years = ac(2000:main.ctrl$sim.years[2]))),
-             bioSumQ(bioSum(mxpr.capDyn, scenario = 'MxPr.Capital', years = ac(2000:main.ctrl$sim.years[2]))))
+             bioSumQ(bioSum(mxpr.price, scenario = 'MxPr.Price', 
+                            years = ac(2000:main.ctrl$sim.years[2]))),
+             bioSumQ(bioSum(mxpr.capDyn, scenario = 'MxPr.Capital', 
+                            years = ac(2000:main.ctrl$sim.years[2]))))
 
 flt <- rbind(fltSumQ(fltSum(CnEf, scenario = 'CnEf', flnms = c('DTS_SP', 'NTR_SP'), 
                             years = ac(2000:main.ctrl$sim.years[2]))),
@@ -678,9 +676,11 @@ fltStk <- rbind(fltStkSumQ(fltStkSum(CnEf, scenario = 'CnEf', flnms = c('DTS_SP'
                                      years = ac(2000:main.ctrl$sim.years[2]))),
                 fltStkSumQ(fltStkSum(mxpr, scenario = 'MxPr', flnms = c('DTS_SP', 'NTR_SP'), 
                                      years = ac(2000:main.ctrl$sim.years[2]))),
-                fltStkSumQ(fltStkSum(mxpr.price, scenario = 'MxPr.Price', flnms = c('DTS_SP', 'NTR_SP'), 
+                fltStkSumQ(fltStkSum(mxpr.price, scenario = 'MxPr.Price', 
+                                     flnms = c('DTS_SP', 'NTR_SP'), 
                                      years = ac(2000:main.ctrl$sim.years[2]))),
-                fltStkSumQ(fltStkSum(mxpr.capDyn, scenario = 'MxPr.Capital', flnms = c('DTS_SP', 'NTR_SP'), 
+                fltStkSumQ(fltStkSum(mxpr.capDyn, scenario = 'MxPr.Capital', 
+                                     flnms = c('DTS_SP', 'NTR_SP'), 
                                      years = ac(2000:main.ctrl$sim.years[2]))))
 
 mt <- rbind(mtSumQ(mtSum(CnEf, scenario = 'CnEf', flnms = c('DTS_SP', 'NTR_SP'), 
@@ -700,16 +700,20 @@ mtStk <- rbind(mtStkSumQ(mtStkSum(CnEf, scenario = 'CnEf', flnms = c('DTS_SP', '
                                    years = ac(2000:main.ctrl$sim.years[2]))),
                 mtStkSumQ(mtStkSum(mxpr, scenario = 'MxPr', flnms = c('DTS_SP', 'NTR_SP'), 
                                    years = ac(2000:main.ctrl$sim.years[2]))),
-                mtStkSumQ(mtStkSum(mxpr.price, scenario = 'MxPr.Price', flnms = c('DTS_SP', 'NTR_SP'), 
+                mtStkSumQ(mtStkSum(mxpr.price, scenario = 'MxPr.Price', 
+                                   flnms = c('DTS_SP', 'NTR_SP'), 
                                    years = ac(2000:main.ctrl$sim.years[2]))),
-                mtStkSumQ(mtStkSum(mxpr.capDyn, scenario = 'MxPr.Capital', flnms = c('DTS_SP', 'NTR_SP'), 
+                mtStkSumQ(mtStkSum(mxpr.capDyn, scenario = 'MxPr.Capital', 
+                                   flnms = c('DTS_SP', 'NTR_SP'), 
                                    years = ac(2000:main.ctrl$sim.years[2]))))
 
 adv <- rbind(advSumQ(advSum(CnEf, scenario = 'CnEf', years = ac(2000:main.ctrl$sim.years[2]))),
                 advSumQ(advSum(trad, scenario = 'trad', years = ac(2000:main.ctrl$sim.years[2]))),
                 advSumQ(advSum(mxpr, scenario = 'MxPr', years = ac(2000:main.ctrl$sim.years[2]))),
-                advSumQ(advSum(mxpr.price, scenario = 'MxPr.Price', years = ac(2000:main.ctrl$sim.years[2]))),
-                advSumQ(advSum(mxpr.capDyn, scenario = 'MxPr.Capital', years = ac(2000:main.ctrl$sim.years[2]))))
+                advSumQ(advSum(mxpr.price, scenario = 'MxPr.Price', 
+                               years = ac(2000:main.ctrl$sim.years[2]))),
+                advSumQ(advSum(mxpr.capDyn, scenario = 'MxPr.Capital', 
+                               years = ac(2000:main.ctrl$sim.years[2]))))
 
 flbeiaApp(bio = bio, 
             flt = flt, 
@@ -724,5 +728,37 @@ flbeiaApp(bio = bio,
 
 
 ```
+
+
+
+# More information
+
+* You can submit bug reports, questions or suggestions on this tutorial at <https://github.com/flr/doc/issues>.
+* Alternatively, send a pull request to <https://github.com/flr/doc/>.
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage: <http://flr-project.org>.
+* You can submit bug reports, questions or suggestions specific to **FLBEIA** to <flbeia@azti.es>.
+
+## Software Versions
+
+* `r version$version.string`
+* FLCore: `r packageVersion('FLCore')`
+* FLBEIA: `r packageVersion('FLBEIA')`
+* spict: `r packageVersion('spict')`
+* fishmethods: `r packageVersion('fishmethods')`
+* **Compiled**: `r date()`
+
+## License
+
+This document is licensed under the [Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0) license.
+
+## Author information
+
+**Dorleta GARCIA**. AZTI, Marine Research Unit. Txatxarramendi Ugartea z/g, 48395, Sukarrieta, Bizkaia, Spain. https://www.azti.es/.
+
+**FLBEIA team**. AZTI. Marine Reserach Unit. Txatxarramendi Ugartea z/g, 48395, Sukarrieta, Basque Country, Spain.
+**Mail** flbeia@azti.es
+
+
+# References
 
 
