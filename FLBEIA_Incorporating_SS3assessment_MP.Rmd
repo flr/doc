@@ -3,27 +3,16 @@ title: "Including SS3 assessment within the Management Procedure of FLBEIA"
 # author: "Sonia Sanchez and FLBEIA team"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-  html_document:
-    collapsed: no
-    number_sections: yes
-    theme: united
-    toc: yes
-    toc_float: yes
   github_document:
-    mathjax: yes
-  pdf_document:
-    toc: yes
-tags:
-  license: Creative Commons Attribution-ShareAlike 4.0 International Public License
+  mathjax: TRUE
+pdf_document:
+  fig_width: 6 
+  fig_height: 4 
+  toc: yes
+tags: [FLBEIA SS3]
+license: Creative Commons Attribution-ShareAlike 4.0 International Public License
 bibliography: bibliography.bib
 ---
-
-<center>
-  ![FLBEIAlogo](./images/FLBEIA_logo.png)
-</center>
-
-<!-- Sys.setlocale("LC_TIME", "C") -->
-
 
 ```{r, ini, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
 # This chunk set the document environment, so it is hidden
@@ -32,6 +21,10 @@ knitr::opts_chunk$set(fig.align="center",
                       message = FALSE, warning = FALSE, echo = TRUE, cache = FALSE)
 options(width=50)
 set.seed(1423)
+```
+
+```{r echo=FALSE, out.width='20%'}
+include_graphics('images/FLBEIA_logo.png')
 ```
 
 
@@ -107,8 +100,9 @@ The file is downloaded into a temporary folder, and uncompressed. Simply change 
 
 ```{r, getfiles, message=FALSE}
 dir <- tempdir()
-download.file("http://www.flr-project.org/doc/src/ibPIL.zip", file.path(dir, "ibPIL.zip"))
-unzip(file.path(dir, "ibPIL.zip"), exdir=dir)
+# download.file("http://www.flr-project.org/doc/src/ibPIL.zip", file.path(dir, "ibPIL.zip"))
+# unzip(file.path(dir, "ibPIL.zip"), exdir=dir)
+unzip("src/ibPIL.zip", exdir=dir)
 ```
 
 
@@ -570,7 +564,7 @@ assess.ctrl$PIL$harvest.units <- "f"
 # Assesment control arguments
 sc <- "s0"; it <- 1
 assess.ctrl$PIL$control <- list( ref_name = "assess_ref", 
-                                 assess_dir =  file.path(getwd(),dir,"ss3R/"),
+                                 assess_dir =  file.path(dir,"ss3R/"),
                                  run_it = paste(it,"_sc",sc,sep=""))
 
 # Assess output also for assessment year
@@ -761,8 +755,8 @@ ggplot(dat,aes(year,data))+facet_wrap(~assess.year)+
                geom = "ribbon",alpha=0.2,col=NA) +
   stat_summary(fun.y = median,
                geom = "line",size=1)+
-  geom_hline(yintercept = 1)+geom_vline(xintercept = main.ctrl$sim.years[["initial"]]-1)+ylim(0.7,1.3)+
-  ggtitle("")+ylab("estim rec/real rec")
+  geom_hline(yintercept = 1)+geom_vline(xintercept = main.ctrl$sim.years[["initial"]]-1)+
+  ggtitle("")+ylim(0.7,1.3)+ylab("estim rec/real rec")
 
 
 dat <- as.data.frame(stk.MP$qs)
@@ -830,7 +824,7 @@ This document is licensed under the [Creative Commons Attribution-ShareAlike 4.0
 
 ## Author information
 
-**Leire Ibaibarriaga**. AZTI, Marine Research Unit. Txatxarramendi Ugartea z/g, 48395, Sukarrieta, Basque Country, Spain. https://www.azti.es/.
+**Leire Citores**. AZTI, Marine Research Unit. Txatxarramendi Ugartea z/g, 48395, Sukarrieta, Basque Country, Spain. https://www.azti.es/.
 
 **Sonia Sanchez**. AZTI, Marine Research Unit. Herrera Kaia, Portualdea z/g, 20110, Pasaia, Gipuzkoa, Spain. https://www.azti.es/.
 
