@@ -1,4 +1,4 @@
-## ---- ini, echo=FALSE, results='hide', message=FALSE---------------------
+## ---- ini, echo=FALSE, results='hide', message=FALSE--------------------------
 # This chunk set the document environment, so it is hidden
 library(knitr)
 source("R/ini.R")
@@ -8,27 +8,27 @@ options(width=50)
 set.seed(1423)
 
 
-## ----echo=FALSE, out.width='20%'-----------------------------------------
+## ----echo=FALSE, out.width='20%'----------------------------------------------
 include_graphics('images/FLBEIA_logo.png')
 
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 ## data(package='FLBEIA')
 
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 ## install.packages( c("ggplot2"))
 ## install.packages( c("FLCore", "FLFleet", "FLBEIA", "ggplotFL",
 ##                     "FLash", "FLAssess", "FLXSA"),
 ##                   repos="http://flr-project.org/R")
 
 
-## ----echo=FALSE, eval=FALSE----------------------------------------------
+## ----echo=FALSE, eval=FALSE---------------------------------------------------
 ## library(devtools)
 ## install_github('FLR/FLBEIA')
 
 
-## ---- pkgs, results = "hide"---------------------------------------------
+## ---- pkgs, results = "hide"--------------------------------------------------
 # This chunk loads all necessary packages.
 library(FLBEIA)
 library(FLCore)
@@ -38,21 +38,21 @@ library(FLash)
 library(ggplotFL)
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 rm(list=ls())
 data(multi)
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 ls()
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 # Show the class of each of the objects.
 sapply(ls(), function(x) class(get(x)))
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 SM <- FLBEIA(biols = multiBio,       # FLBiols object with 2 FLBiol element for stk1.
                SRs = multiSR,        # A list with 1 FLSRSim object for stk1.
                BDs = multiBD,        # A list with 1 FLBDSim object for stk2.
@@ -75,11 +75,11 @@ SM <- FLBEIA(biols = multiBio,       # FLBiols object with 2 FLBiol element for 
                                      # is obtained ("IcesHCR").
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 names(SM)
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 SM$fleets <- setUnitsNA(SM$fleets)
 SM_bio    <- bioSum(SM, long = TRUE)          # Data frame (DF) with biological indicators.
 SM_adv    <- advSum(SM, long = TRUE)          # DF with indicators related with man. advice (TAC). 
@@ -109,7 +109,7 @@ head(SM_vesselStk); unique(SM_vesselStk$indicator)
 head(SM_risk); unique(SM_risk$indicator)
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 SM_bio_l    <- bioSum(SM, long = FALSE)            
 SM_adv_l    <- advSum(SM, long = FALSE)             
 SM_flt_l    <- fltSum(SM, long = FALSE)            
@@ -130,22 +130,22 @@ head(SM_vessel_l, 2)
 head(SM_vesselStk_l, 2)
 
 
-## ----echo=TRUE, eval=TRUE, fig.width = 3.5, fig.height = 3.5-------------
+## ----echo=TRUE, eval=TRUE, fig.width = 3.5, fig.height = 3.5------------------
 #plot(SM$biols[[1]]) # There are too much data to display them correctly.
 plot(SM$stocks[[1]]) # Stock 2 is in biomass, 'plot(SM$stocks[[2]])' function does not work.
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
-# set your own working directory.
-#myWD <- "C:/use/escritorio/ExampleMulti/"
-#setwd(myWD)
-plotFLBiols(SM$biols, pdfnm = "SM")
-plotFLFleets(SM$fleets, pdfnm ="SM")
-plotfltStkSum(SM, pdfnm ="SM") 
-plotEco(SM, pdfnm ='SM')
+## ----echo=TRUE, eval=FALSE----------------------------------------------------
+## # set your own working directory.
+## #myWD <- "C:/use/escritorio/ExampleMulti/"
+## #setwd(myWD)
+## plotFLBiols(SM$biols, pdfnm = "SM")
+## plotFLFleets(SM$fleets, pdfnm ="SM")
+## plotfltStkSum(SM, pdfnm ="SM")
+## plotEco(SM, pdfnm ='SM')
 
 
-## ----echo=TRUE, fig.cex = 0.5 , eval=TRUE--------------------------------
+## ----echo=TRUE, fig.cex = 0.5 , eval=TRUE-------------------------------------
 inds <- c('catch','nVessels', 'effort', 'grossValue')
 d <- rbind(subset(SM_flt,indicator  %in% inds ))
 d$indicator <- factor( d$indicator, levels=inds)
@@ -179,7 +179,7 @@ p <- ggplot( data=d, aes(x=year, y=value, color=fleet)) +
 print(p)
 
 
-## ----echo=TRUE, results = "hide"-----------------------------------------
+## ----echo=TRUE, results = "hide"----------------------------------------------
 for (i in names(multiFl)) {
   for(j in names(multiFl[[i]]@metiers)) {
     for(k in names(multiFl[[i]]@metiers[[j]]@catches)) {
@@ -190,14 +190,14 @@ for (i in names(multiFl)) {
 }  
 
 
-## ----echo=TRUE, results = "hide"-----------------------------------------
+## ----echo=TRUE, results = "hide"----------------------------------------------
 SM <- FLBEIA(biols = multiBio,   SRs = multiSR,  BDs = multiBD, fleets = multiFl, covars = multiCv,
              indices = NULL,advice = multiAdv, main.ctrl = multiMainC, biols.ctrl = multiBioC,
              fleets.ctrl = multiFlC, covars.ctrl = multiCvC, obs.ctrl = multiObsC, assess.ctrl = multiAssC,
              advice.ctrl = multiAdvC)     
 
 
-## ----echo=TRUE, fig.cex = 0.5 , eval=TRUE--------------------------------
+## ----echo=TRUE, fig.cex = 0.5 , eval=TRUE-------------------------------------
 SM$fleets <- setUnitsNA(SM$fleets)
 SM_bio    <- bioSum(SM, long = TRUE)          # Data frame (DF) with biological indicators.
 SM_adv    <- advSum(SM, long = TRUE)          # DF with indicators related with man. advice (TAC). 
@@ -215,14 +215,14 @@ SM_risk <- riskSum(SM, stknms = names(SM$biols), Bpa= c(stk1= 135000, stk2 = 124
                    scenario = 'SM') #  DF with risk indicators (pBlim, pBpa and pPr).
 
 
-## ----echo=TRUE, fig.cex = 0.5 , eval=TRUE--------------------------------
-plotFLBiols(SM$biols, pdfnm = "SM_pricex1000")
-plotFLFleets(SM$fleets, pdfnm ="SM_pricex1000")
-plotfltStkSum(SM, pdfnm ="SM_pricex1000") 
-plotEco(SM, pdfnm ='SM_pricex1000')
+## ----echo=TRUE, fig.cex = 0.5 , eval=FALSE------------------------------------
+## plotFLBiols(SM$biols, pdfnm = "SM_pricex1000")
+## plotFLFleets(SM$fleets, pdfnm ="SM_pricex1000")
+## plotfltStkSum(SM, pdfnm ="SM_pricex1000")
+## plotEco(SM, pdfnm ='SM_pricex1000')
 
 
-## ----echo=TRUE, fig.cex = 0.5 , eval=TRUE--------------------------------
+## ----echo=TRUE, fig.cex = 0.5 , eval=TRUE-------------------------------------
 inds <- c('capacity','costs', 'grossValue', 'gva')
 d <- rbind(subset(SM_flt,indicator  %in% inds ))
 d$indicator <- factor( d$indicator, levels=inds)
@@ -240,7 +240,7 @@ p <- ggplot( data=d, aes(x=year, y=value, color=fleet)) +
 print(p)
 
 
-## ----echo=TRUE, fig.cex = 0.5 , eval=TRUE--------------------------------
+## ----echo=TRUE, fig.cex = 0.5 , eval=TRUE-------------------------------------
 inds <- c('ssb','rec', 'biomass', 'catch')
 d <- rbind(subset(SM_bio,indicator  %in% inds ))
 d$indicator <- factor( d$indicator, levels=inds)
@@ -258,12 +258,14 @@ p <- ggplot( data=d, aes(x=year, y=value, color=stock)) +
 print(p)
 
 
-## ----echo=TRUE, fig.cex = 0.5, eval=TRUE---------------------------------
-plotFLBiols(SM$biols, pdfnm = "SM_pricex1000")
-plotFLFleets(SM$fleets, pdfnm ="SM_pricex1000")
-plotfltStkSum(SM, pdfnm ="SM_pricex1000") 
-plotEco(SM, pdfnm ='SM_pricex1000')
+## ----echo=TRUE, fig.cex = 0.5, eval=FALSE-------------------------------------
+## plotFLBiols(SM$biols, pdfnm = "SM_pricex1000")
+## plotFLFleets(SM$fleets, pdfnm ="SM_pricex1000")
+## plotfltStkSum(SM, pdfnm ="SM_pricex1000")
+## plotEco(SM, pdfnm ='SM_pricex1000')
 
+
+## ----echo=TRUE, fig.cex = 0.5, eval=TRUE--------------------------------------
 inds <- c('tac')
 d <- rbind(subset(SM_adv,indicator  %in% inds ))
 d$indicator <- factor( d$indicator, levels=inds)
@@ -281,7 +283,7 @@ p <- ggplot( data=d, aes(x=year, y=value, color=stock)) +
 print(p)
 
 
-## ----echo=TRUE, results = "hide"-----------------------------------------
+## ----echo=TRUE, results = "hide"----------------------------------------------
 # Describe the price function
 multiFlC_1 <- multiFlC
 multiFlC_1$fl1$stk2$price.model <- "elasticPrice" # Set the price model.
@@ -320,7 +322,7 @@ SM_1 <- FLBEIA(biols = multiBio, SRs = multiSR, BDs = multiBD, fleets = multiFl_
                obs.ctrl = multiObsC, assess.ctrl = multiAssC, advice.ctrl = multiAdvC)
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 SM_1$fleets <- setUnitsNA(SM_1$fleets)
 SM_1_fltStk <- fltStkSum(SM_1, scenario ='elasticPrice', long = TRUE) 
 SM_x <- rbind(SM_fltStk, SM_1_fltStk)
@@ -342,7 +344,7 @@ p <- ggplot( data=d, aes(x=year, y=value, color=scenario)) +
 print(p)
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 SM_1_flt <- fltSum(SM_1, scenario ='elasticPrice', long = TRUE) 
 SM_x <- rbind(SM_flt, SM_1_flt)
 SM_x <- subset(SM_x, fleet == 'fl1')
@@ -364,7 +366,7 @@ p <- ggplot( data=d, aes(x=year, y=value, color=scenario)) +
 print(p)
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 multiFl_2 <- multiFl
 multiFl_2$fl1@fcost <- multiFl_2$fl1@fcost*(1-0.8)
 SM_2 <- FLBEIA(biols = multiBio, SRs = multiSR, BDs = multiBD, fleets = multiFl_2,
@@ -373,7 +375,7 @@ SM_2 <- FLBEIA(biols = multiBio, SRs = multiSR, BDs = multiBD, fleets = multiFl_
                obs.ctrl = multiObsC, assess.ctrl = multiAssC, advice.ctrl = multiAdvC) 
 
 
-## ----echo=TRUE, eval=TRUE, fig.width =7, fig.height = 7------------------
+## ----echo=TRUE, eval=TRUE, fig.width =7, fig.height = 7-----------------------
 SM_2$fleets <- setUnitsNA(SM_2$fleets)
 SM_2_flt    <- fltSum(SM_2, scenario = 'SM_2', long = TRUE)
 SM_x <- rbind(SM_flt, SM_2_flt)
@@ -395,7 +397,7 @@ p <- ggplot( data=d, aes(x=year, y=value, color=scenario)) +
 print(p)
 
 
-## ----echo=TRUE, , results = "hide"---------------------------------------
+## ----echo=TRUE, , results = "hide"--------------------------------------------
 multiFl_3 <- multiFl
 multiFl_3$fl2@metiers$met1@vcost <- multiFl_3$fl2@metiers$met1@vcost*(1-0.5)
 multiFl_3$fl2@metiers$met2@vcost <- multiFl_3$fl2@metiers$met2@vcost*(1-0.5)
@@ -406,7 +408,7 @@ SM_3 <- FLBEIA(biols = multiBio, SRs = multiSR, BDs = multiBD, fleets = multiFl_
                obs.ctrl = multiObsC, assess.ctrl = multiAssC, advice.ctrl = multiAdvC) 
 
 
-## ----echo=TRUE, eval=TRUE, fig.width = 7, fig.height = 7, eval=TRUE------
+## ----echo=TRUE, eval=TRUE, fig.width = 7, fig.height = 7, eval=TRUE-----------
 SM_3$fleets <- setUnitsNA(SM_3$fleets)
 SM_3_flt    <- fltSum(SM_3, scenario = 'SM_3', long = TRUE)
 
@@ -427,7 +429,7 @@ p <- ggplot( data=d, aes(x=year, y=value, color=scenario)) +
 print(p)
 
 
-## ----echo=TRUE, results = "hide"-----------------------------------------
+## ----echo=TRUE, results = "hide"----------------------------------------------
 multiFl_4 <- multiFl
 multiFl_4$fl1@crewshare[] <- 0.5
 
@@ -437,7 +439,7 @@ SM_4 <- FLBEIA(biols = multiBio, SRs = multiSR, BDs = multiBD, fleets = multiFl_
                obs.ctrl = multiObsC, assess.ctrl = multiAssC, advice.ctrl = multiAdvC) 
 
 
-## ----echo=TRUE, eval=TRUE, fig.width = 7, fig.height = 7, eval=TRUE------
+## ----echo=TRUE, eval=TRUE, fig.width = 7, fig.height = 7, eval=TRUE-----------
 SM_4$fleets <- setUnitsNA(SM_4$fleets)
 SM_4_flt    <- fltSum(SM_4, scenario = 'SM_4', long = TRUE)
 
@@ -458,7 +460,7 @@ p <- ggplot( data=d, aes(x=year, y=value, color=scenario)) +
 print(p)
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 
 # SCD2
 SCD2 <- 
@@ -513,7 +515,9 @@ units(a) <- units(b)
       year + 1]/(covars[["MaxDays"]][flnm, year + 1, ])
   }
   return(list(fleets = fleets, covars = covars))
-}
+  }
+
+list2env(list(SCD2=SCD2), globalenv())
 
 
 # fl1 has fixed effort
@@ -531,7 +535,7 @@ SM_5 <- FLBEIA(biols = multiBio, SRs = multiSR, BDs = multiBD, fleets = multiFl,
                 obs.ctrl = multiObsC, assess.ctrl = multiAssC, advice.ctrl = multiAdvC)
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 SM_5$fleets <- setUnitsNA(SM_5$fleets)
 SM_5_flt    <- fltSum(SM_5, scenario = 'SM_5', long = TRUE)
 SM_x <- rbind( SM_flt, SM_5_flt )
@@ -554,7 +558,7 @@ p <- ggplot( data=d, aes(x=year, y=value, color=scenario)) +
 print(p)
 
 
-## ----echo=TRUE,  eval=FALSE----------------------------------------------
+## ----echo=TRUE,  eval=FALSE---------------------------------------------------
 ## scnms <-c('SM', 'SM_1', 'SM_2', 'SM_3', 'SM_4', 'SM_5')
 ## stknms <- unique(SM_bio$stock)
 ## RefPts <- expand.grid(indicator=c("Bmsy", "Fmsy", "Bpa", "Blim", "Fpa", "Flim"),

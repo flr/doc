@@ -1,4 +1,4 @@
-## ---- ini, echo=FALSE, results='hide', message=FALSE---------------------
+## ---- ini, echo=FALSE, results='hide', message=FALSE--------------------------
 # This chunk set the document environment, so it is hidden
 library(knitr)
 knitr::opts_chunk$set(fig.align="center",
@@ -7,23 +7,23 @@ options(width=50)
 set.seed(1423)
 
 
-## ----echo=FALSE, out.width='20%'-----------------------------------------
+## ----echo=FALSE, out.width='20%'----------------------------------------------
 include_graphics('images/FLBEIA_logo.png')
 
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 ## install.packages( c("ggplot2"))
 ## install.packages( c("FLCore", "FLFleet", "FLBEIA",
 ##                     "FLash", "FLAssess", "FLXSA"),
 ##                   repos="http://flr-project.org/R")
 
 
-## ---- pkgs, results = "hide"---------------------------------------------
+## ---- pkgs, results = "hide"--------------------------------------------------
 library(FLBEIA)
 library(ggplot2)
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 tdir <- tempdir()
 # download.file("http://www.flr-project.org/doc/src/flbeia_mixed_fisheries.zip", 
 #               file.path(tdir, "flbeia_mixed_fisheries.zip"))
@@ -32,27 +32,27 @@ unzip("src/flbeia_mixed_fisheries.zip", exdir=tdir)
 tdir <- file.path(tdir,"flbeia_mixed_fisheries")
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 load(file.path(tdir,'Smart_Cond_II.Rdata'))
 stknms <- names(biols)
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 flq1 <- FLQuant(1,dim = c(1,26), dimnames = list(quant = 'all', year = 2000:2025))
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 hke.sr <- FLSRsim(rec = biols[['HKE']]@n[1,], ssb = ssb(biols[['HKE']]), uncertainty = flq1, 
                   proportion = flq1, model = 'segreg',name = 'HKE')
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 hke.sr <- FLSRsim(rec = biols[['HKE']]@n[1,], ssb = ssb(biols[['HKE']]), uncertainty = flq1, 
                   proportion = flq1, model = 'geomean',name = 'HKE')
 hke.sr@params[] <- 92476
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 ldb.sr <- FLSRsim(rec = biols[['LDB']]@n[1,], ssb = ssb(biols[['LDB']]), uncertainty = flq1, 
                   proportion = flq1, model = 'geomean',name = 'LDB')
 ldb.sr@params[] <- 53614
@@ -66,18 +66,18 @@ mon.sr <- FLSRsim(rec = biols[['MON']]@n[1,], ssb = ssb(biols[['MON']]), uncerta
 mon.sr@params[] <- 760
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 SRs <- list(HKE = hke.sr, LDB = ldb.sr, MEG = meg.sr, MON = mon.sr)
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 advice <-  list(TAC = FLQuant(NA, dimnames= list(stocks = stknms, year = 2000:2025)),
                 quota.share = lapply(stknms, function(x){
                         FLQuant(NA, 
                             dimnames = list(fleets = names(fleets), year = 2000:2025))}))
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 advice$TAC['HKE', ac(2018)] <- 9258
 advice$TAC['LDB', ac(2018)] <- 1151
 advice$TAC['MEG', ac(2018)] <- 236
@@ -90,7 +90,7 @@ advice$TAC['MEG', ac(2019:2025)] <- 399
 advice$TAC['MON', ac(2019:2025)] <- 2153
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 names(advice$quota.share) <- stknms
 
 for(st in stknms){
@@ -105,18 +105,18 @@ for(st in stknms){
 }}
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 main.ctrl                  <- list()
 main.ctrl$sim.years        <- c(initial = 2018, final = 2025)
 main.ctrl$SimultaneousMngt <- FALSE
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 growth.model     <- c(rep('ASPG',4))
 biols.ctrl       <- create.biols.ctrl (stksnames=stknms,growth.model= growth.model)
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 n.flts.stks      <- sapply(sapply(fleets, catchNames), length) 
 flts.stksnames   <- NULL
 for(f in 1:length(fleets))  flts.stksnames <- c(flts.stksnames, catchNames(fleets[[f]])) 
@@ -129,7 +129,7 @@ capital.models <-  rep('fixedCapital', length(fleets))
 flq <- FLQuant(dimnames= list(year = 2000:2025, iter =  1))     
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 fleets.ctrl.Esq <- create.fleets.ctrl(
                           fls = names(fleets),
                    n.fls.stks = n.flts.stks,
@@ -148,7 +148,7 @@ fleets.ctrl.Esq <- create.fleets.ctrl(
 for(fl in names(fleets)) fleets.ctrl.Esq[[fl]][['effort.model']] <- 'fixedEffort'
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 fleets.ctrl.max <- create.fleets.ctrl(
                           fls = names(fleets), 
                    n.fls.stks = n.flts.stks, 
@@ -172,7 +172,7 @@ fleets.ctrl.max <- create.fleets.ctrl(
            effort.restr.OTH_OTH = 'max', effort.restr.SP_PTB = 'max') 
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 fleets.ctrl.min <- create.fleets.ctrl(
                           fls = names(fleets), 
                    n.fls.stks = n.flts.stks, 
@@ -196,7 +196,7 @@ fleets.ctrl.min <- create.fleets.ctrl(
            effort.restr.OTH_OTH = 'min', effort.restr.SP_PTB = 'min') 
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 fleets.ctrl.HKE <- create.fleets.ctrl(
                           fls = names(fleets), 
                    n.fls.stks = n.flts.stks, 
@@ -220,7 +220,7 @@ fleets.ctrl.HKE <- create.fleets.ctrl(
            effort.restr.OTH_OTH = 'HKE', effort.restr.SP_PTB = 'HKE') 
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 fleets.ctrl.LDB <- create.fleets.ctrl(
                           fls = names(fleets), 
                    n.fls.stks = n.flts.stks, 
@@ -244,7 +244,7 @@ fleets.ctrl.LDB <- create.fleets.ctrl(
            effort.restr.OTH_OTH = 'LDB', effort.restr.SP_PTB = 'LDB') 
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 fleets.ctrl.MON <- create.fleets.ctrl(
                           fls = names(fleets), 
                    n.fls.stks = n.flts.stks, 
@@ -268,7 +268,7 @@ fleets.ctrl.MON <- create.fleets.ctrl(
            effort.restr.OTH_OTH = 'MON', effort.restr.SP_PTB = 'MON') 
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 fleets.ctrl.MEG <- create.fleets.ctrl(
                           fls = names(fleets), 
                    n.fls.stks = n.flts.stks, 
@@ -292,36 +292,36 @@ fleets.ctrl.MEG <- create.fleets.ctrl(
            effort.restr.OTH_OTH = 'MEG', effort.restr.SP_PTB = 'MEG') 
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 covars.ctrl <- NULL
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 obs.ctrl         <- create.obs.ctrl(stksnames = stknms,  
                                     stkObs.models = rep('NoObsStock',length(stknms)))
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 assess.ctrl      <- create.assess.ctrl(stksnames = stknms, 
                                        assess.models = rep('NoAssessment',length(stknms)))
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 advice.ctrl   <- create.advice.ctrl(stksnames = stknms, 
                                     HCR.models = rep('fixedAdvice', length(stknms)))
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 main.ctrl[[1]][2] <- 2020
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 advice.hke <- advice
 advice.hke$TAC['HKE', '2018'] <- 16709
 advice.hke$TAC['HKE', '2019'] <- 8281 
 
 
-## ----echo=TRUE, eval=TRUE, results = 'hide'------------------------------
+## ----echo=TRUE, eval=TRUE, results = 'hide'-----------------------------------
 for(fl in names(fleets)) fleets[[fl]]@capacity[] <- 1e12
 
 hke <- FLBEIA(biols = biols, 
@@ -339,23 +339,23 @@ hke <- FLBEIA(biols = biols,
         advice.ctrl = advice.ctrl) 
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 hke.sum    <- bioSum(hke, years = ac(2000:2020), long = TRUE)
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 ssb1719_wg_hke <- c(23885, 23904, 36104) 
 f1718_wg_hke <- c(0.6,0.25)
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 round(subset(hke.sum, year %in% 2018:2020 & indicator %in% c('ssb') & stock == 'HKE')$value/
         ssb1719_wg_hke,2)
 round(subset(hke.sum, year %in% 2018:2019 & indicator %in% c('f') & stock == 'HKE')$value/
         f1718_wg_hke,2)
 
 
-## ----echo=TRUE, eval=TRUE, results = 'hide'------------------------------
+## ----echo=TRUE, eval=TRUE, results = 'hide'-----------------------------------
 advice.ldb <- advice
 advice.ldb$TAC['LDB', '2018'] <- 2159  # catch corresponding to Fsq
 advice.ldb$TAC['LDB', '2019'] <- 1633  # TAC in 2019
@@ -378,7 +378,7 @@ ldb <- FLBEIA(biols = biols,
 ldb.sum    <- bioSum(ldb, years = ac(2000:2020), long = TRUE)
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 ssb1719_wg_ldb <- c(8821, 8836, 9286) 
 f1718_wg_ldb <- c(0.28,0.193)
 
@@ -388,7 +388,7 @@ round(subset(ldb.sum, year %in% 2018:2019 & indicator %in% c('f') & stock == 'LD
         f1718_wg_ldb,2)
 
 
-## ----echo=TRUE, eval=TRUE, results = 'hide'------------------------------
+## ----echo=TRUE, eval=TRUE, results = 'hide'-----------------------------------
 advice.meg <- advice
 advice.meg$TAC['MEG', '2018'] <- 642  # catch corresponding to Fsq
 advice.meg$TAC['MEG', '2019'] <- 399  # TAC in 2019
@@ -414,14 +414,14 @@ ssb1719_wg_meg <- c(2504, 2241, 2129)
 f1718_wg_meg   <- c(0.29,0.191)
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 round(subset(meg.sum, year %in% 2018:2020 & indicator %in% c('ssb') & stock == 'MEG')$value/
         ssb1719_wg_meg,2)
 round(subset(meg.sum, year %in% 2018:2019 & indicator %in% c('f') & stock == 'MEG')$value/
         f1718_wg_meg,2)
 
 
-## ----echo=TRUE, eval=TRUE, results = 'hide'------------------------------
+## ----echo=TRUE, eval=TRUE, results = 'hide'-----------------------------------
 advice.mon <- advice
 advice.mon$TAC['MON', '2018'] <- 1556 # catch corresponding to Fsq
 advice.mon$TAC['MON', '2019'] <- 2153 # TAC 2019
@@ -449,14 +449,14 @@ ssb1719_wg_mon <- c(11839, 11552, 10071)
 f1718_wg_mon   <- c(0.143,0.24)
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 round(subset(mon.sum, year %in% 2018:2020 & indicator %in% c('ssb') & stock == 'MON')$value/
         ssb1719_wg_mon,2)
 round(subset(mon.sum, year %in% 2018:2019 & indicator %in% c('f') & stock == 'MON')$value/
         f1718_wg_mon,2)
 
 
-## ----echo=TRUE, eval=TRUE, results = 'hide'------------------------------
+## ----echo=TRUE, eval=TRUE, results = 'hide'-----------------------------------
 Esq <- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets, 
               covars = NULL, indices = NULL, advice = advice, 
               main.ctrl = main.ctrl, biols.ctrl = biols.ctrl, fleets.ctrl = fleets.ctrl.Esq, 
@@ -464,7 +464,7 @@ Esq <- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets,
               advice.ctrl = advice.ctrl) 
 
 
-## ----echo=TRUE, eval=TRUE, results = 'hide'------------------------------
+## ----echo=TRUE, eval=TRUE, results = 'hide'-----------------------------------
 max <- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets, 
               covars = NULL, indices = NULL, advice = advice, 
               main.ctrl = main.ctrl, biols.ctrl = biols.ctrl, fleets.ctrl = fleets.ctrl.max, 
@@ -472,7 +472,7 @@ max <- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets,
               advice.ctrl = advice.ctrl) 
 
 
-## ----echo=TRUE, eval=TRUE, results = 'hide'------------------------------
+## ----echo=TRUE, eval=TRUE, results = 'hide'-----------------------------------
 min <- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets, 
               covars = NULL, indices = NULL, advice = advice, 
               main.ctrl = main.ctrl, biols.ctrl = biols.ctrl, fleets.ctrl = fleets.ctrl.min, 
@@ -480,7 +480,7 @@ min <- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets,
               advice.ctrl = advice.ctrl)
 
 
-## ----echo=TRUE, eval=TRUE, results = 'hide'------------------------------
+## ----echo=TRUE, eval=TRUE, results = 'hide'-----------------------------------
 hke <- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets, 
               covars = NULL, indices = NULL, advice = advice, 
               main.ctrl = main.ctrl, biols.ctrl = biols.ctrl, fleets.ctrl = fleets.ctrl.HKE, 
@@ -488,7 +488,7 @@ hke <- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets,
               advice.ctrl = advice.ctrl) 
 
 
-## ----echo=TRUE, eval=TRUE, results = 'hide'------------------------------
+## ----echo=TRUE, eval=TRUE, results = 'hide'-----------------------------------
 ldb <- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets, 
               covars = NULL, indices = NULL, advice = advice, 
               main.ctrl = main.ctrl, biols.ctrl = biols.ctrl, fleets.ctrl = fleets.ctrl.LDB, 
@@ -496,7 +496,7 @@ ldb <- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets,
               advice.ctrl = advice.ctrl) 
 
 
-## ----echo=TRUE, eval=TRUE, results = 'hide'------------------------------
+## ----echo=TRUE, eval=TRUE, results = 'hide'-----------------------------------
 meg <- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets, 
               covars = NULL, indices = NULL, advice = advice, 
               main.ctrl = main.ctrl, biols.ctrl = biols.ctrl, fleets.ctrl = fleets.ctrl.MEG, 
@@ -504,7 +504,7 @@ meg <- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets,
               advice.ctrl = advice.ctrl) 
 
 
-## ----echo=TRUE, eval=TRUE, results = 'hide'------------------------------
+## ----echo=TRUE, eval=TRUE, results = 'hide'-----------------------------------
 mon <- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets, 
               covars = NULL, indices = NULL, advice = advice, 
               main.ctrl = main.ctrl, biols.ctrl = biols.ctrl, fleets.ctrl = fleets.ctrl.MON, 
@@ -512,7 +512,7 @@ mon <- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets,
               advice.ctrl = advice.ctrl) 
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 bio <- rbind(bioSum(max, scenario = 'max', years = ac(2019), long = TRUE), 
              bioSum(min, scenario = 'min', years = ac(2019), long = TRUE),
              bioSum(hke, scenario = 'hke', years = ac(2019), long = TRUE), 
@@ -522,7 +522,7 @@ bio <- rbind(bioSum(max, scenario = 'max', years = ac(2019), long = TRUE),
              bioSum(Esq, scenario = 'Esq', years = ac(2019), long = TRUE))
 
 
-## ----echo=TRUE, eval=TRUE, fig.height = 20/2.54--------------------------
+## ----echo=TRUE, eval=TRUE, fig.height = 20/2.54-------------------------------
 nsc <- 7
 nst <- 4
 scnms <- unique(bio$scenario)

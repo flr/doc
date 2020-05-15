@@ -1,4 +1,4 @@
-## ---- ini, echo=FALSE, results='hide', message=FALSE---------------------
+## ---- ini, echo=FALSE, results='hide', message=FALSE--------------------------
 # This chunk set the document environment, so it is hidden
 library(knitr)
 source("R/ini.R")
@@ -8,21 +8,21 @@ options(width=50)
 set.seed(1423)
 
 
-## ----echo=FALSE, out.width='20%'-----------------------------------------
+## ----echo=FALSE, out.width='20%'----------------------------------------------
 include_graphics('images/FLBEIA_logo.png')
 
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 ## data(package='FLBEIA')
 
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 ## install.packages( c("ggplot2"))
 ## install.packages( c("FLCore", "FLBEIA", "FLFleets", "FLash", "FLAssess", "FLXSA", "ggplotFL"),
 ##                   repos="http://flr-project.org/R")
 
 
-## ---- pkgs, results = "hide"---------------------------------------------
+## ---- pkgs, results = "hide"--------------------------------------------------
 # Load all necessary packages.
 library(FLBEIA)
 library(FLXSA)
@@ -30,19 +30,19 @@ library(FLash)
 library(ggplotFL)
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 # Load the dataset
 rm(list=ls())  # empty the workspace
 data(oneIt) # load the dataset
 
 
-## ----echo=TRUE, eval=FALSE-----------------------------------------------
+## ----echo=TRUE, eval=FALSE----------------------------------------------------
 ## # Objects with info related to management advice
 ## oneItAdv  # info on TAC/TAE and quota share
 ## oneItAdvC # control object related to advice
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 # required an index in biomass:
 ls()
 
@@ -55,7 +55,7 @@ summary(oneItObsCIndBio$stk1)
 oneItObsCIndBio$stk1$indObs
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 # set the control parameters for the new HCR
 oneItAdvC2 <- oneItAdvC
 stk1.advC <- list()
@@ -75,7 +75,7 @@ oneItObsCIndBio$stk1$stkObs$stkObs.model <- 'NoObsStock'
 oneItAdvC2[['stk1']][["index"]] <- name(oneItIndBio$stk1$idBio)
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 s1 <- FLBEIA( biols       = oneItBio,   # FLBiols: FLBiol for stk1.
               SRs         = oneItSR,    # List: FLSRSim for stk1.
               BDs         = NULL,       # Not population with biomass dynamics.
@@ -93,7 +93,7 @@ s1 <- FLBEIA( biols       = oneItBio,   # FLBiols: FLBiol for stk1.
               advice.ctrl = oneItAdvC)  # List: rule for TAC advice ("IcesHCR").
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 s1a <- FLBEIA( biols       = oneItBio,    # FLBiols: FLBiol for stk1.
                SRs         = oneItSR,     # List: FLSRSim for stk1.
                BDs         = NULL,        # Not population with biomass dynamics.
@@ -111,26 +111,26 @@ s1a <- FLBEIA( biols       = oneItBio,    # FLBiols: FLBiol for stk1.
                advice.ctrl = oneItAdvC2)  # List: rule for TAC advice ("AnnexIV").
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 Blim.stk1 <- 800
 Bpa.stk1  <- 1200
 
 
-## ----echo=TRUE, eval=TRUE, fig.width = 8, fig.height = 5-----------------
+## ----echo=TRUE, eval=TRUE, fig.width = 8, fig.height = 5----------------------
 # - stock summary
 s10_bio <- rbind( bioSum(s1), 
                   bioSum(s1a, scenario='a4')) # biological indicators
 plotbioSum( s10_bio, Blim=Blim.stk1, Bpa=Bpa.stk1, proj.yr=oneItMainC$sim.years[['initial']])
 
 
-## ----echo=TRUE, eval=TRUE, fig.width = 8, fig.height = 5-----------------
+## ----echo=TRUE, eval=TRUE, fig.width = 8, fig.height = 5----------------------
 # - economic summary
 s10_flt <- rbind( fltSum(s1), 
                   fltSum(s1a, scenario='a4')) # indicators at fleet level
 plotfltSum( s10_flt, proj.yr=oneItMainC$sim.years[['initial']])
 
 
-## ----echo=TRUE, eval=TRUE, fig.width = 7, fig.height = 4-----------------
+## ----echo=TRUE, eval=TRUE, fig.width = 7, fig.height = 4----------------------
 # - risk summary
 s1_risk  <- riskSum(  s1, Bpa = c(stk1=Bpa.stk1), Blim = c(stk1=Blim.stk1), Prflim = c(fl1 = 0))
 s1a_risk <- riskSum( s1a, Bpa = c(stk1=Bpa.stk1), Blim = c(stk1=Blim.stk1), Prflim = c(fl1 = 0), 
@@ -150,18 +150,18 @@ p <- ggplot( data=s10_risk, aes(x=year, y=value, color=scenario)) +
 print(p)
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 data(oneIt) # load the dataset
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 # Fleet dynamics: effort model
 oneItFlC$fl1$effort.model
 # reset it to fixed effort
 oneItFlC$fl1$effort.model <- 'fixedEffort'
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 # Define the FLFleetsExt object for the alternative scenarios
 oneItFl2a <- oneItFl
 
@@ -175,7 +175,7 @@ oneItFl2a[[1]]@effort[,sim.yrs,] <-
   0.80 * yearMeans(oneItFl2a[[1]]@effort[,hist.yrs[length(hist.yrs)+(-2:0)],])
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 s2 <- FLBEIA( biols       = oneItBio,   # FLBiols: FLBiol for stk1.
               SRs         = oneItSR,    # List: FLSRSim for stk1.
               BDs         = NULL,       # Not population with biomass dynamics.
@@ -193,7 +193,7 @@ s2 <- FLBEIA( biols       = oneItBio,   # FLBiols: FLBiol for stk1.
               advice.ctrl = oneItAdvC)  # List: rule for TAC advice ("IcesHCR").
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 s2a <- FLBEIA( biols       = oneItBio,   # FLBiols: FLBiol for stk1.
                SRs         = oneItSR,    # List: FLSRSim for stk1.
                BDs         = NULL,       # Not population with biomass dynamics.
@@ -211,26 +211,26 @@ s2a <- FLBEIA( biols       = oneItBio,   # FLBiols: FLBiol for stk1.
                advice.ctrl = oneItAdvC)  # List: rule for TAC advice ("IcesHCR").
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 Blim.stk1 <- 800
 Bpa.stk1  <- 1200
 
 
-## ----echo=TRUE, eval=TRUE, fig.width = 8, fig.height = 5-----------------
+## ----echo=TRUE, eval=TRUE, fig.width = 8, fig.height = 5----------------------
 # - stock summary
 s20_bio <- rbind( bioSum(s2), 
                   bioSum(s2a, scenario='E20')) # biological indicators
 plotbioSum( s20_bio, Blim=Blim.stk1, Bpa=Bpa.stk1, proj.yr=oneItMainC$sim.years[['initial']])
 
 
-## ----echo=TRUE, eval=TRUE, fig.width = 8, fig.height = 5-----------------
+## ----echo=TRUE, eval=TRUE, fig.width = 8, fig.height = 5----------------------
 # - economic summary
 s20_flt <- rbind( fltSum(s2), 
                   fltSum(s2a, scenario='E20')) # indicators at fleet level
 plotfltSum( s20_flt, proj.yr=oneItMainC$sim.years[['initial']])
 
 
-## ----echo=TRUE, eval=TRUE, fig.width = 7, fig.height = 4-----------------
+## ----echo=TRUE, eval=TRUE, fig.width = 7, fig.height = 4----------------------
 # - risk summary
 s2_risk  <- riskSum(  s2, Bpa = c(stk1=Bpa.stk1), Blim = c(stk1=Blim.stk1), Prflim = c(fl1 = 0))
 s2a_risk <- riskSum( s2a, Bpa = c(stk1=Bpa.stk1), Blim = c(stk1=Blim.stk1), Prflim = c(fl1 = 0), 
@@ -250,11 +250,11 @@ p <- ggplot( data=s20_risk, aes(x=year, y=value, color=scenario)) +
 print(p)
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 data(oneIt) # load the dataset
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 # summary(oneItFl)
 names(oneItFl)                                    # only one fleet (fl1)
 names(oneItFl[['fl1']]@metiers)                   # with an unique metier (met1) 
@@ -262,7 +262,7 @@ names(oneItFl[['fl1']]@metiers[['met1']]@catches) # targeting one stock (stk1)
 # oneItFl[['fl1']]@metiers[['met1']]@catches[['stk1']]@catch.q
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 # Define the FLFleetsExt object for the alternative scenarios
 
 # Check simulation and historic years
@@ -275,7 +275,7 @@ oneItFl3a <- oneItFl
 oneItFl3a[['fl1']]@metiers[['met1']]@catches[['stk1']]@catch.q[1:6,sim.yrs,] <- 0
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 s3 <- FLBEIA( biols       = oneItBio,   # FLBiols: FLBiol for stk1.
               SRs         = oneItSR,    # List: FLSRSim for stk1.
               BDs         = NULL,       # Not population with biomass dynamics.
@@ -293,7 +293,7 @@ s3 <- FLBEIA( biols       = oneItBio,   # FLBiols: FLBiol for stk1.
               advice.ctrl = oneItAdvC)  # List: rule for TAC advice ("IcesHCR").
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 s3a <- FLBEIA( biols       = oneItBio,   # FLBiols: FLBiol for stk1.
                SRs         = oneItSR,    # List: FLSRSim for stk1.
                BDs         = NULL,       # Not population with biomass dynamics.
@@ -311,26 +311,26 @@ s3a <- FLBEIA( biols       = oneItBio,   # FLBiols: FLBiol for stk1.
                advice.ctrl = oneItAdvC)  # List: rule for TAC advice ("IcesHCR").
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 Blim.stk1 <- 800
 Bpa.stk1  <- 1200
 
 
-## ----echo=TRUE, eval=TRUE, fig.width = 8, fig.height = 5-----------------
+## ----echo=TRUE, eval=TRUE, fig.width = 8, fig.height = 5----------------------
 # - stock summary
 s30_bio <- rbind( bioSum(s3), 
                   bioSum(s3a, scenario='netBig')) # biological indicators
 plotbioSum( s30_bio, Blim=Blim.stk1, Bpa=Bpa.stk1, proj.yr=oneItMainC$sim.years[['initial']])
 
 
-## ----echo=TRUE, eval=TRUE, fig.width = 8, fig.height = 5-----------------
+## ----echo=TRUE, eval=TRUE, fig.width = 8, fig.height = 5----------------------
 # - economic summary
 s30_flt <- rbind( fltSum(s3), 
                   fltSum(s3a, scenario='netBig')) # indicators at fleet level
 plotfltSum( s30_flt, proj.yr=oneItMainC$sim.years[['initial']])
 
 
-## ----echo=TRUE, eval=TRUE, fig.width = 7, fig.height = 4-----------------
+## ----echo=TRUE, eval=TRUE, fig.width = 7, fig.height = 4----------------------
 # - risk summary
 s3_risk  <- riskSum(  s3, Bpa = c(stk1=Bpa.stk1), Blim = c(stk1=Blim.stk1), Prflim = c(fl1 = 0))
 s3a_risk <- riskSum( s3a, Bpa = c(stk1=Bpa.stk1), Blim = c(stk1=Blim.stk1), Prflim = c(fl1 = 0), 
@@ -350,11 +350,11 @@ p <- ggplot( data=s30_risk, aes(x=year, y=value, color=scenario)) +
 print(p)
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 data(multi) # load the dataset
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 # summary(multiFl)
 names(multiFl)                                    # two fleets (fl1, fl2)
 names(multiFl[['fl1']]@metiers)                   # fl1: with two metiers (met1, met2) 
@@ -365,11 +365,11 @@ names(multiFl$fl2@metiers$met1@catches)           # fl2_met1: targeting 2 stocks
 names(multiFl$fl2@metiers$met2@catches)           # fl2_met1: targeting 2 stocks (stk1, stk2)
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 names(multiFl$fl1@metiers) <- names(multiFl$fl2@metiers) <- c('metN', 'metS')
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 # Define the FLFleetsExt object for the alternative scenarios
 
 # Check simulation and historic years
@@ -393,7 +393,7 @@ multiFl4b[['fl1']]@effort[,sim.yrs,,3,] <- 0
 multiFl4b[['fl2']]@effort[,sim.yrs,,3,] <- 0
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 s4 <- FLBEIA( biols       = multiBio,   # FLBiols: FLBiol for stk1 and stk2.
               SRs         = multiSR,    # List: FLSRSim for stk1.
               BDs         = multiBD,    # List: FLBDSim for stk2.
@@ -411,7 +411,7 @@ s4 <- FLBEIA( biols       = multiBio,   # FLBiols: FLBiol for stk1 and stk2.
               advice.ctrl = multiAdvC)  # List: rule for TAC advice ("IcesHCR").
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 s4a <- FLBEIA( biols       = multiBio,  # FLBiols: FLBiol for stk1 and stk2.
                SRs         = multiSR,    # List: FLSRSim for stk1.
                BDs         = multiBD,    # List: FLBDSim for stk2.
@@ -429,7 +429,7 @@ s4a <- FLBEIA( biols       = multiBio,  # FLBiols: FLBiol for stk1 and stk2.
                advice.ctrl = multiAdvC)  # List: rule for TAC advice ("IcesHCR").
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 s4b <- FLBEIA( biols       = multiBio,  # FLBiols: FLBiol for stk1 and stk2.
                SRs         = multiSR,    # List: FLSRSim for stk1.
                BDs         = multiBD,    # List: FLBDSim for stk2.
@@ -447,14 +447,14 @@ s4b <- FLBEIA( biols       = multiBio,  # FLBiols: FLBiol for stk1 and stk2.
                advice.ctrl = multiAdvC)  # List: rule for TAC advice ("IcesHCR").
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 Blim.stk1 <- 800
 Bpa.stk1  <- 1200
 Blim.stk2 <- 50000
 Bpa.stk2  <- 65000
 
 
-## ----echo=TRUE, eval=TRUE, fig.width = 8, fig.height = 5-----------------
+## ----echo=TRUE, eval=TRUE, fig.width = 8, fig.height = 5----------------------
 # - stock summary
 s40_bio <- rbind( bioSum(s4, scenario='closeNO'), 
                   bioSum(s4a, scenario='closeNorth'), 
@@ -465,7 +465,7 @@ plotbioSum( s40_bio, stk.nam='stk2', Blim=Blim.stk2, Bpa=Bpa.stk2,
             proj.yr=multiMainC$sim.years[['initial']])
 
 
-## ----echo=TRUE, eval=TRUE, fig.width = 8, fig.height = 5-----------------
+## ----echo=TRUE, eval=TRUE, fig.width = 8, fig.height = 5----------------------
 # - economic summary at metier level
 s40_mt <- rbind( mtSum(s4, scenario='closeNO', long = TRUE), 
                  mtSum(s4a, scenario='closeNorth', long = TRUE), 
@@ -483,7 +483,7 @@ p <- ggplot( data=s40_mt, aes(x=year, y=value, color=scenario)) +
 print(p)
 
 
-## ----echo=TRUE, eval=TRUE, fig.width = 7, fig.height = 4-----------------
+## ----echo=TRUE, eval=TRUE, fig.width = 7, fig.height = 4----------------------
 # - risk summary
 s4_risk  <- riskSum( s4, Bpa = c(stk1=Bpa.stk1,stk2=Bpa.stk2), 
                      Blim = c(stk1=Blim.stk1,stk2=Blim.stk2), 
@@ -518,7 +518,7 @@ p <- ggplot( data=subset(s40_risk,indicator!='pPrflim'), aes(x=year, y=value, co
 print(p)
 
 
-## ----echo=TRUE, eval=FALSE-----------------------------------------------
+## ----echo=TRUE, eval=FALSE----------------------------------------------------
 ## 
 ## # EXERCISE 1
 ## ##############

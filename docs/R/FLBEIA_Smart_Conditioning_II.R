@@ -1,4 +1,4 @@
-## ---- ini, echo=FALSE, results='hide', message=FALSE---------------------
+## ---- ini, echo=FALSE, results='hide', message=FALSE--------------------------
 # This chunk set the document environment, so it is hidden
 library(knitr)
 knitr::opts_chunk$set(fig.align="center",
@@ -7,25 +7,24 @@ options(width=50)
 set.seed(1423)
 
 
-## ----echo=FALSE, out.width='20%'-----------------------------------------
+## ----echo=FALSE, out.width='20%'----------------------------------------------
 include_graphics('images/FLBEIA_logo.png')
 
 
-## ----install, eval=FALSE-------------------------------------------------
-## install.packages( c("ggplot2", "XLConnect", "XLConnectJars"))
+## ----install, eval=FALSE------------------------------------------------------
+## install.packages( c("ggplot2", "XLConnect"))
 ## install.packages( c("FLCore", "FLFleet", "FLBEIA",
 ##                     "FLash", "FLAssess", "FLXSA"),
 ##                   repos="http://flr-project.org/R")
 
 
-## ----libraries, pkgs, results = "hide"-----------------------------------
+## ----libraries, pkgs, results = "hide"----------------------------------------
 library(FLBEIA)
 library(XLConnect)
-library(XLConnectJars)
 library(plyr)
 
 
-## ----data, echo=TRUE, eval=TRUE------------------------------------------
+## ----data, echo=TRUE, eval=TRUE-----------------------------------------------
 tdir <- tempdir()
 # download.file("http://www.flr-project.org/doc/src/flbeia_smart_cond_II.zip", 
 #               file.path(dir, "flbeia_smart_cond_II.zip"))
@@ -34,32 +33,32 @@ unzip("src/flbeia_smart_cond_II.zip", exdir=tdir)
 tdir <- file.path(tdir,"flbeia_data_smart_cond_II")
 
 
-## ----biol, echo=TRUE, eval=TRUE------------------------------------------
+## ----biol, echo=TRUE, eval=TRUE-----------------------------------------------
 stknms <- c('HKE', 'LDB', 'MEG', 'MON')
 
 hke <- create.biol.arrays(file.path(tdir,'stocks/HKE2017.xlsx'), name = 'HKE',
                    ages = 0:15, hist.yrs = 1982:2017 , sim.yrs = 2018:2025, 
-                   fbar = c(1,3), mean.yrs = 2015:2017, excel = TRUE)
+                   fbar = c(1,3), mean.yrs = 2015:2017, source = 'excel')
 
 mon <- create.biol.arrays(file.path(tdir,'stocks/MON2017.xlsx'), name = 'MON',
                           ages = 0:30, hist.yrs = 1980:2017 , sim.yrs = 2018:2025,
-                           fbar = c(1,8), mean.yrs = 2015:2017,  excel = TRUE)
+                           fbar = c(1,8), mean.yrs = 2015:2017,  source = 'excel')
 ldb <- create.biol.arrays(file.path(tdir,'stocks/LDB2017.xlsx'), name = 'LDB',
                           ages = 0:7, hist.yrs = 1986:2017 , sim.yrs = 2018:2025, 
-                          fbar = c(2,4), mean.yrs = 2015:2017, excel = TRUE)
+                          fbar = c(2,4), mean.yrs = 2015:2017, source = 'excel')
 
 meg <- create.biol.arrays(file.path(tdir,'stocks/MEG2017.xlsx'), name = 'MEG',
                           ages = 1:7, hist.yrs = 1986:2017 , sim.yrs = 2018:2025, 
-                          fbar = c(2,4),mean.yrs = 2015:2017, excel = TRUE)
+                          fbar = c(2,4),mean.yrs = 2015:2017, source = 'excel')
 
 
-## ----biols, echo=TRUE, eval=TRUE-----------------------------------------
+## ----biols, echo=TRUE, eval=TRUE----------------------------------------------
 biols <- list(HKE = hke, MON = mon, LDB = ldb, MEG = meg)
 
 biols <- FLBiols(lapply(biols, function(x) window(x, 2000,2025)))
 
 
-## ----weights, echo=TRUE, eval=TRUE---------------------------------------
+## ----weights, echo=TRUE, eval=TRUE--------------------------------------------
 biols$HKE@wt[, ac(2018:2020)] <- c(0.00, 0.05, 0.30, 0.87, 1.71, 2.72, 3.81, 4.93, 6.04, 
                                    7.11, 8.15, 9.13, 10.02, 10.82, 11.51, 12.39)
 biols$LDB@wt[,ac(2018:2020)]  <- c(0.004,	0.024,	0.044,	0.071,	0.1,	0.131,	0.162,	
@@ -67,11 +66,11 @@ biols$LDB@wt[,ac(2018:2020)]  <- c(0.004,	0.024,	0.044,	0.071,	0.1,	0.131,	0.162
 biols$MEG@wt[,ac(2018:2020)]  <- c(0.038, 0.089, 0.134, 0.180, 0.222, 0.2840, 0.396)
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
-?create.fleets.arrays
+## ----echo=TRUE, eval=FALSE----------------------------------------------------
+## ?create.fleets.arrays
 
 
-## ----fleetNam, echo=TRUE, eval=TRUE--------------------------------------
+## ----fleetNam, echo=TRUE, eval=TRUE-------------------------------------------
 # fleet names
 flnms <-  c('SP_GNS', 'PT_GNS', 'PT_GTR', 'SP_GTR', 'SP_LLS', 'PT_MIS', 'SP_MIS',
             'PT_OTB', 'SP_OTB', 'SP_OTB_24m', 'OTH_OTH', 'SP_PTB')
@@ -109,7 +108,7 @@ flt_mt_stk_nms <- list(SP_GNS = list(DEF_100_0_0 = c("HKE", "LDB", "MEG", "MON")
                        SP_PTB = list(MPD_55_0_0 = c("HKE", "LDB", "MEG", "MON")))
 
 
-## ----stks, echo=TRUE, eval=TRUE------------------------------------------
+## ----stks, echo=TRUE, eval=TRUE-----------------------------------------------
 # stock data file  names
 stk_objs <- c(file.path(tdir,"stocks/HKE2017.xlsx"), file.path(tdir,"stocks/LDB2017.xlsx"), 
               file.path(tdir,"stocks/MEG2017.xlsx"), file.path(tdir,"stocks/MON2017.xlsx") )
@@ -117,7 +116,7 @@ names(stk_objs) <- c('HKE', 'LDB', 'MEG', 'MON')
 stk_objs
 
 
-## ----fleets, echo=TRUE, eval=TRUE, results = "hide"----------------------
+## ----fleets, echo=TRUE, eval=TRUE, results = "hide"---------------------------
 # Create the fleets object
 fleets <- create.fleets.arrays(stk_objs,                               
                              caa_objs = c("caa_HKE.xlsx", "caa_LDB.xlsx", 
@@ -143,16 +142,28 @@ fleets <- create.fleets.arrays(stk_objs,
                              excel = TRUE)
 
 
-## ----qcalc, echo=TRUE, eval=TRUE,  results = "hide"----------------------
-fleets <- calculate.q.sel.flrObjs(biols, fleets, NULL, 
+## ----qcalc, echo=TRUE, eval=TRUE,  results = "hide"---------------------------
+
+fleets.ctrl <- list()
+for (fl in flnms) {
+  fleets.ctrl[[fl]] <- list()
+  for (st in catchNames(fleets[[fl]]))
+    fleets.ctrl[[fl]][[st]][['catch.model']] <- "CobbDouglas"
+}
+
+fleets <- calculate.q.sel.flrObjs(biols, fleets, NULL, fleets.ctrl, 
                                   mean.yrs = ac(2015:2017), sim.yrs = ac(2018:2025))
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=FALSE, eval=TRUE----------------------------------------------------
+list2env(list(fleets = fleets), globalenv())
+
+
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 validObject(fleets)
 
 
-## ----price, echo=TRUE, eval=TRUE,  results = "hide"----------------------
+## ----price, echo=TRUE, eval=TRUE,  results = "hide"---------------------------
 # Update the object with the price data
 fleets <- create.fleets.arrays(flt_obj = fleets,
                                price_objs = c('paa_HKE.xlsx', 'paa_MEG.xlsx', 
@@ -169,11 +180,11 @@ fleets <- create.fleets.arrays(flt_obj = fleets,
 
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 ?create.ecoData
 
 
-## ----ecoData, echo=TRUE, eval=TRUE---------------------------------------
+## ----ecoData, echo=TRUE, eval=TRUE--------------------------------------------
 
 ecoD <- create.ecoData(file.path(tdir,'fleets/economic_data.xlsx'), fleets,
                        hist.yrs = 2005:2017, mean.yrs = 2017, 
@@ -183,7 +194,7 @@ covars <- ecoD$covars
 fleets <- ecoD$fleets
 
 
-## ----landWt, echo=TRUE, eval=TRUE----------------------------------------
+## ----landWt, echo=TRUE, eval=TRUE---------------------------------------------
 for(fl in names(fleets)){
   for(mt in names(fleets[[fl]]@metiers)){
     if('LDB' %in% catchNames(fleets[[fl]])){

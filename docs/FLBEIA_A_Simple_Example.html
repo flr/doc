@@ -13,8 +13,8 @@
 
 <title>Introductory example. Part 1.</title>
 
+<script src="site_libs/header-attrs-2.1/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-<script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -487,23 +487,21 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Introductory example. Part 1.</h1>
-<h4 class="date">26 feb., 2020</h4>
+<h4 class="date">15 may., 2020</h4>
 
 </div>
 
 
-<pre><code>## Warning: package &#39;knitr&#39; was built under R version
-## 3.5.3</code></pre>
 <p><img src="images/FLBEIA_logo.png" width="20%" style="display: block; margin: auto;" /></p>
 <div id="aim" class="section level1">
 <h1>Aim</h1>
-<p><strong><em>FLBEIA</em></strong> provides a battery of tutorials for learning how to use this software. This tutorial is a practical guide about one simple implementation of <code>FLBEIA</code>. The aim of this example is to become familiar with the objects necessary to carry out bio-economic impact assessments of fisheries management strategies.</p>
+<p><strong>FLBEIA</strong> provides a battery of tutorials for learning how to use this software. This tutorial is a practical guide about one simple implementation of <code>FLBEIA</code>. The aim of this example is to become familiar with the objects necessary to carry out bio-economic impact assessments of fisheries management strategies.</p>
 <p>In this tutorial a simple example on how to run <code>FLBEIA</code> is presented. This simple example is named as <code>one</code>. The outputs of applaying <code>FLBEIA</code> to <code>one</code> example are analized, summarized and plotted. Once the user has understood the structure and outputs of <code>FLBEIA</code>, let’s start playing! We will run, plot and analyse several scenarios.</p>
 <p>Finally, another simple example but with three iterations, named <code>oneIt</code>, is presented. In this example some exercises are proposed to be resolved by the user.</p>
 </div>
 <div id="help-manual" class="section level1">
 <h1>Help &amp; Manual</h1>
-<p><strong><em>FLBEIA</em></strong> includes extensive facilities for accessing documentation and searching for help. <strong><em>FLBEIA</em></strong> manual can be download from <a href="https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf">Github</a> or within the ‘doc’ folder of the package installation. Additionally, the <code>help()</code> function and <code>?</code> help operator in R provide access to the documentation pages. Typing <code>help(package = FLBEIA)</code> in the R console you access to the documentation for package <code>FLBEIA</code> , user guides and help pages. For example, typing <code>help(bioSum)</code> in the R console you access to help page of summary functions for the FLBEIA output.</p>
+<p><strong>FLBEIA</strong> includes extensive facilities for accessing documentation and searching for help. <strong>FLBEIA</strong> manual can be download from <a href="https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf">Github</a> or within the ‘doc’ folder of the package installation. Additionally, the <code>help()</code> function and <code>?</code> help operator in R provide access to the documentation pages. Typing <code>help(package = FLBEIA)</code> in the R console you access to the documentation for package <code>FLBEIA</code> , user guides and help pages. For example, typing <code>help(bioSum)</code> in the R console you access to help page of summary functions for the FLBEIA output.</p>
 <p>The exact way to define the objects used to set the simulation is described in the <a href="https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf">FLBEIA manual</a>. Nevertheless, the objects to set the simulation do not need to be defined for the following examples, as the datasets <code>one</code> and <code>oneIt</code> from the FLBEIA package will be used. For details on these objects, see <a href="https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf">FLBEIA manual, Section 5.2</a> or type <code>?FLBEIA</code> in the R console.</p>
 <p>To see all the datasets available in the <strong>FLBEIA</strong> package:</p>
 <pre class="r"><code>data(package=&#39;FLBEIA&#39;)</code></pre>
@@ -608,14 +606,39 @@ library(tidyr)</code></pre>
  [7] &quot;BDs&quot;           &quot;SRs&quot;          
  [9] &quot;fleets.ctrl&quot;   &quot;pkgs.versions&quot;</code></pre>
 <pre class="r"><code>sapply(s0, function(x) class(x))</code></pre>
-<pre><code>        biols        fleets        covars 
-    &quot;FLBiols&quot; &quot;FLFleetsExt&quot;        &quot;list&quot; 
-       advice        stocks       indices 
-       &quot;list&quot;        &quot;list&quot;        &quot;NULL&quot; 
-          BDs           SRs   fleets.ctrl 
-       &quot;NULL&quot;        &quot;list&quot;        &quot;list&quot; 
-pkgs.versions 
-     &quot;matrix&quot; </code></pre>
+<pre><code>$biols
+[1] &quot;FLBiols&quot;
+attr(,&quot;package&quot;)
+[1] &quot;FLCore&quot;
+
+$fleets
+[1] &quot;FLFleetsExt&quot;
+attr(,&quot;package&quot;)
+[1] &quot;FLBEIA&quot;
+
+$covars
+[1] &quot;list&quot;
+
+$advice
+[1] &quot;list&quot;
+
+$stocks
+[1] &quot;list&quot;
+
+$indices
+[1] &quot;NULL&quot;
+
+$BDs
+[1] &quot;NULL&quot;
+
+$SRs
+[1] &quot;list&quot;
+
+$fleets.ctrl
+[1] &quot;list&quot;
+
+$pkgs.versions
+[1] &quot;matrix&quot; &quot;array&quot; </code></pre>
 </div>
 <div id="summarizing-results" class="section level2">
 <h2>Summarizing results</h2>
@@ -759,16 +782,15 @@ SRs.segreg[[1]]@model &lt;- &#39;segreg&#39;
 s1 &lt;- FLBEIA(biols = oneBio, SRs = SRs.segreg , BDs = NULL, fleets = oneFl, #covars = oneCv,         
             indices = NULL, advice = oneAdv, main.ctrl = oneMainC, biols.ctrl = oneBioC,      
             fleets.ctrl = oneFlC, covars.ctrl = oneCvC, obs.ctrl = oneObsC, 
-            assess.ctrl = oneAssC, advice.ctrl = oneAdvC)    
-
-plotFLBiols(s1$biols, pdfnm=&#39;s1&#39;)
+            assess.ctrl = oneAssC, advice.ctrl = oneAdvC)    </code></pre>
+<pre class="r"><code>plotFLBiols(s1$biols, pdfnm=&#39;s1&#39;)
 plotFLFleets(s1$fleets, pdfnm=&#39;s1&#39;)  </code></pre>
 <p>Plot biomass of s0 (“bevholtAR1”) and biomass of s1 (“segreg”),</p>
 <pre class="r"><code>temp &lt;- cbind(matrix(B_flbeia(s0)), matrix(B_flbeia(s1)))
 matplot(temp, x = dimnames( B_flbeia(s1))$year, type = &#39;l&#39;, 
         xlab = &#39;Year&#39;, ylab = &#39;Biomass&#39;)
 legend(&#39;top&#39;, c(&#39;s0&#39;, &#39;s1&#39;), col = c(&#39;black&#39;,&#39;red&#39;), lty = c(1,2))</code></pre>
-<p><img src="FLBEIA_A_Simple_Example_files/figure-html/unnamed-chunk-19-1.png" width="336" style="display: block; margin: auto;" /></p>
+<p><img src="FLBEIA_A_Simple_Example_files/figure-html/unnamed-chunk-20-1.png" width="336" style="display: block; margin: auto;" /></p>
 <p>More plots using the function <code>ggplot</code>,</p>
 <pre class="r"><code>s1_bio    &lt;- bioSum(s1, long = TRUE)
 s0_bio$scenario &lt;- c(&#39;s0&#39;)
@@ -852,7 +874,7 @@ p1 &lt;- ggplot(data=aux , aes(x=year, y=value, color=scenario))+
             strip.text=element_text(size=8))+
       ylab(&quot;Biological Indicators&quot;)
 print(p1)</code></pre>
-<p><img src="FLBEIA_A_Simple_Example_files/figure-html/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="FLBEIA_A_Simple_Example_files/figure-html/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="natural-mortality" class="section level3">
 <h3>Natural mortality</h3>
@@ -863,15 +885,14 @@ oneBioM$stk1@m[7:12,,,,] &lt;- oneBioM$stk1@m[7:12,,,,]*1.2
 s2 &lt;- FLBEIA(biols = oneBioM, SRs = oneSR , BDs = NULL, fleets = oneFl, # covars = oneCv,         
             indices = NULL, advice = oneAdv, main.ctrl = oneMainC, biols.ctrl = oneBioC,      
             fleets.ctrl = oneFlC, covars.ctrl = oneCvC, obs.ctrl = oneObsC, 
-            assess.ctrl = oneAssC, advice.ctrl = oneAdvC) 
-
-plotFLBiols(s1$biols, pdfnm=&#39;s2&#39;)
+            assess.ctrl = oneAssC, advice.ctrl = oneAdvC) </code></pre>
+<pre class="r"><code>plotFLBiols(s1$biols, pdfnm=&#39;s2&#39;)
 plotFLFleets(s1$fleets, pdfnm=&#39;s2&#39;)  </code></pre>
 <p>Compare the results or indicators for scenarios s0 and s2.</p>
 <pre class="r"><code>temp &lt;- cbind(matrix(B_flbeia(s0)), matrix(B_flbeia(s2)))
 matplot(temp, x = dimnames( B_flbeia(s0))$year, type = &#39;l&#39;, xlab = &#39;Year&#39;, ylab = &#39;Biomass&#39;)
 legend(&#39;top&#39;, c(&#39;s0&#39;, &#39;s2&#39;), col = c(&#39;black&#39;,&#39;red&#39;), lty = c(1,2))</code></pre>
-<p><img src="FLBEIA_A_Simple_Example_files/figure-html/unnamed-chunk-22-1.png" width="336" style="display: block; margin: auto;" /></p>
+<p><img src="FLBEIA_A_Simple_Example_files/figure-html/unnamed-chunk-24-1.png" width="336" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>s2_bio    &lt;- bioSum(s2, long = TRUE)
 s2_bio$scenario &lt;- c(&#39;s2&#39;)
 
@@ -953,7 +974,7 @@ p1 &lt;- ggplot(data=aux , aes(x=year, y=value, color=scenario))+
             strip.text=element_text(size=8))+
       ylab(&quot;Biological Indicators&quot;)
 print(p1)</code></pre>
-<p><img src="FLBEIA_A_Simple_Example_files/figure-html/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="FLBEIA_A_Simple_Example_files/figure-html/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="harvest-control-rule" class="section level3">
 <h3>Harvest control rule</h3>
@@ -984,20 +1005,32 @@ p1 &lt;- ggplot(data=aux , aes(x=year, y=value, color=scenario))+
             strip.text=element_text(size=8))+
       ylab(&quot;Biological Indicators&quot;)
 print(p1)</code></pre>
-<p><img src="FLBEIA_A_Simple_Example_files/figure-html/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="FLBEIA_A_Simple_Example_files/figure-html/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Harvest control rule (HCR). The HCR in scenario s0 is <code>IcesHCR</code>, this is the HCR used by ICES to generate TAC advice in the MSY framework. Now, run the scenario s4 with <code>fixedAdvice</code> HCR. <code>fixedAdvice</code> is a HCR that fixes the TAC independently to the stock status, and therefore TAC values should be given as input in the advice object. Set the new TAC as the mean of last three years prior to the projection period. Note that if the TAC it is not defined manually, it will be defined automatically in that way.</p>
 <pre class="r"><code>oneAdv$TAC</code></pre>
-<pre><code>, , unit = unique, season = all, area = unique
+<pre><code>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
 
       year
-stock  1990   1991   1992   1993   1994  
-  stk1 441.18 437.07 652.45 790.52 882.92
-
-      [ ...  26 years]
-
+stock  1990   1991   1992   1993   1994   1995  
+  stk1 441.18 437.07 652.45 790.52 882.92 642.83
       year
-stock  2021   2022   2023   2024   2025  
-  stk1 375.96 375.96 375.96 375.96 375.96</code></pre>
+stock  1996   1997   1998   1999   2000   2001  
+  stk1 791.37 829.32 530.71 276.61 293.58 214.53
+      year
+stock  2002   2003   2004   2005   2006   2007  
+  stk1 162.08 205.71 238.70 317.59 348.80 362.29
+      year
+stock  2008   2009   2010   2011   2012   2013  
+  stk1 416.80 602.44 375.96 375.96 375.96 375.96
+      year
+stock  2014   2015   2016   2017   2018   2019  
+  stk1 375.96 375.96 375.96 375.96 375.96 375.96
+      year
+stock  2020   2021   2022   2023   2024   2025  
+  stk1 375.96 375.96 375.96 375.96 375.96 375.96
+
+units:  missing </code></pre>
 <pre class="r"><code>oneAdv2 &lt;- oneAdv
 TAC_mean &lt;- mean(oneAdv$TAC[,ac(2007:2009),])
 oneAdv2$TAC[,ac(2010:2025),] &lt;- TAC_mean </code></pre>
@@ -1010,9 +1043,8 @@ oneAdvC1     &lt;- create.advice.ctrl(stksnames = stks, HCR.models =  HCR.models
 s4 &lt;- FLBEIA(biols = oneBio, SRs = oneSR , BDs = NULL, fleets = oneFl, #covars = oneCv,         
             indices = NULL, advice = oneAdv, main.ctrl = oneMainC, biols.ctrl = oneBioC,      
             fleets.ctrl = oneFlC, covars.ctrl = oneCvC, obs.ctrl = oneObsC,
-            assess.ctrl = oneAssC,  advice.ctrl = oneAdvC1) 
-
-plotFLBiols(s4$biols,pdfnm= &#39;s4&#39;)
+            assess.ctrl = oneAssC,  advice.ctrl = oneAdvC1) </code></pre>
+<pre class="r"><code>plotFLBiols(s4$biols,pdfnm= &#39;s4&#39;)
 plotFLFleets(s4$fleets,pdfnm= &#39;s4&#39;)  </code></pre>
 <pre class="r"><code>s4_bio    &lt;- bioSum(s4, long = TRUE)
 s4_bio$scenario &lt;- c(&#39;s4&#39;)
@@ -1032,7 +1064,7 @@ p1 &lt;- ggplot(data=aux , aes(x=year, y=value, color=scenario))+
             strip.text=element_text(size=8))+
       ylab(&quot;Biological Indicators&quot;)
 print(p1)</code></pre>
-<p><img src="FLBEIA_A_Simple_Example_files/figure-html/unnamed-chunk-29-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="FLBEIA_A_Simple_Example_files/figure-html/unnamed-chunk-32-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="effort-function." class="section level3">
 <h3>Effort function.</h3>
@@ -1053,7 +1085,7 @@ s5_flt    &lt;- fltSum(s5, long = TRUE); s5_eff &lt;- subset(s5_flt, indicator =
 temp &lt;- cbind(s0_eff$value, s5_eff$value)
 matplot(temp, x = dimnames( B_flbeia(s0))$year, type = &#39;l&#39;, xlab = &#39;Year&#39;, ylab = &#39;Effort&#39;)
 legend(&#39;top&#39;, c(&#39;s0&#39;, &#39;s5&#39;), col = c(&#39;black&#39;,&#39;red&#39;), lty = c(1,2))</code></pre>
-<p><img src="FLBEIA_A_Simple_Example_files/figure-html/unnamed-chunk-30-1.png" width="336" style="display: block; margin: auto;" /></p>
+<p><img src="FLBEIA_A_Simple_Example_files/figure-html/unnamed-chunk-33-1.png" width="336" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>s5_flt    &lt;- fltSum(s5, long = TRUE)
 s5_flt$scenario &lt;- c(&#39;s5&#39;)
 s0_flt$scenario &lt;- c(&#39;s0&#39;)
@@ -1073,7 +1105,7 @@ p1 &lt;- ggplot(data=aux , aes(x=year, y=value, color=scenario))+
             strip.text=element_text(size=8))+
       ylab(&quot;Economics Indicators&quot;)
 print(p1)</code></pre>
-<p><img src="FLBEIA_A_Simple_Example_files/figure-html/unnamed-chunk-31-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="FLBEIA_A_Simple_Example_files/figure-html/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="price" class="section level3">
 <h3>Price</h3>
@@ -1093,7 +1125,7 @@ temp &lt;- cbind(s0_prof$value, s6_prof$value)
 matplot(temp[21:36,], x = dimnames(B_flbeia(s6))$year[21:36], type = &#39;l&#39;, 
         xlab = &#39;Year&#39;, ylab = &#39;Income&#39;)
 legend(&#39;bottom&#39;, c(&#39;s0&#39;, &#39;s6&#39;),col = c(&#39;black&#39;,&#39;red&#39;), lty = c(1,2) )</code></pre>
-<p><img src="FLBEIA_A_Simple_Example_files/figure-html/unnamed-chunk-32-1.png" width="336" style="display: block; margin: auto;" /></p>
+<p><img src="FLBEIA_A_Simple_Example_files/figure-html/unnamed-chunk-35-1.png" width="336" style="display: block; margin: auto;" /></p>
 <p>Economics indicators:</p>
 <pre class="r"><code>s6_flt    &lt;- fltSum(s6, long = TRUE)
 s6_flt$scenario &lt;- c(&#39;s6&#39;)
@@ -1114,7 +1146,7 @@ p1 &lt;- ggplot(data=aux , aes(x=year, y=value, color=scenario))+
             strip.text=element_text(size=8))+
       ylab(&quot;Economics Indicators&quot;)
 print(p1)</code></pre>
-<p><img src="FLBEIA_A_Simple_Example_files/figure-html/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="FLBEIA_A_Simple_Example_files/figure-html/unnamed-chunk-36-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="visualizing-results-with-flbeiashiny" class="section level2">
@@ -1196,7 +1228,7 @@ p &lt;- ggplot(data=aux , aes(x=year, y=q50, color=stock))+
             strip.text=element_text(size=8))+
       ylab(&quot;Biomass (t)&quot;)
 print(p)</code></pre>
-<p><img src="FLBEIA_A_Simple_Example_files/figure-html/unnamed-chunk-40-1.png" width="336" style="display: block; margin: auto;" /></p>
+<p><img src="FLBEIA_A_Simple_Example_files/figure-html/unnamed-chunk-43-1.png" width="336" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>aux &lt;-  subset(s0_it_fltQ, indicator==&quot;netProfit&quot;)
 aux$year &lt;- as.numeric(as.character(aux$year))
 p1 &lt;- ggplot(data=aux , aes(x=year, y=q50, color=fleet))+
@@ -1210,7 +1242,7 @@ p1 &lt;- ggplot(data=aux , aes(x=year, y=q50, color=fleet))+
             strip.text=element_text(size=8))+
       ylab(&quot;netProfit&quot;)
 print(p1)</code></pre>
-<p><img src="FLBEIA_A_Simple_Example_files/figure-html/unnamed-chunk-41-1.png" width="336" style="display: block; margin: auto;" /></p>
+<p><img src="FLBEIA_A_Simple_Example_files/figure-html/unnamed-chunk-44-1.png" width="336" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>dev.off()</code></pre>
 </div>
 <div id="visualizing-results-with-flbeiashiny-1" class="section level2">
@@ -1253,16 +1285,16 @@ flbeiaApp( flbeiaObjs = flbeiaObjs, RefPts = RefPts, years = ac(2000:2025),
 <div id="software-versions" class="section level2">
 <h2>Software Versions</h2>
 <ul>
-<li>R version 3.5.2 (2018-12-20)</li>
-<li>FLCore: 2.6.13</li>
+<li>R version 4.0.0 (2020-04-24)</li>
+<li>FLCore: 2.6.15</li>
 <li>FLBEIA: 1.15.4</li>
 <li>FLFleet: 2.6.1</li>
 <li>FLash: 2.5.11</li>
 <li>FLAssess: 2.6.3</li>
-<li>FLXSA: 2.6.3</li>
-<li>ggplotFL: 2.6.7</li>
-<li>ggplot2: 3.2.1</li>
-<li><strong>Compiled</strong>: Wed Feb 26 12:03:10 2020</li>
+<li>FLXSA: 2.6.4</li>
+<li>ggplotFL: 2.6.7.9006</li>
+<li>ggplot2: 3.3.0</li>
+<li><strong>Compiled</strong>: Fri May 15 06:50:31 2020</li>
 </ul>
 </div>
 <div id="license" class="section level2">

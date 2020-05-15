@@ -13,8 +13,8 @@
 
 <title>Conditioning FLBEIA with smart conditioning functions</title>
 
+<script src="site_libs/header-attrs-2.1/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-<script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -487,12 +487,11 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Conditioning FLBEIA with smart conditioning functions</h1>
-<h4 class="date">26 feb., 2020</h4>
+<h4 class="date">15 may., 2020</h4>
 
 </div>
 
 
-<pre><code>## Warning: package &#39;knitr&#39; was built under R version 3.5.3</code></pre>
 <p><img src="images/FLBEIA_logo.png" width="20%" style="display: block; margin: auto;" /></p>
 <div id="aim" class="section level1">
 <h1>AIM</h1>
@@ -623,14 +622,14 @@ ls()</code></pre>
 
 # Projection biols: weight,fecundity,mortality and spawning 
 
-  stk1_biol.proj.avg.yrs  &lt;- c(2007:2009)
-  
-# Create the object
+  stk1_biol.proj.avg.yrs  &lt;- c(2007:2009)</code></pre>
+<pre><code>&lt;environment: R_GlobalEnv&gt;</code></pre>
+<pre class="r"><code># Create the object
   
    stks.data &lt;- list(stk1=ls(pattern=&quot;^stk1&quot;)) 
 
-    biols    &lt;- create.biols.data(yrs,ns,ni,stks.data)
-  plotFLBiols(biols,pdfnm=&#39;s0&#39;)</code></pre>
+    biols    &lt;- create.biols.data(yrs,ns,ni,stks.data)</code></pre>
+<pre class="r"><code>  plotFLBiols(biols,pdfnm=&#39;s0&#39;)</code></pre>
 </div>
 <div id="srs" class="section level3">
 <h3>SRs:</h3>
@@ -654,10 +653,9 @@ ls()</code></pre>
 
     #              FLBEIA input object: SRs
 
-    stks.data &lt;- list(stk1=ls(pattern=&quot;^stk1&quot;)) 
-  
-  SRs      &lt;- create.SRs.data(yrs,ns,ni,stks.data)</code></pre>
-<pre><code>============= stk1 SR =============</code></pre>
+    stks.data &lt;- list(stk1=ls(pattern=&quot;^stk1&quot;)) </code></pre>
+<pre><code>&lt;environment: R_GlobalEnv&gt;</code></pre>
+<pre class="r"><code>  SRs      &lt;- create.SRs.data(yrs,ns,ni,stks.data)</code></pre>
 </div>
 <div id="fleets" class="section level3">
 <h3>fleets:</h3>
@@ -690,9 +688,9 @@ ls()</code></pre>
 
     #              create fleets object
   
-  fls.data &lt;- list(fl1=ls(pattern=&quot;^fl1&quot;)) 
-  
-  fleets   &lt;- create.fleets.data(yrs,ns,ni,fls.data,stks.data)</code></pre>
+  fls.data &lt;- list(fl1=ls(pattern=&quot;^fl1&quot;)) </code></pre>
+<pre><code>&lt;environment: R_GlobalEnv&gt;</code></pre>
+<pre class="r"><code>  fleets   &lt;- create.fleets.data(yrs,ns,ni,fls.data,stks.data)</code></pre>
 <pre><code>
 ============= fl1 fleet =============
 --------------------- fl1 fleet, met1 ------------------
@@ -711,8 +709,9 @@ warning: all NA-s in vcost for projection years
   stk1_advice.avg.yrs         &lt;- c(2006:2008)
 
 #   create advice object
-  stks.data &lt;- list(stk1=ls(pattern=&quot;^stk1&quot;)) 
-  advice   &lt;- create.advice.data(yrs,ns,ni,stks.data,fleets)</code></pre>
+  stks.data &lt;- list(stk1=ls(pattern=&quot;^stk1&quot;)) </code></pre>
+<pre><code>&lt;environment: R_GlobalEnv&gt;</code></pre>
+<pre class="r"><code>  advice   &lt;- create.advice.data(yrs,ns,ni,stks.data,fleets)</code></pre>
 </div>
 <div id="indices" class="section level3">
 <h3>indices:</h3>
@@ -742,8 +741,9 @@ warning: all NA-s in vcost for projection years
   catch.models     &lt;- &#39;CobbDouglasAge&#39;
   capital.models   &lt;- &#39;fixedCapital&#39;       
   flq.stk1&lt;- FLQuant(dimnames = list(age = &#39;all&#39;, year = first.yr:last.yr, unit = stk1.unit, 
-                                     season = 1:ns, iter = 1:ni)) 
-  fleets.ctrl      &lt;- create.fleets.ctrl(fls=fls,n.fls.stks=n.fls.stks,fls.stksnames=fls.stksnames,
+                                     season = 1:ns, iter = 1:ni)) </code></pre>
+<pre><code>&lt;environment: R_GlobalEnv&gt;</code></pre>
+<pre class="r"><code>  fleets.ctrl      &lt;- create.fleets.ctrl(fls=fls,n.fls.stks=n.fls.stks,fls.stksnames=fls.stksnames,
                                          effort.models= effort.models, catch.models=catch.models,
                                          capital.models=capital.models, flq=flq.stk1,
                                          effort.restr.fl1 = effort.restr.fl1, restriction.fl1 = restriction.fl1)
@@ -1195,16 +1195,16 @@ obs.ctrl        &lt;- create.obs.ctrl(stksnames = stks,  stkObs.models = stkObs.
 <div id="software-versions" class="section level2">
 <h2>Software Versions</h2>
 <ul>
-<li>R version 3.5.2 (2018-12-20)</li>
-<li>FLCore: 2.6.13</li>
+<li>R version 4.0.0 (2020-04-24)</li>
+<li>FLCore: 2.6.15</li>
 <li>FLBEIA: 1.15.4</li>
 <li>FLFleet: 2.6.1</li>
 <li>FLash: 2.5.11</li>
 <li>FLAssess: 2.6.3</li>
-<li>FLXSA: 2.6.3</li>
-<li>ggplotFL: 2.6.7</li>
-<li>ggplot2: 3.2.1</li>
-<li><strong>Compiled</strong>: Wed Feb 26 11:31:59 2020</li>
+<li>FLXSA: 2.6.4</li>
+<li>ggplotFL: 2.6.7.9006</li>
+<li>ggplot2: 3.3.0</li>
+<li><strong>Compiled</strong>: Fri May 15 07:23:49 2020</li>
 </ul>
 </div>
 <div id="license" class="section level2">

@@ -29,14 +29,14 @@ include_graphics('images/FLBEIA_logo.png')
 
 # Aim 
 
-***FLBEIA*** provides a battery of tutorials for learning how to use this software. This tutorial is a practical guide about a simple implementation of ```FLBEIA``` but with several fleets and stocks.  The aim of this example is to become familiar with the required object for development of bio-economic impact assessments of fisheries management strategies.
+**FLBEIA** provides a battery of tutorials for learning how to use this software. This tutorial is a practical guide about a simple implementation of ```FLBEIA``` but with several fleets and stocks.  The aim of this example is to become familiar with the required object for development of bio-economic impact assessments of fisheries management strategies.
 
 In this tutorial a simple case study, named ```multi``` is explored and run in ```FLBEIA```. Then, the outputs of ```FLBEIA``` are analized, summarized and plotted. Once the user has understood the structure and outputs of ```FLBEIA```, let's start playing! Several scenarios will be run. In the current tutorial, the scenarios will be related to the economic issues.
 
 
 # Help & Manual
 
-***FLBEIA*** includes extensive facilities for accessing documentation and searching for help. ***FLBEIA*** manual can be download from [Github](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf) or within the 'doc' folder of the package installation. Additionally, the ```help()``` function and ```?``` help operator in R provide access to the documentation pages. Typing ```help(package = FLBEIA)``` in the R console you access to the documentation for package ```FLBEIA``` , user guides and help pages. For example, typing ```help(bioSum)``` in the R console you access to help page of summary functions for the FLBEIA output. 
+**FLBEIA** includes extensive facilities for accessing documentation and searching for help. **FLBEIA** manual can be download from [Github](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf) or within the 'doc' folder of the package installation. Additionally, the ```help()``` function and ```?``` help operator in R provide access to the documentation pages. Typing ```help(package = FLBEIA)``` in the R console you access to the documentation for package ```FLBEIA``` , user guides and help pages. For example, typing ```help(bioSum)``` in the R console you access to help page of summary functions for the FLBEIA output. 
 
 The exact way to define the objects used to set the simulation is described in the [FLBEIA manual](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf).
 Nevertheless, the objects to set the simulation do not need to be defined for the following examples, 
@@ -265,7 +265,7 @@ plot(SM$stocks[[1]]) # Stock 2 is in biomass, 'plot(SM$stocks[[2]])' function do
 ```
 
 Additionally you can plot results using  ```plotFLBiols```, ```plotFLFleets``` and ```plotCatchFl```. The plots will be saved in your working directory as a pdf file. 
-```{r echo=TRUE, eval=TRUE, results = "hide"}
+```{r echo=TRUE, eval=FALSE}
 # set your own working directory.
 #myWD <- "C:/use/escritorio/ExampleMulti/"
 #setwd(myWD)
@@ -363,7 +363,7 @@ SM_risk <- riskSum(SM, stknms = names(SM$biols), Bpa= c(stk1= 135000, stk2 = 124
 
 ####  Plots 
 
-```{r echo=TRUE, fig.cex = 0.5 , eval=TRUE}
+```{r echo=TRUE, fig.cex = 0.5 , eval=FALSE}
 plotFLBiols(SM$biols, pdfnm = "SM_pricex1000")
 plotFLFleets(SM$fleets, pdfnm ="SM_pricex1000")
 plotfltStkSum(SM, pdfnm ="SM_pricex1000") 
@@ -410,12 +410,14 @@ print(p)
 
 
 Plotting TAC
-```{r echo=TRUE, fig.cex = 0.5, eval=TRUE}
+```{r echo=TRUE, fig.cex = 0.5, eval=FALSE}
 plotFLBiols(SM$biols, pdfnm = "SM_pricex1000")
 plotFLFleets(SM$fleets, pdfnm ="SM_pricex1000")
 plotfltStkSum(SM, pdfnm ="SM_pricex1000") 
 plotEco(SM, pdfnm ='SM_pricex1000')
+```
 
+```{r echo=TRUE, fig.cex = 0.5, eval=TRUE}
 inds <- c('tac')
 d <- rbind(subset(SM_adv,indicator  %in% inds ))
 d$indicator <- factor( d$indicator, levels=inds)
@@ -698,7 +700,9 @@ units(a) <- units(b)
       year + 1]/(covars[["MaxDays"]][flnm, year + 1, ])
   }
   return(list(fleets = fleets, covars = covars))
-}
+  }
+
+list2env(list(SCD2=SCD2), globalenv())
 
 
 # fl1 has fixed effort

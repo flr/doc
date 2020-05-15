@@ -1,4 +1,4 @@
-## ---- ini, echo=FALSE, results='hide', message=FALSE---------------------
+## ---- ini, echo=FALSE, results='hide', message=FALSE--------------------------
 # This chunk set the document environment, so it is hidden
 library(knitr)
 knitr::opts_chunk$set(fig.align="center",
@@ -7,24 +7,24 @@ options(width=50)
 set.seed(1423)
 
 
-## ----echo=FALSE, out.width='20%'-----------------------------------------
+## ----echo=FALSE, out.width='20%'----------------------------------------------
 include_graphics('images/FLBEIA_logo.png')
 
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 ## install.packages( c("ggplot2"))
 ## install.packages( c("FLCore", "FLFleet", "FLBEIA",
 ##                     "FLash", "FLAssess", "FLXSA"),
 ##                   repos="http://flr-project.org/R")
 
 
-## ---- pkgs, results = "hide"---------------------------------------------
+## ---- pkgs, results = "hide"--------------------------------------------------
 library(FLBEIA)
 library(FLBEIAShiny)
 library(ggplot2)
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ---- data, echo=TRUE, eval=TRUE----------------------------------------------
 dir <- tempdir()
 # download.file("http://www.flr-project.org/doc/src/flbeia_bioeco.zip", 
 #               file.path(dir, "flbeia_bioeco.zip"))
@@ -32,25 +32,25 @@ dir <- tempdir()
 unzip("src/flbeia_bioeco.zip", exdir=dir)
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ---- dataLoad, echo=TRUE, eval=TRUE------------------------------------------
 load('./src/flbeia_bioeco/data.Rdata')
 stknms <- names(biols)
 main.ctrl$sim.years[] <- c(2017,2025)
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ---- biols, echo=TRUE, eval=TRUE---------------------------------------------
 lapply(biols, function(x) dimnames(x@n)[[1]])
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ---- fleets, echo=TRUE, eval=TRUE--------------------------------------------
 lapply(fleets,function(x) names(x@metiers))
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ---- catchStk, echo=TRUE, eval=TRUE------------------------------------------
 t(stock.fleetInfo(fleets))
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ---- flStk, echo=TRUE, eval=TRUE---------------------------------------------
 n.flts.stks      <- sapply(sapply(fleets, catchNames), length) 
 flts.stksnames   <- NULL
 for(f in 1:length(fleets)){  
@@ -64,26 +64,26 @@ for(f in 1:length(fleets)){
 
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ---- catch, echo=TRUE, eval=TRUE---------------------------------------------
 catch.models <- rep("CobbDouglasAge", sum(n.flts.stks))
 names(catch.models) <- flts.stksnames
 catch.models[names(catch.models) == 'OTH'] <- "CobbDouglasBio"  
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ---- price, echo=TRUE, eval=TRUE---------------------------------------------
 price.models <-  rep("fixedPrice", sum(n.flts.stks))
 names(price.models) <- flts.stksnames
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ---- flq, echo=TRUE, eval=TRUE-----------------------------------------------
 flq <- FLQuant(dimnames= list(year = 1980:2025, iter =  1))     
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ---- capital, echo=TRUE, eval=TRUE-------------------------------------------
 capital.models <-  rep('fixedCapital', length(fleets))
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ---- fleetsCtrl, echo=TRUE, eval=TRUE----------------------------------------
 fleets.ctrl.CnEf <- create.fleets.ctrl(
                           fls = names(fleets),
                    n.fls.stks = n.flts.stks,
@@ -99,7 +99,7 @@ fleets.ctrl.CnEf <- create.fleets.ctrl(
 for(f in names(fleets)) fleets.ctrl.CnEf[[f]][['effort.model']] <- 'fixedEffort'
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ---- fleetsCtrl2, echo=TRUE, eval=TRUE---------------------------------------
 fleets.ctrl.trad <- create.fleets.ctrl(
                           fls = names(fleets), 
                    n.fls.stks = n.flts.stks, 
@@ -119,7 +119,7 @@ fleets.ctrl.trad <- create.fleets.ctrl(
            effort.restr.CAD_SP = 'HKE') 
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ---- effRange, echo=TRUE, eval=TRUE------------------------------------------
 effort.range <- lapply(fleets, function(x){ 
    res <- matrix(NA, length(x@metiers), 2, dimnames = list(names(x@metiers), c('min', 'max')))
    res[,1] <- 0#sapply(x@metiers, function(y) mean(y@effshare[, ac(2015:2017)]))*0.25
@@ -129,7 +129,7 @@ effort.range <- lapply(fleets, function(x){
     })
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ---- effModel, echo=TRUE, eval=TRUE------------------------------------------
 effort.models <- rep('SMFB', length(fleets))
 names(effort.models) <- names(fleets)
 effort.models[names(effort.models) %in% c('DTS_SP', 'NTR_SP')] <- 'MaxProfit'
@@ -155,13 +155,13 @@ fleets.ctrl.mxpr <- create.fleets.ctrl(
            effort.range.DTS_SP = effort.range[['DTS_SP']])
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ---- capacity, echo=TRUE, eval=TRUE------------------------------------------
 for(fl in  c('DTS_SP', 'NTR_SP')) fleets.ctrl.mxpr[[fl]][['efs.abs']] <- FALSE
 
 fleets[['DTS_SP']]@capacity[] <- fleets[['NTR_SP']]@capacity[] <- 1e6
 
 
-## ----echo=TRUE, eval=FALSE, results = 'hide'-----------------------------
+## ---- run1, echo=TRUE, eval=FALSE, results = 'hide'---------------------------
 ## CnEf <- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets,
 ##                   covars = covars, indices = NULL, advice = advice,
 ##                   main.ctrl = main.ctrl, biols.ctrl = biols.ctrl,
@@ -170,7 +170,7 @@ fleets[['DTS_SP']]@capacity[] <- fleets[['NTR_SP']]@capacity[] <- 1e6
 ##                   assess.ctrl = assess.ctrl, advice.ctrl = advice.ctrl.fixed)
 
 
-## ----echo=TRUE, eval=FALSE, results = 'hide'-----------------------------
+## ---- run2, echo=TRUE, eval=FALSE, results = 'hide'---------------------------
 ## trad <- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets,
 ##                   covars = covars, indices = NULL, advice = advice,
 ##                   main.ctrl = main.ctrl, biols.ctrl = biols.ctrl,
@@ -179,7 +179,7 @@ fleets[['DTS_SP']]@capacity[] <- fleets[['NTR_SP']]@capacity[] <- 1e6
 ##                   assess.ctrl = assess.ctrl, advice.ctrl = advice.ctrl.fixed)
 
 
-## ----echo=TRUE, eval=FALSE, results = 'hide'-----------------------------
+## ---- run3, echo=TRUE, eval=FALSE, results = 'hide'---------------------------
 ## 
 ## mxpr <- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets,
 ##                   covars = covars, indices = NULL, advice = advice,
@@ -189,32 +189,39 @@ fleets[['DTS_SP']]@capacity[] <- fleets[['NTR_SP']]@capacity[] <- 1e6
 ##                   assess.ctrl = assess.ctrl, advice.ctrl = advice.ctrl.fixed)
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ---- priceMod, echo=TRUE, eval=TRUE------------------------------------------
 price.models <- rep('fixedPrice', length(catch.models))
 names(price.models) <- names(flts.stksnames)
 price.models[substr(names(price.models),1,3) %in% c('NTR', 'DTS')] <- 'elasticPrice'
 
-flq.HKE <- biols$HKE@n; flq.HKE[] <- NA
+flq.HKE <- biols$HKE@n * NA
   
-flq.LDB <- biols$LDB@n; flq.LDB[] <- NA
+flq.LDB <- biols$LDB@n * NA
 
-flq.HO8 <- biols$HO8@n; flq.HO8[] <- NA
+flq.HO8 <- biols$HO8@n * NA
 
-flq.HOM <- biols$HOM@n; flq.HOM[] <- NA
+flq.HOM <- biols$HOM@n * NA
 
-flq.MEG <- biols$MEG@n; flq.MEG[] <- NA
+flq.MEG <- biols$MEG@n * NA
 
-flq.MON <- biols$MON@n; flq.MON[] <- NA
+flq.MON <- biols$MON@n * NA
 
-flq.MAC <- biols$MAC@n; flq.MAC[] <- NA
+flq.MAC <- biols$MAC@n * NA
 
-flq.WHB <- biols$WHB@n; flq.WHB[] <- NA
+flq.WHB <- biols$WHB@n * NA
 
-flq.OTH <- biols$OTH@n; flq.OTH[] <- NA
-
-
+flq.OTH <- biols$OTH@n * NA
 
 
+
+## ----echo=FALSE, eval=TRUE----------------------------------------------------
+flq <- FLQuant(dimnames= list(year = 1980:2025, iter =  1)) 
+list2env(list(flq = flq, 
+              flq.HKE = flq.HKE, flq.LDB = flq.LDB, flq.HO8 = flq.HO8, flq.HOM = flq.HOM, flq.MEG = flq.MEG, 
+              flq.MON = flq.MON, flq.MAC = flq.MAC, flq.WHB = flq.WHB, flq.OTH = flq.OTH), globalenv())
+
+
+## ---- fleetsCtrl3, echo=TRUE, eval=TRUE---------------------------------------
 fleets.ctrl.mxpr.price <- create.fleets.ctrl(
                           fls = names(fleets), 
                    n.fls.stks = n.flts.stks, 
@@ -222,15 +229,15 @@ fleets.ctrl.mxpr.price <- create.fleets.ctrl(
                 effort.models = effort.models, 
                  price.models = price.models, 
                           flq = flq, 
-                flq.HKE = flq.HKE,
-                flq.HOM = flq.HOM,
-                flq.HO8 = flq.HO8,
-                flq.LDB = flq.LDB,
-                flq.MEG = flq.MEG,
-                flq.MON = flq.MON,
-                flq.MAC = flq.MAC,
-                flq.WHB = flq.WHB,
-                flq.OTH = flq.OTH,
+                      flq.HKE = flq.HKE,
+                      flq.HOM = flq.HOM,
+                      flq.HO8 = flq.HO8,
+                      flq.LDB = flq.LDB,
+                      flq.MEG = flq.MEG,
+                      flq.MON = flq.MON,
+                      flq.MAC = flq.MAC,
+                      flq.WHB = flq.WHB,
+                      flq.OTH = flq.OTH,
                  catch.models = catch.models, 
                capital.models = capital.models,
            restriction.NTR_SP = 'catch', restriction.PSX_SP = 'catch', 
@@ -249,7 +256,7 @@ for(fl in  c('DTS_SP', 'NTR_SP')) fleets.ctrl.mxpr.price[[fl]][['efs.abs']] <- F
 
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ---- plots, echo=TRUE, eval=TRUE---------------------------------------------
 plot(seq(0,5, 0.01), 4*(8/9)^(seq(0,5, 0.01)), type = 'l', ylim = c(2,7), lwd = 2,
       ylab = 'Euro/Kg', main = 'Price vs Elasticity', xlab = 'elasticity')
 lines(seq(0,5, 0.01), 4*(10/9)^(seq(0,5, 0.01)), col  = 2, lwd = 2)
@@ -258,7 +265,7 @@ legend(0,7,c('Ly > L0', 'Ly < L0', 'P0'), col = c('black', 'red', 'grey'), lwd =
        lty = c(1,1,2), bty = 'n' )
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ---- price1, echo=TRUE, eval=TRUE--------------------------------------------
 fleets.ctrl.mxpr.price[['NTR_SP']][['HKE']][['pd.els']][] <- 
   fleets.ctrl.mxpr.price[['DTS_SP']][['HKE']][['pd.els']][] <- runif(prod(dim(flq.HKE)),0.1,0.4)
 
@@ -281,7 +288,7 @@ fleets.ctrl.mxpr.price[['NTR_SP']][['OTH']][['pd.els']][] <- runif(prod(dim(flq.
 fleets.ctrl.mxpr.price[['DTS_SP']][['OTH']][['pd.els']][] <- runif(prod(dim(flq.OTH)),0.2,0.4)
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ---- price2, echo=TRUE, eval=TRUE--------------------------------------------
 fleets.ctrl.mxpr.price[['NTR_SP']][['HKE']][['pd.Pa0']][] <- 
   fleets.ctrl.mxpr.price[['DTS_SP']][['HKE']][['pd.Pa0']][] <- 
                     yearMeans(fleets[['DTS_SP']][[1]][['HKE']]@price)
@@ -317,7 +324,7 @@ fleets.ctrl.mxpr.price[['DTS_SP']][['OTH']][['pd.Pa0']][] <-
                     yearMeans(fleets[['DTS_SP']][[1]][['OTH']]@price)
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ---- price3, echo=TRUE, eval=TRUE--------------------------------------------
 fleets.ctrl.mxpr.price[['NTR_SP']][['HKE']][['pd.La0']][] <- 
   fleets.ctrl.mxpr.price[['DTS_SP']][['HKE']][['pd.La0']][] <- yearMeans(landStock(fleets, 'HKE'))
 
@@ -342,7 +349,7 @@ fleets.ctrl.mxpr.price[['NTR_SP']][['OTH']][['pd.La0']][] <- yearMeans(landStock
 fleets.ctrl.mxpr.price[['DTS_SP']][['OTH']][['pd.La0']][] <- yearMeans(landStock(fleets, 'OTH'))
 
 
-## ----echo=TRUE, eval=FALSE, results = 'hide'-----------------------------
+## ---- price4, echo=TRUE, eval=FALSE, results = 'hide'-------------------------
 ## mxpr.price <- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets,
 ##                   covars = covars, indices = NULL, advice = advice,
 ##                   main.ctrl = main.ctrl, biols.ctrl = biols.ctrl,
@@ -351,7 +358,7 @@ fleets.ctrl.mxpr.price[['DTS_SP']][['OTH']][['pd.La0']][] <- yearMeans(landStock
 ##                   assess.ctrl = assess.ctrl, advice.ctrl = advice.ctrl.fixed)
 
 
-## ----echo=TRUE, eval=TRUE, results = 'hide'------------------------------
+## ---- capital1, echo=TRUE, eval=TRUE, results = 'hide'------------------------
 capital.models      <- rep('fixedCapital', length(fleets))
 names(capital.models) <- names(fleets)
 capital.models[names(capital.models) %in% c('NTR_SP', 'DTS_SP')] <- 'SCD'
@@ -383,7 +390,7 @@ fleets.ctrl.mxpr.capDyn <- create.fleets.ctrl(
 for(fl in  c('DTS_SP', 'NTR_SP')) fleets.ctrl.mxpr.capDyn[[fl]][['efs.abs']] <- FALSE
 
 
-## ----echo=TRUE, eval=FALSE, results = 'hide'-----------------------------
+## ---- run4, echo=TRUE, eval=FALSE, results = 'hide'---------------------------
 ## mxpr.capDyn <- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets,
 ##                   covars = covars, indices = NULL, advice = advice,
 ##                   main.ctrl = main.ctrl, biols.ctrl = biols.ctrl,
@@ -392,7 +399,7 @@ for(fl in  c('DTS_SP', 'NTR_SP')) fleets.ctrl.mxpr.capDyn[[fl]][['efs.abs']] <- 
 ##                   assess.ctrl = assess.ctrl, advice.ctrl = advice.ctrl.fixed)
 
 
-## ----echo=TRUE, eval=FALSE, results = 'hide'-----------------------------
+## ---- res4, echo=TRUE, eval=FALSE, results = 'hide'---------------------------
 ## 
 ## bio <- rbind(bioSumQ(bioSum(CnEf, scenario = 'CnEf', years = ac(2000:main.ctrl$sim.years[2]))),
 ##              bioSumQ(bioSum(trad, scenario = 'trad', years = ac(2000:main.ctrl$sim.years[2]))),

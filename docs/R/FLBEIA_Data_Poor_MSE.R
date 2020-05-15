@@ -1,15 +1,15 @@
-## ---- ini, echo=FALSE, results='hide', message=FALSE---------------------
+## ---- ini, echo=FALSE, results='hide', message=FALSE--------------------------
 # This chunk set the document environment, so it is hidden
 library(knitr)
 source("R/ini.R")
 set.seed(1423)
 
 
-## ----echo=FALSE, out.width='20%'-----------------------------------------
+## ----echo=FALSE, out.width='20%'----------------------------------------------
 include_graphics('images/FLBEIA_logo.png')
 
 
-## ---- include=TRUE, echo=FALSE-------------------------------------------
+## ---- include=TRUE, echo=FALSE------------------------------------------------
 library(spict)
 library(FLBEIA)
 library(MASS)
@@ -19,12 +19,12 @@ library(gtools)
 library(fishmethods)
 
 
-## ---- avoidError, echo=FALSE, results='hide', message=FALSE--------------
+## ---- avoidError, echo=FALSE, results='hide', message=FALSE-------------------
 # Avoid error if kobe library loaded
 density <- stats::density
 
 
-## ----data, echo = FALSE, include = FALSE---------------------------------
+## ----data, echo = FALSE, include = FALSE--------------------------------------
 data(mur)
 
 catch_long <- reshape(catch, direction = 'long', varying = names(catch)[2:8], sep = "_")
@@ -40,7 +40,7 @@ ggplot(evhoe, aes(x = year, y = biomass)) + geom_line(col=2, lwd = 1) +
     geom_ribbon(aes(ymin = evhoe$biomass-1.96*evhoe$std, ymax = evhoe$biomass+1.96*evhoe$std), alpha=0.2, fill = 2) 
 
 
-## ----spict data----------------------------------------------------------
+## ----spict data---------------------------------------------------------------
 murDat <- list(obsC  = catch[,'area_total'],
                timeC = catch[,'year'],
                obsI  = evhoe[,'biomass'],
@@ -51,7 +51,7 @@ murInp <- check.inp(murDat)
 murInp
 
 
-## ----initial fit---------------------------------------------------------
+## ----initial fit--------------------------------------------------------------
  mur_spict <- fit.spict(murInp)
  capture.output(summary(mur_spict))
 
@@ -72,7 +72,7 @@ murInp
  plotspict.catch(mur_spict, qlegend = FALSE)
 
 
-## ----spict ff------------------------------------------------------------
+## ----spict ff-----------------------------------------------------------------
 murDat$obsC  <- murDat$obsC[23:40]
 murDat$timeC <- murDat$timeC[23:40]
 mur_spict <- fit.spict(murDat)
@@ -102,7 +102,7 @@ plotspict.fb(mur_spict)
 par(mfrow = c(1,1))
 
 
-## ----varcov--------------------------------------------------------------
+## ----varcov-------------------------------------------------------------------
 varcov <- (mur_spict$cov.fixed)
 params <- mur_spict$par.fixed
 cor    <- cov2cor(mur_spict$cov.fixed)
@@ -112,14 +112,14 @@ cor    <- cov2cor(mur_spict$cov.fixed)
 corrplot(cor, method = 'ellipse')
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 set.seed(27)
 RandPar_SPict_log <- mvrnorm(1000, params, varcov)
 RandPar_SPict     <- exp(RandPar_SPict_log)
 colnames(RandPar_SPict) <- substr(colnames(RandPar_SPict),4, nchar(RandPar_SPict)) 
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 RandPar_flbeia     <- matrix(NA, 1000,3, dimnames = list(iter = 1:1000, c('r', 'K', 'p')))
 
 # Growth parameter r
@@ -149,7 +149,7 @@ abline(v = median(RandPar_flbeia[,3]+1), col = 2)
 par(mfrow = c(1,1))
 
 
-## ---- message=FALSE------------------------------------------------------
+## ---- message=FALSE-----------------------------------------------------------
 Best <- Cest <- matrix(NA, Niter, 18, dimnames = list(iter = 1:Niter, year = 1997:2014))
 
 for(i in 1:Niter){
@@ -179,13 +179,13 @@ matplot(1997:2014,t(Cest), type = 'l', main = 'Catch', ylab = 'MT', xlab = "", l
 
 
 
-## ----SRR-----------------------------------------------------------------
+## ----SRR----------------------------------------------------------------------
 steepness <- 0.95
 virginBio <- 15*max(murDat$obsC,na.rm = TRUE)
 spr0      <- 0.25 # contrast with an existing fit.
 
 
-## ----FLSRsim-------------------------------------------------------------
+## ----FLSRsim------------------------------------------------------------------
 sr_params <- unlist(abPars(s = steepness, v = virginBio, spr0 = spr0, model = 'bevholt'))
 
 sr <- FLSR(name = 'mur', params = FLPar(unlist(sr_params)), model = 'bevholt')
@@ -193,23 +193,23 @@ sr@params <-  FLPar(unlist(sr_params))
 sr@params[2] <- sr@params[2]
 
 
-## ----VBert---------------------------------------------------------------
+## ----VBert--------------------------------------------------------------------
 Linf <- 37.7
 K    <- 0.29
 t0   <- 0
 VBert <- function(age, Linf, K, t0) return(Linf*(1-exp(-K*(age-t0))))
 
 
-## ----lw_rel--------------------------------------------------------------
+## ----lw_rel-------------------------------------------------------------------
 lw_a <- 0.016
 lw_b <- 2.91
 
 
-## ----mwa-----------------------------------------------------------------
+## ----mwa----------------------------------------------------------------------
 mwa <- lw_a*VBert((0:10)+0.5, Linf, K, t0)^lw_b
 
 
-## ----maturity------------------------------------------------------------
+## ----maturity-----------------------------------------------------------------
 na <- 11
 a2 <- 1/7.88
 a1 <- (19.44-15.5*2)*a2
@@ -218,7 +218,7 @@ mat1 <- a1+13.29*a2   # 13.29 the length at one year and half a year age.
 mat <- c(mat0, mat1, rep(1,na-2)) 
 
 
-## ----natmort, results = TRUE---------------------------------------------
+## ----natmort, results = TRUE--------------------------------------------------
 Ms <- M.empirical(Linf = Linf, 
             Kl = K, TC = 16, tmax = 10,
             tm = 0.5, method = c(1,  3, 4, 5, 10, 11))
@@ -228,26 +228,26 @@ Ms
 M <- mean(mean(Ms[-5,]))
 
 
-## ----C1999---------------------------------------------------------------
+## ----C1999--------------------------------------------------------------------
 catch[25,8]<- mean(catch[26,8], catch[24,8]) 
 
 
-## ----pristineBio---------------------------------------------------------
+## ----pristineBio--------------------------------------------------------------
 pristineBio <- c(prod(sr_params[1])*exp(-(0:9)*M),sum(c(sr_params[1])*exp(-(10:100)*M)))
 
 
-## ----catch_profile_w-----------------------------------------------------
+## ----catch_profile_w----------------------------------------------------------
 caw_prop <- c(age0 = 0.000, age1 = 0.194, age2 = 0.172, age3 = 0.335, age4 = 0.193, 
               age5 = 0.031, age6 = 0.019, age7 = 0.032, age8 = 0.008, age9 = 0.006, 
               age10 = 0.011)
 
 
-## ----ca75----------------------------------------------------------------
+## ----ca75---------------------------------------------------------------------
 caw75 <- catch[1,8]*caw_prop
 ca75  <- caw75/(mwa/1000)
 
 
-## ----fa1975--------------------------------------------------------------
+## ----fa1975-------------------------------------------------------------------
 fa75 <- numeric(11)
 
 fobj <- function(Fa,Ma,Na,Ca) (((Fa/(Fa+Ma))*(1-exp(-(Fa+Ma)))*Na) - Ca)
@@ -257,7 +257,7 @@ for(a in 0:10){
 }
 
 
-## ----stk-----------------------------------------------------------------
+## ----stk----------------------------------------------------------------------
 mq <- FLQuant(M, dim = c(11,40,1,1,1,Niter), 
               dimnames = list(age = 0:10, year = 1975:2014, unit = 'unique', 
                               season = 'all', area = 'unique', iter = 1:Niter))
@@ -294,12 +294,12 @@ stk <- FLStock(name = 'mur', mwaq, catch = catch.flq, catch.wt = mwaq, landings.
 units(harvest(stk)) <- 'f'
 
 
-## ----brp-----------------------------------------------------------------
+## ----brp----------------------------------------------------------------------
 brp_lh <- ypr(age = 0:10, wgt = mwa/1000,partial = fa75/max(fa75), M = M, plus = TRUE, 
               oldest = 10, maxF = 10, incrF = 0.01, graph = FALSE)
 
 
-## ----numbers_F-----------------------------------------------------------
+## ----numbers_F----------------------------------------------------------------
 fobj <- function(fmult,sel,n0,w0,m0,c0){
     f0 <- fmult*sel
     z0 <- f0 + m0
@@ -332,11 +332,11 @@ for(i in 1:Niter){
   }}
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 stk.sc0 <- (window(stk.sc0,1978,2028))
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 flq  <- FLQuant(1, dim = c(1,51,1,1,1,Niter), 
                 dimnames = list(quant = 'all', year = 1978:2028, unit = 'unique', 
                                 season = 'all', area = 'unique', iter = 1:Niter))
@@ -352,7 +352,7 @@ flqa0 <- FLQuant(0, dim = c(11,51,1,1,1,Niter),
                                  season = 'all', area = 'unique', iter = 1:Niter))
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 murBD <- FLBDsim(name = 'mur', desc = 'Striped Red Mullet in Bay of Biscay', 
                  biomass= flq, catch = flq, uncertainty = flq, gB = flq)
 
@@ -366,7 +366,7 @@ murBD@alpha    <- array((murBD@params['p',,,]/murBD@params['r',,,]+1)^
                           (1/murBD@params['p',,,]), dim = c(51,1,Niter))
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # Correct the catches in 2014 so that C14 < "B14*catch.thres + g(B14)*unc"
 r <- murBD@params['r',1,,]
 p <- murBD@params['p',1,,]
@@ -382,7 +382,7 @@ murBD@gB[,ac(2014)]    <- gB14
 murBD@catch[,ac(2014)] <- C14
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 murSR <- FLSRsim(name = 'mur', desc = 'Striped Red Mullet in Bay of Biscay', ssb= flq, 
                  model = 'bevholt')
 
@@ -392,7 +392,7 @@ murSR@uncertainty[]  <- rlnorm(Niter*51,0,.30)
 murSR@params[]       <- sr@params 
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 biols.bd <- FLBiols(mur = FLBiol(name = 'mur', 
                               desc = 'Striped Red Mullet in Bay of Biscay',
                              range = c(min = 1, max = 1, plusgroup = 1, minyear = 1978, 
@@ -405,7 +405,7 @@ biols.bd <- FLBiols(mur = FLBiol(name = 'mur',
                              ))
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 biols.age <- FLBiols(mur = FLBiol(name = 'mur', 
                               desc = 'Striped Red Mullet in Bay of Biscay',
                              range = c(min = 0, max = 10, plusgroup = 10, minyear = 1978, 
@@ -424,7 +424,7 @@ mat(biols.age[[1]])[,ac(2015:2028)] <- mat(biols.age[[1]])[,ac(2014)]
 wt(biols.age[[1]])[,ac(2015:2028)]  <- wt(biols.age[[1]])[,ac(2014)]
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 cc <- FLCatchExt(name = 'mur', 
                  alpha = flq, beta = flq, 
                  landings = murBD@catch, landings.n = murBD@catch, landings.wt = flq, 
@@ -432,7 +432,7 @@ cc <- FLCatchExt(name = 'mur',
                  landings.sel = flq, discards.sel = flq0)
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 fleets.bd <- FLFleetsExt(fl = FLFleetExt(name = 'fl', effort= flq, capacity = flq*1e12,
                            metiers = FLMetiersExt(mt = FLMetierExt(name = 'mt', effshare = flq, 
                                      catches = FLCatchesExt(mur = cc)))))
@@ -443,7 +443,7 @@ fleets.bd[[1]]@metiers[[1]]@catches[[1]]@catch.q[,ac(2015:2028)] <-
          year = 2015:2028) 
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 cc <- FLCatchExt(name = 'mur', 
                  alpha = flqa, beta = flqa, 
                  landings = stk.sc0@catch, landings.n = stk.sc0@catch.n, 
@@ -463,7 +463,7 @@ fleets.age[[1]]@metiers[[1]]@catches[[1]]@catch.q[,ac(2015:2028)] <-
          year = 2015:2028) 
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 indices <- FLIndices(evhoe = FLIndex(name = 'mur', catch.wt = flq, effort = flq, index = flq))
 indices[[1]]@index.q[]     <- rep(RandPar_SPict[valid_iters[1:Niter],'q'], each = 51)
 indices[[1]]@index[]       <- indices[[1]]@index.q[]*murBD@biomass
@@ -472,12 +472,12 @@ sigma <- sqrt(log(0.3^2+1))
 indices[[1]]@index.var[]   <- rlnorm(51*Niter, 0, sigma)
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 indices.age <- indices 
 indices.age[[1]]@index[] <- indices.age[[1]]@index.q[]*quantSums(wt(biols.age[[1]])*n(biols.age[[1]]))
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # Advice Object 
 advice <- list(TAC = murBD@catch,  quota.share = list(mur = flq))
 dimnames(advice$TAC)[[1]] <- 'mur'
@@ -486,16 +486,16 @@ advice$TAC[,'2015'] <- mean(murDat$obsC[16:18]) # There is no TAC => last three 
 dimnames(advice$quota.share[[1]])[[1]] <- 'fl'
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 main.ctrl  <- list(sim.years = c(initial = '2015', final = '2025'))
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 biols.ctrl.bd  <- create.biols.ctrl(stksnames = 'mur', growth.model = 'BDPG')
 biols.ctrl.age <- create.biols.ctrl(stksnames = 'mur', growth.model = 'ASPG')
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 fleets.ctrl.bd <- create.fleets.ctrl(fls = 'fl', fls.stksnames = list(fl = 'mur'), flq = flq, 
                                      effort.models = c(fl = 'SMFB'), n.fls.stks = c(fl = 1), 
                                      capital.models = c(fl = 'fixedCapital'), 
@@ -509,7 +509,7 @@ fleets.ctrl.age <- create.fleets.ctrl(fls = 'fl', fls.stksnames = list(fl = 'mur
                                       catch.models = c('CobbDouglasAge'))
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 obs.ctrl.ind <- create.obs.ctrl(stksnames = 'mur', n.stks.inds = c(mur = 1), 
                                 stks.indsnames = 'evhoe',indObs.models = c(mur = 'bioInd'))
 obs.ctrl.ind[['mur']][['stkObs']][['stkObs.model']] <- 'NoObsStock'
@@ -519,17 +519,17 @@ obs.ctrl.stk <- create.obs.ctrl(stksnames = 'mur', n.stks.inds = c(mur = 1),
 obs.ctrl.stk[['mur']][['indObs']][['evhoe']] <- 'NoObsIndex'
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 assess.ctrl <- create.assess.ctrl(stksnames = 'mur', assess.models = 'NoAssessment')
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 advice.ctrl.dls3 <- create.advice.ctrl(stksnames = 'mur', HCR.models = 'annexIVHCR', 
                                        index = 'evhoe', iter = Niter)
 advice.ctrl.dls3$mur$index <- 'evhoe'
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 advice.ctrl.little <- advice.ctrl.dls3
 advice.ctrl.little$mur$HCR.model <- 'little2011HCR'
 advice.ctrl.little[['mur']][['ref.pts']] <- 
@@ -541,7 +541,7 @@ advice.ctrl.little[['mur']][['ref.pts']]['Itarg',] <-
 advice.ctrl.little[['mur']][['ref.pts']]['Cmax',]  <- mur_spict$report$MSY
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 advice.ctrl.msy <- create.advice.ctrl(stksnames = 'mur', HCR.models = 'IcesHCR', first.yr = 2014, last.yr = 2025, iter = Niter)
 advice.ctrl.msy$mur$AdvCatch         <- c(rep(FALSE, 38), rep(TRUE, 13))
 names(advice.ctrl.msy$mur$AdvCatch)  <- 1978:2028
@@ -552,7 +552,7 @@ advice.ctrl.msy$mur$ref.pts['Btrigger',] <-
 advice.ctrl.msy$mur$ref.pts['Fmsy',]     <- mur_spict$report$Fmsy*0.75
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 advice.ctrl.msy.pa <- advice.ctrl.msy
 advice.ctrl.msy.pa$mur$ref.pts['Fmsy',]  <- mur_spict$report$Fmsy/1.4
 
@@ -560,7 +560,7 @@ advice.ctrl.little.pa <- advice.ctrl.little
 advice.ctrl.little.pa[['mur']][['ref.pts']]['Cmax',]  <- mur_spict$report$MSY/1.4
 
 
-## ---- message =FALSE-----------------------------------------------------
+## ---- message =FALSE----------------------------------------------------------
 dls3.bd <- FLBEIA(biols = biols.bd, SRs = NULL, BDs = list(mur = murBD), fleets = fleets.bd, 
                   covars = NULL, indices = list(mur = indices), advice = advice, 
                   main.ctrl, biols.ctrl.bd, fleets.ctrl.bd, covars.ctrl = NULL, 
@@ -615,7 +615,7 @@ msy.pa.age <- FLBEIA(biols = biols.age, SRs = list(mur = murSR), BDs = NULL, fle
                      obs.ctrl.stk, assess.ctrl, advice.ctrl.msy.pa)
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 scenarios <- c('dls3.bd',  'little.bd',  'msy.bd',  'little.pa.bd',  'msy.pa.bd',
                'dls3.age', 'little.age', 'msy.age', 'little.pa.age', 'msy.pa.age')
 
@@ -634,7 +634,7 @@ for(sc in scenarios){
 }
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
   bioQ   <- bioSumQ(bio)
   advQ   <- advSumQ(adv)
 

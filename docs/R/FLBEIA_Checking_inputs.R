@@ -1,4 +1,4 @@
-## ---- ini, echo=FALSE, results='hide', message=FALSE, warning=FALSE------
+## ---- ini, echo=FALSE, results='hide', message=FALSE, warning=FALSE-----------
 # This chunk set the document environment, so it is hidden
 library(knitr)
 knitr::opts_chunk$set(fig.align="center",
@@ -7,24 +7,24 @@ options(width=50)
 set.seed(1423)
 
 
-## ----echo=FALSE, out.width='20%'-----------------------------------------
+## ----echo=FALSE, out.width='20%'----------------------------------------------
 include_graphics('images/FLBEIA_logo.png')
 
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 ## data(package="FLBEIA")
 
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 ## install.packages( c("FLCore", "FLFleet", "FLBEIA"),
 ##                   repos="http://flr-project.org/R")
 
 
-## ---- pkgs, results = "hide"---------------------------------------------
+## ---- pkgs, results = "hide"--------------------------------------------------
 library(FLBEIA)
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
   rm(list=ls()) # empty the workspace
   
   data(one)     # load the datasets
@@ -32,13 +32,13 @@ library(FLBEIA)
   data(multi)
 
 
-## ----echo=TRUE-----------------------------------------------------------
+## ----echo=TRUE----------------------------------------------------------------
   checkBiols(oneBio)
   checkBiols(oneItBio)
   checkBiols(multiBio)
 
 
-## ----echo=TRUE, eval=FALSE-----------------------------------------------
+## ----echo=TRUE, eval=FALSE----------------------------------------------------
 ##   obj1 <- obj2 <- oneBio
 ## 
 ##   mat(obj1$stk1)[1,1,] <- -0.5 # mat < 0
@@ -48,23 +48,23 @@ library(FLBEIA)
 ##   checkBiols(obj2)             # returns an error
 
 
-## ----echo=TRUE, warning=TRUE---------------------------------------------
+## ----echo=TRUE, warning=TRUE--------------------------------------------------
   checkFleets(oneFl)
   checkFleets(oneItFl)
   checkFleets(multiFl)
 
 
-## ----echo=TRUE, eval=FALSE-----------------------------------------------
+## ----echo=TRUE, eval=FALSE----------------------------------------------------
 ##   checkFleets(multiFl, ctrl = multiFlC) # returns an error
 
 
-## ----echo=TRUE-----------------------------------------------------------
+## ----echo=TRUE----------------------------------------------------------------
   sim.years <- as.numeric(multiMainC$sim.years)
   checkFleets( window(multiFl, start = sim.years[1]-1, end = sim.years[2]), 
                ctrl = multiFlC)
 
 
-## ----echo=TRUE, eval=FALSE-----------------------------------------------
+## ----echo=TRUE, eval=FALSE----------------------------------------------------
 ##   obj1 <- obj2 <- obj3 <- obj4 <- multiFl
 ## 
 ##   obj1$fl1@effort[,ac(1990),,1,]
@@ -92,19 +92,19 @@ library(FLBEIA)
 ##   checkFleets(obj4)                                           # returns an error
 
 
-## ----echo=TRUE, eval=FALSE-----------------------------------------------
+## ----echo=TRUE, eval=FALSE----------------------------------------------------
 ##   checkSRs(oneSR)
 ##   checkSRs(oneItSR)
 ##   checkSRs(multiSR)
 ##   checkBDs(multiBD)
 
 
-## ----echo=TRUE-----------------------------------------------------------
+## ----echo=TRUE----------------------------------------------------------------
   checkSRs(lapply(oneSR, window, start = sim.years[1]-1, end = sim.years[2]))
   checkSRs(lapply(oneItSR, window, start = sim.years[1]-1, end = sim.years[2]))
 
 
-## ----echo=TRUE, eval=FALSE-----------------------------------------------
+## ----echo=TRUE, eval=FALSE----------------------------------------------------
 ## # BDs
 ## 
 ##   obj1 <- obj2 <- obj3 <- multiSR
@@ -133,19 +133,19 @@ library(FLBEIA)
 ##   checkBDs(obj2)                       # returns an error
 
 
-## ----echo=TRUE-----------------------------------------------------------
+## ----echo=TRUE----------------------------------------------------------------
   checkAdvice(oneAdv)
   checkAdvice(oneItAdv)
   checkAdvice(multiAdv)
 
 
-## ----echo=TRUE, eval=FALSE-----------------------------------------------
+## ----echo=TRUE, eval=FALSE----------------------------------------------------
 ##   obj1 <- multiAdv
 ##   obj1$quota.share$stk1[,1,] <- 2 # sum quota shares != 1
 ##   checkAdvice(obj1)               # returns an error
 
 
-## ----echo=TRUE-----------------------------------------------------------
+## ----echo=TRUE----------------------------------------------------------------
   checkObsctrl(oneObsC)
   checkObsctrl(oneObsCIndAge)
   checkObsctrl(oneObsCIndBio)
@@ -155,7 +155,7 @@ library(FLBEIA)
   checkObsctrl(multiObsC)
 
 
-## ----echo=TRUE, eval=FALSE-----------------------------------------------
+## ----echo=TRUE, eval=FALSE----------------------------------------------------
 ## # Index: total biomass
 ## 
 ##   obj1 <- oneObsCIndBio
@@ -171,7 +171,7 @@ library(FLBEIA)
 ##   checkObsctrl(obj2)                     # returns an error
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 checkFLBEIAData( biols = oneBio, SRs = oneSR, BDs = NULL, fleets = oneFl,
                  covars = oneCv, indices = NULL, advice = oneAdv,
                  main.ctrl = oneMainC, biols.ctrl = oneBioC, fleets.ctrl = oneFlC,

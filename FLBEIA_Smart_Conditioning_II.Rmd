@@ -60,7 +60,7 @@ If you are using Windows, please use 64-bit R version because some of the packag
 do not work in 32-bit.
 
 ```{r install, eval=FALSE}
-install.packages( c("ggplot2", "XLConnect", "XLConnectJars"))
+install.packages( c("ggplot2", "XLConnect"))
 install.packages( c("FLCore", "FLFleet", "FLBEIA", 
                     "FLash", "FLAssess", "FLXSA"), 
                   repos="http://flr-project.org/R")
@@ -72,7 +72,6 @@ Load all the necessary packages.
 ```{r libraries, pkgs, results = "hide"}
 library(FLBEIA)
 library(XLConnect)
-library(XLConnectJars)
 library(plyr)
 ```
 
@@ -172,18 +171,18 @@ stknms <- c('HKE', 'LDB', 'MEG', 'MON')
 
 hke <- create.biol.arrays(file.path(tdir,'stocks/HKE2017.xlsx'), name = 'HKE',
                    ages = 0:15, hist.yrs = 1982:2017 , sim.yrs = 2018:2025, 
-                   fbar = c(1,3), mean.yrs = 2015:2017, excel = TRUE)
+                   fbar = c(1,3), mean.yrs = 2015:2017, source = 'excel')
 
 mon <- create.biol.arrays(file.path(tdir,'stocks/MON2017.xlsx'), name = 'MON',
                           ages = 0:30, hist.yrs = 1980:2017 , sim.yrs = 2018:2025,
-                           fbar = c(1,8), mean.yrs = 2015:2017,  excel = TRUE)
+                           fbar = c(1,8), mean.yrs = 2015:2017,  source = 'excel')
 ldb <- create.biol.arrays(file.path(tdir,'stocks/LDB2017.xlsx'), name = 'LDB',
                           ages = 0:7, hist.yrs = 1986:2017 , sim.yrs = 2018:2025, 
-                          fbar = c(2,4), mean.yrs = 2015:2017, excel = TRUE)
+                          fbar = c(2,4), mean.yrs = 2015:2017, source = 'excel')
 
 meg <- create.biol.arrays(file.path(tdir,'stocks/MEG2017.xlsx'), name = 'MEG',
                           ages = 1:7, hist.yrs = 1986:2017 , sim.yrs = 2018:2025, 
-                          fbar = c(2,4),mean.yrs = 2015:2017, excel = TRUE)
+                          fbar = c(2,4),mean.yrs = 2015:2017, source = 'excel')
 ```
 
 
@@ -214,7 +213,7 @@ Stocks assessed for example with Bayesian models do not only provide point estim
 
 To create the fleets, we will use the 'create.fleets.arrays' function. The R help page for this function provides some useful information.
 
-```{r echo=TRUE, eval=TRUE}
+```{r echo=TRUE, eval=FALSE}
 ?create.fleets.arrays
 ```
 
@@ -377,9 +376,24 @@ fleets <- create.fleets.arrays(stk_objs,
 
 Now we have to calculate the catchabilitis by age for all the fleets and metiers. 'create.fleets.arrays' functions assumes that the 'alpha' and 'beta' parameters of the Cobb-Douglass function are equal to one and calculates the catchability euqal to the ratio between the catch at age at metier level and the product of the biomass in the middle of the total effort and the effort share in the metier. The retention ogives are calculated from the historical data as the rati between the landings at ate and the catch at age. For the projection the mean of the last three years is used.
 
+For this, we also need to have defined the 'catch.model' in the 'fleets.ctrl' object, as depending on wether it is 'CobbDouglas' or 'Baranov' the catchability will be estimated in a different way. At the moment, we will select 'CobbDouglas' for all of them.
+
+
 ```{r qcalc, echo=TRUE, eval=TRUE,  results = "hide"}
-fleets <- calculate.q.sel.flrObjs(biols, fleets, NULL, 
+
+fleets.ctrl <- list()
+for (fl in flnms) {
+  fleets.ctrl[[fl]] <- list()
+  for (st in catchNames(fleets[[fl]]))
+    fleets.ctrl[[fl]][[st]][['catch.model']] <- "CobbDouglas"
+}
+
+fleets <- calculate.q.sel.flrObjs(biols, fleets, NULL, fleets.ctrl, 
                                   mean.yrs = ac(2015:2017), sim.yrs = ac(2018:2025))
+```
+
+```{r echo=FALSE, eval=TRUE}
+list2env(list(fleets = fleets), globalenv())
 ```
 
 

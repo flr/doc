@@ -82,7 +82,7 @@ library(ggplot2)
 This tutorial is focused on the bio-economic simulation of fisheries systems using FLBEIA. How to condition the model has been addressed in previous tutorials so here we will take the objects from an existing data file. 
 
 
-```{r echo=TRUE, eval=TRUE}
+```{r, data, echo=TRUE, eval=TRUE}
 dir <- tempdir()
 # download.file("http://www.flr-project.org/doc/src/flbeia_bioeco.zip", 
 #               file.path(dir, "flbeia_bioeco.zip"))
@@ -90,7 +90,7 @@ dir <- tempdir()
 unzip("src/flbeia_bioeco.zip", exdir=dir)
 ```
 
-```{r echo=TRUE, eval=TRUE}
+```{r, dataLoad, echo=TRUE, eval=TRUE}
 load('./src/flbeia_bioeco/data.Rdata')
 stknms <- names(biols)
 main.ctrl$sim.years[] <- c(2017,2025)
@@ -101,7 +101,7 @@ The data set is the one used by the STECF in 2018 to evaluate the bio-economic c
 
 A brief summary of the stocks and their structure can be obtained using 'lapply' function:
 
-```{r echo=TRUE, eval=TRUE}
+```{r, biols, echo=TRUE, eval=TRUE}
 lapply(biols, function(x) dimnames(x@n)[[1]])
 ```
 
@@ -113,13 +113,13 @@ The abundance of the widely distributed stocks, MAC (mackerel), HO8 (western hor
 
 The function lapply can be use here too to list the metiers in each fleet:
 
-```{r echo=TRUE, eval=TRUE}
+```{r, fleets, echo=TRUE, eval=TRUE}
 lapply(fleets,function(x) names(x@metiers))
 ```
 
 Using the function 'stock.fleetInfo' we can see the stocks that catch each of the fleets:
 
-```{r echo=TRUE, eval=TRUE}
+```{r, catchStk, echo=TRUE, eval=TRUE}
 t(stock.fleetInfo(fleets))
 ```
 
@@ -187,7 +187,7 @@ In previous tutorials we have already used the first two functions, now we will 
 
 First we will built the control objec ts needed to run this scenarios. We will only build the fleets.ctrls and  use the controls that were in the data set for the rest of the components. To start we need to create same objects with the structure of the data:
 
-```{r echo=TRUE, eval=TRUE}  
+```{r, flStk, echo=TRUE, eval=TRUE}  
 n.flts.stks      <- sapply(sapply(fleets, catchNames), length) 
 flts.stksnames   <- NULL
 for(f in 1:length(fleets)){  
@@ -204,31 +204,31 @@ for(f in 1:length(fleets)){
 
 For catch production we use a Cobb-Douglass function at age level for all the stocks except 'OTH' that is a biomass structured stock.
 
-```{r echo=TRUE, eval=TRUE}  
+```{r, catch, echo=TRUE, eval=TRUE}  
 catch.models <- rep("CobbDouglasAge", sum(n.flts.stks))
 names(catch.models) <- flts.stksnames
 catch.models[names(catch.models) == 'OTH'] <- "CobbDouglasBio"  
 ```
 
 In this scenario we will use the price as a given parameter.
-```{r echo=TRUE, eval=TRUE}  
+```{r, price, echo=TRUE, eval=TRUE}  
 price.models <-  rep("fixedPrice", sum(n.flts.stks))
 names(price.models) <- flts.stksnames
 ```
 
 An FLQuant with the general structure of the data.
-```{r echo=TRUE, eval=TRUE}  
+```{r, flq, echo=TRUE, eval=TRUE}  
 flq <- FLQuant(dimnames= list(year = 1980:2025, iter =  1))     
 ```
 
 The capital, that is  the capacity of the fleets, is given as input data too.
-```{r echo=TRUE, eval=TRUE}  
+```{r, capital, echo=TRUE, eval=TRUE}  
 capital.models <-  rep('fixedCapital', length(fleets))
 ```
 
 The control to use effort equal to the historical mean:
 
-```{r echo=TRUE, eval=TRUE}
+```{r, fleetsCtrl, echo=TRUE, eval=TRUE}
 fleets.ctrl.CnEf <- create.fleets.ctrl(
                           fls = names(fleets),
                    n.fls.stks = n.flts.stks,
@@ -246,7 +246,7 @@ for(f in names(fleets)) fleets.ctrl.CnEf[[f]][['effort.model']] <- 'fixedEffort'
 
 The control for 'SMFB' function using the 'HKE' and 'HOM' options to restrict the catch:
 
-```{r echo=TRUE, eval=TRUE}
+```{r, fleetsCtrl2, echo=TRUE, eval=TRUE}
 fleets.ctrl.trad <- create.fleets.ctrl(
                           fls = names(fleets), 
                    n.fls.stks = n.flts.stks, 
@@ -268,7 +268,7 @@ fleets.ctrl.trad <- create.fleets.ctrl(
 
 To define the  control for 'MaxProfit', first we create an object with the restriction for the effort share, to facilitate the generation of the object.
 
-```{r echo=TRUE, eval=TRUE}
+```{r, effRange, echo=TRUE, eval=TRUE}
 effort.range <- lapply(fleets, function(x){ 
    res <- matrix(NA, length(x@metiers), 2, dimnames = list(names(x@metiers), c('min', 'max')))
    res[,1] <- 0#sapply(x@metiers, function(y) mean(y@effshare[, ac(2015:2017)]))*0.25
@@ -281,7 +281,7 @@ effort.range <- lapply(fleets, function(x){
 Now we create the control object with the ranges created before and the restriction in hake and horse mackerel catches:
 
 
-```{r echo=TRUE, eval=TRUE}
+```{r, effModel, echo=TRUE, eval=TRUE}
 effort.models <- rep('SMFB', length(fleets))
 names(effort.models) <- names(fleets)
 effort.models[names(effort.models) %in% c('DTS_SP', 'NTR_SP')] <- 'MaxProfit'
@@ -310,7 +310,7 @@ fleets.ctrl.mxpr <- create.fleets.ctrl(
 We have to tell FLBEIa if the restriction in effort is in relative or absolute terms. 
 
 
-```{r echo=TRUE, eval=TRUE}
+```{r, capacity, echo=TRUE, eval=TRUE}
 for(fl in  c('DTS_SP', 'NTR_SP')) fleets.ctrl.mxpr[[fl]][['efs.abs']] <- FALSE
 
 fleets[['DTS_SP']]@capacity[] <- fleets[['NTR_SP']]@capacity[] <- 1e6
@@ -318,7 +318,7 @@ fleets[['DTS_SP']]@capacity[] <- fleets[['NTR_SP']]@capacity[] <- 1e6
 
 Now we run the FLBEIA using the three different fleet dynamic scenarios:
 
-```{r echo=TRUE, eval=FALSE, results = 'hide'}
+```{r, run1, echo=TRUE, eval=FALSE, results = 'hide'}
 CnEf <- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets, 
                   covars = covars, indices = NULL, advice = advice, 
                   main.ctrl = main.ctrl, biols.ctrl = biols.ctrl, 
@@ -327,7 +327,7 @@ CnEf <- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets,
                   assess.ctrl = assess.ctrl, advice.ctrl = advice.ctrl.fixed)
 ```
 
-```{r echo=TRUE, eval=FALSE, results = 'hide'}
+```{r, run2, echo=TRUE, eval=FALSE, results = 'hide'}
 trad <- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets, 
                   covars = covars, indices = NULL, advice = advice, 
                   main.ctrl = main.ctrl, biols.ctrl = biols.ctrl, 
@@ -337,7 +337,7 @@ trad <- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets,
 ```
 
 
-```{r echo=TRUE, eval=FALSE, results = 'hide'}
+```{r, run3, echo=TRUE, eval=FALSE, results = 'hide'}
 
 mxpr <- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets, 
                   covars = covars, indices = NULL, advice = advice, 
@@ -362,32 +362,39 @@ where $\Gamma$ is the landing of fleet $f$, $L_{st,a,y,s,f}$,  or total stock la
 
 Hence, if we want to use this function in FLBEIA we need to tell it to FLBEIA and we need to specify the extra arguments, $P_0$ and $e$.
 
-```{r echo=TRUE, eval=TRUE}
+```{r, priceMod, echo=TRUE, eval=TRUE}
 price.models <- rep('fixedPrice', length(catch.models))
 names(price.models) <- names(flts.stksnames)
 price.models[substr(names(price.models),1,3) %in% c('NTR', 'DTS')] <- 'elasticPrice'
 
-flq.HKE <- biols$HKE@n; flq.HKE[] <- NA
+flq.HKE <- biols$HKE@n * NA
   
-flq.LDB <- biols$LDB@n; flq.LDB[] <- NA
+flq.LDB <- biols$LDB@n * NA
 
-flq.HO8 <- biols$HO8@n; flq.HO8[] <- NA
+flq.HO8 <- biols$HO8@n * NA
 
-flq.HOM <- biols$HOM@n; flq.HOM[] <- NA
+flq.HOM <- biols$HOM@n * NA
 
-flq.MEG <- biols$MEG@n; flq.MEG[] <- NA
+flq.MEG <- biols$MEG@n * NA
 
-flq.MON <- biols$MON@n; flq.MON[] <- NA
+flq.MON <- biols$MON@n * NA
 
-flq.MAC <- biols$MAC@n; flq.MAC[] <- NA
+flq.MAC <- biols$MAC@n * NA
 
-flq.WHB <- biols$WHB@n; flq.WHB[] <- NA
+flq.WHB <- biols$WHB@n * NA
 
-flq.OTH <- biols$OTH@n; flq.OTH[] <- NA
+flq.OTH <- biols$OTH@n * NA
 
+```
 
+```{r echo=FALSE, eval=TRUE}
+flq <- FLQuant(dimnames= list(year = 1980:2025, iter =  1)) 
+list2env(list(flq = flq, 
+              flq.HKE = flq.HKE, flq.LDB = flq.LDB, flq.HO8 = flq.HO8, flq.HOM = flq.HOM, flq.MEG = flq.MEG, 
+              flq.MON = flq.MON, flq.MAC = flq.MAC, flq.WHB = flq.WHB, flq.OTH = flq.OTH), globalenv())
+```
 
-
+```{r, fleetsCtrl3, echo=TRUE, eval=TRUE}
 fleets.ctrl.mxpr.price <- create.fleets.ctrl(
                           fls = names(fleets), 
                    n.fls.stks = n.flts.stks, 
@@ -395,15 +402,15 @@ fleets.ctrl.mxpr.price <- create.fleets.ctrl(
                 effort.models = effort.models, 
                  price.models = price.models, 
                           flq = flq, 
-                flq.HKE = flq.HKE,
-                flq.HOM = flq.HOM,
-                flq.HO8 = flq.HO8,
-                flq.LDB = flq.LDB,
-                flq.MEG = flq.MEG,
-                flq.MON = flq.MON,
-                flq.MAC = flq.MAC,
-                flq.WHB = flq.WHB,
-                flq.OTH = flq.OTH,
+                      flq.HKE = flq.HKE,
+                      flq.HOM = flq.HOM,
+                      flq.HO8 = flq.HO8,
+                      flq.LDB = flq.LDB,
+                      flq.MEG = flq.MEG,
+                      flq.MON = flq.MON,
+                      flq.MAC = flq.MAC,
+                      flq.WHB = flq.WHB,
+                      flq.OTH = flq.OTH,
                  catch.models = catch.models, 
                capital.models = capital.models,
            restriction.NTR_SP = 'catch', restriction.PSX_SP = 'catch', 
@@ -426,7 +433,7 @@ Now we need to fill the $els$ and $p0$ elements per stock and fleet (NTR_SP and 
 
 In the graph below we shoe the effect of the elasticity parameters in the dynamic of the prices, the higher the value the higher the reaction of the prices.
 
-```{r echo=TRUE, eval=TRUE}
+```{r, plots, echo=TRUE, eval=TRUE}
 plot(seq(0,5, 0.01), 4*(8/9)^(seq(0,5, 0.01)), type = 'l', ylim = c(2,7), lwd = 2,
       ylab = 'Euro/Kg', main = 'Price vs Elasticity', xlab = 'elasticity')
 lines(seq(0,5, 0.01), 4*(10/9)^(seq(0,5, 0.01)), col  = 2, lwd = 2)
@@ -437,7 +444,7 @@ legend(0,7,c('Ly > L0', 'Ly < L0', 'P0'), col = c('black', 'red', 'grey'), lwd =
 
 The base price
 
-```{r echo=TRUE, eval=TRUE}
+```{r, price1, echo=TRUE, eval=TRUE}
 fleets.ctrl.mxpr.price[['NTR_SP']][['HKE']][['pd.els']][] <- 
   fleets.ctrl.mxpr.price[['DTS_SP']][['HKE']][['pd.els']][] <- runif(prod(dim(flq.HKE)),0.1,0.4)
 
@@ -462,7 +469,7 @@ fleets.ctrl.mxpr.price[['DTS_SP']][['OTH']][['pd.els']][] <- runif(prod(dim(flq.
 
 
 The base price equal to the mean in the historical years
-```{r echo=TRUE, eval=TRUE}
+```{r, price2, echo=TRUE, eval=TRUE}
 fleets.ctrl.mxpr.price[['NTR_SP']][['HKE']][['pd.Pa0']][] <- 
   fleets.ctrl.mxpr.price[['DTS_SP']][['HKE']][['pd.Pa0']][] <- 
                     yearMeans(fleets[['DTS_SP']][[1]][['HKE']]@price)
@@ -502,7 +509,7 @@ fleets.ctrl.mxpr.price[['DTS_SP']][['OTH']][['pd.Pa0']][] <-
 We set the base landings equal to the mean landings of the historical years in the whole fishery, because the price in the landings is a function of the 
 total landings in the fishery and not only the landings of a given fleet.
 
-```{r echo=TRUE, eval=TRUE}
+```{r, price3, echo=TRUE, eval=TRUE}
 fleets.ctrl.mxpr.price[['NTR_SP']][['HKE']][['pd.La0']][] <- 
   fleets.ctrl.mxpr.price[['DTS_SP']][['HKE']][['pd.La0']][] <- yearMeans(landStock(fleets, 'HKE'))
 
@@ -530,7 +537,7 @@ fleets.ctrl.mxpr.price[['DTS_SP']][['OTH']][['pd.La0']][] <- yearMeans(landStock
 
 
 
-```{r echo=TRUE, eval=FALSE, results = 'hide'}
+```{r, price4, echo=TRUE, eval=FALSE, results = 'hide'}
 mxpr.price <- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets, 
                   covars = covars, indices = NULL, advice = advice, 
                   main.ctrl = main.ctrl, biols.ctrl = biols.ctrl, 
@@ -601,7 +608,7 @@ Formulas \eqref{eq:revenue} to \eqref{eq:CapDynFinal} are applied every year at 
 
 Now generate the control object:
 
-```{r echo=TRUE, eval=TRUE, results = 'hide'}
+```{r, capital1, echo=TRUE, eval=TRUE, results = 'hide'}
 capital.models      <- rep('fixedCapital', length(fleets))
 names(capital.models) <- names(fleets)
 capital.models[names(capital.models) %in% c('NTR_SP', 'DTS_SP')] <- 'SCD'
@@ -636,7 +643,7 @@ for(fl in  c('DTS_SP', 'NTR_SP')) fleets.ctrl.mxpr.capDyn[[fl]][['efs.abs']] <- 
 
 Run the model:
 
-```{r echo=TRUE, eval=FALSE, results = 'hide'}
+```{r, run4, echo=TRUE, eval=FALSE, results = 'hide'}
 mxpr.capDyn <- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets, 
                   covars = covars, indices = NULL, advice = advice, 
                   main.ctrl = main.ctrl, biols.ctrl = biols.ctrl, 
@@ -649,7 +656,7 @@ mxpr.capDyn <- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets,
 ## Analysis of the results
 
 Now analyse the results using the shiny app.
-```{r echo=TRUE, eval=FALSE, results = 'hide'}
+```{r, res4, echo=TRUE, eval=FALSE, results = 'hide'}
 
 bio <- rbind(bioSumQ(bioSum(CnEf, scenario = 'CnEf', years = ac(2000:main.ctrl$sim.years[2]))),
              bioSumQ(bioSum(trad, scenario = 'trad', years = ac(2000:main.ctrl$sim.years[2]))),

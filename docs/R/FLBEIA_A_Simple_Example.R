@@ -1,4 +1,4 @@
-## ---- ini, echo=FALSE, results='hide', message=FALSE---------------------
+## ---- ini, echo=FALSE, results='hide', message=FALSE--------------------------
 # This chunk set the document environment, so it is hidden
 library(knitr)
 source("R/ini.R")
@@ -8,45 +8,45 @@ options(width=50)
 set.seed(1423)
 
 
-## ----echo=FALSE, out.width='20%'-----------------------------------------
+## ----echo=FALSE, out.width='20%'----------------------------------------------
 include_graphics('images/FLBEIA_logo.png')
 
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 ## data(package='FLBEIA')
 
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 ## install.packages( c("ggplot2"))
 ## install.packages( c("FLCore", "FLFleet", "FLBEIA", "ggplotFL",
 ##                     "FLash", "FLAssess", "FLXSA"),
 ##                   repos="http://flr-project.org/R")
 
 
-## ----echo=FALSE, eval=FALSE----------------------------------------------
+## ----echo=FALSE, eval=FALSE---------------------------------------------------
 ## library(devtools)
 ## install_github('FLR/FLBEIA')
 
 
-## ---- pkgs, results = "hide"---------------------------------------------
+## ---- pkgs, results = "hide"--------------------------------------------------
 # This chunk loads all necessary packages.
 library(FLBEIA)
 library(tidyr)
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 data(one) 
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 ls()
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 sapply(ls(), function(x) class(get(x)))
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 s0 <- FLBEIA(biols = oneBio,       # FLBiols object with one FLBiol element for stk1.
                SRs = oneSR,        # A list with one FLSRSim object for stk1.
                BDs = NULL,         # No Biomass dynamics populations in this case.
@@ -70,12 +70,12 @@ s0 <- FLBEIA(biols = oneBio,       # FLBiols object with one FLBiol element for 
                                    # is obtained ("IcesHCR").
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 names(s0)
 sapply(s0, function(x) class(x))
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 s0_bio    <- bioSum(s0, long = TRUE)           # Data frame (DF) of biological indicators.
 s0_adv    <- advSum(s0, long = TRUE)           # DF of management advice (TAC). 
 s0$fleets <- setUnitsNA(s0$fleets)
@@ -100,7 +100,7 @@ head(s0_vesselStk); unique(s0_vesselStk$indicator)
 head(s0_risk); unique(s0_risk$indicator)
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 s0_bio_w    <- bioSum(s0, years = ac(2016:2020))            
 s0_adv_w    <- advSum(s0, years = ac(2016:2020))             
 s0_flt_w    <- fltSum(s0, years = ac(2016:2025))
@@ -121,25 +121,25 @@ head(s0_vessel_w, 2)
 head(s0_vesselStk_w, 2)
 
 
-## ----echo=TRUE, fig.width = 4, fig.height = 4, eval=TRUE-----------------
+## ----echo=TRUE, fig.width = 4, fig.height = 4, eval=TRUE----------------------
 plot(s0$biols[[1]])
 
 
-## ----echo=TRUE, fig.width = 4, fig.height = 4, eval=TRUE-----------------
+## ----echo=TRUE, fig.width = 4, fig.height = 4, eval=TRUE----------------------
 plot(s0$stocks[[1]])
 
 
-## ----echo=TRUE, eval=TRUE, results= 'hide'-------------------------------
-# set your own working directory.
-# myWD <- "My working directory"
-# setwd(myWD)
-plotFLBiols(s0$biols, pdfnm="s0")
-plotFLFleets(s0$fleets, pdfnm="s0")
-plotEco(s0, pdfnm="s0")
-plotfltStkSum(s0, pdfnm="s0")
+## ----echo=TRUE, eval=FALSE----------------------------------------------------
+## # set your own working directory.
+## # myWD <- "My working directory"
+## # setwd(myWD)
+## plotFLBiols(s0$biols, pdfnm="s0")
+## plotFLFleets(s0$fleets, pdfnm="s0")
+## plotEco(s0, pdfnm="s0")
+## plotfltStkSum(s0, pdfnm="s0")
 
 
-## ----echo=TRUE,  fig.width = 4, fig.height = 2, eval=TRUE----------------
+## ----echo=TRUE,  fig.width = 4, fig.height = 2, eval=TRUE---------------------
 aux <- subset(s0_bio, indicator=="catch" )
 p <- ggplot(data=aux, aes(x=year, y=value, color=stock))+
   geom_line()+
@@ -152,15 +152,15 @@ p <- ggplot(data=aux, aes(x=year, y=value, color=stock))+
 print(p)
 
 
-## ----echo=FALSE, eval=FALSE----------------------------------------------
+## ----echo=FALSE, eval=FALSE---------------------------------------------------
 ## dev.off()
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 oneSR$stk1@model
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 
 first.yr          <- 1990
 proj.yr           <- 2010 
@@ -184,18 +184,20 @@ s1 <- FLBEIA(biols = oneBio, SRs = SRs.segreg , BDs = NULL, fleets = oneFl, #cov
             fleets.ctrl = oneFlC, covars.ctrl = oneCvC, obs.ctrl = oneObsC, 
             assess.ctrl = oneAssC, advice.ctrl = oneAdvC)    
 
-plotFLBiols(s1$biols, pdfnm='s1')
-plotFLFleets(s1$fleets, pdfnm='s1')  
+
+## ----echo=TRUE, eval=FALSE----------------------------------------------------
+## plotFLBiols(s1$biols, pdfnm='s1')
+## plotFLFleets(s1$fleets, pdfnm='s1')
 
 
-## ----echo=TRUE,  fig.width = 3.5, fig.height = 3.5, eval=TRUE------------
+## ----echo=TRUE,  fig.width = 3.5, fig.height = 3.5, eval=TRUE-----------------
 temp <- cbind(matrix(B_flbeia(s0)), matrix(B_flbeia(s1)))
 matplot(temp, x = dimnames( B_flbeia(s1))$year, type = 'l', 
         xlab = 'Year', ylab = 'Biomass')
 legend('top', c('s0', 's1'), col = c('black','red'), lty = c(1,2))
 
 
-## ----echo=TRUE,   eval=TRUE----------------------------------------------
+## ----echo=TRUE,   eval=TRUE---------------------------------------------------
 s1_bio    <- bioSum(s1, long = TRUE)
 s0_bio$scenario <- c('s0')
 s1_bio$scenario <- c('s1')
@@ -217,7 +219,7 @@ p1 <- ggplot(data=aux , aes(x=year, y=value, color=scenario))+
 print(p1)
 
 
-## ----echo=TRUE, eval=TRUE,  results = "hide"-----------------------------
+## ----echo=TRUE, eval=TRUE,  results = "hide"----------------------------------
 oneBioM <- oneBio
 oneBioM$stk1@m[7:12,,,,] <- oneBioM$stk1@m[7:12,,,,]*1.2
 
@@ -226,18 +228,20 @@ s2 <- FLBEIA(biols = oneBioM, SRs = oneSR , BDs = NULL, fleets = oneFl, # covars
             fleets.ctrl = oneFlC, covars.ctrl = oneCvC, obs.ctrl = oneObsC, 
             assess.ctrl = oneAssC, advice.ctrl = oneAdvC) 
 
-plotFLBiols(s1$biols, pdfnm='s2')
-plotFLFleets(s1$fleets, pdfnm='s2')  
+
+## ----echo=TRUE, eval=FALSE----------------------------------------------------
+## plotFLBiols(s1$biols, pdfnm='s2')
+## plotFLFleets(s1$fleets, pdfnm='s2')
 
 
-## ----echo=TRUE,  fig.width = 3.5, fig.height = 3.5, eval=TRUE------------
+## ----echo=TRUE,  fig.width = 3.5, fig.height = 3.5, eval=TRUE-----------------
 temp <- cbind(matrix(B_flbeia(s0)), matrix(B_flbeia(s2)))
 matplot(temp, x = dimnames( B_flbeia(s0))$year, type = 'l', xlab = 'Year', ylab = 'Biomass')
 legend('top', c('s0', 's2'), col = c('black','red'), lty = c(1,2))
 
 
 
-## ----echo=TRUE,  eval=TRUE-----------------------------------------------
+## ----echo=TRUE,  eval=TRUE----------------------------------------------------
 s2_bio    <- bioSum(s2, long = TRUE)
 s2_bio$scenario <- c('s2')
 
@@ -259,7 +263,7 @@ print(p1)
 
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 oneAdvC$stk1$ref.pts[3]
 oneAdvC2 <- oneAdvC
 oneAdvC2$stk1$ref.pts[3] <- oneAdvC$stk1$ref.pts[3]*0.8
@@ -269,7 +273,7 @@ s3 <- FLBEIA(biols = oneBio, SRs = oneSR , BDs = NULL, fleets = oneFl, #covars =
             assess.ctrl = oneAssC, advice.ctrl = oneAdvC2)
 
 
-## ----echo=TRUE, eval=TRUE,  results = "hide"-----------------------------
+## ----echo=TRUE, eval=TRUE,  results = "hide"----------------------------------
 s3_bio    <- bioSum(s3, long = TRUE)
 s3_bio$scenario <- c('s3')
 
@@ -290,18 +294,18 @@ p1 <- ggplot(data=aux , aes(x=year, y=value, color=scenario))+
 print(p1)
 
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 oneAdv$TAC
 oneAdv2 <- oneAdv
 TAC_mean <- mean(oneAdv$TAC[,ac(2007:2009),])
 oneAdv2$TAC[,ac(2010:2025),] <- TAC_mean 
 
 
-## ----eval=FALSE----------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 ## ?create.advice.ctrl # see function documentation
 
 
-## ----echo=TRUE, eval=TRUE,  results = "hide"-----------------------------
+## ----echo=TRUE, eval=TRUE,  results = "hide"----------------------------------
 HCR.models       <- 'fixedAdvice'
 oneAdvC1     <- create.advice.ctrl(stksnames = stks, HCR.models =  HCR.models) 
 
@@ -310,11 +314,13 @@ s4 <- FLBEIA(biols = oneBio, SRs = oneSR , BDs = NULL, fleets = oneFl, #covars =
             fleets.ctrl = oneFlC, covars.ctrl = oneCvC, obs.ctrl = oneObsC,
             assess.ctrl = oneAssC,  advice.ctrl = oneAdvC1) 
 
-plotFLBiols(s4$biols,pdfnm= 's4')
-plotFLFleets(s4$fleets,pdfnm= 's4')  
+
+## ----echo=TRUE, eval=FALSE----------------------------------------------------
+## plotFLBiols(s4$biols,pdfnm= 's4')
+## plotFLFleets(s4$fleets,pdfnm= 's4')
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 s4_bio    <- bioSum(s4, long = TRUE)
 s4_bio$scenario <- c('s4')
 
@@ -354,7 +360,7 @@ matplot(temp, x = dimnames( B_flbeia(s0))$year, type = 'l', xlab = 'Year', ylab 
 legend('top', c('s0', 's5'), col = c('black','red'), lty = c(1,2))
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 
 s5_flt    <- fltSum(s5, long = TRUE)
 s5_flt$scenario <- c('s5')
@@ -395,7 +401,7 @@ matplot(temp[21:36,], x = dimnames(B_flbeia(s6))$year[21:36], type = 'l',
 legend('bottom', c('s0', 's6'),col = c('black','red'), lty = c(1,2) )
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 
 s6_flt    <- fltSum(s6, long = TRUE)
 s6_flt$scenario <- c('s6')
@@ -418,7 +424,7 @@ p1 <- ggplot(data=aux , aes(x=year, y=value, color=scenario))+
 print(p1)
 
 
-## ----echo=TRUE,  eval=FALSE----------------------------------------------
+## ----echo=TRUE,  eval=FALSE---------------------------------------------------
 ## 
 ## scnms <-c('s0', 's1', 's2', 's3', 's4', 's5', 's6')
 ## stknms <- unique(s0_bio$stock)
@@ -437,13 +443,13 @@ print(p1)
 ##              calculate_npv = TRUE, npv.y0 = '2012', npv.yrs = ac(2013:2025))
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 rm(list =ls())  # Clean the environment
 data(oneIt)
 ls()
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 opts_chunk$set(message=FALSE)
 
 s0_it <- FLBEIA(biols = oneItBio, SRs = oneItSR , BDs = NULL, fleets = oneItFl, #covars = oneItCv,         
@@ -453,7 +459,7 @@ s0_it <- FLBEIA(biols = oneItBio, SRs = oneItSR , BDs = NULL, fleets = oneItFl, 
             advice.ctrl = oneItAdvC) 
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 s0_it$fleets <- setUnitsNA(s0_it$fleets)
 s0_it_bio    <- bioSum(s0_it, long = TRUE)             
 s0_it_adv    <- advSum(s0_it, long = TRUE)             
@@ -468,20 +474,20 @@ s0_it_risk <- riskSum(s0_it, Bpa = c(stk1= 135000), Blim = c(stk1= 96000),
                       Prflim = c(fl1 = 0))
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 proj.yr     <- 2009  
 s0_it_bioQ   <- bioSumQ(s0_it_bio)
 s0_it_fltQ   <- fltSumQ(s0_it_flt)
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
-plotFLBiols(s0_it$biols, pdfnm='s0_it')
-plotFLFleets(s0_it$fleets,pdfnm='s0_it')
-plotEco(s0_it, pdfnm='s0_it')
-plotfltStkSum(s0_it, pdfnm='s0_it')
+## ----echo=TRUE, eval=FALSE----------------------------------------------------
+## plotFLBiols(s0_it$biols, pdfnm='s0_it')
+## plotFLFleets(s0_it$fleets,pdfnm='s0_it')
+## plotEco(s0_it, pdfnm='s0_it')
+## plotfltStkSum(s0_it, pdfnm='s0_it')
 
 
-## ----echo=TRUE,  fig.width = 3.5, fig.height = 3, eval=TRUE--------------
+## ----echo=TRUE,  fig.width = 3.5, fig.height = 3, eval=TRUE-------------------
 
 aux <-  subset(s0_it_bioQ, indicator=="biomass")
 p <- ggplot(data=aux , aes(x=year, y=q50, color=stock))+
@@ -497,7 +503,7 @@ p <- ggplot(data=aux , aes(x=year, y=q50, color=stock))+
 print(p)
 
 
-## ----echo=TRUE,  fig.width = 3.5, fig.height = 3, eval=TRUE--------------
+## ----echo=TRUE,  fig.width = 3.5, fig.height = 3, eval=TRUE-------------------
 aux <-  subset(s0_it_fltQ, indicator=="netProfit")
 aux$year <- as.numeric(as.character(aux$year))
 p1 <- ggplot(data=aux , aes(x=year, y=q50, color=fleet))+
@@ -513,11 +519,11 @@ p1 <- ggplot(data=aux , aes(x=year, y=q50, color=fleet))+
 print(p1)
 
 
-## ----echo=TRUE, eval=TRUE, results = "hide"------------------------------
+## ----echo=TRUE, eval=TRUE, results = "hide"-----------------------------------
 dev.off()
 
 
-## ----echo=TRUE,  eval=FALSE----------------------------------------------
+## ----echo=TRUE,  eval=FALSE---------------------------------------------------
 ## scnms <-c('s0_it')
 ## stknms <- unique(s0_it_bio$stock)
 ## RefPts <- expand.grid(indicator=c("Bmsy", "Fmsy", "Bpa", "Blim", "Fpa", "Flim"),

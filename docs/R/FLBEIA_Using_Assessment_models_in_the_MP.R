@@ -1,4 +1,4 @@
-## ---- ini, echo=FALSE, results='hide', message=FALSE---------------------
+## ---- ini, echo=FALSE, results='hide', message=FALSE--------------------------
 # This chunk set the document environment, so it is hidden
 library(knitr)
 source("R/ini.R")
@@ -8,15 +8,15 @@ options(width=50)
 set.seed(1423)
 
 
-## ----logo, echo=FALSE, out.width='20%'-----------------------------------
+## ----logo, echo=FALSE, out.width='20%'----------------------------------------
 include_graphics('images/FLBEIA_logo.png')
 
 
-## ----package, eval=FALSE-------------------------------------------------
+## ----package, eval=FALSE------------------------------------------------------
 ## data(package='FLBEIA')
 
 
-## ----installation, eval=FALSE--------------------------------------------
+## ----installation, eval=FALSE-------------------------------------------------
 ## install.packages( c("ggplot2"))
 ## install.packages( c("FLCore", "FLBEIA", "FLFleets", "FLash",
 ##                     "FLAssess", "FLXSA", "FLa4a", "ggplotFL"),
@@ -27,7 +27,7 @@ include_graphics('images/FLBEIA_logo.png')
 ## install_github("mawp/spict/spict")
 
 
-## ----libraries, pkgs, results = "hide"-----------------------------------
+## ----libraries, pkgs, results = "hide"----------------------------------------
 # Load all necessary packages.
 library(FLBEIA)
 library(FLAssess)
@@ -35,16 +35,16 @@ library(FLash)
 library(ggplotFL)
 
 
-## ----data, echo=TRUE, eval=TRUE------------------------------------------
+## ----data, echo=TRUE, eval=TRUE-----------------------------------------------
 rm(list=ls()) # empty the workspace
 data(one)     # load the dataset
 
 
-## ----assCtrl, echo=TRUE, eval=FALSE--------------------------------------
+## ----assCtrl, echo=TRUE, eval=FALSE-------------------------------------------
 ## oneAssC
 
 
-## ----s0, echo=TRUE, eval=TRUE, results = "hide"--------------------------
+## ----s0, echo=TRUE, eval=TRUE, results = "hide"-------------------------------
 s0 <- FLBEIA( biols       = oneBio,   # FLBiols: FLBiol for stk1.
               SRs         = oneSR,    # List: FLSRSim for stk1.
               BDs         = NULL,     # Not population with biomass dynamics.
@@ -62,27 +62,27 @@ s0 <- FLBEIA( biols       = oneBio,   # FLBiols: FLBiol for stk1.
               advice.ctrl = oneAdvC)  # List: rule for TAC advice ("IcesHCR").
 
 
-## ----s0_out, echo=TRUE, eval=TRUE, results = "hide"----------------------
+## ----s0_out, echo=TRUE, eval=TRUE, results = "hide"---------------------------
 stk1.mp0 <- s0$stocks[['stk1']]
 stk1.om0 <- biolfleets2flstock(s0$biols[['stk1']], s0$fleets)
 plot( FLStocks(real=stk1.om0, obs=stk1.mp0)) + theme(legend.position="top")
 
 
-## ----spict, echo=TRUE, eval=TRUE-----------------------------------------
+## ----spict, echo=TRUE, eval=TRUE----------------------------------------------
 library(spict)
 
 
-## ----assCtrl2, echo=TRUE, eval=FALSE-------------------------------------
+## ----assCtrl2, echo=TRUE, eval=FALSE------------------------------------------
 ## oneAssC
 
 
-## ----assCtrl3, echo=TRUE, eval=TRUE--------------------------------------
+## ----assCtrl3, echo=TRUE, eval=TRUE-------------------------------------------
 oneAssC.spict <- oneAssC
 oneAssC.spict[["stk1"]]$assess.model  <- "spict2flbeia" # selected assessment model
 oneAssC.spict[["stk1"]]$harvest.units <- "f"
 
 
-## ----sum, echo=TRUE, eval=TRUE-------------------------------------------
+## ----sum, echo=TRUE, eval=TRUE------------------------------------------------
 summary(oneIndBio)
 summary(oneObsCIndBio)
 
@@ -91,7 +91,7 @@ oneObsCIndBio$stk1$stkObs$stkObs.model
 oneObsCIndBio$stk1$indObs
 
 
-## ----s1, echo=TRUE, eval=TRUE, results = "hide"--------------------------
+## ----s1, echo=TRUE, eval=TRUE, results = "hide"-------------------------------
 s1 <- FLBEIA( biols       = oneBio,    # FLBiols: FLBiol for stk1.
               SRs         = oneSR,     # List: FLSRSim for stk1.
               BDs         = NULL,      # Not population with biomass dynamics.
@@ -109,7 +109,7 @@ s1 <- FLBEIA( biols       = oneBio,    # FLBiols: FLBiol for stk1.
               advice.ctrl = oneAdvC)  # List: rule for TAC advice ("IcesHCR").
 
 
-## ----s1out, echo=TRUE, eval=TRUE, results = "hide"-----------------------
+## ----s1out, echo=TRUE, eval=TRUE, results = "hide"----------------------------
 stk1.mp1 <- s1$stocks[['stk1']]
 stk1.om1 <- biolfleets2flstock(s1$biols[['stk1']], s1$fleets)
 adf <- as.data.frame
@@ -132,27 +132,27 @@ p <- ggplot( data=s1_pop, aes(x=year, y=data, color=population)) +
 print(p)
 
 
-## ----FLa4a, echo=TRUE, eval=TRUE-----------------------------------------
+## ----FLa4a, echo=TRUE, eval=TRUE----------------------------------------------
 library(FLa4a)
 
 
-## ----data2, echo=TRUE, eval=TRUE-----------------------------------------
+## ----data2, echo=TRUE, eval=TRUE----------------------------------------------
 rm(list=ls()) # empty the workspace
 data(one)     # load the dataset
 
 
-## ----assCtrl4, echo=TRUE, eval=FALSE-------------------------------------
+## ----assCtrl4, echo=TRUE, eval=FALSE------------------------------------------
 ## oneAssC
 
 
-## ----assCtrl5, echo=TRUE, eval=TRUE--------------------------------------
+## ----assCtrl5, echo=TRUE, eval=TRUE-------------------------------------------
 oneAssC.sca <- oneAssC
 oneAssC.sca$stk1$assess.model <- "sca2flbeia" # selected assessment model
 oneAssC.sca[["stk1"]]$harvest.units <- "f"
 oneAssC.sca[["stk1"]]$control$test <- TRUE    # control values
 
 
-## ----sum2, echo=TRUE, eval=TRUE------------------------------------------
+## ----sum2, echo=TRUE, eval=TRUE-----------------------------------------------
 summary(oneIndAge)
 summary(oneObsCIndAge)
 
@@ -161,7 +161,7 @@ oneObsCIndAge$stk1$stkObs$stkObs.model
 oneObsCIndAge$stk1$indObs
 
 
-## ----s2, echo=TRUE, eval=TRUE, results = "hide"--------------------------
+## ----s2, echo=TRUE, eval=TRUE, results = "hide"-------------------------------
 s2 <- FLBEIA( biols       = oneBio,    # FLBiols: FLBiol for stk1.
               SRs         = oneSR,     # List: FLSRSim for stk1.
               BDs         = NULL,        # Not population with biomass dynamics.
@@ -179,7 +179,7 @@ s2 <- FLBEIA( biols       = oneBio,    # FLBiols: FLBiol for stk1.
               advice.ctrl = oneAdvC)  # List: rule for TAC advice ("IcesHCR").
 
 
-## ----s2out, echo=TRUE, eval=TRUE, results = "hide"-----------------------
+## ----s2out, echo=TRUE, eval=TRUE, results = "hide"----------------------------
 stk1.mp2 <- s2$stocks[['stk1']]
 stk1.om2 <- biolfleets2flstock(s2$biols[['stk1']], s2$fleets)
 adf <- as.data.frame
@@ -202,20 +202,20 @@ p <- ggplot( data=s2_pop, aes(x=year, y=data, color=population)) +
 print(p)
 
 
-## ----FLXSA, echo=TRUE, eval=TRUE-----------------------------------------
+## ----FLXSA, echo=TRUE, eval=TRUE----------------------------------------------
 library(FLXSA)
 
 
-## ----data3, echo=TRUE, eval=TRUE-----------------------------------------
+## ----data3, echo=TRUE, eval=TRUE----------------------------------------------
 rm(list=ls()) # empty the workspace
 data(one)     # load the dataset
 
 
-## ----assCtrl6, echo=TRUE, eval=FALSE-------------------------------------
+## ----assCtrl6, echo=TRUE, eval=FALSE------------------------------------------
 ## oneAssC
 
 
-## ----assCtrl7, echo=TRUE, eval=TRUE--------------------------------------
+## ----assCtrl7, echo=TRUE, eval=TRUE-------------------------------------------
 oneAssC1 <- list()
 oneAssC1$stk1 <- list()
 oneAssC1$stk1$assess.model <- 'FLXSA2flbeia'  # selected assessment model
@@ -224,7 +224,7 @@ oneAssC1$stk1$work_w_Iter  <- TRUE
 oneAssC1$stk1$harvest.units <- 'f'
 
 
-## ----sum3, echo=TRUE, eval=TRUE------------------------------------------
+## ----sum3, echo=TRUE, eval=TRUE-----------------------------------------------
 summary(oneIndAge)
 summary(oneObsCIndAge)
 
@@ -233,11 +233,11 @@ oneObsCIndAge$stk1$stkObs$stkObs.model
 oneObsCIndAge$stk1$indObs
 
 
-## ----errs3, echo=FALSE, results='hide', message=FALSE--------------------
+## ----errs3, echo=FALSE, results='hide', message=FALSE-------------------------
 try( FLXSA::FLXSA(stock = biolfleets2flstock(oneBio$stk1, oneFl), indices = oneIndAge$stk1, 
              control=oneAssC1$stk1$control, diag.flag = FALSE), silent = TRUE)
 
-## ----s3, echo=TRUE, eval=TRUE, results = "hide"--------------------------
+## ----s3, echo=TRUE, eval=TRUE, results = "hide"-------------------------------
 s3 <- FLBEIA( biols       = oneBio,    # FLBiols: FLBiol for stk1.
               SRs         = oneSR,     # List: FLSRSim for stk1.
               BDs         = NULL,        # Not population with biomass dynamics.
@@ -255,7 +255,7 @@ s3 <- FLBEIA( biols       = oneBio,    # FLBiols: FLBiol for stk1.
               advice.ctrl = oneAdvC)  # List: rule for TAC advice ("IcesHCR").
 
 
-## ----sum4, echo=TRUE, eval=TRUE, results = "hide"------------------------
+## ----sum4, echo=TRUE, eval=TRUE, results = "hide"-----------------------------
 stk1.mp3 <- s3$stocks[['stk1']]
 stk1.om3 <- biolfleets2flstock(s3$biols[['stk1']], s3$fleets)
 plot( FLStocks(real=stk1.om3, obs=stk1.mp3)) + theme(legend.position="top")

@@ -29,7 +29,7 @@ include_graphics('images/FLBEIA_logo.png')
 
 # Aim 
 
-***FLBEIA*** provides a battery of tutorials for learning how to use this software. This tutorial is a practical guide about one simple implementation of ```FLBEIA```.  The aim of this example is to become familiar with the objects necessary to carry out bio-economic impact assessments of fisheries management strategies.
+**FLBEIA** provides a battery of tutorials for learning how to use this software. This tutorial is a practical guide about one simple implementation of ```FLBEIA```.  The aim of this example is to become familiar with the objects necessary to carry out bio-economic impact assessments of fisheries management strategies.
 
 In this tutorial a simple example on how to run ```FLBEIA``` is presented. This simple example is named as ```one```. The outputs of applaying ```FLBEIA``` to ```one``` example are analized, summarized and plotted. Once the user has understood the structure and outputs of ```FLBEIA```, let's start playing! We will run, plot and analyse several scenarios.
 
@@ -37,7 +37,7 @@ Finally, another simple example but with three iterations, named ```oneIt```, is
 
 # Help & Manual
 
-***FLBEIA*** includes extensive facilities for accessing documentation and searching for help. ***FLBEIA*** manual can be download from [Github](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf) or within the 'doc' folder of the package installation. Additionally, the ```help()``` function and ```?``` help operator in R provide access to the documentation pages. Typing ```help(package = FLBEIA)``` in the R console you access to the documentation for package ```FLBEIA``` , user guides and help pages. For example, typing ```help(bioSum)``` in the R console you access to help page of summary functions for the FLBEIA output. 
+**FLBEIA** includes extensive facilities for accessing documentation and searching for help. **FLBEIA** manual can be download from [Github](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf) or within the 'doc' folder of the package installation. Additionally, the ```help()``` function and ```?``` help operator in R provide access to the documentation pages. Typing ```help(package = FLBEIA)``` in the R console you access to the documentation for package ```FLBEIA``` , user guides and help pages. For example, typing ```help(bioSum)``` in the R console you access to help page of summary functions for the FLBEIA output. 
 
 The exact way to define the objects used to set the simulation is described in the [FLBEIA manual](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf).
 Nevertheless, the objects to set the simulation do not need to be defined for the following examples, 
@@ -306,7 +306,7 @@ plot(s0$stocks[[1]])
 ```
 
 Additionally you can plot results using  ```plotFLBiols```, ```plotFLFleets``` and ```plotCatchFl```. The plots will be saved in your working directory as a pdf file. 
-```{r echo=TRUE, eval=TRUE, results= 'hide'}
+```{r echo=TRUE, eval=FALSE}
 # set your own working directory.
 # myWD <- "My working directory"
 # setwd(myWD)
@@ -373,7 +373,9 @@ s1 <- FLBEIA(biols = oneBio, SRs = SRs.segreg , BDs = NULL, fleets = oneFl, #cov
             indices = NULL, advice = oneAdv, main.ctrl = oneMainC, biols.ctrl = oneBioC,      
             fleets.ctrl = oneFlC, covars.ctrl = oneCvC, obs.ctrl = oneObsC, 
             assess.ctrl = oneAssC, advice.ctrl = oneAdvC)    
+```
 
+```{r echo=TRUE, eval=FALSE}
 plotFLBiols(s1$biols, pdfnm='s1')
 plotFLFleets(s1$fleets, pdfnm='s1')  
 ```
@@ -421,7 +423,9 @@ s2 <- FLBEIA(biols = oneBioM, SRs = oneSR , BDs = NULL, fleets = oneFl, # covars
             indices = NULL, advice = oneAdv, main.ctrl = oneMainC, biols.ctrl = oneBioC,      
             fleets.ctrl = oneFlC, covars.ctrl = oneCvC, obs.ctrl = oneObsC, 
             assess.ctrl = oneAssC, advice.ctrl = oneAdvC) 
+```
 
+```{r echo=TRUE, eval=FALSE}
 plotFLBiols(s1$biols, pdfnm='s2')
 plotFLFleets(s1$fleets, pdfnm='s2')  
 ```
@@ -518,7 +522,9 @@ s4 <- FLBEIA(biols = oneBio, SRs = oneSR , BDs = NULL, fleets = oneFl, #covars =
             indices = NULL, advice = oneAdv, main.ctrl = oneMainC, biols.ctrl = oneBioC,      
             fleets.ctrl = oneFlC, covars.ctrl = oneCvC, obs.ctrl = oneObsC,
             assess.ctrl = oneAssC,  advice.ctrl = oneAdvC1) 
+```
 
+```{r echo=TRUE, eval=FALSE}
 plotFLBiols(s4$biols,pdfnm= 's4')
 plotFLFleets(s4$fleets,pdfnm= 's4')  
 ```
@@ -714,7 +720,7 @@ s0_it_fltQ   <- fltSumQ(s0_it_flt)
 
 ## Plotting results
 Create several summary plots and save them in the working directory using 'pdf' format. 
-```{r echo=TRUE, eval=TRUE, results = "hide"}
+```{r echo=TRUE, eval=FALSE}
 plotFLBiols(s0_it$biols, pdfnm='s0_it')
 plotFLFleets(s0_it$fleets,pdfnm='s0_it')
 plotEco(s0_it, pdfnm='s0_it')

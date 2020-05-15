@@ -1,29 +1,29 @@
-## ---- ini, echo=FALSE, results='hide', message=FALSE---------------------
+## ---- ini, echo=FALSE, results='hide', message=FALSE--------------------------
 # This chunk set the document environment, so it is hidden
 library(knitr)
 source("R/ini.R")
 
 
-## ----echo=FALSE, out.width='20%'-----------------------------------------
+## ----echo=FALSE, out.width='20%'----------------------------------------------
 include_graphics('images/FLBEIA_logo.png')
 
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 ## install.packages(c("ggplot2"))
 ## install.packages(c("FLCore", "FLFleets", "FLash", "FLAssess", "FLXSA", "ggplotFL"), repos="http://flr-project.org/R")
 ## 
 
-## ---- eval=FALSE,echo=FALSE----------------------------------------------
+## ---- eval=FALSE,echo=FALSE---------------------------------------------------
 ## 
 ## Sys.setenv(R_REMOTES_NO_ERRORS_FROM_WARNINGS=TRUE) #Required for R.3.5.2
 ## 
 
-## ---- eval=FALSE---------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 ## install_github('FLR/FLBEIA')
 ## 
 
 
-## ---- pkgs, results = "hide",echo=TRUE,message=FALSE---------------------
+## ---- pkgs, results = "hide",echo=TRUE,message=FALSE--------------------------
   library(FLCore) 
   library(FLash)
   library(FLAssess)
@@ -33,7 +33,7 @@ include_graphics('images/FLBEIA_logo.png')
   library(ggplot2)
 
 
-## ----getfiles, message = FALSE-------------------------------------------
+## ----getfiles, message = FALSE------------------------------------------------
 tdir <- tempdir()
 # download.file("http://flr-project.org/doc/src/ConditioningOne.zip",
 #   file.path(tdir, "ConditioningOne.zip"))
@@ -42,12 +42,12 @@ unzip("src/ConditioningOne.zip", exdir=tdir)
 tdir <- file.path(tdir,"ConditioningOne")
 
 
-## ----data, echo=TRUE, eval=TRUE------------------------------------------
+## ----data, echo=TRUE, eval=TRUE-----------------------------------------------
 data(one)
 ls()
 
 
-## ----biols, echo=TRUE, eval=TRUE, results='hide', message=FALSE, warning=FALSE----
+## ----biolsSet, echo=TRUE, eval=TRUE, results='hide', message=FALSE, warning=FALSE----
 # Set Simulation parameters related with time
 
   first.yr          <- 1990
@@ -97,16 +97,32 @@ ls()
 
   stk1_biol.proj.avg.yrs  <- c(2007:2009)
   
+
+
+## ----echo=FALSE, eval=TRUE----------------------------------------------------
+list2env(list(stks = stks, fl1.mets = fl1.mets, fl1.met1.stks = fl1.met1.stks, 
+              stk1.age.min = stk1.age.min, stk1.age.max = stk1.age.max, stk1.unit = stk1.unit,
+              stk1_n.flq = stk1_n.flq, stk1_wt.flq = stk1_wt.flq, stk1_m.flq  = stk1_m.flq, 
+              stk1_spwn.flq = stk1_spwn.flq, stk1_mat.flq = stk1_mat.flq, stk1_fec.flq = stk1_fec.flq, 
+              stk1_range.min = stk1_range.min, stk1_range.max = stk1_range.max, stk1_range.plusgroup = stk1_range.plusgroup, 
+              stk1_range.minyear = stk1_range.minyear, stk1_range.minfbar = stk1_range.minfbar, stk1_range.maxfbar = stk1_range.maxfbar, 
+              stk1_biol.proj.avg.yrs = stk1_biol.proj.avg.yrs), 
+         globalenv())
+
+
+## ----biols, echo=TRUE, eval=TRUE, results='hide', message=FALSE, warning=FALSE----
 # Create the object
   
    stks.data <- list(stk1=ls(pattern="^stk1")) 
 
     biols    <- create.biols.data(yrs,ns,ni,stks.data)
-  plotFLBiols(biols,pdfnm='s0')
+
+## ----biolsPlot, echo=TRUE, eval=FALSE-----------------------------------------
+##   plotFLBiols(biols,pdfnm='s0')
+## 
 
 
-
-## ----srs, echo=TRUE, eval=TRUE-------------------------------------------
+## ----srsSet, echo=TRUE, eval=TRUE---------------------------------------------
 
   stk1_sr.model        <- 'bevholt'
   stk1_params.n        <- 2
@@ -128,11 +144,21 @@ ls()
     #              FLBEIA input object: SRs
 
     stks.data <- list(stk1=ls(pattern="^stk1")) 
-  
+
+
+## ----echo=FALSE, eval=TRUE----------------------------------------------------
+list2env(list(stk1_sr.model = stk1_sr.model, stk1_params.n = stk1_params.n, stk1_params.array = stk1_params.array, 
+              stk1_params.name = stk1_params.name, stk1_rec.flq = stk1_rec.flq, stk1_ssb.flq = stk1_ssb.flq, 
+              stk1_uncertainty.flq = stk1_uncertainty.flq, stk1_proportion.flq = stk1_proportion.flq, 
+              stk1_prop.avg.yrs = stk1_prop.avg.yrs, stk1_timelag.matrix = stk1_timelag.matrix), 
+         globalenv())
+
+
+## ----srs, echo=TRUE, eval=TRUE, results='hide', message=FALSE, warning=FALSE----
   SRs      <- create.SRs.data(yrs,ns,ni,stks.data)
 
 
-## ----fleets, echo=TRUE, eval=TRUE----------------------------------------
+## ----fleetsSet, echo=TRUE, eval=TRUE------------------------------------------
 # Data per fleet
 #    effort, crewshare, fcost, capacity
 # Data per fleet and metier
@@ -162,14 +188,27 @@ ls()
     #              create fleets object
   
   fls.data <- list(fl1=ls(pattern="^fl1")) 
-  
+
+
+## ----echo=FALSE, eval=TRUE----------------------------------------------------
+list2env(list(fl1_effort.flq = fl1_effort.flq, fl1_capacity.flq = fl1_capacity.flq, fl1_fcost.flq = fl1_fcost.flq, 
+              fl1_crewshare.flq = fl1_crewshare.flq, fl1.met1_effshare.flq = fl1.met1_effshare.flq, 
+              fl1.met1.stk1_landings.n.flq = fl1.met1.stk1_landings.n.flq, fl1.met1.stk1_discards.n.flq = fl1.met1.stk1_discards.n.flq, 
+              fl1_proj.avg.yrs = fl1_proj.avg.yrs, fl1.met1_proj.avg.yrs = fl1.met1_proj.avg.yrs, 
+              fl1.met1.stk1_proj.avg.yrs = fl1.met1.stk1_proj.avg.yrs), 
+         globalenv())
+
+
+## ----fleets, echo=TRUE, eval=TRUE---------------------------------------------
   fleets   <- create.fleets.data(yrs,ns,ni,fls.data,stks.data)
   
-  plotFLFleets(fleets,pdfnm='s0')   
-  
+
+## ----fleetsPlot, echo=TRUE, eval=FALSE----------------------------------------
+##   plotFLFleets(fleets,pdfnm='s0')
+## 
 
 
-## ----advice, echo=TRUE, eval=TRUE----------------------------------------
+## ----adviceSet, echo=TRUE, eval=TRUE------------------------------------------
 #  advice:TAC/TAE/quota.share
 
   stk1_advice.TAC.flq         <- iter(as.FLQuant(read.csv(file = file.path(tdir,'data/stk1_advice.tac.csv'))),it)
@@ -178,24 +217,34 @@ ls()
 
 #   create advice object
   stks.data <- list(stk1=ls(pattern="^stk1")) 
+  
+
+
+## ----echo=FALSE, eval=TRUE----------------------------------------------------
+list2env(list(stk1_advice.TAC.flq = stk1_advice.TAC.flq, stk1_advice.quota.share.flq = stk1_advice.quota.share.flq, 
+              stk1_advice.avg.yrs = stk1_advice.avg.yrs), 
+         globalenv())
+
+
+## ----advice, echo=TRUE, eval=TRUE---------------------------------------------
   advice   <- create.advice.data(yrs,ns,ni,stks.data,fleets)
 
 
-## ----indices, echo=TRUE, eval=TRUE---------------------------------------
+## ----indices, echo=TRUE, eval=TRUE--------------------------------------------
 indices <- NULL
 
 
-## ----mainCtrl, echo=TRUE, eval=TRUE--------------------------------------
+## ----mainCtrl, echo=TRUE, eval=TRUE-------------------------------------------
   main.ctrl           <- list()
   main.ctrl$sim.years <- c(initial = proj.yr, final = last.yr)
 
 
-## ----biolsCtrl, echo=TRUE, eval=TRUE-------------------------------------
+## ----biolsCtrl, echo=TRUE, eval=TRUE------------------------------------------
   growth.model     <- c('ASPG')
   biols.ctrl       <- create.biols.ctrl (stksnames=stks,growth.model=growth.model)
 
 
-## ----fleetsCtrl, echo=TRUE, eval=TRUE------------------------------------
+## ----fleetsCtrlSet, echo=TRUE, eval=TRUE--------------------------------------
   n.fls.stks      <- 1
   fls.stksnames   <- 'stk1'
   effort.models    <- 'SMFB'
@@ -205,6 +254,16 @@ indices <- NULL
   capital.models   <- 'fixedCapital'       
   flq.stk1<- FLQuant(dimnames = list(age = 'all', year = first.yr:last.yr, unit = stk1.unit, 
                                      season = 1:ns, iter = 1:ni)) 
+
+
+## ----echo=FALSE, eval=TRUE----------------------------------------------------
+list2env(list(n.fls.stks = n.fls.stks, fls.stksnames = fls.stksnames, effort.models = effort.models, 
+              effort.restr.fl1 = effort.restr.fl1, restriction.fl1 = restriction.fl1, catch.models = catch.models, 
+              capital.models = capital.models, flq.stk1 = flq.stk1), 
+         globalenv())
+
+
+## ----fleetsCtrl, echo=TRUE, eval=TRUE-----------------------------------------
   fleets.ctrl      <- create.fleets.ctrl(fls=fls,n.fls.stks=n.fls.stks,fls.stksnames=fls.stksnames,
                                          effort.models= effort.models, catch.models=catch.models,
                                          capital.models=capital.models, flq=flq.stk1,
@@ -214,7 +273,7 @@ fleets.ctrl$fl1$stk1$discard.TAC.OS  <- FALSE
 
 
 
-## ----adviceCtrl, echo=TRUE, eval=TRUE------------------------------------
+## ----adviceCtrl, echo=TRUE, eval=TRUE-----------------------------------------
   HCR.models       <- c('IcesHCR') 
   ref.pts.stk1      <- matrix(rep(c(548.6296271, 768.0814779, 0.1057783),3), 3,ni, dimnames = list(c('Blim', 'Btrigger','Fmsy'), 1:ni))
   advice.ctrl      <- create.advice.ctrl(stksnames = stks, HCR.models =  HCR.models, 
@@ -227,13 +286,13 @@ fleets.ctrl$fl1$stk1$discard.TAC.OS  <- FALSE
   names(advice.ctrl$stk1$AdvCatch) <- as.character((first.yr:last.yr))
 
 
-## ----assessCtrl, echo=TRUE, eval=TRUE------------------------------------
+## ----assessCtrl, echo=TRUE, eval=TRUE-----------------------------------------
 assess.models    <- 'NoAssessment'
 assess.ctrl <- create.assess.ctrl(stksnames = stks, assess.models = assess.models)
 assess.ctrl[['stk1']]$work_w_Iter   <- TRUE
 
 
-## ----obsCtrl, echo=TRUE, eval=TRUE---------------------------------------
+## ----obsCtrl, echo=TRUE, eval=TRUE--------------------------------------------
 stkObs.models<- "perfectObs"
 flq.stk1<- FLQuant(dimnames = list(age = 'all', year = first.yr:last.yr, unit = stk1.unit, 
                                    season = 1:ns, iter = 1:ni)) 
@@ -241,7 +300,7 @@ flq.stk1<- FLQuant(dimnames = list(age = 'all', year = first.yr:last.yr, unit = 
 obs.ctrl        <- create.obs.ctrl(stksnames = stks,  stkObs.models = stkObs.models,flq.stk1 = flq.stk1)
 
 
-## ----covars, echo=TRUE, eval=TRUE----------------------------------------
+## ----covars, echo=TRUE, eval=TRUE---------------------------------------------
   covars <- vector("list",9)
   names(covars)<-c("FuelCost","CapitalCost","Salaries", "InvestShare","NumbVessels","MaxDays",
                    "w1","w2","EmploymentPerVessel")
@@ -258,7 +317,7 @@ obs.ctrl        <- create.obs.ctrl(stksnames = stks,  stkObs.models = stkObs.mod
   }
 
 
-## ----covarsCtrl, echo=TRUE, eval=TRUE------------------------------------
+## ----covarsCtrl, echo=TRUE, eval=TRUE-----------------------------------------
   covars.ctrl <- vector("list",9)
   names(covars.ctrl)<-c("FuelCost","CapitalCost","Salaries", "InvestShare","NumbVessels","MaxDays",
                         "w1","w2","EmploymentPerVessel")
@@ -269,20 +328,20 @@ obs.ctrl        <- create.obs.ctrl(stksnames = stks,  stkObs.models = stkObs.mod
   }
 
 
-## ----bds, echo=TRUE, eval=TRUE-------------------------------------------
+## ----bds, echo=TRUE, eval=TRUE------------------------------------------------
   BDs       <- NULL
 
 
 
-## ----saveObjs, echo=TRUE, eval=TRUE--------------------------------------
-  save(biols, SRs,BDs, fleets, covars, 
-     indices, advice, main.ctrl, 
-     biols.ctrl, fleets.ctrl, 
-     covars.ctrl, obs.ctrl, 
-     assess.ctrl, advice.ctrl, file="input_S0_1it.RData")
+## ----saveObjs, echo=TRUE, eval=FALSE------------------------------------------
+##   save(biols, SRs,BDs, fleets, covars,
+##      indices, advice, main.ctrl,
+##      biols.ctrl, fleets.ctrl,
+##      covars.ctrl, obs.ctrl,
+##      assess.ctrl, advice.ctrl, file="input_S0_1it.RData")
 
 
-## ----flbeia, echo=1, eval=TRUE-------------------------------------------
+## ----flbeia, echo=1, eval=TRUE------------------------------------------------
 s0 <- FLBEIA(biols = biols, SRs = SRs, BDs = BDs, fleets=fleets, covars = covars, 
               indices = indices, advice = advice, main.ctrl = main.ctrl, 
               biols.ctrl = biols.ctrl, fleets.ctrl = fleets.ctrl, 
@@ -291,15 +350,12 @@ s0 <- FLBEIA(biols = biols, SRs = SRs, BDs = BDs, fleets=fleets, covars = covars
 
 
 
-## ----sum, echo=TRUE, eval=TRUE-------------------------------------------
+## ----sum, echo=TRUE, eval=TRUE------------------------------------------------
   bioSum.df <- bioSum(s0)
   fltSum.df <- fltSum(s0)
-  
 
 
-## ----plot, echo=TRUE, eval=TRUE------------------------------------------
-
-  plotFLBiols(s0$biols,pdfnm='s0_res')
-  plotFLFleets(s0$fleets,pdfnm='s0_res')   
-
+## ----plot, echo=TRUE, eval=FALSE----------------------------------------------
+##   plotFLBiols(s0$biols,pdfnm='s0_res')
+##   plotFLFleets(s0$fleets,pdfnm='s0_res')
 
