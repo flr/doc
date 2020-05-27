@@ -330,7 +330,7 @@ ss32flbeia <- function(stock,indices,control,covars=covars){
   lasty <- range(stock)["maxyear"]
 
   # read reference assessment data file
-  datss <- SS_readdat("sardine.dat", verbose = FALSE)
+  datss <- SS_readdat("sardine.dat",verbose=F,version = 3.24)
 
   ##control file
   ctl <- readLines("sardine.ctl")
@@ -395,7 +395,7 @@ ss32flbeia <- function(stock,indices,control,covars=covars){
   datss$N_agecomp <- dim(datss$agecomp)[1]
 
   #write the new data file, it overwrites the old one
-  SS_writedat(datss,"sardine.dat", overwrite = T, verbose = FALSE)
+  SS_writedat(datss,"sardine.dat", overwrite = T,verbose=F,version = "3.24")
   
   ##wtatage file
   #stock weight (fleet=0)
@@ -445,14 +445,12 @@ ss32flbeia <- function(stock,indices,control,covars=covars){
 
   system('./SS3.exe')
   
-  
   #####################################################
   ### S3 output back to FLR. Just harvest and stock:
   #####################################################
 
   dir.assess <- paste0(getwd(),"")
-  assess  <- SS_output(dir = dir.assess, model = "ss3", forecast = FALSE, 
-                       printstats = FALSE, verbose = FALSE, covar = FALSE)
+  assess  <- SS_output(dir = dir.assess, forecast=F,printstats=F,verbose=F)
   maxyear <- assess$endyr
   ages    <- assess$agebins
   years   <- assess$startyr:assess$endyr
@@ -466,14 +464,14 @@ ss32flbeia <- function(stock,indices,control,covars=covars){
   # selectivity at age
   #------------------------------------
   
-  selectivity <- subset(assess$ageselex, fleet==1 & factor=="Asel2" & year %in% years, 
-                        select=c("year", ac(ages)))
+  selectivity <- subset(assess$ageselex, Fleet==1 & Factor=="Asel2" & Yr %in% years, 
+                        select=c("Yr", ac(ages)))
 
-  idx <- grep("F_", assess$derived_quants$LABEL)
+  idx <- grep("F_", assess$derived_quants$Label)
   f.apical <- data.frame(f=assess$derived_quants[idx,"Value"])
-  f.apical$year <- years
+  f.apical$Yr <- years
 
-  f.apsel <- merge(f.apical, selectivity, all.x = T,by="year")
+  f.apsel <- merge(f.apical, selectivity, all.x = T,by="Yr")
 
   f <- f.apsel$f * f.apsel[,ac(ages)]
 
@@ -495,6 +493,7 @@ ss32flbeia <- function(stock,indices,control,covars=covars){
   stock.n(stock) <- stock.n
   stock(stock)   <- computeStock(stock)
   
+  
   # fill covars to see retros
   covars$ssb[ac(lasty),ac(years)]  <- ssb(stock)[,]
   covars$rec[ac(lasty),ac(years)]  <- rec(stock)[,]
@@ -508,15 +507,14 @@ ss32flbeia <- function(stock,indices,control,covars=covars){
 
   # Three selectivity periods - breakpoints at 1986 & 2004
   # (see Iberian sardine Stock Annex for details)
-  covars$sel[,ac(lasty),3,,,] <- as.numeric(subset(selectivity,year==lasty)[1,-1])
-  covars$sel[,ac(lasty),2,,,] <- as.numeric(subset(selectivity,year==2004)[1,-1]) 
-  covars$sel[,ac(lasty),1,,,] <- as.numeric(subset(selectivity,year==1986)[1,-1])
+  covars$sel[,ac(lasty),3,,,] <- as.numeric(subset(selectivity,Yr==lasty)[1,-1])
+  covars$sel[,ac(lasty),2,,,] <- as.numeric(subset(selectivity,Yr==2004)[1,-1]) 
+  covars$sel[,ac(lasty),1,,,] <- as.numeric(subset(selectivity,Yr==1986)[1,-1])
   
   
   # CONVERGENCE
   
   covars$conv[,ac(lasty)]     <- assess$maximum_gradient_component
-  
   
   #######################
   ### delete files
