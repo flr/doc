@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Testing Different Management Strategies in the Management Procedure of FLBEIA</title>
+
+<script src="site_libs/header-attrs-2.1/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="http://flr-project.org">
+    <span class="fa fa-home"></span>
+     
+    FLR
+  </a>
+</li>
+<li>
+  <a href="index.html">
+    <span class="fa fa-info"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-play-circle-o"></span>
+     
+    Intro
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A_quick_introduction_to_FLR.html">A quick introduction to FLR</a>
+    </li>
+    <li>
+      <a href="An_overview_of_the_FLCore_classes.html">An overview of the FLCore classes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-database"></span>
+     
+    Input
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Loading_your_data_into_FLR.html">Loading your data into FLR</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-magic"></span>
+     
+    Modelling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Modelling_stock_recruitment_with_FLSR.html">Modelling stock recruitment with FLSR</a>
+    </li>
+    <li>
+      <a href="Statistical_catch_at_age_models_in_FLa4a.html">Statistical catch at age models in FLa4a</a>
+    </li>
+    <li>
+      <a href="Modelling_growth_and_its_uncertainty_in_FLa4a.html">Modelling growth and its uncertainty in FLa4a</a>
+    </li>
+    <li>
+      <a href="Natural_mortality_modelling_in_FLa4a.html">Natural mortality modelling in FLa4a</a>
+    </li>
+    <li>
+      <a href="Stock_assessment_using_eXtended_Survivors_Analysis_with_FLXSA.html">Stock assessment using eXtended Survivors Analysis with FLXSA</a>
+    </li>
+    <li>
+      <a href="Using_information_on_life_history_relationships.html">Using information on Life History relationships</a>
+    </li>
+    <li>
+      <a href="Life_history_relationships.html">Life history relationships</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-tachometer"></span>
+     
+    Advice
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Running_Medium_Term_Forecasts_with_FLash.html">Running Medium Term Forecasts with FLash</a>
+    </li>
+    <li>
+      <a href="Short_Term_Forecasting_for_advice_using_FLash.html">Short Term Forecasting for advice using FLash</a>
+    </li>
+    <li>
+      <a href="Forecasting_on_the_Medium_Term_for_advice_using_FLasher.html">Forecasting on the Medium Term for advice using FLasher</a>
+    </li>
+    <li>
+      <a href="Reference_points_for_fisheries_management_with_FLBRP.html">Reference points for fisheries management with FLBRP</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-cogs"></span>
+     
+    MSE
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+    <li>
+      <a href="Management_procedure_biomass_dynamic.html">Biomass Dynamic Management Procedures</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-cogs"></span>
+     
+    FLBEIA
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Conditioning.html">Conditioning FLBEIA using Smart Conditioning Functions</a>
+    </li>
+    <li>
+      <a href="FLBEIA_A_Simple_Example.html">A simple example on how to use FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_An_Example_with_multiple_dimensions.html">A simple example with multiple dimensions in FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Checking_inputs.html">Checking FLBEIA inputs</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Using_Assessment_models_in_the_MP.html">Using Stock Assessment models in the Management procedure of FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Incorporating_SS3assessment_MP.html">Including SS3 assessment within the Management Procedure of FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Testing_Management_Strategies.html">Testing different Management Strategies in FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Data_Poor_MSE.html">Data Limited MSE in FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Smart_Conditioning_II.html">Smart Conditioning II</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Mixed_Fisheries_Tutorial.html">ICES Mixed Fisheries Advice using FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Bio_Economic_Tutorial.html">Bio-Economic simulation using FLBEIA</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-area-chart"></span>
+     
+    Plotting
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="ggplotFL_plotting_FLR_objects_with_ggplot2.html">ggplotFL, plotting FLR objects with ggplot2</a>
+    </li>
+    <li>
+      <a href="Plotting_FLR_objects_using_lattice.html">Plotting FLR objects using lattice</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-puzzle-piece"></span>
+     
+    Internals
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Units_of_measurement_in_FLR_objects.html">Units of measurement in FLR objects</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="http://github.com/flr/doc/issues">
+    <span class="fa fa-question fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Testing Different Management Strategies in the Management Procedure of FLBEIA</h1>
+<h4 class="date">15 mayo, 2020</h4>
+
+</div>
+
+
+<p><img src="images/FLBEIA_logo.png" width="20%" style="display: block; margin: auto;" /></p>
+<div id="aim" class="section level1">
+<h1>Aim</h1>
+<p><strong>FLBEIA</strong> <span class="citation">(Garcia et al. 2017)</span> provides a battery of tutorials for learning how to use this software. This is the fourth tutorial of <strong>FLBEIA</strong> and it is a practical guide about how to implement different management measures within <strong>FLBEIA</strong>.</p>
+<p>In this tutorial some examples on how to simulate changes in management measures are presented. Firstly, it is explained how to change the Harvest Control Rule (HCR). Secondly, how to simulate effort-based management is presented. Thirdly, an example on how to include of technical measures is included. And finally, it is described how to simulate spatial and/or temporal closures. Additionally, some exercises are proposed.</p>
+<p>The exact way to define the objects used to set the simulation is described in the <strong>FLBEIA</strong> manual. This manual can be download from <a href="https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf">GitHub</a>, within the ‘doc’ folder of the package installation or typing <code>help(package = FLBEIA)</code> in the R console. Nevertheless, the objects to set the simulation doesn’t need to be defined for the following examples, as the datasets <code>oneIt</code> and <code>multi</code> from the FLBEIA package will be used. For details on these objects, see <a href="https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf">FLBEIA tutorial, Section 5.2</a> or type <code>?FLBEIA</code> in the R console.</p>
+<p>To see all the datasets available in the <strong>FLBEIA</strong> package:</p>
+<pre class="r"><code>data(package=&#39;FLBEIA&#39;)</code></pre>
+</div>
+<div id="required-packages-to-run-this-tutorial" class="section level1">
+<h1>Required packages to run this tutorial</h1>
+<p>To follow this tutorial you should have installed the following packages:</p>
+<ul>
+<li>CRAN: <a href="https://cran.r-project.org/web/packages/ggplot2/index.html">ggplot2</a></li>
+<li>FLR: <a href="http://www.flr-project.org/FLCore/">FLCore</a>, <a href="http://www.flr-project.org/FLAssess/">FLAssess</a>, <a href="http://www.flr-project.org/FLash/">FLash</a>, <a href="http://www.flr-project.org/FLBEIA/">FLBEIA</a>, <a href="http://www.flr-project.org/FLFleet/">FLFleet</a>, <a href="http://www.flr-project.org/ggplotFL/">ggplotFL</a></li>
+</ul>
+<p>If you are using Windows, please use 32-bit R version because some of the packages do not work in 64-bit.</p>
+<pre class="r"><code>install.packages( c(&quot;ggplot2&quot;))
+install.packages( c(&quot;FLCore&quot;, &quot;FLBEIA&quot;, &quot;FLFleets&quot;, &quot;FLash&quot;, &quot;FLAssess&quot;, &quot;FLXSA&quot;, &quot;ggplotFL&quot;), 
+                  repos=&quot;http://flr-project.org/R&quot;)</code></pre>
+<p>Load all necessary packages.</p>
+<pre class="r"><code># Load all necessary packages.
+library(FLBEIA)
+library(FLXSA)
+library(FLash)
+library(ggplotFL)</code></pre>
+</div>
+<div id="example-1-changing-the-harvest-control-rule" class="section level1">
+<h1>EXAMPLE 1: changing the Harvest Control Rule</h1>
+<div id="description" class="section level2">
+<h2>Description</h2>
+<p>This example shows how to change the HCR used in the Management Procedure (MP). In this case, the Operating Model (OM) runs annually and it is formed by a single age-structured stock and an unique fleet which activity is performed in an unique m?tier. In the Management Procedure (MP), the fleet dynamics is assumed to be a Simple Mixed Fisheries behaviour (for details, see information on SMFB function in the <a href="https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf"><strong>FLBEIA</strong> manual</a>, the stock is observed without error, there is not assessment carried out and the ICES HCR <span class="citation">(ICES 2009)</span> is used to se the TAC yearly.</p>
+<p>All the objects have 3 iterations and uncertainty in the projections comes exclusively from the generation of the new incoming recruitments.</p>
+<ul>
+<li>Operating model:
+<ul>
+<li>Biological:
+<ul>
+<li>Population dynamics: <code>stk1</code> - age structured population growth</li>
+<li>SR model: <code>stk1</code> - Beverthon and Holt autoregressive/segmented regression</li>
+</ul></li>
+<li>Fleet: <code>fl1</code> - Simple Mixed Fisheries Behaviour</li>
+<li>Covariates: no covariates</li>
+</ul></li>
+<li>Management Procedure:
+<ul>
+<li>Observation: <code>stk1</code> - perfect observation</li>
+<li>Assessment: <code>stk1</code> - no assessment</li>
+<li>Management advice: <code>stk1</code> - ICES harvest control rule</li>
+</ul></li>
+</ul>
+<p>The neccesary <code>FLR</code> objects to run <strong>FLBEIA</strong> are available in the dataset called <code>oneIt</code>.</p>
+<pre class="r"><code># Load the dataset
+rm(list=ls())  # empty the workspace
+data(oneIt) # load the dataset</code></pre>
+</div>
+<div id="exploring-the-data" class="section level2">
+<h2>Exploring the data</h2>
+<p>Information related to management advice component of the MP is provided in <code>oneItAdv</code> and <code>oneItAdvC</code> objects.</p>
+<pre class="r"><code># Objects with info related to management advice
+oneItAdv  # info on TAC/TAE and quota share
+oneItAdvC # control object related to advice</code></pre>
+<p>Currently ICES HCR is being used, so we will change it to AnnexIV HCR <span class="citation">(De Oliveira et al. 2010, see Annex IV rules 4 and 5 a/b (HCR 2 and 4))</span>.</p>
+<p>For this rule, it is required an index in biomass, which is available in the dataset we are using (<code>oneIt</code>).</p>
+<pre class="r"><code># required an index in biomass:
+ls()</code></pre>
+<pre><code>character(0)</code></pre>
+<pre class="r"><code>summary(oneItIndBio[[1]]) # Biomass index</code></pre>
+<pre><code>An object of class &quot;FLIndices&quot;
+
+Elements: idBio 
+
+Name: idBio 
+    Description:  
+    Range:   min    max pgroup  minyear maxyear startf  endf 
+        0   0   NA  1990    2009    0.12    0.88    
+    Quant: age 
+    dim: 1 36 1 1 1 </code></pre>
+<pre class="r"><code>summary(oneItIndBio[[&#39;stk1&#39;]]$idBio) # or: oneItIndBio$stk1$idBio</code></pre>
+<pre><code>An object of class &quot;FLIndexBiomass&quot;
+
+Name: idBio 
+Description:  
+Distribution :   
+Quant: age 
+Dims:  age  year    unit    season  area    iter
+    1   36  1   1   1   3   
+
+Range:  min max pgroup  minyear maxyear startf  endf 
+    0   0   NA  1990    2009    0.12    0.88    
+
+index         : [ 1 36 1 1 1 3 ], units =  NA 
+index.var     : [ 1 36 1 1 1 3 ], units =  NA 
+catch.n       : [ 1 36 1 1 1 3 ], units =  NA 
+catch.wt      : [ 1 36 1 1 1 3 ], units =  NA 
+effort        : [ 1 36 1 1 1 3 ], units =  NA 
+sel.pattern   : [ 1 36 1 1 1 3 ], units =  NA 
+index.q       : [ 1 36 1 1 1 3 ], units =  NA </code></pre>
+<pre class="r"><code>summary(oneItObsCIndBio)  # Control object related to the biomass index</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="left">Length</th>
+<th align="left">Class</th>
+<th align="left">Mode</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>stk1</td>
+<td align="left">2</td>
+<td align="left">-none-</td>
+<td align="left">list</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>summary(oneItObsCIndBio$stk1)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="left">Length</th>
+<th align="left">Class</th>
+<th align="left">Mode</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>stkObs</td>
+<td align="left">4</td>
+<td align="left">-none-</td>
+<td align="left">list</td>
+</tr>
+<tr class="even">
+<td>indObs</td>
+<td align="left">1</td>
+<td align="left">-none-</td>
+<td align="left">list</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>oneItObsCIndBio$stk1$indObs</code></pre>
+<pre><code>$idBio
+$idBio$indObs.model
+[1] &quot;bioInd&quot;</code></pre>
+<p>Now we need to set the control parameters for this new HCR, for more details on the control parameters required for the different HCRs available, see the <a href="https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf"><strong>FLBEIA</strong> manual</a>. In this particular case, we have to indicate the name of the index to be used, the reference points (i.e. alpha and beta) and the type of rule <span class="citation">(options: 2 or 4, see HCRs from De Oliveira et al. 2010)</span>.</p>
+<pre class="r"><code># set the control parameters for the new HCR
+oneItAdvC2 &lt;- oneItAdvC
+stk1.advC &lt;- list()
+stk1.advC$HCR.model &lt;- &#39;annexIVHCR&#39;     # selected HCR
+stk1.advC$index &lt;- &#39;id2&#39;                # biomass index
+nit &lt;- dim(oneItFl[[1]]@effort)[6]
+stk1.advC$ref.pts &lt;- array( c(0.1,0.2), # reference points (alpha=0.1, beta=0.2)
+                            dim=c(2,nit), 
+                            dimnames = list(c(&#39;alpha&#39;,&#39;beta&#39;),dimnames(oneItFl[[1]]@effort)$iter)) 
+stk1.advC$type &lt;- 2
+oneItAdvC2$stk1 &lt;- stk1.advC
+
+# There is not assessment and the stock does not need to be obseved
+oneItObsCIndBio$stk1$stkObs$stkObs.model &lt;- &#39;NoObsStock&#39;
+
+# Set in the advice control the name of the index to be used
+oneItAdvC2[[&#39;stk1&#39;]][[&quot;index&quot;]] &lt;- name(oneItIndBio$stk1$idBio)</code></pre>
+</div>
+<div id="run-flbeia" class="section level2">
+<h2>Run FLBEIA</h2>
+<p>Base Case (bc): using ICES HCR</p>
+<pre class="r"><code>s1 &lt;- FLBEIA( biols       = oneItBio,   # FLBiols: FLBiol for stk1.
+              SRs         = oneItSR,    # List: FLSRSim for stk1.
+              BDs         = NULL,       # Not population with biomass dynamics.
+              fleets      = oneItFl,    # FLFleets: one fleet.
+              covars      = oneItCv,    # List: covars related to economy.
+              indices     = NULL,       # Indices not used.
+              advice      = oneItAdv,   # List: &#39;TAC&#39; and &#39;quota.share&#39;
+              main.ctrl   = oneItMainC, # List: info on start and end of the simulation.
+              biols.ctrl  = oneItBioC,  # List: model to simulate the stock dynamics.
+              fleets.ctrl = oneItFlC,   # List: fleet dyn. models and other parameters.
+              covars.ctrl = oneItCvC,   # List: covariates dynamics (&quot;fixedCovar&quot;).
+              obs.ctrl    = oneItObsC,  # List: type of stock and index observation
+                                        #       (&quot;PerfectObs&quot;,&quot;NoObsIndex&quot;).
+              assess.ctrl = oneItAssC,  # List: assessment model used (&quot;NoAssessment&quot;).
+              advice.ctrl = oneItAdvC)  # List: rule for TAC advice (&quot;IcesHCR&quot;).</code></pre>
+<p>Altenative case (a4): using AnnexIV HCR</p>
+<pre class="r"><code>s1a &lt;- FLBEIA( biols       = oneItBio,    # FLBiols: FLBiol for stk1.
+               SRs         = oneItSR,     # List: FLSRSim for stk1.
+               BDs         = NULL,        # Not population with biomass dynamics.
+               fleets      = oneItFl,     # FLFleets: one fleet.
+               covars      = oneItCv,     # List: covars related to economy.
+               indices     = oneItIndBio, # Biomass index.
+               advice      = oneItAdv,    # List: &#39;TAC&#39; and &#39;quota.share&#39;
+               main.ctrl   = oneItMainC,  # List: info on start and end of the simulation.
+               biols.ctrl  = oneItBioC,   # List: model to simulate the stock dynamics.
+               fleets.ctrl = oneItFlC,    # List: fleet dyn. models and other parameters.
+               covars.ctrl = oneItCvC,    # List: covariates dynamics (&quot;fixedCovar&quot;).
+               obs.ctrl    = oneItObsCIndBio, # List: type of stock and index observation
+                                              #       (&quot;NoObsStock&quot;,&quot;bioInd&quot;).
+               assess.ctrl = oneItAssC,   # List: assessment model used (&quot;NoAssessment&quot;).
+               advice.ctrl = oneItAdvC2)  # List: rule for TAC advice (&quot;AnnexIV&quot;).</code></pre>
+<p>See that the differences in the call are the <code>advice.ctrl</code>, <code>indices</code> and <code>obs.ctrl</code> objects, where we say to <strong>FLBEIA</strong> what HCR shoul be applied and wich indices are available and how to generate them (among other things).</p>
+</div>
+<div id="results" class="section level2">
+<h2>Results</h2>
+<p>Setting the reference points:</p>
+<pre class="r"><code>Blim.stk1 &lt;- 800
+Bpa.stk1  &lt;- 1200</code></pre>
+<p>Summary plots comparing both scenarios:</p>
+<pre class="r"><code># - stock summary
+s10_bio &lt;- rbind( bioSum(s1), 
+                  bioSum(s1a, scenario=&#39;a4&#39;)) # biological indicators
+plotbioSum( s10_bio, Blim=Blim.stk1, Bpa=Bpa.stk1, proj.yr=oneItMainC$sim.years[[&#39;initial&#39;]])</code></pre>
+<p><img src="FLBEIA_Testing_Management_Strategies_files/figure-html/unnamed-chunk-11-1.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># - economic summary
+s10_flt &lt;- rbind( fltSum(s1), 
+                  fltSum(s1a, scenario=&#39;a4&#39;)) # indicators at fleet level
+plotfltSum( s10_flt, proj.yr=oneItMainC$sim.years[[&#39;initial&#39;]])</code></pre>
+<p><img src="FLBEIA_Testing_Management_Strategies_files/figure-html/unnamed-chunk-12-1.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># - risk summary
+s1_risk  &lt;- riskSum(  s1, Bpa = c(stk1=Bpa.stk1), Blim = c(stk1=Blim.stk1), Prflim = c(fl1 = 0))
+s1a_risk &lt;- riskSum( s1a, Bpa = c(stk1=Bpa.stk1), Blim = c(stk1=Blim.stk1), Prflim = c(fl1 = 0), 
+                     scenario=&#39;a4&#39;)
+s10_risk &lt;- rbind( s1_risk, s1a_risk) # risk indicators
+s10_risk$year &lt;- as.numeric(s10_risk$year)
+p &lt;- ggplot( data=s10_risk, aes(x=year, y=value, color=scenario)) + 
+  geom_line() +
+  facet_wrap(~indicator, scales=&quot;free&quot;) + 
+  facet_grid(indicator ~ .) + 
+  geom_vline(xintercept = oneItMainC$sim.years[[&#39;initial&#39;]]-1, linetype = &quot;longdash&quot;)+
+  theme_bw()+
+  theme(text=element_text(size=15),
+        title=element_text(size=15,face=&quot;bold&quot;),
+        strip.text=element_text(size=15))+
+  ylab(&quot;Risk&quot;)
+print(p)</code></pre>
+<p><img src="FLBEIA_Testing_Management_Strategies_files/figure-html/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Note that due to the uncertainty introduced in the recruitment and the very low number of iterations, you can get very different results from the ones shown in this example. Therefore when running an MSE the number of iterations should be enough to get stability in the results (i.e. the quantiles).</p>
+</div>
+</div>
+<div id="example-2-effort-based-management" class="section level1">
+<h1>EXAMPLE 2: effort-based management</h1>
+<div id="description-1" class="section level2">
+<h2>Description</h2>
+<p>This example shows how to carry out MSE simulations based on effort. Currently, in <strong>FLBEIA</strong> there is not available any specific function to simulate an effort-based management. For carrying out an adaptative effort-based management an effort-based HCR needs to be defined. However, there is the possibility to do it by setting a priory the allowed effort for the projection period (independently from the stock status), instead of calculating it as a function of the expected quota based on a given a HCR and the stock status.</p>
+<p>In this case, we use the same data as in the previous example (i.e. <code>oneIt</code>). For details on it, see Example 1.</p>
+<pre class="r"><code>data(oneIt) # load the dataset</code></pre>
+</div>
+<div id="exploring-the-data-1" class="section level2">
+<h2>Exploring the data</h2>
+<p>Initial assumption on effort, when conditioning the objects using the easy/smart conditioning functions (<a href="https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf"><strong>FLBEIA</strong> manual</a>, Chapter 5), is that the effort in the projection period is the mean effort of a range of years (determined by the user). Afterwards, when running the simulation, depending on the function selected to simulate the fleet dynamics this effort is recalculated, except for the case when selecting <code>fixedEffort</code> (as it is the case here) where these initially set effort values are maintained constant.</p>
+<p>Initially, the effort dynamics model selected in the data from <code>oneIt</code> is SMFB (Simple Mixed Fisheries Behaviour), so we need to change it to fixed effort and define the effort values for the projection period as desired.</p>
+<pre class="r"><code># Fleet dynamics: effort model
+oneItFlC$fl1$effort.model</code></pre>
+<pre><code>[1] &quot;SMFB&quot;</code></pre>
+<pre class="r"><code># reset it to fixed effort
+oneItFlC$fl1$effort.model &lt;- &#39;fixedEffort&#39;</code></pre>
+<p>For this dataset, the effort in the projection period is calculated as the mean of the last 2 years (i.e. 2008-2009), we will consider this as the base case and an alternative scenarios will be defined for the effort in the projection period:</p>
+<ul>
+<li>bc : mean of the last 2 years;</li>
+<li>E20 : 20% reduction of the effort relative to last 3 years mean;</li>
+</ul>
+<p>Effort values are defined in <code>oneItFl</code>, so we generate a new object with these new values for each alternative scenario.</p>
+<pre class="r"><code># Define the FLFleetsExt object for the alternative scenarios
+oneItFl2a &lt;- oneItFl
+
+# Store values of simulation and historic years
+yrs &lt;- dimnames(oneItFl[[1]]@effort)$year
+sim.yrs  &lt;- as.character(oneItMainC$sim.years[&#39;initial&#39;]:oneItMainC$sim.years[&#39;final&#39;])
+hist.yrs &lt;- yrs[!yrs %in% sim.yrs]
+
+# Change the effort for the simulation years for the alternative scenario:
+oneItFl2a[[1]]@effort[,sim.yrs,] &lt;- 
+  0.80 * yearMeans(oneItFl2a[[1]]@effort[,hist.yrs[length(hist.yrs)+(-2:0)],])</code></pre>
+</div>
+<div id="run-flbeia-1" class="section level2">
+<h2>Run FLBEIA</h2>
+<p>Base Case: effort in projection period equal to the mean of last 2 years</p>
+<pre class="r"><code>s2 &lt;- FLBEIA( biols       = oneItBio,   # FLBiols: FLBiol for stk1.
+              SRs         = oneItSR,    # List: FLSRSim for stk1.
+              BDs         = NULL,       # Not population with biomass dynamics.
+              fleets      = oneItFl,    # FLFleets: one fleet.
+              covars      = oneItCv,    # List: covars related to economy.
+              indices     = NULL,       # Not indices.
+              advice      = oneItAdv,   # List: &#39;TAC&#39; and &#39;quota.share&#39;
+              main.ctrl   = oneItMainC, # List: info on start and end of the simulation.
+              biols.ctrl  = oneItBioC,  # List: model to simulate the stock dynamics.
+              fleets.ctrl = oneItFlC,   # List: fleet dyn. models and other parameters.
+              covars.ctrl = oneItCvC,   # List: covariates dynamics (&quot;fixedCovar&quot;).
+              obs.ctrl    = oneItObsC,  # List: type of stock and index observation
+                                        #       (&quot;PerfectObs&quot;,&quot;NoObsIndex&quot;).
+              assess.ctrl = oneItAssC,  # List: assessment model used (&quot;NoAssessment&quot;).
+              advice.ctrl = oneItAdvC)  # List: rule for TAC advice (&quot;IcesHCR&quot;).</code></pre>
+<p>Altenative case:</p>
+<ul>
+<li>Direct reduction of effort (E20): 20% reduction of the effort relative to the last 3 years mean</li>
+</ul>
+<pre class="r"><code>s2a &lt;- FLBEIA( biols       = oneItBio,   # FLBiols: FLBiol for stk1.
+               SRs         = oneItSR,    # List: FLSRSim for stk1.
+               BDs         = NULL,       # Not population with biomass dynamics.
+               fleets      = oneItFl2a,  # FLFleets: one fleet.
+               covars      = oneItCv,    # List: covars related to economy.
+               indices     = NULL,       # Not indices.
+               advice      = oneItAdv,   # List: &#39;TAC&#39; and &#39;quota.share&#39;
+               main.ctrl   = oneItMainC, # List: info on start and end of the simulation.
+               biols.ctrl  = oneItBioC,  # List: model to simulate the stock dynamics.
+               fleets.ctrl = oneItFlC,   # List: fleet dyn. models and other parameters.
+               covars.ctrl = oneItCvC,   # List: covariates dynamics (&quot;fixedCovar&quot;).
+               obs.ctrl    = oneItObsC,  # List: type of stock and index observation
+                                         #       (&quot;PerfectObs&quot;,&quot;NoObsIndex&quot;).
+               assess.ctrl = oneItAssC,  # List: assessment model used (&quot;NoAssessment&quot;).
+               advice.ctrl = oneItAdvC)  # List: rule for TAC advice (&quot;IcesHCR&quot;).</code></pre>
+<p>See that the only difference in the call is the <code>fleets</code> object, where we say to <strong>FLBEIA</strong> which effort to apply (among other things).</p>
+</div>
+<div id="results-1" class="section level2">
+<h2>Results</h2>
+<p>Setting the reference points:</p>
+<pre class="r"><code>Blim.stk1 &lt;- 800
+Bpa.stk1  &lt;- 1200</code></pre>
+<p>Summary plots comparing the different scenarios:</p>
+<pre class="r"><code># - stock summary
+s20_bio &lt;- rbind( bioSum(s2), 
+                  bioSum(s2a, scenario=&#39;E20&#39;)) # biological indicators
+plotbioSum( s20_bio, Blim=Blim.stk1, Bpa=Bpa.stk1, proj.yr=oneItMainC$sim.years[[&#39;initial&#39;]])</code></pre>
+<p><img src="FLBEIA_Testing_Management_Strategies_files/figure-html/unnamed-chunk-20-1.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># - economic summary
+s20_flt &lt;- rbind( fltSum(s2), 
+                  fltSum(s2a, scenario=&#39;E20&#39;)) # indicators at fleet level
+plotfltSum( s20_flt, proj.yr=oneItMainC$sim.years[[&#39;initial&#39;]])</code></pre>
+<p><img src="FLBEIA_Testing_Management_Strategies_files/figure-html/unnamed-chunk-21-1.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># - risk summary
+s2_risk  &lt;- riskSum(  s2, Bpa = c(stk1=Bpa.stk1), Blim = c(stk1=Blim.stk1), Prflim = c(fl1 = 0))
+s2a_risk &lt;- riskSum( s2a, Bpa = c(stk1=Bpa.stk1), Blim = c(stk1=Blim.stk1), Prflim = c(fl1 = 0), 
+                     scenario=&#39;E20&#39;)
+s20_risk &lt;- rbind( s2_risk, s2a_risk) # risk indicators
+s20_risk$year &lt;- as.numeric(s20_risk$year)
+p &lt;- ggplot( data=s20_risk, aes(x=year, y=value, color=scenario)) + 
+  geom_line() +
+  facet_wrap(~indicator, scales=&quot;free&quot;) + 
+  facet_grid(indicator ~ .) + 
+  geom_vline(xintercept = oneItMainC$sim.years[[&#39;initial&#39;]]-1, linetype = &quot;longdash&quot;)+
+  theme_bw()+
+  theme(text=element_text(size=15),
+        title=element_text(size=15,face=&quot;bold&quot;),
+        strip.text=element_text(size=15))+
+  ylab(&quot;Risk&quot;)
+print(p)</code></pre>
+<p><img src="FLBEIA_Testing_Management_Strategies_files/figure-html/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="example-3-inclusion-of-technical-measures" class="section level1">
+<h1>EXAMPLE 3: inclusion of technical measures</h1>
+<div id="description-2" class="section level2">
+<h2>Description</h2>
+<p>This example shows how to simulate the introduction of technical measures. In this particular example, changes in the mesh size are simulated. This changes are supposed to cause changes in the capturabiltiy parameter and in the selectivity (due to possible changes in the percentage of catches assigned to the discard).</p>
+<p>In this case, we use the same data as in the previous examples (i.e. <code>oneIt</code>). For details on it, see Example 1.</p>
+<pre class="r"><code>data(oneIt) # load the dataset</code></pre>
+</div>
+<div id="exploring-the-data-2" class="section level2">
+<h2>Exploring the data</h2>
+<p>Initial assumption on catchability, when conditioning the objects using the easy/smart conditioning functions (see <a href="https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf">FLBEIA tutorial</a>), is that the effort in the projection period is the mean effort of a range of years (determined by the user).</p>
+<p>Initial assumption on capturability is reestimated depending o the technical measures to be applied. Therefore, in the model conditioning we need to set the catchability parameter at age to the appropriate values.</p>
+<pre class="r"><code># summary(oneItFl)
+names(oneItFl)                                    # only one fleet (fl1)</code></pre>
+<pre><code>[1] &quot;fl1&quot;</code></pre>
+<pre class="r"><code>names(oneItFl[[&#39;fl1&#39;]]@metiers)                   # with an unique metier (met1) </code></pre>
+<pre><code>[1] &quot;met1&quot;</code></pre>
+<pre class="r"><code>names(oneItFl[[&#39;fl1&#39;]]@metiers[[&#39;met1&#39;]]@catches) # targeting one stock (stk1)</code></pre>
+<pre><code>[1] &quot;stk1&quot;</code></pre>
+<pre class="r"><code># oneItFl[[&#39;fl1&#39;]]@metiers[[&#39;met1&#39;]]@catches[[&#39;stk1&#39;]]@catch.q</code></pre>
+<p>For this dataset, the capturability is set as the mean of the period 2006-2008, we will consider this as the base case. An increase of the mesh size that hypothetically would lead to an increase in the age of recruitment to the fishery from current (1 year) up to 7 years will be simulated.</p>
+<p>Having the following alternative scenario: * Scenario netBig : increase of age at recruiment from the fishery from age 1 to age 7.</p>
+<p>Catchability is defined in <code>oneItFl</code>, so we generate a new object with these new values.</p>
+<pre class="r"><code># Define the FLFleetsExt object for the alternative scenarios
+
+# Check simulation and historic years
+yrs &lt;- dimnames(oneItFl[[1]]@effort)$year
+sim.yrs  &lt;- as.character(oneItMainC$sim.years[&#39;initial&#39;]:oneItMainC$sim.years[&#39;final&#39;])
+hist.yrs &lt;- yrs[!yrs %in% sim.yrs]
+
+# Change the catchability for the simulation years:
+oneItFl3a &lt;- oneItFl
+oneItFl3a[[&#39;fl1&#39;]]@metiers[[&#39;met1&#39;]]@catches[[&#39;stk1&#39;]]@catch.q[1:6,sim.yrs,] &lt;- 0</code></pre>
+</div>
+<div id="run-flbeia-2" class="section level2">
+<h2>Run FLBEIA</h2>
+<p>Base Case: selectivity at age equal to the mean in the 2006-2008 period</p>
+<pre class="r"><code>s3 &lt;- FLBEIA( biols       = oneItBio,   # FLBiols: FLBiol for stk1.
+              SRs         = oneItSR,    # List: FLSRSim for stk1.
+              BDs         = NULL,       # Not population with biomass dynamics.
+              fleets      = oneItFl,    # FLFleets: one fleet.
+              covars      = oneItCv,    # List: covars related to economy.
+              indices     = NULL,       # Not indices.
+              advice      = oneItAdv,   # List: &#39;TAC&#39; and &#39;quota.share&#39;
+              main.ctrl   = oneItMainC, # List: info on start and end of the simulation.
+              biols.ctrl  = oneItBioC,  # List: model to simulate the stock dynamics.
+              fleets.ctrl = oneItFlC,   # List: fleet dyn. models and other parameters.
+              covars.ctrl = oneItCvC,   # List: covariates dynamics (&quot;fixedCovar&quot;).
+              obs.ctrl    = oneItObsC,  # List: type of stock and index observation
+                                        #       (&quot;PerfectObs&quot;,&quot;NoObsIndex&quot;).
+              assess.ctrl = oneItAssC,  # List: assessment model used (&quot;NoAssessment&quot;).
+              advice.ctrl = oneItAdvC)  # List: rule for TAC advice (&quot;IcesHCR&quot;).</code></pre>
+<p>Altenative case:</p>
+<ul>
+<li>Increase age at rec to the fishery (netBig): selectivity 0 for ages lower than 7</li>
+</ul>
+<pre class="r"><code>s3a &lt;- FLBEIA( biols       = oneItBio,   # FLBiols: FLBiol for stk1.
+               SRs         = oneItSR,    # List: FLSRSim for stk1.
+               BDs         = NULL,       # Not population with biomass dynamics.
+               fleets      = oneItFl3a,  # FLFleets: one fleet.
+               covars      = oneItCv,    # List: covars related to economy.
+               indices     = NULL,       # Not indices.
+               advice      = oneItAdv,   # List: &#39;TAC&#39; and &#39;quota.share&#39;
+               main.ctrl   = oneItMainC, # List: info on start and end of the simulation.
+               biols.ctrl  = oneItBioC,  # List: model to simulate the stock dynamics.
+               fleets.ctrl = oneItFlC,   # List: fleet dyn. models and other parameters.
+               covars.ctrl = oneItCvC,   # List: covariates dynamics (&quot;fixedCovar&quot;).
+               obs.ctrl    = oneItObsC,  # List: type of stock and index observation
+                                         #       (&quot;PerfectObs&quot;,&quot;NoObsIndex&quot;).
+               assess.ctrl = oneItAssC,  # List: assessment model used (&quot;NoAssessment&quot;).
+               advice.ctrl = oneItAdvC)  # List: rule for TAC advice (&quot;IcesHCR&quot;).</code></pre>
+<p>See that the only difference in the call is the <code>fleets</code> object, where we say to <strong>FLBEIA</strong> which effort to apply (among other things).</p>
+</div>
+<div id="results-2" class="section level2">
+<h2>Results</h2>
+<p>Setting the reference points:</p>
+<pre class="r"><code>Blim.stk1 &lt;- 800
+Bpa.stk1  &lt;- 1200</code></pre>
+<p>Summary plots comparing the different scenarios:</p>
+<pre class="r"><code># - stock summary
+s30_bio &lt;- rbind( bioSum(s3), 
+                  bioSum(s3a, scenario=&#39;netBig&#39;)) # biological indicators
+plotbioSum( s30_bio, Blim=Blim.stk1, Bpa=Bpa.stk1, proj.yr=oneItMainC$sim.years[[&#39;initial&#39;]])</code></pre>
+<p><img src="FLBEIA_Testing_Management_Strategies_files/figure-html/unnamed-chunk-29-1.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># - economic summary
+s30_flt &lt;- rbind( fltSum(s3), 
+                  fltSum(s3a, scenario=&#39;netBig&#39;)) # indicators at fleet level
+plotfltSum( s30_flt, proj.yr=oneItMainC$sim.years[[&#39;initial&#39;]])</code></pre>
+<p><img src="FLBEIA_Testing_Management_Strategies_files/figure-html/unnamed-chunk-30-1.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># - risk summary
+s3_risk  &lt;- riskSum(  s3, Bpa = c(stk1=Bpa.stk1), Blim = c(stk1=Blim.stk1), Prflim = c(fl1 = 0))
+s3a_risk &lt;- riskSum( s3a, Bpa = c(stk1=Bpa.stk1), Blim = c(stk1=Blim.stk1), Prflim = c(fl1 = 0), 
+                     scenario=&#39;netBig&#39;)
+s30_risk &lt;- rbind( s3_risk, s3a_risk) # risk indicators
+s30_risk$year &lt;- as.numeric(s30_risk$year)
+p &lt;- ggplot( data=s30_risk, aes(x=year, y=value, color=scenario)) + 
+  geom_line() +
+  facet_wrap(~indicator, scales=&quot;free&quot;) + 
+  facet_grid(indicator ~ .) + 
+  geom_vline(xintercept = oneItMainC$sim.years[[&#39;initial&#39;]]-1, linetype = &quot;longdash&quot;)+
+  theme_bw()+
+  theme(text=element_text(size=15),
+        title=element_text(size=15,face=&quot;bold&quot;),
+        strip.text=element_text(size=15))+
+  ylab(&quot;Risk&quot;)
+print(p)</code></pre>
+<p><img src="FLBEIA_Testing_Management_Strategies_files/figure-html/unnamed-chunk-31-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="example-4-spatial-and-temporal-closures" class="section level1">
+<h1>EXAMPLE 4: spatial and temporal closures</h1>
+<div id="description-3" class="section level2">
+<h2>Description</h2>
+<p>This example shows how to simulate spatial and temporal closures.</p>
+<p>In order to simulate spatial closures, as the model is not spatially explicit, there is the possibility to define different m?tiers by area and for setting this spatial closure is enough to set the effort share of this m?tier to 0, redistributing this remaining effort share among the rest of the m?tiers.</p>
+<p>To simulate spatial closures, we have two alternatives. If the temporal resolution of the model fits the period closures, then it is enough to set the effort of all the fleets to 0 in those seasons in which we want to impose the temporal closure. However, if the temporal resolution of the model is annual, then the simulation of temporal closures should be done in the same way as for the spatial closures.</p>
+<p>Finally, for the cases for which we do not have information on the m?tiers with enough resolution, then we can test changes in capturability. For example, when determining a closure for protecting juveniles, we can assume an associated reduction of the catchability of younger ages (for all the metiers or just for some or any of them, depending on the expected impact of the specific measure).</p>
+<p>In this case, the Operating Model (OM) runs by quarter and it is formed by two stocks and two fleets which activity is performed in two metiers in both cases. In the Management Procedure (MP), the fleet dynamics is assumed to be of fixed effort and a Simple Mixed Fisheries behaviour, respectively for each of the fleets (for details, see information on fixedEffort and SMFB functions in the <a href="https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf"><strong>FLBEIA</strong> manual</a>, the stocks are observed without error, there is not assessment carried out and different functions are are used to set the TAC yearly for each stock.</p>
+<p>All the objects have 1 iteration and uncertainty in the projections comes exclusively from the generation of the new incoming recruitments or the annual growth.</p>
+<ul>
+<li>Operating model:
+<ul>
+<li>Biological:
+<ul>
+<li>Population dynamics:
+<ul>
+<li><code>stk1</code> - age structured population growth</li>
+<li><code>stk2</code> - biomass dinamics growth</li>
+</ul></li>
+<li>SR model: <code>stk 1</code> - Beverthon and Holt</li>
+<li>BD model: <code>stk 2</code> - Pella Tomlinson</li>
+</ul></li>
+<li>Fleet:
+<ul>
+<li><code>fl1</code> - fixed effort</li>
+<li><code>fl2</code> - Simple Mixed Fisheries Behaviour</li>
+</ul></li>
+<li>Covariates: no covariates +++REVISAR CUANDO ARREGLADO+++</li>
+</ul></li>
+<li>Management Procedure:
+<ul>
+<li>Observation: <code>stk1</code>, <code>stk2</code> - perfect observation</li>
+<li>Assessment: <code>stk1</code>, <code>stk2</code> - no assessment</li>
+<li>Management advice:
+<ul>
+<li><code>stk1</code> - ICES harvest control rule</li>
+<li><code>stk2</code> - TAC set given an Fobj=0.3*Fsq, with F and TAC changing less than 10 and 15%, respectively</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>The neccesary <code>FLR</code> objects to run <strong>FLBEIA</strong> are available in the dataset called <code>multi</code>.</p>
+<pre class="r"><code>data(multi) # load the dataset</code></pre>
+</div>
+<div id="exploring-the-data-3" class="section level2">
+<h2>Exploring the data</h2>
+<p>For simulating spatial or temporal closures, the fleet effort and/or the effortshare by metier should be reassigned to the appropriate values.</p>
+<p>Initial assumption on catchability, when conditioning the objects using the easy/smart conditioning functions (see <a href="https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf">FLBEIA tutorial</a>), is that the effort in the projection period is the mean effort of a range of years (determined by the user).</p>
+<p>Initial assumption on capturability is reestimated depending o the technical measures to be applied. Therefore, in the model conditioning we need to set the catchability parameter at age to the appropriate values.</p>
+<pre class="r"><code># summary(multiFl)
+names(multiFl)                                    # two fleets (fl1, fl2)</code></pre>
+<pre><code>[1] &quot;fl1&quot; &quot;fl2&quot;</code></pre>
+<pre class="r"><code>names(multiFl[[&#39;fl1&#39;]]@metiers)                   # fl1: with two metiers (met1, met2) </code></pre>
+<pre><code>[1] &quot;met1&quot; &quot;met2&quot;</code></pre>
+<pre class="r"><code>names(multiFl[[&#39;fl1&#39;]]@metiers[[&#39;met1&#39;]]@catches) # fl1_met1: targeting 2 stocks (stk1, stk2)</code></pre>
+<pre><code>[1] &quot;stk1&quot; &quot;stk2&quot;</code></pre>
+<pre class="r"><code>names(multiFl[[&#39;fl1&#39;]]@metiers[[&#39;met2&#39;]]@catches) # fl1_met2: targeting 2 stocks (stk1, stk2)</code></pre>
+<pre><code>[1] &quot;stk1&quot; &quot;stk2&quot;</code></pre>
+<pre class="r"><code>names(multiFl$fl2@metiers)                        # fl2: with two metiers (met1, met2) </code></pre>
+<pre><code>[1] &quot;met1&quot; &quot;met2&quot;</code></pre>
+<pre class="r"><code>names(multiFl$fl2@metiers$met1@catches)           # fl2_met1: targeting 2 stocks (stk1, stk2)</code></pre>
+<pre><code>[1] &quot;stk1&quot; &quot;stk2&quot;</code></pre>
+<pre class="r"><code>names(multiFl$fl2@metiers$met2@catches)           # fl2_met1: targeting 2 stocks (stk1, stk2)</code></pre>
+<pre><code>[1] &quot;stk1&quot; &quot;stk2&quot;</code></pre>
+<p>In order to consider the metiers, as area-based (e.g. metiers operating in Northern or Southern area), we rename them as <code>metN</code> and <code>metS</code>.</p>
+<pre class="r"><code>names(multiFl$fl1@metiers) &lt;- names(multiFl$fl2@metiers) &lt;- c(&#39;metN&#39;, &#39;metS&#39;)</code></pre>
+<p>Having the following alternative scenario: * Base case - closeNO : no closures. * Scenario - closeNorth: close the northern area. * Scenario - closeSson2: ban completely the fishery in the 3rd quarter.</p>
+<pre class="r"><code># Define the FLFleetsExt object for the alternative scenarios
+
+# Check simulation and historic years
+yrs &lt;- dimnames(multiFl[[1]]@effort)$year
+sim.yrs  &lt;- as.character(multiMainC$sim.years[&#39;initial&#39;]:multiMainC$sim.years[&#39;final&#39;])
+hist.yrs &lt;- yrs[!yrs %in% sim.yrs]
+
+# - Northern area closure:
+# Change the effort share to 0 for metN and assign this share to the other metiers, 
+# in this case only metS
+multiFl4a &lt;- multiFl
+multiFl4a[[&#39;fl1&#39;]]@metiers[[&#39;metS&#39;]]@effshare[,sim.yrs,] &lt;- 
+  multiFl4a[[&#39;fl1&#39;]]@metiers[[&#39;metS&#39;]]@effshare[,sim.yrs,] + 
+  multiFl4a[[&#39;fl1&#39;]]@metiers[[&#39;metN&#39;]]@effshare[,sim.yrs,]
+multiFl4a[[&#39;fl1&#39;]]@metiers[[&#39;metN&#39;]]@effshare[,sim.yrs,] &lt;- 0
+
+# - Ban completely the fishery in the 3rd quarter:
+# Set the fleet effort to 0 in this season for both fleets
+multiFl4b &lt;- multiFl
+multiFl4b[[&#39;fl1&#39;]]@effort[,sim.yrs,,3,] &lt;- 0
+multiFl4b[[&#39;fl2&#39;]]@effort[,sim.yrs,,3,] &lt;- 0</code></pre>
+</div>
+<div id="run-flbeia-3" class="section level2">
+<h2>Run FLBEIA</h2>
+<p>Base Case: no closures</p>
+<pre class="r"><code>s4 &lt;- FLBEIA( biols       = multiBio,   # FLBiols: FLBiol for stk1 and stk2.
+              SRs         = multiSR,    # List: FLSRSim for stk1.
+              BDs         = multiBD,    # List: FLBDSim for stk2.
+              fleets      = multiFl,    # FLFleets: two fleets (fl1, fl2), with 2 metiers each.
+              covars      = multiCv,    # List: covars related to economy.
+              indices     = NULL,       # Not indices.
+              advice      = multiAdv,   # List: &#39;TAC&#39; and &#39;quota.share&#39;
+              main.ctrl   = multiMainC, # List: info on start and end of the simulation.
+              biols.ctrl  = multiBioC,  # List: model to simulate the stock dynamics.
+              fleets.ctrl = multiFlC,   # List: fleet dyn. models and other parameters.
+              covars.ctrl = multiCvC,   # List: covariates dynamics (&quot;fixedCovar&quot;).
+              obs.ctrl    = multiObsC,  # List: type of stock and index observation
+                                        #       (&quot;PerfectObs&quot;,&quot;NoObsIndex&quot;).
+              assess.ctrl = multiAssC,  # List: assessment model used (&quot;NoAssessment&quot;).
+              advice.ctrl = multiAdvC)  # List: rule for TAC advice (&quot;IcesHCR&quot;).</code></pre>
+<p>Altenative cases:</p>
+<ul>
+<li>Close the Northern area to the fishery –&gt; not allow the metier fishing in this area (metN)</li>
+</ul>
+<pre class="r"><code>s4a &lt;- FLBEIA( biols       = multiBio,  # FLBiols: FLBiol for stk1 and stk2.
+               SRs         = multiSR,    # List: FLSRSim for stk1.
+               BDs         = multiBD,    # List: FLBDSim for stk2.
+               fleets      = multiFl4a,  # FLFleets: two fleets (fl1, fl2), with 2 metiers each.
+               covars      = multiCv,    # List: covars related to economy.
+               indices     = NULL,       # Not indices.
+               advice      = multiAdv,   # List: &#39;TAC&#39; and &#39;quota.share&#39;
+               main.ctrl   = multiMainC, # List: info on start and end of the simulation.
+               biols.ctrl  = multiBioC,  # List: model to simulate the stock dynamics.
+               fleets.ctrl = multiFlC,   # List: fleet dyn. models and other parameters.
+               covars.ctrl = multiCvC,   # List: covariates dynamics (&quot;fixedCovar&quot;).
+               obs.ctrl    = multiObsC,  # List: type of stock and index observation
+                                         #       (&quot;PerfectObs&quot;,&quot;NoObsIndex&quot;).
+               assess.ctrl = multiAssC,  # List: assessment model used (&quot;NoAssessment&quot;).
+               advice.ctrl = multiAdvC)  # List: rule for TAC advice (&quot;IcesHCR&quot;).</code></pre>
+<ul>
+<li>Completely ban the fishery in the 3rd quarter.</li>
+</ul>
+<pre class="r"><code>s4b &lt;- FLBEIA( biols       = multiBio,  # FLBiols: FLBiol for stk1 and stk2.
+               SRs         = multiSR,    # List: FLSRSim for stk1.
+               BDs         = multiBD,    # List: FLBDSim for stk2.
+               fleets      = multiFl4b,  # FLFleets: two fleets (fl1, fl2), with 2 metiers each.
+               covars      = multiCv,    # List: covars related to economy.
+               indices     = NULL,       # Not indices.
+               advice      = multiAdv,   # List: &#39;TAC&#39; and &#39;quota.share&#39;
+               main.ctrl   = multiMainC, # List: info on start and end of the simulation.
+               biols.ctrl  = multiBioC,  # List: model to simulate the stock dynamics.
+               fleets.ctrl = multiFlC,   # List: fleet dyn. models and other parameters.
+               covars.ctrl = multiCvC,   # List: covariates dynamics (&quot;fixedCovar&quot;).
+               obs.ctrl    = multiObsC,  # List: type of stock and index observation
+                                         #       (&quot;PerfectObs&quot;,&quot;NoObsIndex&quot;).
+               assess.ctrl = multiAssC,  # List: assessment model used (&quot;NoAssessment&quot;).
+               advice.ctrl = multiAdvC)  # List: rule for TAC advice (&quot;IcesHCR&quot;).</code></pre>
+<p>See that the only difference in the call is the <code>fleets</code> object, where we alter the values for effort or effort share by metier.</p>
+</div>
+<div id="results-3" class="section level2">
+<h2>Results</h2>
+<p>Setting the reference points:</p>
+<pre class="r"><code>Blim.stk1 &lt;- 800
+Bpa.stk1  &lt;- 1200
+Blim.stk2 &lt;- 50000
+Bpa.stk2  &lt;- 65000</code></pre>
+<p>Summary plots comparing the different scenarios:</p>
+<pre class="r"><code># - stock summary
+s40_bio &lt;- rbind( bioSum(s4, scenario=&#39;closeNO&#39;), 
+                  bioSum(s4a, scenario=&#39;closeNorth&#39;), 
+                  bioSum(s4a, scenario=&#39;closeSson2&#39;)) # biological indicators
+plotbioSum( s40_bio, stk.nam=&#39;stk1&#39;, Blim=Blim.stk1, Bpa=Bpa.stk1, 
+            proj.yr=multiMainC$sim.years[[&#39;initial&#39;]])</code></pre>
+<p><img src="FLBEIA_Testing_Management_Strategies_files/figure-html/unnamed-chunk-40-1.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plotbioSum( s40_bio, stk.nam=&#39;stk2&#39;, Blim=Blim.stk2, Bpa=Bpa.stk2, 
+            proj.yr=multiMainC$sim.years[[&#39;initial&#39;]])</code></pre>
+<p><img src="FLBEIA_Testing_Management_Strategies_files/figure-html/unnamed-chunk-40-2.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># - economic summary at metier level
+s40_mt &lt;- rbind( mtSum(s4, scenario=&#39;closeNO&#39;, long = TRUE), 
+                 mtSum(s4a, scenario=&#39;closeNorth&#39;, long = TRUE), 
+                 mtSum(s4b, scenario=&#39;closeSson2&#39;, long = TRUE)) # indicators at fleet level
+s40_mt$year &lt;- as.numeric(s40_mt$year)
+s40_mt$flmt &lt;- paste( s40_mt$fleet, s40_mt$metier, sep=&#39;_&#39;)
+p &lt;- ggplot( data=s40_mt, aes(x=year, y=value, color=scenario)) + 
+  geom_line() +
+  facet_grid(indicator ~ flmt, scales=&quot;free&quot;) +
+  geom_vline(xintercept = multiMainC$sim.years[[&#39;initial&#39;]]-1, linetype = &quot;longdash&quot;)+
+  theme_bw()+
+  theme(text=element_text(size=10),
+        title=element_text(size=10,face=&quot;bold&quot;),
+        strip.text=element_text(size=10))
+print(p)</code></pre>
+<p><img src="FLBEIA_Testing_Management_Strategies_files/figure-html/unnamed-chunk-41-1.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># - risk summary
+s4_risk  &lt;- riskSum( s4, Bpa = c(stk1=Bpa.stk1,stk2=Bpa.stk2), 
+                     Blim = c(stk1=Blim.stk1,stk2=Blim.stk2), 
+                     Prflim = c(fl1=0,fl2=0), scenario = &#39;closeNO&#39;)
+s4a_risk &lt;- riskSum( s4a, Bpa = c(stk1=Bpa.stk1,stk2=Bpa.stk2), 
+                     Blim = c(stk1=Blim.stk1,stk2=Blim.stk2), 
+                     Prflim = c(fl1=0,fl2=0), scenario=&#39;closeNorth&#39;)
+s4b_risk &lt;- riskSum( s4b, Bpa = c(stk1=Bpa.stk1,stk2=Bpa.stk2), 
+                     Blim = c(stk1=Blim.stk1,stk2=Blim.stk2), 
+                     Prflim = c(fl1=0,fl2=0), scenario=&#39;closeSson2&#39;)
+s40_risk &lt;- rbind( s4_risk, s4a_risk, s4b_risk) # risk indicators
+s40_risk$year &lt;- as.numeric(s40_risk$year)
+p &lt;- ggplot( data=subset(s40_risk,indicator==&#39;pPrflim&#39;), aes(x=year, y=value, color=scenario)) + 
+  geom_line() +
+  facet_grid(indicator ~ unit, scales=&quot;free&quot;) +
+  geom_vline(xintercept = multiMainC$sim.years[[&#39;initial&#39;]]-1, linetype = &quot;longdash&quot;) +
+  theme_bw()+
+  theme(text=element_text(size=15),
+        title=element_text(size=15,face=&quot;bold&quot;),
+        strip.text=element_text(size=15)) +
+  ylab(&quot;Risk&quot;)
+print(p)</code></pre>
+<p><img src="FLBEIA_Testing_Management_Strategies_files/figure-html/unnamed-chunk-42-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p &lt;- ggplot( data=subset(s40_risk,indicator!=&#39;pPrflim&#39;), aes(x=year, y=value, color=scenario)) + 
+  geom_line() +
+  facet_grid(indicator ~ unit, scales=&quot;free&quot;) +
+  geom_vline(xintercept = multiMainC$sim.years[[&#39;initial&#39;]]-1, linetype = &quot;longdash&quot;) +
+  theme_bw()+
+  theme(text=element_text(size=15),
+        title=element_text(size=15,face=&quot;bold&quot;),
+        strip.text=element_text(size=15)) +
+  ylab(&quot;Risk&quot;)
+print(p)</code></pre>
+<p><img src="FLBEIA_Testing_Management_Strategies_files/figure-html/unnamed-chunk-42-2.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="exercises" class="section level1">
+<h1>Exercises</h1>
+<!-- TO BE COMPLETED -->
+<ul>
+<li><p>Exercise 1: Following Example 1, now instead using a HCR to set the TAC, set a fixed TAC of 300 tons for all the projection period.</p></li>
+<li><p>Exercise 2: Similar to what has been done in example Example 2, set a gradual reduction of the effort to achieve a 50% reduction of the effort in the last year of the projection period, relative to the last 3 years mean.</p></li>
+<li><p>Exercise 3: Simulate a decrease in the mesh size that increases the capturability, but at the same time increases the discards. For example, leading to a 10% increase of catchability for the medium ages (4-10) and to discard 50% of the catches at ages 1-2 and 25% at age 3.</p></li>
+</ul>
+<!-- * Exercise 4: -->
+<div id="results-of-the-exercises" class="section level2">
+<h2>Results of the exercises</h2>
+<pre class="r"><code># EXERCISE 1
+##############
+
+# Set the TAC value to 300 tons
+
+# Set the control parameters related to advice to &#39;fixedAdvice&#39;
+oneItAdvC3 &lt;- list()
+oneItAdvC3$stk1 &lt;- list()
+oneItAdvC3$stk1$HCR.model &lt;- &#39;fixedAdvice&#39;     # selected HCR
+
+# Set the TAC in the projection year to 300 tons
+oneItAdv3 &lt;- oneItAdv
+proj.yrs &lt;- dimnames(oneItAdv3$TAC)$year[as.numeric(dimnames(oneItAdv3$TAC)$year)&gt;=
+                                          oneItMainC$sim.years[[&#39;initial&#39;]]]
+oneItAdv3$TAC[,proj.yrs,] &lt;- 300
+
+## Run FLBEIA
+# Fixed advice (fTAC): TAC fixed at 300 tons
+s1b &lt;- FLBEIA( biols       = oneItBio,     # FLBiols: FLBiol for stk1.
+               SRs         = oneItSR,      # List: FLSRSim for stk1.
+               BDs         = NULL,         # Not population with biomass dynamics.
+               fleets      = oneItFl,      # FLFleets: one fleet.
+               covars      = oneItCv,      # List: covars related to economy.
+               indices     = oneItInd,     # Not indices.
+               advice      = oneItAdv3,    # List: &#39;TAC&#39; and &#39;quota.share&#39;
+               main.ctrl   = oneItMainC,   # List: info on start and end of the simulation.
+               biols.ctrl  = oneItBioC,    # List: model to simulate the stock dynamics.
+               fleets.ctrl = oneItFlC,     # List: fleet dyn. models and other parameters.
+               covars.ctrl = oneItCvC,     # List: covariates dynamics (&quot;fixedCovar&quot;).
+               obs.ctrl    = oneItObsCInd, # List: type of stock and index observation
+                                           #       (&quot;NoObsStock&quot;,&quot;bioInd&quot;).
+               assess.ctrl = oneItAssC,    # List: assessment model used (&quot;NoAssessment&quot;).
+               advice.ctrl = oneItAdvC3)   # List: rule for TAC advice (&quot;AnnexIV&quot;).
+
+## Results: comparison with previous scenarios
+
+# - stock summary
+s10_bio &lt;- rbind( s10_bio, 
+                  bioSum(s1b, scenario=&#39;fTAC&#39;)) # biological indicators
+plotbioSum( s10_bio, Blim=Blim.stk1, Bpa=Bpa.stk1, proj.yr=oneItMainC$sim.years[[&#39;initial&#39;]])
+
+# - economic summary
+s10_flt &lt;- rbind( s10_flt, 
+                  fltSum(s1b, scenario=&#39;fTAC&#39;)) # indicators at fleet level
+plotfltSum( s10_flt, proj.yr=oneItMainC$sim.years[[&#39;initial&#39;]])
+
+# - risk summary
+s1b_risk &lt;- riskSum( s1b, Bpa = c(stk1=Bpa.stk1), Blim = c(stk1=Blim.stk1), Prflim = c(fl1 = 0), 
+                     scenario=&#39;fTAC&#39;)
+s10_risk &lt;- rbind( s10_risk, s1b_risk) # risk indicators
+s10_risk$year &lt;- as.numeric(s10_risk$year)
+p &lt;- ggplot( data=s10_risk, aes(x=year, y=value, color=scenario)) + 
+  geom_line() +
+  facet_wrap(~indicator, scales=&quot;free&quot;) + 
+  facet_grid(indicator ~ .) + 
+  geom_vline(xintercept = oneItMainC$sim.years[[&#39;initial&#39;]]-1, linetype = &quot;longdash&quot;)+
+  theme_bw()+
+  theme(text=element_text(size=15),
+        title=element_text(size=15,face=&quot;bold&quot;),
+        strip.text=element_text(size=15))+
+  ylab(&quot;Risk&quot;)
+print(p)
+
+
+
+# EXERCISE 2
+##############
+
+# Fleet dynamics: effort model
+oneItFlC$fl1$effort.model  # fixed effort
+
+# Set the effort values to fit the condition required
+# (i.e. gradual reduction to 50% reduction of the effort in the last proj. year)
+
+# - Generate a new FLFleets object
+oneItFl2b &lt;- oneItFl
+
+# - Store values of simulation and historic years
+yrs &lt;- dimnames(oneItFl[[1]]@effort)$year
+sim.yrs  &lt;- as.character(oneItMainC$sim.years[&#39;initial&#39;]:oneItMainC$sim.years[&#39;final&#39;])
+hist.yrs &lt;- yrs[!yrs %in% sim.yrs]
+
+# - Change the effort for the simulation years:
+eff.yred &lt;- 0.5/length(sim.yrs)
+i &lt;- 0
+for (yr in sim.yrs) {
+  i &lt;- i + 1
+  rf &lt;- 1 - eff.yred * i
+  oneItFl2b[[1]]@effort[,yr,] &lt;- rf * oneItFl2b[[1]]@effort[,hist.yrs[length(hist.yrs)],]
+}
+
+# - check if correct
+oneItFl2b[[1]]@effort[,sim.yrs[length(sim.yrs)],]/oneItFl2b[[1]]@effort[,hist.yrs[length(hist.yrs)],]
+
+## Run FLBEIA
+# Gradual reduction of effort (E50g): gradual reduction for 50% reduction in last proj. yr
+#                                      (rel. to last 3yrs mean) 
+s2b &lt;- FLBEIA( biols       = oneItBio,   # FLBiols: FLBiol for stk1.
+               SRs         = oneItSR,    # List: FLSRSim for stk1.
+               BDs         = NULL,       # Not population with biomass dynamics.
+               fleets      = oneItFl2b,  # FLFleets: one fleet.
+               covars      = oneItCv,    # List: covars related to economy.
+               indices     = NULL,       # Not indices.
+               advice      = oneItAdv,   # List: &#39;TAC&#39; and &#39;quota.share&#39;
+               main.ctrl   = oneItMainC, # List: info on start and end of the simulation.
+               biols.ctrl  = oneItBioC,  # List: model to simulate the stock dynamics.
+               fleets.ctrl = oneItFlC,   # List: fleet dyn. models and other parameters.
+               covars.ctrl = oneItCvC,   # List: covariates dynamics (&quot;fixedCovar&quot;).
+               obs.ctrl    = oneItObsC,  # List: type of stock and index observation
+                                         #       (&quot;PerfectObs&quot;,&quot;NoObsIndex&quot;).
+               assess.ctrl = oneItAssC,  # List: assessment model used (&quot;NoAssessment&quot;).
+               advice.ctrl = oneItAdvC)  # List: rule for TAC advice (&quot;IcesHCR&quot;).
+
+## Results: comparison with previous scenarios
+
+# - stock summary
+s20_bio &lt;- rbind( s20_bio, 
+                  bioSum(s2b, scenario=&#39;E50g&#39;)) # biological indicators
+plotbioSum( s20_bio, Blim=Blim.stk1, Bpa=Bpa.stk1, proj.yr=oneItMainC$sim.years[[&#39;initial&#39;]])
+
+# - economic summary
+s20_flt &lt;- rbind( s20_flt, 
+                  fltSum(s2b, scenario=&#39;E50g&#39;)) # indicators at fleet level
+plotfltSum( s20_flt, proj.yr=oneItMainC$sim.years[[&#39;initial&#39;]])
+
+# - risk summary
+s2b_risk &lt;- riskSum( s2b, Bpa = c(stk1=Bpa.stk1), Blim = c(stk1=Blim.stk1), Prflim = c(fl1 = 0), 
+                     scenario=&#39;E50g&#39;)
+s20_risk &lt;- rbind( s20_risk, s2b_risk) # risk indicators
+s20_risk$year &lt;- as.numeric(s20_risk$year)
+p &lt;- ggplot( data=s20_risk, aes(x=year, y=value, color=scenario)) + 
+  geom_line() +
+  facet_wrap(~indicator, scales=&quot;free&quot;) + 
+  facet_grid(indicator ~ .) + 
+  geom_vline(xintercept = oneItMainC$sim.years[[&#39;initial&#39;]]-1, linetype = &quot;longdash&quot;)+
+  theme_bw()+
+  theme(text=element_text(size=15),
+        title=element_text(size=15,face=&quot;bold&quot;),
+        strip.text=element_text(size=15))+
+  ylab(&quot;Risk&quot;)
+print(p)
+
+
+
+# EXERCISE 3
+##############
+
+# Define the FLFleetsExt object for the alternative scenarios
+
+# - Check simulation and historic years
+yrs &lt;- dimnames(oneItFl[[1]]@effort)$year
+sim.yrs  &lt;- as.character(oneItMainC$sim.years[&#39;initial&#39;]:oneItMainC$sim.years[&#39;final&#39;])
+hist.yrs &lt;- yrs[!yrs %in% sim.yrs]
+
+# - Set the catchability at age:
+#   10% increase of catchability at ages 4-10
+oneItFl3b &lt;- oneItFl
+oneItFl3b[[&#39;fl1&#39;]]@metiers[[&#39;met1&#39;]]@catches[[&#39;stk1&#39;]]@catch.q[4:10,sim.yrs,] &lt;-
+  1.1 * oneItFl[[&#39;fl1&#39;]]@metiers[[&#39;met1&#39;]]@catches[[&#39;stk1&#39;]]@catch.q[4:10,sim.yrs,]
+
+# - Set the selectivity at age:
+#   50% of the catch is discarded at ages 1-2
+#   25% of the catch is discarded at age 3
+oneItFl3b[[&#39;fl1&#39;]]@metiers[[&#39;met1&#39;]]@catches[[&#39;stk1&#39;]]@landings.sel # 00% catch : landing
+oneItFl3b[[&#39;fl1&#39;]]@metiers[[&#39;met1&#39;]]@catches[[&#39;stk1&#39;]]@discards.sel #   0% catch : discard
+oneItFl3b[[&#39;fl1&#39;]]@metiers[[&#39;met1&#39;]]@catches[[&#39;stk1&#39;]]@landings.sel[1:2,sim.yrs,] &lt;- 0.5
+oneItFl3b[[&#39;fl1&#39;]]@metiers[[&#39;met1&#39;]]@catches[[&#39;stk1&#39;]]@discards.sel[1:2,sim.yrs,] &lt;- 0.5
+oneItFl3b[[&#39;fl1&#39;]]@metiers[[&#39;met1&#39;]]@catches[[&#39;stk1&#39;]]@landings.sel[3,sim.yrs,] &lt;- 0.75
+oneItFl3b[[&#39;fl1&#39;]]@metiers[[&#39;met1&#39;]]@catches[[&#39;stk1&#39;]]@discards.sel[3,sim.yrs,] &lt;- 0.25
+
+# Comparison plot for selectivities:
+adf &lt;- as.data.frame
+d3  &lt;- adf(apply(oneItFl[[&#39;fl1&#39;]]@metiers[[&#39;met1&#39;]]@catches[[&#39;stk1&#39;]]@catch.q[,sim.yrs[1],,],
+                          1:5,quantile,0.5))
+d3a &lt;- adf(apply(oneItFl3a[[&#39;fl1&#39;]]@metiers[[&#39;met1&#39;]]@catches[[&#39;stk1&#39;]]@catch.q[,sim.yrs[1],,],
+                          1:5,quantile,0.5))
+d3b &lt;- adf(apply(oneItFl3b[[&#39;fl1&#39;]]@metiers[[&#39;met1&#39;]]@catches[[&#39;stk1&#39;]]@catch.q[,sim.yrs[1],,],
+                          1:5,quantile,0.5))
+d30_q &lt;- rbind( data.frame(d3,case=&#39;bc&#39;), data.frame(d3a,case=&#39;netBig&#39;), 
+                data.frame(d3b,case=&#39;netSmall&#39;))
+p &lt;- ggplot( data=d30_q, aes(x=age, y=data, color=case)) +
+  geom_line() +
+  theme_bw() +
+  theme(text=element_text(size=15),
+        title=element_text(size=15,face=&quot;bold&quot;),
+        strip.text=element_text(size=15)) +
+  scale_x_continuous(breaks=unique(d30_q$age)) +
+  ylab(&quot;catchability&quot;)
+print(p)
+
+## Run FLBEIA
+# Net size decrease (netSmall): 10% increase selectivity (ages 4-10) relative to 2006-2008 mean
+#                               + 50% ages 1-2 catch discarded and 25% of age 3
+s3b &lt;- FLBEIA( biols       = oneItBio,   # FLBiols: FLBiol for stk1.
+               SRs         = oneItSR,    # List: FLSRSim for stk1.
+               BDs         = NULL,       # Not population with biomass dynamics.
+               fleets      = oneItFl3b,  # FLFleets: one fleet.
+               covars      = oneItCv,    # List: covars related to economy.
+               indices     = NULL,       # Not indices.
+               advice      = oneItAdv,   # List: &#39;TAC&#39; and &#39;quota.share&#39;
+               main.ctrl   = oneItMainC, # List: info on start and end of the simulation.
+               biols.ctrl  = oneItBioC,  # List: model to simulate the stock dynamics.
+               fleets.ctrl = oneItFlC,   # List: fleet dyn. models and other parameters.
+               covars.ctrl = oneItCvC,   # List: covariates dynamics (&quot;fixedCovar&quot;).
+               obs.ctrl    = oneItObsC,  # List: type of stock and index observation
+                                         #       (&quot;PerfectObs&quot;,&quot;NoObsIndex&quot;).
+               assess.ctrl = oneItAssC,  # List: assessment model used (&quot;NoAssessment&quot;).
+               advice.ctrl = oneItAdvC)  # List: rule for TAC advice (&quot;IcesHCR&quot;).
+
+
+## Results: comparison with previous scenarios
+
+# - stock summary
+s30_bio &lt;- rbind( s30_bio, 
+                  bioSum(s3b, scenario=&#39;netSmall&#39;)) # biological indicators
+plotbioSum( s30_bio, Blim=Blim.stk1, Bpa=Bpa.stk1, proj.yr=oneItMainC$sim.years[[&#39;initial&#39;]])
+
+# - economic summary
+s30_flt &lt;- rbind( s30_flt, 
+                  fltSum(s3b, scenario=&#39;netSmall&#39;)) # indicators at fleet level
+plotfltSum( s30_flt, proj.yr=oneItMainC$sim.years[[&#39;initial&#39;]])
+
+# - risk summary
+s3b_risk &lt;- riskSum( s3b, Bpa = c(stk1=Bpa.stk1), Blim = c(stk1=Blim.stk1), 
+                     Prflim = c(fl1 = 0), scenario=&#39;netSmall&#39;)
+s30_risk &lt;- rbind( s30_risk, s3b_risk) # risk indicators
+s30_risk$year &lt;- as.numeric(s30_risk$year)
+p &lt;- ggplot( data=s30_risk, aes(x=year, y=value, color=scenario)) + 
+  geom_line() +
+  facet_wrap(~indicator, scales=&quot;free&quot;) + 
+  facet_grid(indicator ~ .) + 
+  geom_vline(xintercept = oneItMainC$sim.years[[&#39;initial&#39;]]-1, linetype = &quot;longdash&quot;)+
+  theme_bw()+
+  theme(text=element_text(size=15),
+        title=element_text(size=15,face=&quot;bold&quot;),
+        strip.text=element_text(size=15))+
+  ylab(&quot;Risk&quot;)
+print(p)
+
+# - risk
+s30_risk &lt;- rbind( s30_risk, s3b_risk)
+s30_risk$year &lt;- as.numeric(s30_risk$year)
+p &lt;- ggplot( data=s30_risk, aes(x=year, y=value, color=scenario)) +
+  geom_line() +
+  # geom_ribbon(aes(x=year, ymin=q05, ymax=q95, fill=scenario), alpha=0.5) +
+  facet_wrap(~indicator, scales=&quot;free&quot;) +
+  facet_grid(indicator ~ .) +
+  geom_vline(xintercept = oneItMainC$sim.years[[&#39;initial&#39;]]-1, linetype = &quot;longdash&quot;)+
+  theme_bw()+
+  theme(text=element_text(size=15),
+        title=element_text(size=15,face=&quot;bold&quot;),
+        strip.text=element_text(size=15))+
+  ylab(&quot;Risk&quot;)
+print(p)</code></pre>
+</div>
+</div>
+<div id="more-information" class="section level1">
+<h1>More information</h1>
+<ul>
+<li>You can submit bug reports, questions or suggestions on this tutorial at <a href="https://github.com/flr/doc/issues" class="uri">https://github.com/flr/doc/issues</a>.</li>
+<li>Or send a pull request to <a href="https://github.com/flr/doc/" class="uri">https://github.com/flr/doc/</a></li>
+<li>For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <a href="http://flr-project.org" class="uri">http://flr-project.org</a>.</li>
+<li>You can submit bug reports, questions or suggestions specific to <strong>FLBEIA</strong> to <a href="mailto:flbeia@azti.es" class="email">flbeia@azti.es</a>.</li>
+</ul>
+<div id="software-versions" class="section level2">
+<h2>Software Versions</h2>
+<ul>
+<li>R version 4.0.0 (2020-04-24)</li>
+<li>FLCore: 2.6.15</li>
+<li>FLBEIA: 1.15.4</li>
+<li>FLFleet: 2.6.1</li>
+<li>FLash: 2.5.11</li>
+<li>FLAssess: 2.6.3</li>
+<li>FLXSA: 2.6.4</li>
+<li>ggplotFL: 2.6.7.9006</li>
+<li>ggplot2: 3.3.0</li>
+<li><strong>Compiled</strong>: Fri May 15 08:04:14 2020</li>
+</ul>
+</div>
+<div id="license" class="section level2">
+<h2>License</h2>
+<p>This document is licensed under the <a href="https://creativecommons.org/licenses/by-sa/4.0">Creative Commons Attribution-ShareAlike 4.0 International</a> license.</p>
+</div>
+<div id="author-information" class="section level2">
+<h2>Author information</h2>
+<p><strong>Sonia Sanchez</strong>. AZTI, Marine Research Unit. Herrera Kaia, Portualdea z/g, 20110, Pasaia, Gipuzkoa, Spain. <a href="https://www.azti.es/" class="uri">https://www.azti.es/</a>.</p>
+<p><strong>FLBEIA team</strong>. AZTI. Marine Reserach Unit. Txatxarramendi Ugartea z/g, 48395, Sukarrieta, Basque Country, Spain. <strong>Mail</strong> <a href="mailto:flbeia@azti.es" class="email">flbeia@azti.es</a></p>
+</div>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1 class="unnumbered">References</h1>
+<div id="refs" class="references hanging-indent">
+<div id="ref-deOliveira2010">
+<p>De Oliveira, José, Chris Darby, Timothy Earl, and Carl O’Brien. 2010. “Technical Background Evaluation of Annex Iv Rules.” ICES CM 2010/ACOM:58.</p>
+</div>
+<div id="ref-garcia2017">
+<p>Garcia, Dorleta, Sonia Sánchez, Raúl Prellezo, Agurtzane Urtizberea, and Marga Andrés. 2017. “FLBEIA: A Simulation Model to Conduct Bio-Economic Evaluation of Fisheries Management Strategies.” <em>SoftwareX</em> 6: 141–47.</p>
+</div>
+<div id="ref-ices2009">
+<p>ICES. 2009. “Chair’s Report of the Workshop on the Form of Advice (Wkform).” ICES CM 2009/ACOM:53.</p>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

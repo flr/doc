@@ -33,12 +33,17 @@ title: "FLR Tutorials"
 - [An introduction to MSE using FLR](An_introduction_to_MSE_using_FLR.html)
 
 ## Management Strategy Evaluation using FLBEIA
-- [Conditioning FLBEIA using Smart Conditioning Functions](Conditioning_FLBEIA.html)
+- [Conditioning FLBEIA using Smart Conditioning Functions](FLBEIA_Conditioning.html)
 - [A simple example on how to use FLBEIA](FLBEIA_A_Simple_Example.html)
 - [A simple example with multiple dimensions in FLBEIA](FLBEIA_An_Example_with_multiple_dimensions.html)
-- [Using Stock Assessment models in the Managemnt procedure of FLBEIA](Using_Assessment_models_in_the_MP_FLBEIA.html)
-- [Testing different Management Strategies in FLBEIA](Testing_Management_Strategies_in_FLBEIA.html)
-- [Data Limited MSE in FLBEIA](Data_Poor_MSE_in_FLBEIA.html)
+- [Checking FLBEIA inputs](FLBEIA_Checking_inputs.html)
+- [Using Stock Assessment models in the Managemnt procedure of FLBEIA](FLBEIA_Using_Assessment_models_in_the_MP.html)
+- [Including SS3 assessment within the Management Procedure of FLBEIA](FLBEIA_Incorporating_SS3assessment_MP.html)
+- [Testing different Management Strategies in FLBEIA](FLBEIA_Testing_Management_Strategies.html)
+- [Data Limited MSE in FLBEIA](FLBEIA_Data_Poor_MSE.html)
+- [Smart Conditioning II](FLBEIA_Smart_Conditioning_II.html)
+- [ICES Mixed Fisheries Advice using FLBEIA](FLBEIA_Mixed_Fisheries_Tutorial.html)
+- [Bio-Economic simulation using FLBEIA](FLBEIA_Bio_Economic_Tutorial.html)
 
 ## Visualization
 

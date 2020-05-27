@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
-<title>FLBEIA - TUTORIAL THREE. Multi example.</title>
+<title>Introductory example. Part 2.</title>
 
+<script src="site_libs/header-attrs-2.1/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
@@ -20,9 +21,10 @@
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
-<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -31,10 +33,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -68,9 +72,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -84,13 +86,18 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -106,7 +113,6 @@ body {
   padding-top: 50px;
   margin-top: -50px;
 }
-
 .section h2 {
   padding-top: 50px;
   margin-top: -50px;
@@ -126,6 +132,43 @@ body {
 .section h6 {
   padding-top: 50px;
   margin-top: -50px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -147,19 +190,74 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -245,6 +343,12 @@ $(document).ready(function () {
     <li>
       <a href="Stock_assessment_using_eXtended_Survivors_Analysis_with_FLXSA.html">Stock assessment using eXtended Survivors Analysis with FLXSA</a>
     </li>
+    <li>
+      <a href="Using_information_on_life_history_relationships.html">Using information on Life History relationships</a>
+    </li>
+    <li>
+      <a href="Life_history_relationships.html">Life history relationships</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -279,7 +383,12 @@ $(document).ready(function () {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">An introduction to MSE using FLR</li>
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+    <li>
+      <a href="Management_procedure_biomass_dynamic.html">Biomass Dynamic Management Procedures</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -291,13 +400,42 @@ $(document).ready(function () {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">An introduction to MSE using FLR</li>
-    <li class="dropdown-header">Conditioning FLBEIA using Smart Conditioning Functions</li>
-    <li class="dropdown-header">A simple example on how to use FLBEIA</li>
-    <li class="dropdown-header">A simple example with multiple dimensions in FLBEIA</li>
-    <li class="dropdown-header">Using Stock Assessment models in the Managemnt procedure of FLBEIA</li>
-    <li class="dropdown-header">Testing different Management Strategies in FLBEIA</li>
-    <li class="dropdown-header">Data Limited MSE in FLBEIA</li>
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Conditioning.html">Conditioning FLBEIA using Smart Conditioning Functions</a>
+    </li>
+    <li>
+      <a href="FLBEIA_A_Simple_Example.html">A simple example on how to use FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_An_Example_with_multiple_dimensions.html">A simple example with multiple dimensions in FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Checking_inputs.html">Checking FLBEIA inputs</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Using_Assessment_models_in_the_MP.html">Using Stock Assessment models in the Management procedure of FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Incorporating_SS3assessment_MP.html">Including SS3 assessment within the Management Procedure of FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Testing_Management_Strategies.html">Testing different Management Strategies in FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Data_Poor_MSE.html">Data Limited MSE in FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Smart_Conditioning_II.html">Smart Conditioning II</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Mixed_Fisheries_Tutorial.html">ICES Mixed Fisheries Advice using FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Bio_Economic_Tutorial.html">Bio-Economic simulation using FLBEIA</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -348,8 +486,8 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">FLBEIA - TUTORIAL THREE. Multi example.</h1>
-<h4 class="date"><em>02 Oct, 2017</em></h4>
+<h1 class="title toc-ignore">Introductory example. Part 2.</h1>
+<h4 class="date">15 may., 2020</h4>
 
 </div>
 
@@ -357,64 +495,74 @@ $(document).ready(function () {
 <p><img src="images/FLBEIA_logo.png" width="20%" style="display: block; margin: auto;" /></p>
 <div id="aim" class="section level1">
 <h1>Aim</h1>
-<p><strong>FLBEIA</strong> provides a battery of tutorials for learning how to use this software. In this tutorial an example, named <strong>multi</strong> is run in <code>FLBEIA</code>. Then, the outputs of <code>FLBEIA</code> are explored, summarized and plotted. Once the user has understood the structure and outputs of <code>FLBEIA</code>, let’s start playing! Several scenarios are run changing and adjusting several data and functions that <code>FLBEIA</code> provides. Scenarios are compared in order to visualize the effects of the changes done in each scenario. In the current tutorial, the scenarios will be related to the economic issues of the model.</p>
+<p><strong>FLBEIA</strong> provides a battery of tutorials for learning how to use this software. This tutorial is a practical guide about a simple implementation of <code>FLBEIA</code> but with several fleets and stocks. The aim of this example is to become familiar with the required object for development of bio-economic impact assessments of fisheries management strategies.</p>
+<p>In this tutorial a simple case study, named <code>multi</code> is explored and run in <code>FLBEIA</code>. Then, the outputs of <code>FLBEIA</code> are analized, summarized and plotted. Once the user has understood the structure and outputs of <code>FLBEIA</code>, let’s start playing! Several scenarios will be run. In the current tutorial, the scenarios will be related to the economic issues.</p>
+</div>
+<div id="help-manual" class="section level1">
+<h1>Help &amp; Manual</h1>
+<p><strong>FLBEIA</strong> includes extensive facilities for accessing documentation and searching for help. <strong>FLBEIA</strong> manual can be download from <a href="https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf">Github</a> or within the ‘doc’ folder of the package installation. Additionally, the <code>help()</code> function and <code>?</code> help operator in R provide access to the documentation pages. Typing <code>help(package = FLBEIA)</code> in the R console you access to the documentation for package <code>FLBEIA</code> , user guides and help pages. For example, typing <code>help(bioSum)</code> in the R console you access to help page of summary functions for the FLBEIA output.</p>
+<p>The exact way to define the objects used to set the simulation is described in the <a href="https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf">FLBEIA manual</a>. Nevertheless, the objects to set the simulation do not need to be defined for the following examples, as the datasets <code>one</code> and <code>oneIt</code> from the FLBEIA package will be used. For details on these objects, see <a href="https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf">FLBEIA manual, Section 5.2</a> or type <code>?FLBEIA</code> in the R console.</p>
+<p>To see all the datasets available in the <strong>FLBEIA</strong> package:</p>
+<pre class="r"><code>data(package=&#39;FLBEIA&#39;)</code></pre>
 </div>
 <div id="required-packages-to-run-this-tutorial" class="section level1">
 <h1>Required packages to run this tutorial</h1>
-<p>To follow this tutorial you should have installed the following packages</p>
+<p>To follow this tutorial you should have installed the following packages:</p>
 <ul>
 <li>CRAN: <a href="https://cran.r-project.org/web/packages/ggplot2/index.html">ggplot2</a></li>
-<li>FLR: <a href="http://www.flr-project.org/FLCore/">FLCore</a>, <a href="http://www.flr-project.org/FLAssess/">FLAssess</a>, <a href="http://www.flr-project.org/FLash/">FLash</a>,<a href="http://www.flr-project.org/FLBEIA/">FLBEIA</a>, <a href="http://www.flr-project.org/FLFleet/">FLFleet</a>, <a href="http://www.flr-project.org/ggplotFL/">ggplotFL</a></li>
+<li>FLR: <a href="http://www.flr-project.org/FLCore/">FLCore</a>, <a href="http://www.flr-project.org/FLAssess/">FLAssess</a>, <a href="http://www.flr-project.org/FLash/">FLash</a>, <a href="http://www.flr-project.org/FLBEIA/">FLBEIA</a>, <a href="http://www.flr-project.org/FLFleet/">FLFleet</a>, [ggplotFL](<a href="http://www.flr-project.org/ggplotFL/" class="uri">http://www.flr-project.org/ggplotFL/</a></li>
 </ul>
-<p>if you are using Windows, please use 32-bit R version because some of the packages do not work in 64-bit.</p>
-<pre class="r"><code>library(devtools)
-install_github(&quot;flr/FLBEIA&quot;)</code></pre>
-<p>Load all necessary packages.</p>
+<p>If you are using Windows, please use 64-bit R version because some of the packages do not work in 32-bit.</p>
+<pre class="r"><code>install.packages( c(&quot;ggplot2&quot;))
+install.packages( c(&quot;FLCore&quot;, &quot;FLFleet&quot;, &quot;FLBEIA&quot;, &quot;ggplotFL&quot;, 
+                    &quot;FLash&quot;, &quot;FLAssess&quot;, &quot;FLXSA&quot;), 
+                  repos=&quot;http://flr-project.org/R&quot;)</code></pre>
+<p>It has to be noted that packages <code>FLCore</code>, <code>FLFleets</code> and <code>FLBEIA</code> have to be installed in this exact order, as alternative orders can cause some problems.</p>
+<p>The last version (not consolidated version -under development-) of FLBEIA can be installed from GitHub.</p>
+<p>Load all the necessary packages.</p>
 <pre class="r"><code># This chunk loads all necessary packages.
 library(FLBEIA)
+library(FLCore)
+library(FLFleet)
 library(FLXSA)
 library(FLash)
 library(ggplotFL)</code></pre>
 </div>
 <div id="example-2-stocks-2-fleets-with-two-metiers-each-4-seasons-and-1-iteration." class="section level1">
 <h1>EXAMPLE: 2 stocks, 2 fleets with two metiers each, 4 seasons and 1 iteration.</h1>
-<p>This dataset has 2 stocks, one stk1 is age structured and the second one stk2 is aggregated in biomass.</p>
+<p><code>Multi</code> dataset has 2 stocks, <code>stk1</code> is age structured and <code>stk2</code> is aggregated in biomass. The historic data goes from 1990 to 2008 and projection from 2009 to 2025. The time step is seasonal, with 4 seasons (quarters) by year.</p>
 <ul>
-<li>Historic data 1990-2008 and projection 2009-2025.</li>
 <li>Operating model: Population dynamics
 <ul>
-<li>stk1: Age Structured Population Growth. Beverton and Holt.</li>
-<li>stk2: Biomass Dynamic Population Growth. Pella-Tomlinson.</li>
+<li>Population dynamics of stk1: Age Structured Population Growth. Beverthon and Holt.</li>
+<li>Population dynamics of stk2: Biomass Dynamic Population Growth. Pella-Tomlinson.</li>
+<li>Fleet dynamics of fl1: Simple Mixed Fisheries Behaviour. Two metiers.</li>
+<li>Fleet dynamics of fl2: Fixed effort. Two metiers</li>
+<li>Covariates dynamics: Capital dynamics (SCD).</li>
 </ul></li>
 <li>Management Procedure
 <ul>
-<li>Perfect observation &amp; No assesSMent</li>
-</ul></li>
-<li>HCR
-<ul>
-<li>stk1: IcesHCR</li>
-<li>stk2: Annual TAC</li>
-</ul></li>
-<li>Fleets dynamics
-<ul>
-<li>fl1: Simple Mixed Fisheries Behaviour. Two metiers.</li>
-<li>fl2: Fixed effort. Two metiers.</li>
+<li>Observation: perfect observation</li>
+<li>Assessment: no assessment</li>
+<li>Management advice stk1: IcesHCR</li>
+<li>Management advice stk2: Annual TAC</li>
 </ul></li>
 </ul>
 <div id="load-data" class="section level2">
 <h2>Load data</h2>
 <pre class="r"><code>rm(list=ls())
 data(multi)</code></pre>
-<p>With the <code>ls()</code> command we can see the objects stored in <code>multi</code>, which are those need to call to <code>FLBEIA</code>.</p>
+<p><code>ls()</code> command return a vector of character strings giving the names of the objects in the environment, in this case we can see the objects stored in <code>multi</code>.</p>
 <pre class="r"><code>ls()</code></pre>
 <pre><code>character(0)</code></pre>
+<p>Show the class of each of the objects with <code>sapply</code> function.</p>
 <pre class="r"><code># Show the class of each of the objects.
 sapply(ls(), function(x) class(get(x)))</code></pre>
 <pre><code>named list()</code></pre>
 </div>
 <div id="run-flbeia." class="section level2">
 <h2>Run FLBEIA.</h2>
-<p>Run FLBEIA with multi and explore the output.</p>
+<p>In the code below <code>FLBEIA</code> is run with the arguments stored in dataset <code>multi</code>.</p>
 <pre class="r"><code>SM &lt;- FLBEIA(biols = multiBio,       # FLBiols object with 2 FLBiol element for stk1.
                SRs = multiSR,        # A list with 1 FLSRSim object for stk1.
                BDs = multiBD,        # A list with 1 FLBDSim object for stk2.
@@ -422,42 +570,81 @@ sapply(ls(), function(x) class(get(x)))</code></pre>
             covars = multiCv,        # A list with socio - economic data.         
            indices = NULL,           # Indices not available.
             advice = multiAdv,       # A list with two elements &#39;TAC&#39; and &#39;quota.share&#39;.
-         main.ctrl = multiMainC,     # A list with one element to define the start/end of the simulation.
-        biols.ctrl = multiBioC,      # A list with one element to select the model to simulate the stock dynamics.
-       fleets.ctrl = multiFlC,       # A list with several elements to select fleet dynamic models and store additional parameters.
-       covars.ctrl = multiCvC,       # Covars control (additional data for capital dynamics) 
-          obs.ctrl = multiObsC,      # A list with one element to define how the stock observed (&quot;PerfectObs&quot;).
-       assess.ctrl = multiAssC,      # A list with one element to define how the stock assesSMent model used (&quot;NoAssesSMent&quot;).
-       advice.ctrl = multiAdvC)      # A list with one element to define how the TAC advice is obtained (&quot;IcesHCR&quot;).</code></pre>
-<p>FLBEIA returns a list with several objects, let’s print the names of the objects and its class</p>
+         main.ctrl = multiMainC,     # A list with one element to define the start/end 
+                                     # of the simulation.
+        biols.ctrl = multiBioC,      # A list with one element to select the model 
+                                     # to simulate the stock dynamics.
+       fleets.ctrl = multiFlC,       # A list with several elements to select fleet
+                                     # dynamic models and store additional parameters.
+       covars.ctrl = multiCvC,       # Covars control (additional data for capital dynamics).
+          obs.ctrl = multiObsC,      # A list with one element to define how the 
+                                     # stock observed (&quot;PerfectObs&quot;).
+       assess.ctrl = multiAssC,      # A list with one element to define how the 
+                                     # stock assesSMent model used (&quot;NoAssesSMent&quot;).
+       advice.ctrl = multiAdvC)      # A list with one element to define how the TAC advice 
+                                     # is obtained (&quot;IcesHCR&quot;).</code></pre>
+<p><code>FLBEIA</code> function returns a list with several objects, let’s print the names of the objects and their classes.</p>
 <pre class="r"><code>names(SM)</code></pre>
-<pre><code>[1] &quot;biols&quot;         &quot;fleets&quot;       
-[3] &quot;covars&quot;        &quot;advice&quot;       
-[5] &quot;stocks&quot;        &quot;indices&quot;      
-[7] &quot;fleets.ctrl&quot;   &quot;pkgs.versions&quot;</code></pre>
+<pre><code> [1] &quot;biols&quot;         &quot;fleets&quot;       
+ [3] &quot;covars&quot;        &quot;advice&quot;       
+ [5] &quot;stocks&quot;        &quot;indices&quot;      
+ [7] &quot;BDs&quot;           &quot;SRs&quot;          
+ [9] &quot;fleets.ctrl&quot;   &quot;pkgs.versions&quot;</code></pre>
 </div>
 <div id="summarizing-results" class="section level2">
 <h2>Summarizing results</h2>
-<p><code>FLBEIA</code> has predeterminated functions to create summary data frames (biological, economic, and catch), in two formats:</p>
+<p><code>FLBEIA</code> has several functions to summaryze the results in data frames (<code>bioSum</code>, <code>fltSum</code>, etc.). These data frames will allow us to use methods available in R to visualize and analyze the results. Information can be summarized in two formats:</p>
 <ul>
-<li>Long format: where all the indicators are in the same column.There is one column, indicator, for the name of the indicator and a second one for the numeric value of the indicator.</li>
-<li>Wide format: where each column correspond with one indicator. The long format it is recommendable to work with ggplot2 functions while the wide format it is more efficient for memory allocation and speed of computations.</li>
+<li>Long format: There is one column, named indicator, for storing the name of the indicator and a second column for the numeric value of the indicator. The long format is recommendable to work with <code>ggplot2</code> functions.</li>
+<li>Wide format: where each column corresponds to one indicator. The wide format is more efficient in terms of memory allocation and speed of computation.</li>
 </ul>
-<p>Note that in this example the <code>covars</code> object contents information on costs.</p>
+<p>The quantile version of the summaries, (<code>bioSumQ</code>, <code>fltSumQ</code>, etc.), returns the quantiles of indicators.</p>
+</div>
+<div id="summary-functions" class="section level2">
+<h2>Summary functions</h2>
+<ul>
+<li><p><strong>advSum</strong>, <strong>advSumQ</strong>: Data frame with indicators related to the management advice (TAC). Indicators are: “catch”, “discards”, “discRat”, “landings”, “quotaUpt” and “tac”.</p></li>
+<li><p><strong>bioSum</strong>, <strong>bioSumQ</strong>: Data frame with the biological indicators. Indicators are: “biomass”, “catch”, “catch.iyv”, “discards”, “disc.iyv”, “f”, “landings”, “land.iyv”, “rec” and “ssb”.</p></li>
+<li><p><strong>fltSum</strong>, <strong>fltSumQ</strong>: Data frame with indicators at fleet level. Indicators are: “capacity”, “catch”, “costs”, “discards”, “discRat”, “effort”, “fcosts”, “gva”, “grossValue”, “landings”, “fep”, “nVessels”, “price”, “grossSurplus”, “netProfit”, “quotaUpt”, “salaries”, “vcosts” and “profitability”. Definition of economics indicators:</p>
+<ul>
+<li>discRat: Discount rate.</li>
+<li>grossValue: value of landings (landings x prices)</li>
+<li>Operating costs: Landing Fee x Gross value + Fuel cost x Effort + Other variable costs x effort + Fixed costs x Vessel.</li>
+<li>Gross Value added: Gross value - Operating Costs</li>
+<li>fep: Full equity profit defined as Gross Surplus - depreciation costs</li>
+<li>grossSurplus: Gross value added - Labour costs, where Labour costs: share of the landings x Gross value + Fixed labour costs x Crew.</li>
+<li>Oportunity costs: Capital x interest rate free of risk.</li>
+<li>netProfit: fep - Oportunity costs</li>
+<li>quotaUpt: Quota uptaken.</li>
+<li>profitability: grossSurplut/Gross Value</li>
+</ul></li>
+<li><p><strong>fltStkSum</strong>, <strong>fltStkSumQ</strong> : Data frame with indicators at fleet and stock level. Indicators are: “landings”, “discards”, “catch”, “price”, “quotaUpt”, “tacshare”, “discRat” and “quota”.</p></li>
+<li><p><strong>npv</strong>: A data frame with the net present value per fleet over the selected range of years.</p></li>
+<li><p><strong>mtSum</strong>, <strong>mtSumQ</strong> : Data frame with indicators at fleet level. Indicators are: “effshare”, “effort”, “income” and “vcost”.</p></li>
+<li><p><strong>mtStkSum</strong>, <strong>mtStkSumQ</strong> : Data frame with indicators at fleet and metier level. Indicators are: “catch”, “discards”, “discRat”, “landings” and “price”.</p></li>
+<li><p><strong>riskSum</strong>: A data frame with the risk indicators. Indicators are: “pBlim”, “pBpa” and “pPrflim”.</p></li>
+<li><p><strong>vesselSum</strong>, <strong>vesselSumQ</strong>: Data frame with Indicators at vessel level. Indicators are: “catch”, “costs”, “discards”, “discRat”, “effort”, “fcosts”, “gva”, “income”, “landings”, “netProfit”, “price”, “profits”, “quotaUpt”, “salaries”, “vcosts” and “profitability”.</p></li>
+<li><p><strong>vesselStkSum</strong>, <strong>vesselStkSumQ</strong>: Data frame with indicators at vessel and stock level. Indicators are: “landings”, “discards”, “catch”, “price”, “quotaUpt”, “tacshare”, “discRat” and “quota”.</p></li>
+<li><p><strong>summary_flbeia</strong>: An array with four dimensions: stock, year, iteration, indicator. Indicators are: “recruitment”, “ssb”, “f”, “biomass”, “catch”, “landings” and “discards”.</p></li>
+<li><p><strong>ecoSum_damara</strong>: ecoSum function built in the framework of Damara project.</p></li>
+</ul>
 <div id="long-format." class="section level3">
 <h3>Long format.</h3>
-<pre class="r"><code>SM_bio    &lt;- bioSum(SM)             # Data frame (DF) with the biological indicators.
-SM_adv    &lt;- advSum(SM)             # DF with the indicators related with the management advice (TAC). 
-SM_flt    &lt;- fltSum(SM)             # DF with the indicators at fleet level.
-SM_fltStk &lt;- fltStkSum(SM)          # DF with the indicators at fleet and stock level.
-SM_mt     &lt;- mtSum(SM)              # DF with the indicators at fleet.
-SM_mtStk  &lt;- mtStkSum(SM)           # DF with the indicators at fleet and metier level.
-SM_vessel &lt;- vesselSum(SM)          # DF with the indicators at vessel level.
-SM_vesselStk &lt;- vesselStkSum(SM)    # DF with the indicators at vessel and stock level.
-SM_npv  &lt;- npv(SM, y0 = &#39;2014&#39;)     # DF with the net present value per fleet over the selected range of years.
+<pre class="r"><code>SM$fleets &lt;- setUnitsNA(SM$fleets)
+SM_bio    &lt;- bioSum(SM, long = TRUE)          # Data frame (DF) with biological indicators.
+SM_adv    &lt;- advSum(SM, long = TRUE)          # DF with indicators related with man. advice (TAC). 
+SM_flt    &lt;- fltSum(SM, long = TRUE)          # DF with indicators at fleet level.
+SM_fltStk &lt;- fltStkSum(SM, long = TRUE)       # DF with indicators at fleet and stock level.
+SM_mt     &lt;- mtSum(SM, long = TRUE)           # DF with indicators at fleet.
+SM_mtStk  &lt;- mtStkSum(SM, long = TRUE)        # DF with indicators at fleet and metier level.
+SM_vessel &lt;- vesselSum(SM, long = TRUE)       # DF with indicators at vessel level.
+SM_vesselStk &lt;- vesselStkSum(SM, long = TRUE) # DF with indicators at vessel and stock level.
+SM_npv  &lt;- npv(SM, y0 = &#39;2014&#39;)               # DF with net present value per fleet over 
+                                              # the selected range of years.
 SM_risk &lt;- riskSum(SM,  Bpa= c(stk1= 135000, stk2 = 124000), Blim =c(stk1 = 96000, stk2 = 89000),
                    Prflim = c(fl1 = 0, fl2 = 0), flnms = names(SM$fleets), 
-                   years = dimnames(SM$biols[[1]]@n)[[2]], scenario = &#39;SM&#39;) #  DF with the risk indicators. The indicators are: pBlim, pBpa and pPrlim.
+                   years = dimnames(SM$biols[[1]]@n)[[2]], 
+                   scenario = &#39;SM&#39;) # DF with risk indicators (pBlim, pBpa and pPrlim).
 
 
 # Exploring data frames
@@ -494,20 +681,20 @@ head(SM_vesselStk_l, 2)</code></pre>
 </div>
 <div id="plotting-results" class="section level3">
 <h3>Plotting results</h3>
-<p>You can plot the <code>FLBiol</code> object within <code>biols</code> and the <code>FLStock</code> object within <code>stock</code> using the default plots in <strong>FLCore</strong> package.</p>
+<p>You can show results using the default plots in <strong>FLCore</strong> package.</p>
 <pre class="r"><code>#plot(SM$biols[[1]]) # There are too much data to display them correctly.
-plot(SM$stocks[[1]])</code></pre>
-<p><img src="FLBEIA_An_Example_with_multiple_dimensions_files/figure-html/unnamed-chunk-9-1.png" width="336" style="display: block; margin: auto;" /></p>
-<p>Additionally you can plot objects using <code>plotFLBiols</code>, <code>plotFLFleets</code> and <code>plotCatchFl</code>. The plots will be load in your working directory by default.</p>
+plot(SM$stocks[[1]]) # Stock 2 is in biomass, &#39;plot(SM$stocks[[2]])&#39; function does not work.</code></pre>
+<p><img src="FLBEIA_An_Example_with_multiple_dimensions_files/figure-html/unnamed-chunk-12-1.png" width="336" style="display: block; margin: auto;" /></p>
+<p>Additionally you can plot results using <code>plotFLBiols</code>, <code>plotFLFleets</code> and <code>plotCatchFl</code>. The plots will be saved in your working directory as a pdf file.</p>
 <pre class="r"><code># set your own working directory.
-# myWD &lt;- &quot;My working directory&quot;)
-# setwd(myWD)
+#myWD &lt;- &quot;C:/use/escritorio/ExampleMulti/&quot;
+#setwd(myWD)
 plotFLBiols(SM$biols, pdfnm = &quot;SM&quot;)
 plotFLFleets(SM$fleets, pdfnm =&quot;SM&quot;)
 plotfltStkSum(SM, pdfnm =&quot;SM&quot;) 
 plotEco(SM, pdfnm =&#39;SM&#39;)</code></pre>
-<p>You can also desing your own plot using the function <code>ggplot</code>. In the current example we will plot the economic related outputs.</p>
-<pre class="r"><code>inds &lt;- c(&#39;capacity&#39;,&#39;costs&#39;,&#39;income&#39;,&#39;profits&#39;)
+<p>You can also use the function <code>ggplot</code> to generate additional figures. In the current example we will plot the economic related outputs.</p>
+<pre class="r"><code>inds &lt;- c(&#39;catch&#39;,&#39;nVessels&#39;, &#39;effort&#39;, &#39;grossValue&#39;)
 d &lt;- rbind(subset(SM_flt,indicator  %in% inds ))
 d$indicator &lt;- factor( d$indicator, levels=inds)
 d$scenario &lt;- factor(d$scenario)
@@ -522,58 +709,70 @@ p &lt;- ggplot( data=d, aes(x=year, y=value, color=fleet)) +
         strip.text=element_text(size=10)) + 
   ylab(&quot;&quot;)
 print(p)</code></pre>
-<p><img src="FLBEIA_An_Example_with_multiple_dimensions_files/figure-html/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="FLBEIA_An_Example_with_multiple_dimensions_files/figure-html/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>inds &lt;- c(&#39;capacity&#39;, &#39;grossValue&#39;, &#39;costs&#39;, &#39;netProfit&#39;)
+d &lt;- rbind(subset(SM_flt,indicator  %in% inds ))
+d$indicator &lt;- factor( d$indicator, levels=inds)
+d$scenario &lt;- factor(d$scenario)
+d$year &lt;- as.numeric(d$year)
+p &lt;- ggplot( data=d, aes(x=year, y=value, color=fleet)) + 
+  geom_line() + 
+  facet_wrap(~ indicator, scales=&quot;free&quot;) + 
+  geom_vline(xintercept = multiMainC$sim.years[[&#39;initial&#39;]], linetype = &quot;longdash&quot;) + 
+  theme_bw() + 
+  theme(text=element_text(size=10),
+        title=element_text(size=10,face=&quot;bold&quot;),
+        strip.text=element_text(size=10)) + 
+  ylab(&quot;&quot;)
+print(p)</code></pre>
+<p><img src="FLBEIA_An_Example_with_multiple_dimensions_files/figure-html/unnamed-chunk-14-2.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="lets-play" class="section level2">
-<h2>LET’S PLAY</h2>
-<p>In this example the economic information is available. The play will focus on economic variables, processess and indicators.</p>
+<h2>LET`S PLAY</h2>
+<p>In this example the economic information is available. In this section we will focus on economic variables, processess and indicators.</p>
 <div id="price" class="section level3">
 <h3>Price</h3>
-<p>As you can see in the generated plots that profits are negative. Imagine that the unit of the prices are wrong, the price should be by tonnes instead by kilogram because the units of catches are tonnes. Then, we can solve the error multipliying the all prices by 1000.</p>
+<p>Imagine that the unit of the prices are wrong, the price should be by tonnes instead by kilogram because the units of catches are tonnes. Then, we can solve the error multipliying the all prices by 1000.</p>
 <pre class="r"><code>for (i in names(multiFl)) {
   for(j in names(multiFl[[i]]@metiers)) {
     for(k in names(multiFl[[i]]@metiers[[j]]@catches)) {
-      multiFl[[i]]@metiers[[j]]@catches[[k]]@price &lt;- multiFl[[i]]@metiers[[j]]@catches[[k]]@price*1000
+      multiFl[[i]]@metiers[[j]]@catches[[k]]@price &lt;- 
+        multiFl[[i]]@metiers[[j]]@catches[[k]]@price*1000
     }
   }
 }  </code></pre>
-<p>As this example is not a real case study, there are some values that are not coherent. We solve this situations re- condicioning this values.</p>
-<pre class="r"><code># Adjusting some values.
-multiFl$fl2@capacity # There is a fixed capacity from 2009 onwards, then, the number of vessels and the maxdays will be fixed in the simulation period.
-multiCv$MaxDays[2,ac(2010:2025),,,] &lt;-multiCv$MaxDays[2,ac(2009),,,]
-multiCv$NumbVessels[2,,,] &lt;- multiFl$fl2@capacity/multiCv$MaxDays[2,,,,]</code></pre>
 <p>Run FLBEIA and generate the base case scenario.</p>
 <pre class="r"><code>SM &lt;- FLBEIA(biols = multiBio,   SRs = multiSR,  BDs = multiBD, fleets = multiFl, covars = multiCv,
              indices = NULL,advice = multiAdv, main.ctrl = multiMainC, biols.ctrl = multiBioC,
              fleets.ctrl = multiFlC, covars.ctrl = multiCvC, obs.ctrl = multiObsC, assess.ctrl = multiAssC,
              advice.ctrl = multiAdvC)     </code></pre>
-<div id="summary-the-results" class="section level4">
-<h4>Summary the results</h4>
-<pre class="r"><code>SM_bio    &lt;- bioSum(SM)             # Data frame (DF) with the biological indicators.
-SM_adv    &lt;- advSum(SM)             # DF with the indicators related with the management advice (TAC). 
-SM_flt    &lt;- fltSum(SM)             # DF with the indicators at fleet level.
-SM_fltStk &lt;- fltStkSum(SM)          # DF with the indicators at fleet and stock level.
-SM_mt     &lt;- mtSum(SM)              # DF with the indicators at fleet.
-SM_mtStk  &lt;- mtStkSum(SM)           # DF with the indicators at fleet and metier level.
-SM_vessel &lt;- vesselSum(SM)          # DF with the indicators at vessel level.
-SM_vesselStk &lt;- vesselStkSum(SM)    # DF with the indicators at vessel and stock level.
-SM_npv  &lt;- npv(SM, y0 = &#39;2014&#39;)     # DF with the net present value per fleet over the selected range of years.
-SM_risk &lt;- riskSum(SM, stknms = names(SM$biols), Bpa= c(stk1= 135000, stk2 = 124000), Blim =c(stk1 = 96000, stk2 = 89000),
+<div id="summarzing-the-results" class="section level4">
+<h4>Summarzing the results</h4>
+<pre class="r"><code>SM$fleets &lt;- setUnitsNA(SM$fleets)
+SM_bio    &lt;- bioSum(SM, long = TRUE)          # Data frame (DF) with biological indicators.
+SM_adv    &lt;- advSum(SM, long = TRUE)          # DF with indicators related with man. advice (TAC). 
+SM_flt    &lt;- fltSum(SM, long = TRUE)          # DF with indicators at fleet level.
+SM_fltStk &lt;- fltStkSum(SM, long = TRUE)       # DF with indicators at fleet and stock level.
+SM_mt     &lt;- mtSum(SM, long = TRUE)           # DF with indicators at fleet.
+SM_mtStk  &lt;- mtStkSum(SM, long = TRUE)        # DF with indicators at fleet and metier level.
+SM_vessel &lt;- vesselSum(SM, long = TRUE)       # DF with indicators at vessel level.
+SM_vesselStk &lt;- vesselStkSum(SM, long = TRUE) # DF with indicators at vessel and stock level.
+SM_npv  &lt;- npv(SM, y0 = &#39;2014&#39;) # DF with net present value per fleet over a selected range of years.
+SM_risk &lt;- riskSum(SM, stknms = names(SM$biols), Bpa= c(stk1= 135000, stk2 = 124000), 
+                   Blim =c(stk1 = 96000, stk2 = 89000),
                    Prflim = c(fl1 = 0, fl2 = 0), flnms = names(SM$fleets), 
-                   years = dimnames(SM$biols[[1]]@n)[[2]], scenario = &#39;SM&#39;) #  DF with the risk indicators. The indicators are: pBlim, pBpa and pPr</code></pre>
+                   years = dimnames(SM$biols[[1]]@n)[[2]], 
+                   scenario = &#39;SM&#39;) #  DF with risk indicators (pBlim, pBpa and pPr).</code></pre>
 </div>
 <div id="plots" class="section level4">
 <h4>Plots</h4>
 <pre class="r"><code>plotFLBiols(SM$biols, pdfnm = &quot;SM_pricex1000&quot;)
 plotFLFleets(SM$fleets, pdfnm =&quot;SM_pricex1000&quot;)
-plotfltStkSum(SM, pdfnm =&quot;SM_pricex1000&quot;) </code></pre>
-<pre><code>png 
-  2 </code></pre>
-<pre class="r"><code>plotEco(SM, pdfnm =&#39;SM_pricex1000&#39;)</code></pre>
-<pre><code>png 
-  2 </code></pre>
-<pre class="r"><code>inds &lt;- c(&#39;capacity&#39;,&#39;costs&#39;,&#39;income&#39;,&#39;profits&#39;)
+plotfltStkSum(SM, pdfnm =&quot;SM_pricex1000&quot;) 
+plotEco(SM, pdfnm =&#39;SM_pricex1000&#39;)</code></pre>
+<p>You can also use the function <code>ggplot</code> to generate additional figures.</p>
+<pre class="r"><code>inds &lt;- c(&#39;capacity&#39;,&#39;costs&#39;, &#39;grossValue&#39;, &#39;gva&#39;)
 d &lt;- rbind(subset(SM_flt,indicator  %in% inds ))
 d$indicator &lt;- factor( d$indicator, levels=inds)
 d$scenario &lt;- factor(d$scenario)
@@ -588,13 +787,50 @@ p &lt;- ggplot( data=d, aes(x=year, y=value, color=fleet)) +
         strip.text=element_text(size=10)) + 
   ylab(&quot;&quot;)
 print(p)</code></pre>
-<p><img src="FLBEIA_An_Example_with_multiple_dimensions_files/figure-html/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Now profits are positive, this simulation will be the base case.</p>
+<p><img src="FLBEIA_An_Example_with_multiple_dimensions_files/figure-html/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Plotting some biological indicators</p>
+<pre class="r"><code>inds &lt;- c(&#39;ssb&#39;,&#39;rec&#39;, &#39;biomass&#39;, &#39;catch&#39;)
+d &lt;- rbind(subset(SM_bio,indicator  %in% inds ))
+d$indicator &lt;- factor( d$indicator, levels=inds)
+d$scenario &lt;- factor(d$scenario)
+d$year &lt;- as.numeric(d$year)
+p &lt;- ggplot( data=d, aes(x=year, y=value, color=stock)) + 
+  geom_line() + 
+  facet_wrap(~ indicator, scales=&quot;free&quot;) + 
+  geom_vline(xintercept = multiMainC$sim.years[[&#39;initial&#39;]], linetype = &quot;longdash&quot;) + 
+  theme_bw() + 
+  theme(text=element_text(size=10),
+        title=element_text(size=10,face=&quot;bold&quot;),
+        strip.text=element_text(size=10)) + 
+  ylab(&quot;&quot;)
+print(p)</code></pre>
+<p><img src="FLBEIA_An_Example_with_multiple_dimensions_files/figure-html/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Plotting TAC</p>
+<pre class="r"><code>plotFLBiols(SM$biols, pdfnm = &quot;SM_pricex1000&quot;)
+plotFLFleets(SM$fleets, pdfnm =&quot;SM_pricex1000&quot;)
+plotfltStkSum(SM, pdfnm =&quot;SM_pricex1000&quot;) 
+plotEco(SM, pdfnm =&#39;SM_pricex1000&#39;)</code></pre>
+<pre class="r"><code>inds &lt;- c(&#39;tac&#39;)
+d &lt;- rbind(subset(SM_adv,indicator  %in% inds ))
+d$indicator &lt;- factor( d$indicator, levels=inds)
+d$scenario &lt;- factor(d$scenario)
+d$year &lt;- as.numeric(d$year)
+p &lt;- ggplot( data=d, aes(x=year, y=value, color=stock)) + 
+  geom_line() + 
+  facet_wrap(~ indicator, scales=&quot;free&quot;) + 
+  geom_vline(xintercept = multiMainC$sim.years[[&#39;initial&#39;]], linetype = &quot;longdash&quot;) + 
+  theme_bw() + 
+  theme(text=element_text(size=10),
+        title=element_text(size=10,face=&quot;bold&quot;),
+        strip.text=element_text(size=10)) + 
+  ylab(&quot;&quot;)
+print(p)</code></pre>
+<p><img src="FLBEIA_An_Example_with_multiple_dimensions_files/figure-html/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="price-dynamics" class="section level3">
 <h3>Price Dynamics</h3>
-<p>The current price function is <code>fixedprice</code>: prices are given as input data and are unchanged within the simulation. Now change we will change the price dynamics: we will implement an <code>elasticPrice</code> model in one fleet <code>fl1</code> and stock <code>stk2</code>. For a detailed description of this function see page 19 of the <a href="https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf">Manual</a>. The dynamics price function implemented in FLBEIA is described in Kraak et al. [2004]. This function uses a base price and base landings to calculate the new price using an elasticity parameter. If the base landings are bigger than current landings the price is increased and decreased if the contrary occurs. Although price is stored at metier and stock level in <code>FLFleetsExt</code>,this function assumes that is common to all metiers within a fleet and it is calculated at fleet level.</p>
+<p>The price function is <code>fixedprice</code>: prices are given as input data and are unchanged within the simulation. Now change the price dynamics defining <code>elasticPrice</code> model in one fleet <code>fl1</code> and stock <code>stk2</code>. For a detailed description of this function see page 19 of the <a href="https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf">Manual</a>. The price dynamics function implemented in FLBEIA is described in Kraak et al. [2004]. This function set a base price and base landings to calculate the new price using an elasticity parameter. If the base landings are bigger than current landings the price is increased and decreased if the contrary occurs. Although price is stored at metier and stock level in <code>FLFleetsExt</code>,this function assumes that is common to all metiers within a fleet and it is calculated at fleet level.</p>
 <pre class="r"><code># Describe the price function
 multiFlC_1 &lt;- multiFlC
 multiFlC_1$fl1$stk2$price.model &lt;- &quot;elasticPrice&quot; # Set the price model.
@@ -606,8 +842,10 @@ multiFlC_1$fl1$stk2$pd.els &lt;-  array(elasticity, dim = c(1, 4, 1),
                                      dimnames= list(age = &#39;all&#39;, season = c(1:4), iter = 1)) 
 
 # Reference landings: year 2008
-La0_met1 &lt;- multiFl$fl1@metiers$met1@catches$stk2@landings.n[,as.character(2008),,,]*multiFl$fl1@metiers$met1@catches$stk2@landings.wt[,as.character(2008),,,]
-La0_met2 &lt;- multiFl$fl1@metiers$met2@catches$stk2@landings.n[,as.character(2008),,,]*multiFl$fl1@metiers$met2@catches$stk2@landings.wt[,as.character(2008),,,]
+La0_met1 &lt;- multiFl$fl1@metiers$met1@catches$stk2@landings.n[,as.character(2008),,,] * 
+                multiFl$fl1@metiers$met1@catches$stk2@landings.wt[,as.character(2008),,,]
+La0_met2 &lt;- multiFl$fl1@metiers$met2@catches$stk2@landings.n[,as.character(2008),,,] * 
+                multiFl$fl1@metiers$met2@catches$stk2@landings.wt[,as.character(2008),,,]
 pd.La0 &lt;- unitSums(La0_met1 +La0_met2) 
                    
 multiFlC_1$fl1$stk2$pd.La0 &lt;- array(pd.La0, dim = c(1,4, 1),
@@ -621,19 +859,20 @@ pd.Pa0 &lt;- unitMeans((La0_met1*Pa0_met1 +La0_met2*Pa0_met2)/(La0_met1+La0_met2
 multiFlC_1$fl1$stk2$pd.Pa0 &lt;- array(pd.Pa0,  dim = c(1,4, 1),
                                    dimnames= list(age = &#39;all&#39;, season = c(1:4), iter = 1))
 
-multiFlC_1$fl1$stk2$pd.total &lt;- TRUE # If TRUE the price is calculated using total landings and if FALSE the landings of the fleet in question are used to estimate the price.
+multiFlC_1$fl1$stk2$pd.total &lt;- TRUE # If TRUE: price is calculated using total landings, and 
+                                     # if FALSE: fleet&#39;s landings are used to estimate the price.
 
 
 SM_1 &lt;- FLBEIA(biols = multiBio, SRs = multiSR, BDs = multiBD, fleets = multiFl_1,
                covars = multiCv, indices = NULL, advice = multiAdv, main.ctrl = multiMainC,
                biols.ctrl = multiBioC, fleets.ctrl = multiFlC_1, covars.ctrl = multiCvC,
                obs.ctrl = multiObsC, assess.ctrl = multiAssC, advice.ctrl = multiAdvC)</code></pre>
-<p>Plot price and income to see the impact that the price dynamics have on the results.</p>
-<pre class="r"><code>SM_1_fltStk &lt;- fltStkSum(SM_1, scenario =&#39;elasticPrice&#39;) 
+<p>Plot price and grossValue to see the impact that the price dynamics have on the results.</p>
+<pre class="r"><code>SM_1$fleets &lt;- setUnitsNA(SM_1$fleets)
+SM_1_fltStk &lt;- fltStkSum(SM_1, scenario =&#39;elasticPrice&#39;, long = TRUE) 
 SM_x &lt;- rbind(SM_fltStk, SM_1_fltStk)
 
-
-inds &lt;- c(&#39;price&#39;, &#39;catch&#39;)
+inds &lt;- c(&#39;price&#39;, &#39;catch&#39;, &#39;effort&#39;, &#39;capacity&#39;)
 d &lt;- rbind(subset(SM_x,indicator  %in% inds &amp; fleet == &#39;fl1&#39; &amp; stock == &#39;stk2&#39;))
 d$indicator &lt;- factor( d$indicator, levels=inds)
 d$scenario &lt;- factor(d$scenario)
@@ -648,12 +887,12 @@ p &lt;- ggplot( data=d, aes(x=year, y=value, color=scenario)) +
         strip.text=element_text(size=10)) + 
   ylab(&quot;&quot;)
 print(p)</code></pre>
-<p><img src="FLBEIA_An_Example_with_multiple_dimensions_files/figure-html/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>SM_1_flt &lt;- fltSum(SM_1, scenario =&#39;elasticPrice&#39;) 
+<p><img src="FLBEIA_An_Example_with_multiple_dimensions_files/figure-html/unnamed-chunk-24-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>SM_1_flt &lt;- fltSum(SM_1, scenario =&#39;elasticPrice&#39;, long = TRUE) 
 SM_x &lt;- rbind(SM_flt, SM_1_flt)
 SM_x &lt;- subset(SM_x, fleet == &#39;fl1&#39;)
 
-inds &lt;- c(&#39;capacity&#39;,&#39;costs&#39;,&#39;income&#39;,&#39;profits&#39;)
+inds &lt;- c(&#39;grossValue&#39;,&#39;costs&#39;,&#39;salaries&#39;,&#39;netProfit&#39;)
 d &lt;- rbind(subset(SM_x,indicator  %in% inds ))
 d$indicator &lt;- factor( d$indicator, levels=inds)
 d$scenario &lt;- factor(d$scenario)
@@ -668,11 +907,11 @@ p &lt;- ggplot( data=d, aes(x=year, y=value, color=scenario)) +
         strip.text=element_text(size=10)) + 
   ylab(&quot;&quot;)
 print(p)</code></pre>
-<p><img src="FLBEIA_An_Example_with_multiple_dimensions_files/figure-html/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="FLBEIA_An_Example_with_multiple_dimensions_files/figure-html/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="fixed-costs" class="section level3">
 <h3>Fixed Costs</h3>
-<p>In this example the economic information is available. Fixed costs (repair, maintenance and other) of <code>fl1</code> decreases a 80%. How does this impact the economic results?</p>
+<p>Fixed costs (repair, maintenance and other) of <code>fl1</code> decreases 80%. How does this decrease impacts on the economic results?</p>
 <pre class="r"><code>multiFl_2 &lt;- multiFl
 multiFl_2$fl1@fcost &lt;- multiFl_2$fl1@fcost*(1-0.8)
 SM_2 &lt;- FLBEIA(biols = multiBio, SRs = multiSR, BDs = multiBD, fleets = multiFl_2,
@@ -680,10 +919,11 @@ SM_2 &lt;- FLBEIA(biols = multiBio, SRs = multiSR, BDs = multiBD, fleets = multi
                biols.ctrl = multiBioC, fleets.ctrl = multiFlC, covars.ctrl = multiCvC,
                obs.ctrl = multiObsC, assess.ctrl = multiAssC, advice.ctrl = multiAdvC) </code></pre>
 <p>We can visualize the results of both simulations (SM aganist SM_2) using ggplot.</p>
-<pre class="r"><code>SM_2_flt    &lt;- fltSum(SM_2, scenario = &#39;SM_2&#39;)
+<pre class="r"><code>SM_2$fleets &lt;- setUnitsNA(SM_2$fleets)
+SM_2_flt    &lt;- fltSum(SM_2, scenario = &#39;SM_2&#39;, long = TRUE)
 SM_x &lt;- rbind(SM_flt, SM_2_flt)
 
-inds &lt;- c(&#39;costs&#39;,&#39;fcosts&#39;,&#39;income&#39;,&#39;profits&#39;)
+inds &lt;- c(&#39;costs&#39;,&#39;fcosts&#39;,&#39;grossValue&#39;,&#39;netProfit&#39;)
 d &lt;- rbind(subset(SM_x,indicator  %in% inds &amp; fleet == &#39;fl1&#39;))
 d$indicator &lt;- factor( d$indicator, levels=inds)
 d$scenario &lt;- factor(d$scenario)
@@ -698,11 +938,11 @@ p &lt;- ggplot( data=d, aes(x=year, y=value, color=scenario)) +
         strip.text=element_text(size=10)) + 
   ylab(&quot;&quot;)
 print(p)</code></pre>
-<p><img src="FLBEIA_An_Example_with_multiple_dimensions_files/figure-html/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="FLBEIA_An_Example_with_multiple_dimensions_files/figure-html/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="variable-costs" class="section level3">
 <h3>Variable Costs</h3>
-<p>Variable costs decreases a 50% for <code>fl2</code> and for metiers <code>met1</code> and <code>met2</code>. How does this affect to the economic results?</p>
+<p>Variable costs decreases a 50% for <code>fl2</code> and for metiers <code>met1</code> and <code>met2</code>. How does this decrease affect to the economic results?</p>
 <pre class="r"><code>multiFl_3 &lt;- multiFl
 multiFl_3$fl2@metiers$met1@vcost &lt;- multiFl_3$fl2@metiers$met1@vcost*(1-0.5)
 multiFl_3$fl2@metiers$met2@vcost &lt;- multiFl_3$fl2@metiers$met2@vcost*(1-0.5)
@@ -712,9 +952,10 @@ SM_3 &lt;- FLBEIA(biols = multiBio, SRs = multiSR, BDs = multiBD, fleets = multi
                biols.ctrl = multiBioC, fleets.ctrl = multiFlC, covars.ctrl = multiCvC,
                obs.ctrl = multiObsC, assess.ctrl = multiAssC, advice.ctrl = multiAdvC) </code></pre>
 <p>Compare results aganist base case scenario.</p>
-<pre class="r"><code>SM_3_flt    &lt;- fltSum(SM_3, scenario = &#39;SM_3&#39;)
+<pre class="r"><code>SM_3$fleets &lt;- setUnitsNA(SM_3$fleets)
+SM_3_flt    &lt;- fltSum(SM_3, scenario = &#39;SM_3&#39;, long = TRUE)
 
-inds &lt;- c(&#39;costs&#39;,&#39;vcosts&#39;,&#39;income&#39;,&#39;profits&#39;)
+inds &lt;- c(&#39;costs&#39;,&#39;vcosts&#39;,&#39;grossValue&#39;,&#39;netProfit&#39;)
 d &lt;- rbind(subset(SM_flt,indicator  %in% inds &amp; fleet == &#39;fl2&#39;),
             subset(SM_3_flt, indicator %in% inds  &amp; fleet == &#39;fl2&#39;))
 d$indicator &lt;- factor( d$indicator, levels=inds)
@@ -729,11 +970,11 @@ p &lt;- ggplot( data=d, aes(x=year, y=value, color=scenario)) +
         strip.text=element_text(size=10)) + 
   ylab(&quot;&quot;)
 print(p)</code></pre>
-<p><img src="FLBEIA_An_Example_with_multiple_dimensions_files/figure-html/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="FLBEIA_An_Example_with_multiple_dimensions_files/figure-html/unnamed-chunk-29-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="crewshare" class="section level3">
 <h3>Crewshare</h3>
-<p>Now, imagine that the crew share remuneration system changes for <code>fl1</code> and now the percentage is 50%.</p>
+<p>Now, imagine that the crew share remuneration system changes for ``fl1```` and now the percentage of crew share is 50%.</p>
 <pre class="r"><code>multiFl_4 &lt;- multiFl
 multiFl_4$fl1@crewshare[] &lt;- 0.5
 
@@ -742,9 +983,10 @@ SM_4 &lt;- FLBEIA(biols = multiBio, SRs = multiSR, BDs = multiBD, fleets = multi
                biols.ctrl = multiBioC, fleets.ctrl = multiFlC, covars.ctrl = multiCvC,
                obs.ctrl = multiObsC, assess.ctrl = multiAssC, advice.ctrl = multiAdvC) </code></pre>
 <p>Compare results aganist base case scenario.</p>
-<pre class="r"><code>SM_4_flt    &lt;- fltSum(SM_4, scenario = &#39;SM_4&#39;)
+<pre class="r"><code>SM_4$fleets &lt;- setUnitsNA(SM_4$fleets)
+SM_4_flt    &lt;- fltSum(SM_4, scenario = &#39;SM_4&#39;, long = TRUE)
 
-inds &lt;- c(&#39;costs&#39;,&#39;vcosts&#39;,&#39;income&#39;,&#39;profits&#39;)
+inds &lt;- c(&#39;costs&#39;,&#39;vcosts&#39;,&#39;grossValue&#39;,&#39;netProfit&#39;)
 d &lt;- rbind(subset(SM_flt,indicator  %in% inds &amp; fleet == &#39;fl1&#39;),
             subset(SM_4_flt, indicator %in% inds  &amp; fleet == &#39;fl1&#39;))
 d$indicator &lt;- factor( d$indicator, levels=inds)
@@ -759,31 +1001,89 @@ p &lt;- ggplot( data=d, aes(x=year, y=value, color=scenario)) +
         strip.text=element_text(size=10)) + 
   ylab(&quot;&quot;)
 print(p)</code></pre>
-<p><img src="FLBEIA_An_Example_with_multiple_dimensions_files/figure-html/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="FLBEIA_An_Example_with_multiple_dimensions_files/figure-html/unnamed-chunk-31-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="capital-dynamics" class="section level3">
 <h3>Capital dynamics</h3>
-<p>The current capital function in <code>fixedCapital</code>, where the capacity and catchability are given as input data and are unchanged within the simulation. Now change the capital function and implement the <code>SCD</code> function. In this simple function catchability is not updated, it is an input parameter, and only capacity is updated depending on some economic indicators. For more detailed information of this function, see the page 20 of the <a href="https://github.com/flr/FLBEIA/blob/master/inst/doc/FLBEIA_manual.pdf">Manual</a>.</p>
-<p>Firstly define neccessary variables.:</p>
-<pre class="r"><code># fl1 is fixed effort
-multiFlC_5 &lt;- multiFlC
-multiFlC_5$fl2$capital.model &lt;- multiFlC_5$fl2$capital.model &lt;- &#39;SCD&#39;
+<p>The current capital function in <code>fixedCapital</code>, where the capacity and catchability are given as input data and are unchanged within the simulation. Now change the capital function and implement the <code>SCD</code>function. In this simple function catchability is not updated, it is an input parameter, and only capacity is updated depending on some economic indicators. For more detailed information of this function, see the page 20 of the <a href="https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf">Manual</a>.</p>
+<p>Firstly define requiered variables.:</p>
+<pre class="r"><code># SCD2
+SCD2 &lt;- 
+  function (fleets, covars, fleets.ctrl, flnm, year = 1, season = 1, 
+  ...) 
+{
+  fleet &lt;- fleets[[flnm]]
+  ny &lt;- dim(fleet@effort)[2]
+  ns &lt;- dim(fleet@effort)[4]
+  it &lt;- dim(fleet@effort)[6]
+  VaC &lt;- seasonSums(totvcost_flbeia(fleet)[, year])
+  FxC &lt;- seasonSums(covars[[&quot;NumbVessels&quot;]][flnm, ] * fleet@fcost)[, 
+    year]
+  FuC &lt;- seasonSums(covars[[&quot;FuelCost&quot;]][flnm, ] * fleet@effort)[, 
+    year]
+  CaC &lt;- seasonMeans((covars[[&quot;CapitalValue&quot;]][flnm, ] * covars[[&quot;NumbVessels&quot;]][flnm, 
+    ]))[, year]
+  Rev &lt;- revenue_flbeia(fleet)[, year]
+  Rev &lt;- ifelse(Rev == 0, 1e-16, Rev)
+  CrC &lt;- seasonSums((Rev * fleet@crewshare[, year] + covars[[&quot;Salaries&quot;]][flnm, 
+    year]))
+  Rev &lt;- seasonSums(Rev)
+  x1 &lt;- FuC/Rev
+  units(VaC) &lt;- units(Rev)
 
-multiFl_5 &lt;- multiFl
+  x2 &lt;- VaC/Rev
+  a &lt;- CrC + FxC + CaC
+  b &lt;- 1 - x1 - x2
+units(a) &lt;- units(b)
+  BER &lt;- a/b
+  Inv &lt;- c((Rev - BER)/Rev) * c(covars[[&quot;InvestShare&quot;]][flnm, 
+    year, , ns])
+  Inv &lt;- ifelse((Rev - BER) &lt; 0 &amp; Rev &lt; 0, -Inv, Inv)
+  Ks &lt;- fleet@capacity[, year][drop = T]
+  K &lt;- c(seasonSums(fleet@capacity[, year]))
+  if (ns == 1) 
+    pKs &lt;- rep(1, it)
+  else if (it &gt; 1) 
+    pKs &lt;- sweep(Ks, 2, K, &quot;/&quot;)
+  else pKs &lt;- Ks/K
+  w1 &lt;- c(covars[[&quot;w1&quot;]][flnm, year, , ns])
+  w2 &lt;- c(covars[[&quot;w2&quot;]][flnm, year, , ns])
+  omega &lt;- ifelse(Inv &lt; 0, ifelse(-Inv &lt; w1, Inv * K, -w1 * 
+    K), ifelse(Inv &lt; w2, Inv * K, w2 * K))
+  Ef &lt;- c(seasonSums(fleet@effort[, year]))
+  iterSel &lt;- which(omega &gt; 0 &amp; Ef &lt; 0.99 * K)
+  omega[iterSel] &lt;- 0
+  if (year &lt; ny) {
+    fleets[[flnm]]@capacity[, year + 1] &lt;- Ks + omega * 
+      pKs
+    covars[[&quot;NumbVessels&quot;]][flnm, year + 1, ] &lt;- fleets[[flnm]]@capacity[, 
+      year + 1]/(covars[[&quot;MaxDays&quot;]][flnm, year + 1, ])
+  }
+  return(list(fleets = fleets, covars = covars))
+  }
+
+list2env(list(SCD2=SCD2), globalenv())
+
+
+# fl1 has fixed effort
+multiFlC_5 &lt;- multiFlC
+multiFlC_5$fl2$capital.model &lt;- multiFlC_5$fl2$capital.model &lt;- &#39;SCD2&#39;
+
 multiCv_5 &lt;- multiCv
 multiCv_5$w1[] &lt;- 0.01  
 multiCv_5$w2[] &lt;- 0.01
 multiCv_5$InvestShare[] &lt;- 0.02
   
-SM_5 &lt;- FLBEIA(biols = multiBio, SRs = multiSR, BDs = multiBD, fleets = multiFl_5,
+SM_5 &lt;- FLBEIA(biols = multiBio, SRs = multiSR, BDs = multiBD, fleets = multiFl,
                 covars = multiCv_5, indices = NULL, advice = multiAdv, main.ctrl = multiMainC,
                 biols.ctrl = multiBioC, fleets.ctrl = multiFlC_5, covars.ctrl = multiCvC,
                 obs.ctrl = multiObsC, assess.ctrl = multiAssC, advice.ctrl = multiAdvC)</code></pre>
-<p>Now, compare resutls aganist base case scenario.</p>
-<pre class="r"><code>SM_5_flt    &lt;- fltSum(SM_5, scenario = &#39;SM_5&#39;)
+<p>Now, compare results of SM_5 against base case scenario.</p>
+<pre class="r"><code>SM_5$fleets &lt;- setUnitsNA(SM_5$fleets)
+SM_5_flt    &lt;- fltSum(SM_5, scenario = &#39;SM_5&#39;, long = TRUE)
 SM_x &lt;- rbind( SM_flt, SM_5_flt )
 
-inds &lt;- c(&quot;capacity&quot;,&#39;nVessels&#39;,&#39;effort&#39;,&#39;profits&#39;)
+inds &lt;- c(&quot;capacity&quot;,&#39;nVessels&#39;,&#39;effort&#39;,&#39;netProfit&#39;)
 d &lt;- rbind(subset(SM_x,indicator  %in% inds &amp; fleet == &#39;fl2&#39;))
 d$indicator &lt;- factor( d$indicator, levels=inds)
 d$scenario &lt;- factor(d$scenario)
@@ -799,32 +1099,38 @@ p &lt;- ggplot( data=d, aes(x=year, y=value, color=scenario)) +
         strip.text=element_text(size=10)) + 
   ylab(&quot;&quot;)
 print(p)</code></pre>
-<p><img src="FLBEIA_An_Example_with_multiple_dimensions_files/figure-html/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="FLBEIA_An_Example_with_multiple_dimensions_files/figure-html/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>There are no differences between scenarios because in SCD investment in new vessels will only occur if the operational days of existing vessels is equal to maximum days. Additionally, data of this example is not real and there are some extrange results due to the conditioning.</p>
 </div>
 </div>
 <div id="visualizing-results-with-flbeiaapp" class="section level2">
 <h2>Visualizing results with flbeiaApp</h2>
-<p>NA</p>
-<pre class="r"><code>multi_simul &lt;- list(SM, SM_1, SM_2, SM_3, SM_4, SM_5)
-scenarios &lt;- c(&#39;SM&#39;, &#39;SM_1&#39;, &#39;SM_2&#39;, &#39;SM_3&#39;, &#39;SM_4&#39;, &#39;SM_5&#39;) 
-names(multi_simul) &lt;- scenarios
+<p>Currently is under development, but soon you will be able to run the <code>flbeiaApp</code> to built an interactive web applications for visualizing data. Currently this a preliminary version or beta versi?n of the <code>flbeiaApp</code>.</p>
+<pre class="r"><code>scnms &lt;-c(&#39;SM&#39;, &#39;SM_1&#39;, &#39;SM_2&#39;, &#39;SM_3&#39;, &#39;SM_4&#39;, &#39;SM_5&#39;)
+stknms &lt;- unique(SM_bio$stock)
+RefPts &lt;- expand.grid(indicator=c(&quot;Bmsy&quot;, &quot;Fmsy&quot;, &quot;Bpa&quot;, &quot;Blim&quot;, &quot;Fpa&quot;, &quot;Flim&quot;), 
+                      scenario=scnms, stock=stknms, value=NA)[,c(3,2,1,4)]
+RefPts$value &lt;- c(c(800, 0.11, 800, 550, 0.25, 0.50), c(800, 0.2, 800, 550, 0.25, 0.50), 
+                  c(800, 0.2, 800, 550, 0.25, 0.50), c(800, 0.2, 800, 550, 0.25, 0.50), 
+                  c(800, 0.2, 800, 550, 0.25, 0.50), c(800, 0.2, 800, 550, 0.25, 0.50))
 
-RefPts &lt;- data.frame(stock = rep(names(multi_simul[[1]][[1]]), each = 6*length(multi_simul)), 
-                     scenario = rep(names(multi_simul), each = 6), 
-                     indicator = rep(c(&#39;Bmsy&#39;,&#39;Fmsy&#39;, &#39;Bpa&#39;, &#39;Blim&#39;, &#39;Fpa&#39;, &#39;Flim&#39;),  2*length(multi_simul)), 
-                     value = rep(c(max(seasonSums(unitSums(ssb(multiBio[[1]]))),na.rm = TRUE)*0.75,
-                               0.27,
-                               max(seasonSums(unitSums(ssb(multiBio[[1]]))),na.rm = TRUE)*0.5,
-                               max(seasonSums(unitSums(ssb(multiBio[[1]]))),na.rm = TRUE)*0.25,
-                               0.35, 0.5,
-                               max(seasonSums(unitSums(ssb(multiBio[[2]]))),na.rm = TRUE)*0.75,
-                               0.2,
-                               max(seasonSums(unitSums(ssb(multiBio[[2]]))),na.rm = TRUE)*0.5,
-                               max(seasonSums(unitSums(ssb(multiBio[[2]]))),na.rm = TRUE)*0.25,
-                               0.3,0.4), length(multi_simul)))
+flbeiaObjs &lt;- list( SM = SM, SM_1 = SM_1, SM_2 = SM_2, SM_3 = SM_3,
+                    SM_4 = SM_4, SM_5 = SM_5)
 
-flbeiaApp(multi_simul , RefPts = RefPts,  years = ac(1990:2025), npv.y0 = &#39;2009&#39;, npv.yrs = ac(2010:2025))</code></pre>
+
+flbeiaApp(flbeiaObjs = flbeiaObjs, RefPts = RefPts, years = ac(2000:2025), 
+          calculate_npv = TRUE, npv.y0 = &#39;2012&#39;, npv.yrs = ac(2013:2025)) </code></pre>
+</div>
+<div id="exercises" class="section level2">
+<h2>EXERCISES</h2>
+<p>Run the following scenarios and compare them with the baseline scenario (bc). The comparison should be done numerically and/or plotting scenarios results.</p>
+<ul>
+<li>sE1: Capacity: Capaticy of the fl1 decreases a 10%. What is it the economics impacts?</li>
+<li>sE2: Crewshare: The crew share of both fleets increases a 20%. What is it the economics impacts?</li>
+<li>sE4: Effort dynamics: Use <code>MaxProfit</code> effort function for the fl1.</li>
+<li>sE5: Price dynamics: Increase by 20% the price of the recruits for both stoks.</li>
+<li>sE6: Fleet dynamics: The legislation has changed and the mesh size of the vessel will be changed, decreasing the catchability of vessels by 10%. What will be the biological and economics impacts of this legislation?</li>
+</ul>
 </div>
 </div>
 <div id="more-information" class="section level1">
@@ -833,21 +1139,21 @@ flbeiaApp(multi_simul , RefPts = RefPts,  years = ac(1990:2025), npv.y0 = &#39;2
 <li>You can submit bug reports, questions or suggestions on this tutorial at <a href="https://github.com/flr/doc/issues" class="uri">https://github.com/flr/doc/issues</a>.</li>
 <li>Or send a pull request to <a href="https://github.com/flr/doc/" class="uri">https://github.com/flr/doc/</a></li>
 <li>For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <a href="http://flr-project.org" class="uri">http://flr-project.org</a>.</li>
-<li>You can submit bug reports, questions or suggestions specific to <strong>FLBEIA</strong> to <a href="mailto:flbeia@azti.es">flbeia@azti.es</a>.</li>
+<li>You can submit bug reports, questions or suggestions specific to <strong>FLBEIA</strong> to <a href="mailto:flbeia@azti.es" class="email">flbeia@azti.es</a>.</li>
 </ul>
 <div id="software-versions" class="section level2">
 <h2>Software Versions</h2>
 <ul>
-<li>R version 3.4.1 (2017-06-30)</li>
-<li>FLCore: 2.6.5</li>
-<li>FLBEIA: 1.15.1</li>
-<li>FLFleet: 2.6.0</li>
-<li>FLash: 2.5.8</li>
-<li>FLAssess: 2.6.1</li>
-<li>FLXSA: 2.5.20140808</li>
-<li>ggplotFL: 2.6.2</li>
-<li>ggplot2: 2.2.1</li>
-<li><strong>Compiled</strong>: Mon Oct 2 12:15:28 2017</li>
+<li>R version 4.0.0 (2020-04-24)</li>
+<li>FLCore: 2.6.15</li>
+<li>FLBEIA: 1.15.4</li>
+<li>FLFleet: 2.6.1</li>
+<li>FLash: 2.5.11</li>
+<li>FLAssess: 2.6.3</li>
+<li>FLXSA: 2.6.4</li>
+<li>ggplotFL: 2.6.7.9006</li>
+<li>ggplot2: 3.3.0</li>
+<li><strong>Compiled</strong>: Fri May 15 07:05:17 2020</li>
 </ul>
 </div>
 <div id="license" class="section level2">
@@ -856,7 +1162,8 @@ flbeiaApp(multi_simul , RefPts = RefPts,  years = ac(1990:2025), npv.y0 = &#39;2
 </div>
 <div id="author-information" class="section level2">
 <h2>Author information</h2>
-<p><strong>FLBEIA TEAM</strong> AZTI. Marine Reserach Unit. Txatxarramendi Ugartea z/g, 48395, Sukarrieta, Basque Country, Spain. ** Mail** <a href="mailto:flbeia@azti.es">flbeia@azti.es</a></p>
+<p><strong>Marga Andres</strong> AZTI. Marine Reserach Unit. Txatxarramendi Ugartea z/g, 48395, Sukarrieta, Basque Country, Spain. ** Mail** <a href="mailto:mandres@azti.es" class="email">mandres@azti.es</a></p>
+<p><strong>FLBEIA TEAM</strong> AZTI. Marine Reserach Unit. Txatxarramendi Ugartea z/g, 48395, Sukarrieta, Basque Country, Spain. ** Mail** <a href="mailto:flbeia@azti.es" class="email">flbeia@azti.es</a></p>
 </div>
 </div>
 
@@ -877,6 +1184,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

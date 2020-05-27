@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Bio-Economic simulation using FLBEIA</title>
+
+<script src="site_libs/header-attrs-2.1/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="http://flr-project.org">
+    <span class="fa fa-home"></span>
+     
+    FLR
+  </a>
+</li>
+<li>
+  <a href="index.html">
+    <span class="fa fa-info"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-play-circle-o"></span>
+     
+    Intro
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A_quick_introduction_to_FLR.html">A quick introduction to FLR</a>
+    </li>
+    <li>
+      <a href="An_overview_of_the_FLCore_classes.html">An overview of the FLCore classes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-database"></span>
+     
+    Input
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Loading_your_data_into_FLR.html">Loading your data into FLR</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-magic"></span>
+     
+    Modelling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Modelling_stock_recruitment_with_FLSR.html">Modelling stock recruitment with FLSR</a>
+    </li>
+    <li>
+      <a href="Statistical_catch_at_age_models_in_FLa4a.html">Statistical catch at age models in FLa4a</a>
+    </li>
+    <li>
+      <a href="Modelling_growth_and_its_uncertainty_in_FLa4a.html">Modelling growth and its uncertainty in FLa4a</a>
+    </li>
+    <li>
+      <a href="Natural_mortality_modelling_in_FLa4a.html">Natural mortality modelling in FLa4a</a>
+    </li>
+    <li>
+      <a href="Stock_assessment_using_eXtended_Survivors_Analysis_with_FLXSA.html">Stock assessment using eXtended Survivors Analysis with FLXSA</a>
+    </li>
+    <li>
+      <a href="Using_information_on_life_history_relationships.html">Using information on Life History relationships</a>
+    </li>
+    <li>
+      <a href="Life_history_relationships.html">Life history relationships</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-tachometer"></span>
+     
+    Advice
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Running_Medium_Term_Forecasts_with_FLash.html">Running Medium Term Forecasts with FLash</a>
+    </li>
+    <li>
+      <a href="Short_Term_Forecasting_for_advice_using_FLash.html">Short Term Forecasting for advice using FLash</a>
+    </li>
+    <li>
+      <a href="Forecasting_on_the_Medium_Term_for_advice_using_FLasher.html">Forecasting on the Medium Term for advice using FLasher</a>
+    </li>
+    <li>
+      <a href="Reference_points_for_fisheries_management_with_FLBRP.html">Reference points for fisheries management with FLBRP</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-cogs"></span>
+     
+    MSE
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+    <li>
+      <a href="Management_procedure_biomass_dynamic.html">Biomass Dynamic Management Procedures</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-cogs"></span>
+     
+    FLBEIA
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Conditioning.html">Conditioning FLBEIA using Smart Conditioning Functions</a>
+    </li>
+    <li>
+      <a href="FLBEIA_A_Simple_Example.html">A simple example on how to use FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_An_Example_with_multiple_dimensions.html">A simple example with multiple dimensions in FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Checking_inputs.html">Checking FLBEIA inputs</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Using_Assessment_models_in_the_MP.html">Using Stock Assessment models in the Management procedure of FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Incorporating_SS3assessment_MP.html">Including SS3 assessment within the Management Procedure of FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Testing_Management_Strategies.html">Testing different Management Strategies in FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Data_Poor_MSE.html">Data Limited MSE in FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Smart_Conditioning_II.html">Smart Conditioning II</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Mixed_Fisheries_Tutorial.html">ICES Mixed Fisheries Advice using FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Bio_Economic_Tutorial.html">Bio-Economic simulation using FLBEIA</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-area-chart"></span>
+     
+    Plotting
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="ggplotFL_plotting_FLR_objects_with_ggplot2.html">ggplotFL, plotting FLR objects with ggplot2</a>
+    </li>
+    <li>
+      <a href="Plotting_FLR_objects_using_lattice.html">Plotting FLR objects using lattice</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-puzzle-piece"></span>
+     
+    Internals
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Units_of_measurement_in_FLR_objects.html">Units of measurement in FLR objects</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="http://github.com/flr/doc/issues">
+    <span class="fa fa-question fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Bio-Economic simulation using FLBEIA</h1>
+<h4 class="date">15 may., 2020</h4>
+
+</div>
+
+
+<p><img src="images/FLBEIA_logo.png" width="20%" style="display: block; margin: auto;" /></p>
+<div id="aim" class="section level1">
+<h1>Aim</h1>
+<p><strong>FLBEIA</strong> <span class="citation">(Garcia et al. 2017)</span> provides a battery of tutorials for learning how to use this software. This is the sixth tutorial of <strong>FLBEIA</strong> and it is a practical guide about the generation of mixed-fisheries advice in ICES using <strong>FLBEIA</strong>. It is divided in the following sections:</p>
+<ul>
+<li>Conditioning of the model
+<ul>
+<li>The FLBiols object.</li>
+<li>The FLFleets object.</li>
+<li>The rest of data objects.</li>
+<li>The control objects.</li>
+</ul></li>
+<li>The validation of the conditioning.</li>
+<li>The scenarios.</li>
+<li>The advice.</li>
+</ul>
+<p>At the end of the tutorial some exercises are proposed.</p>
+</div>
+<div id="required-packages-to-run-this-tutorial" class="section level1">
+<h1>Required packages to run this tutorial</h1>
+<p>To follow this tutorial you should have installed the following packages:</p>
+<ul>
+<li><p>CRAN: <a href="https://cran.r-project.org/web/packages/ggplot2/index.html">ggplot2</a> <a href="https://cran.r-project.org/web/packages/XLConnect/index.html">XLConnect</a> <a href="https://cran.r-project.org/web/packages/XLConnectJars/index.html">XLConnectJars</a></p></li>
+<li><p>FLR: <a href="http://www.flr-project.org/FLCore/">FLCore</a>, <a href="http://www.flr-project.org/FLAssess/">FLAssess</a>, <a href="http://www.flr-project.org/FLash/">FLash</a>, <a href="http://www.flr-project.org/FLBEIA/">FLBEIA</a>, <a href="http://www.flr-project.org/FLFleet/">FLFleet</a></p></li>
+</ul>
+<p>If you are using Windows, please use 64-bit R version because some of the packages (mainly FLash) do not work in 32-bit.</p>
+<pre class="r"><code>install.packages( c(&quot;ggplot2&quot;))
+install.packages( c(&quot;FLCore&quot;, &quot;FLFleet&quot;, &quot;FLBEIA&quot;, 
+                    &quot;FLash&quot;, &quot;FLAssess&quot;, &quot;FLXSA&quot;), 
+                  repos=&quot;http://flr-project.org/R&quot;)</code></pre>
+<p>It has to be noted that packages <code>FLCore</code>, <code>FLFleets</code> and <code>FLBEIA</code> have to be installed in this exact order, as alternative orders can cause some problems.</p>
+<p>Load all the necessary packages.</p>
+<pre class="r"><code>library(FLBEIA)
+library(FLBEIAShiny)
+library(ggplot2)</code></pre>
+</div>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>This tutorial is focused on the bio-economic simulation of fisheries systems using FLBEIA. How to condition the model has been addressed in previous tutorials so here we will take the objects from an existing data file.</p>
+<pre class="r"><code>dir &lt;- tempdir()
+# download.file(&quot;http://www.flr-project.org/doc/src/flbeia_bioeco.zip&quot;, 
+#               file.path(dir, &quot;flbeia_bioeco.zip&quot;))
+# unzip(file.path(dir, &quot;flbeia_bioeco.zip&quot;), exdir=dir)
+unzip(&quot;src/flbeia_bioeco.zip&quot;, exdir=dir)</code></pre>
+<pre class="r"><code>load(&#39;./src/flbeia_bioeco/data.Rdata&#39;)
+stknms &lt;- names(biols)
+main.ctrl$sim.years[] &lt;- c(2017,2025)</code></pre>
+<p>The data set is the one used by the STECF in 2018 to evaluate the bio-economic consequences of single stock TAC advice. The biols object is fromed by 9 stocks and the fleets object by 7 fleets.</p>
+<p>A brief summary of the stocks and their structure can be obtained using ‘lapply’ function:</p>
+<pre class="r"><code>lapply(biols, function(x) dimnames(x@n)[[1]])</code></pre>
+<pre><code>## $HKE
+##  [1] &quot;0&quot;  &quot;1&quot;  &quot;2&quot;  &quot;3&quot;  &quot;4&quot;  &quot;5&quot;  &quot;6&quot;  &quot;7&quot;  &quot;8&quot; 
+## [10] &quot;9&quot;  &quot;10&quot; &quot;11&quot; &quot;12&quot; &quot;13&quot; &quot;14&quot; &quot;15&quot;
+## 
+## $HOM
+##  [1] &quot;0&quot;  &quot;1&quot;  &quot;2&quot;  &quot;3&quot;  &quot;4&quot;  &quot;5&quot;  &quot;6&quot;  &quot;7&quot;  &quot;8&quot; 
+## [10] &quot;9&quot;  &quot;10&quot; &quot;11&quot;
+## 
+## $HO8
+##  [1] &quot;0&quot;  &quot;1&quot;  &quot;2&quot;  &quot;3&quot;  &quot;4&quot;  &quot;5&quot;  &quot;6&quot;  &quot;7&quot;  &quot;8&quot; 
+## [10] &quot;9&quot;  &quot;10&quot; &quot;11&quot;
+## 
+## $LDB
+## [1] &quot;0&quot; &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; &quot;5&quot; &quot;6&quot; &quot;7&quot;
+## 
+## $MAC
+##  [1] &quot;0&quot;  &quot;1&quot;  &quot;2&quot;  &quot;3&quot;  &quot;4&quot;  &quot;5&quot;  &quot;6&quot;  &quot;7&quot;  &quot;8&quot; 
+## [10] &quot;9&quot;  &quot;10&quot; &quot;11&quot; &quot;12&quot;
+## 
+## $MEG
+## [1] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; &quot;5&quot; &quot;6&quot; &quot;7&quot;
+## 
+## $MON
+##  [1] &quot;0&quot;  &quot;1&quot;  &quot;2&quot;  &quot;3&quot;  &quot;4&quot;  &quot;5&quot;  &quot;6&quot;  &quot;7&quot;  &quot;8&quot; 
+## [10] &quot;9&quot;  &quot;10&quot; &quot;11&quot; &quot;12&quot; &quot;13&quot;
+## 
+## $OTH
+## [1] &quot;1&quot;
+## 
+## $WHB
+##  [1] &quot;1&quot;  &quot;2&quot;  &quot;3&quot;  &quot;4&quot;  &quot;5&quot;  &quot;6&quot;  &quot;7&quot;  &quot;8&quot;  &quot;9&quot; 
+## [10] &quot;10&quot;</code></pre>
+<p>The ‘OTH’ stock accounts for <em>all</em> the catch of the fleets not explicitly included in the simulation. when economy is included in the simulation it is extremely importaNt to include all the catches that produce an income for the fleet, otherwise all the economic indicators would be wrong. For example, if the entry-exit of vessels was simulated the decision of leaving or entering the fishery would be based on indicators that do not take into account all the productivity of the fleet. The fleets considered in this analysis are highly mixed and catch a large number of stocks. Hence, including all of them explicitly in the simulation would be practically impossible. Furthermore, most of them are data limited stocks and do not have a quantitative assessment to be able condition the operating model. Hence, we merge all these stocks in a single stock called ‘OTH’.</p>
+<p>The biomass of the OTH artifical stock is given as input data and is not changed in the simulation. We assign it a value big enough so it does not restrict fishing. For catch production a <em>constant-cpue approach</em> is used, i.e, the catch is only function of a constant catchability and the effort. The catchability parameter depends on the historical effort and the value we have assinged to the biomass. As the composition of the OTH stock is metier dependent the price, that is what matters for this stock, apart of catchability, varies from metier to metier. The historical catch composition by metier was analyzed and the historical mean price per ton was calculated to condition the price in the projection.</p>
+<p>The abundance of the widely distributed stocks, MAC (mackerel), HO8 (western horse mackerel) and WHB (blue whiting) was considered constant and equal to the historical mean in the projection. This stocks are economically important for the fishery. However, the contribution of the catch of these fleets to the total catch of the stocks is that low that what these fleets do will have almost no impoact on the dynamic of these stocks. Other possible appraoch could have been to add another fleet per stock accounting for all the extra catch. However, for simplicity, we decided to use a constant biomass approach.</p>
+<p>The function lapply can be use here too to list the metiers in each fleet:</p>
+<pre class="r"><code>lapply(fleets,function(x) names(x@metiers))</code></pre>
+<pre><code>## $NTR_SP
+## [1] &quot;GNS_DEF_&gt;=100_0_0&quot; &quot;GNS_DEF_60-79_0_0&quot;
+## [3] &quot;GNS_DEF_80-99_0_0&quot; &quot;GTR_DEF_60-79_0_0&quot;
+## [5] &quot;LLS_DEF_0_0_0&quot;    
+## 
+## $PSX_SP
+## [1] &quot;GNS_DEF_60-79_0_0&quot; &quot;GTR_DEF_60-79_0_0&quot;
+## [3] &quot;LHM_SPF_0_0_0&quot;     &quot;PS_SPF_0_0_0&quot;     
+## 
+## $PGP_PT
+## [1] &quot;MIS_MIS_0_0_0&quot;
+## 
+## $DTS_PT
+## [1] &quot;OTB_OTB&quot;
+## 
+## $DTS_SP
+## [1] &quot;OTB_DEF_&gt;=55_0_0&quot; &quot;OTB_MPD_&gt;=55_0_0&quot;
+## [3] &quot;PTB_MPD_&gt;=55_0_0&quot;
+## 
+## $PSX_PT
+## [1] &quot;PS_SPF_0_0_0&quot;
+## 
+## $CAD_SP
+## [1] &quot;CAD_TR&quot;</code></pre>
+<p>Using the function ‘stock.fleetInfo’ we can see the stocks that catch each of the fleets:</p>
+<pre class="r"><code>t(stock.fleetInfo(fleets))</code></pre>
+<pre><code>##                            stock
+## fleet_met                   MON HKE HOM OTH MAC
+##   NTR_SP&amp;&amp;GNS_DEF_&gt;=100_0_0   1   0   0   0   0
+##   NTR_SP&amp;&amp;GNS_DEF_60-79_0_0   1   1   1   1   0
+##   NTR_SP&amp;&amp;GNS_DEF_80-99_0_0   1   1   1   1   0
+##   NTR_SP&amp;&amp;GTR_DEF_60-79_0_0   1   1   1   1   0
+##   NTR_SP&amp;&amp;LLS_DEF_0_0_0       0   1   0   1   0
+##   PSX_SP&amp;&amp;GNS_DEF_60-79_0_0   0   0   1   1   0
+##   PSX_SP&amp;&amp;GTR_DEF_60-79_0_0   0   0   1   1   0
+##   PSX_SP&amp;&amp;LHM_SPF_0_0_0       0   0   0   1   1
+##   PSX_SP&amp;&amp;PS_SPF_0_0_0        0   0   1   1   1
+##   PGP_PT&amp;&amp;MIS_MIS_0_0_0       1   1   1   1   1
+##   DTS_PT&amp;&amp;OTB_OTB             1   1   1   1   1
+##   DTS_SP&amp;&amp;OTB_DEF_&gt;=55_0_0    1   1   1   1   0
+##   DTS_SP&amp;&amp;OTB_MPD_&gt;=55_0_0    1   1   1   1   1
+##   DTS_SP&amp;&amp;PTB_MPD_&gt;=55_0_0    1   1   1   1   1
+##   PSX_PT&amp;&amp;PS_SPF_0_0_0        0   0   1   0   1
+##   CAD_SP&amp;&amp;CAD_TR              1   1   0   0   0
+##                            stock
+## fleet_met                   HO8 LDB MEG WHB
+##   NTR_SP&amp;&amp;GNS_DEF_&gt;=100_0_0   0   0   0   0
+##   NTR_SP&amp;&amp;GNS_DEF_60-79_0_0   0   0   0   0
+##   NTR_SP&amp;&amp;GNS_DEF_80-99_0_0   0   0   0   0
+##   NTR_SP&amp;&amp;GTR_DEF_60-79_0_0   0   0   0   0
+##   NTR_SP&amp;&amp;LLS_DEF_0_0_0       0   0   0   0
+##   PSX_SP&amp;&amp;GNS_DEF_60-79_0_0   0   0   0   0
+##   PSX_SP&amp;&amp;GTR_DEF_60-79_0_0   0   0   0   0
+##   PSX_SP&amp;&amp;LHM_SPF_0_0_0       0   0   0   0
+##   PSX_SP&amp;&amp;PS_SPF_0_0_0        1   0   0   0
+##   PGP_PT&amp;&amp;MIS_MIS_0_0_0       0   1   1   1
+##   DTS_PT&amp;&amp;OTB_OTB             0   1   1   1
+##   DTS_SP&amp;&amp;OTB_DEF_&gt;=55_0_0    0   1   1   1
+##   DTS_SP&amp;&amp;OTB_MPD_&gt;=55_0_0    1   1   1   1
+##   DTS_SP&amp;&amp;PTB_MPD_&gt;=55_0_0    1   0   0   1
+##   PSX_PT&amp;&amp;PS_SPF_0_0_0        0   0   0   0
+##   CAD_SP&amp;&amp;CAD_TR              0   1   1   0</code></pre>
+</div>
+<div id="economic-elements-in-flbeia" class="section level1">
+<h1>Economic elements in FLBEIA</h1>
+<p>The economy in FLBEIA is in the fleets operating model. Four processes are modelled, the short term dynamics (effort allocation), the catch production (relationship between the effort and the catch), the price formation and the long term dynamics (entry-exit of vessels). The results are then summarized through a set of economic indicators obtained with the function ‘fltSum’:</p>
+<p>Short term Indicators:</p>
+<ul>
+<li><strong>effort</strong> total effort (given in fishing days, hours,…).</li>
+<li><strong>Catch</strong> computed as the sum of the catch for each stock of all the metiers in the fleet.</li>
+<li><strong>Price</strong> The weighted mean of the price of the stocks.</li>
+<li><strong>Gross value</strong> computed as the total value of the landings of all the stocks and metiers in the fleet.</li>
+<li><strong>Operating costs</strong> Computed as the sum of the product between total variable cost per unit of effort and effort and gross value and the crew-share.</li>
+<li><strong>Gross value added</strong> is defined as the gross value minus the operating costs.</li>
+<li><strong>Gross surplus</strong> is defined as the gross value minus the operating and labour cost (salaries plus the product of crewshare and gross value).</li>
+<li><strong>Profitability</strong> It is the ratio between the gross surplus and the gross value for each fleet.</li>
+<li><strong>Net present value</strong> is the sum of the discounted values of gross surplus of all the projected years.</li>
+<li><strong>Economic risk</strong> is the probability that the gross surplus is negative during the projection period.</li>
+</ul>
+<p>Long term indicators:</p>
+<ul>
+<li><strong>Full equity profit</strong> Gross Surplus plus depreciation costs.</li>
+<li><strong>Net Profit</strong> Full equity profit plus Opportunity costs.</li>
+<li><strong>Opportunity costs</strong> Capital x interest rate free of risk.</li>
+</ul>
+<div id="short-term-dynamics." class="section level2">
+<h2>Short term dynamics.</h2>
+<p>There are three short term dynamic functions in FLBEIA, ‘fixedEffort’, ‘SMFB’ and ‘MaxProfit’. In the first two the effort share along metiers is given as input data but in the third one it is calculated dynamically based on the expected profits.</p>
+<p>The ‘SMFB’ model used to mimic <em>mixed fisheries</em> is based on the Fcube method <span class="citation">(Ulrich et al. 2011)</span>. The effort share along metiers is given as input data and only the total effort is estimated in each step. First, the effort corresponding to the TAC-share of each stock caught by the fleet is calculated, this returns one effort per stock. The final effort is selected based on the previously calculated efforts. The selection is done using different available options - ‘min’ the minimum, ‘max’ the maximum and ‘mean’ the mean, - ‘prev’ the most similar to the previous year effort and<br />
+- ‘stock-name’ the effort that produces a catch level equal to the quota share of the stock specified.</p>
+<p>The ‘MaxProfit’ model calculates the total effort and the effort allocation among metiers that maximises profit given a set of constraints. The total effort is constrained by the capacity of the fleet and by the catch quota of some of the stocks. In turn, the effort share along metiers is constrained to a given interval. Mathematically:</p>
+<p><span class="math display">\[\begin{equation}\label{eq:maxprof.stkCnst}
+    \max_{E_f, \gamma_{f,1},\ldots,\gamma_{f,n_{MT,f}}} \sum_m\sum_{st}\sum_a  L_{st,a,f,m} \cdot P_{st,a,f,m}- 
+                E_f\cdot\gamma_{f,m}\cdot VaC_{f,m} - FxC_f\cdot n_{V_f}                                                   
+\end{equation}\]</span></p>
+<p>with the constraints:</p>
+<p><span class="math display">\[\begin{equation}\label{eq:MP_consts}
+    \left\{
+    \begin{array}{ll}
+        &amp; \gamma_{\min, f,m} \leq \gamma_{\max, f,m}\leq 1 \text{ and } \sum_m\gamma_{f,m} = 1\\
+        &amp; E_f \leq \kappa_f,\\
+        &amp; C_{st,f} \leq QS_{st,f} \quad \text{for } st \in \Delta_f.
+%       &amp; C_{st} \leq \tau \cdot B_{st} \text{for any $st$}
+    \end{array} 
+    \right.
+\end{equation}\]</span></p>
+<p>where <span class="math inline">\(P\)</span> is the price of the fish landed, <span class="math inline">\(VaC\)</span> the variable cost of fishing effort, which depends on the metier and is given as cost per unit of effort, <span class="math inline">\(FxC\)</span> the fixed costs of each fishing unit, which is given at fleet level and in terms of cost per vessel, <span class="math inline">\(n_{V}\)</span> is the number of vessels in the fleet, <span class="math inline">\(\kappa\)</span> is the capacity, defined as the maximum effort that the fleet can execute in each season, <span class="math inline">\(QS\)</span> is fleet’s TAC share and <span class="math inline">\(\Delta\)</span> is the set of stocks for which the constraint must be fulfilled. In biomass dynamic populations, landings and prices are given at stock level.</p>
+<p>The first constraint in equation  guarantees that the effort-shares along metiers sum up 1. The second one ensures that total effort is lower than the actual capacity of the fleet. Finally, the third constraint describes the fulfilment of the management advice. <span class="math inline">\(\Delta\)</span> can be an empty set, in which case the fleet will not be constrained to comply with any of the TAC advices, or it can be a subset of the stocks for which the fleet will comply with their TAC.</p>
+<p>In previous tutorials we have already used the first two functions, now we will run one scenario with each of the functions and compare the results.</p>
+<p>First we will built the control objec ts needed to run this scenarios. We will only build the fleets.ctrls and use the controls that were in the data set for the rest of the components. To start we need to create same objects with the structure of the data:</p>
+<pre class="r"><code>n.flts.stks      &lt;- sapply(sapply(fleets, catchNames), length) 
+flts.stksnames   &lt;- NULL
+for(f in 1:length(fleets)){  
+  nms &lt;- c(names(flts.stksnames),
+           paste(rep(names(fleets)[f], length(catchNames(fleets[[f]]))), 
+                 catchNames(fleets[[f]]), sep = &quot;_&quot;)) 
+  flts.stksnames &lt;- c(flts.stksnames, catchNames(fleets[[f]]))
+  names(flts.stksnames) &lt;- nms
+  }</code></pre>
+<p>For catch production we use a Cobb-Douglass function at age level for all the stocks except ‘OTH’ that is a biomass structured stock.</p>
+<pre class="r"><code>catch.models &lt;- rep(&quot;CobbDouglasAge&quot;, sum(n.flts.stks))
+names(catch.models) &lt;- flts.stksnames
+catch.models[names(catch.models) == &#39;OTH&#39;] &lt;- &quot;CobbDouglasBio&quot;  </code></pre>
+<p>In this scenario we will use the price as a given parameter.</p>
+<pre class="r"><code>price.models &lt;-  rep(&quot;fixedPrice&quot;, sum(n.flts.stks))
+names(price.models) &lt;- flts.stksnames</code></pre>
+<p>An FLQuant with the general structure of the data.</p>
+<pre class="r"><code>flq &lt;- FLQuant(dimnames= list(year = 1980:2025, iter =  1))     </code></pre>
+<p>The capital, that is the capacity of the fleets, is given as input data too.</p>
+<pre class="r"><code>capital.models &lt;-  rep(&#39;fixedCapital&#39;, length(fleets))</code></pre>
+<p>The control to use effort equal to the historical mean:</p>
+<pre class="r"><code>fleets.ctrl.CnEf &lt;- create.fleets.ctrl(
+                          fls = names(fleets),
+                   n.fls.stks = n.flts.stks,
+                fls.stksnames = flts.stksnames,
+                effort.models = rep(&#39;SMFB&#39;, length(fleets)), 
+                 price.models = price.models,
+                 catch.models = catch.models,
+                          flq = flq,
+           restriction.NTR_SP = &#39;catch&#39;, restriction.PSX_SP = &#39;catch&#39;, 
+           restriction.PGP_PT = &#39;catch&#39;, restriction.DTS_PT = &#39;catch&#39;, 
+           restriction.DTS_SP = &#39;catch&#39;, restriction.PSX_PT = &#39;catch&#39;, 
+           restriction.CAD_SP = &#39;catch&#39;)
+for(f in names(fleets)) fleets.ctrl.CnEf[[f]][[&#39;effort.model&#39;]] &lt;- &#39;fixedEffort&#39;</code></pre>
+<p>The control for ‘SMFB’ function using the ‘HKE’ and ‘HOM’ options to restrict the catch:</p>
+<pre class="r"><code>fleets.ctrl.trad &lt;- create.fleets.ctrl(
+                          fls = names(fleets), 
+                   n.fls.stks = n.flts.stks, 
+                fls.stksnames = flts.stksnames,
+                effort.models = rep(&#39;SMFB&#39;, length(fleets)), 
+                 price.models = price.models, 
+                          flq = flq, 
+                 catch.models = catch.models, 
+               capital.models = capital.models,
+           restriction.NTR_SP = &#39;catch&#39;, restriction.PSX_SP = &#39;catch&#39;, 
+           restriction.PGP_PT = &#39;catch&#39;, restriction.DTS_PT = &#39;catch&#39;, 
+           restriction.DTS_SP = &#39;catch&#39;, restriction.PSX_PT = &#39;catch&#39;, 
+           restriction.CAD_SP = &#39;catch&#39;, 
+           effort.restr.NTR_SP = &#39;HKE&#39;, effort.restr.PSX_SP = &#39;HOM&#39;, 
+           effort.restr.PGP_PT = &#39;HKE&#39;, effort.restr.DTS_PT = &#39;HKE&#39;, 
+           effort.restr.DTS_SP = &#39;HKE&#39;, effort.restr.PSX_PT = &#39;HOM&#39;, 
+           effort.restr.CAD_SP = &#39;HKE&#39;) </code></pre>
+<p>To define the control for ‘MaxProfit’, first we create an object with the restriction for the effort share, to facilitate the generation of the object.</p>
+<pre class="r"><code>effort.range &lt;- lapply(fleets, function(x){ 
+   res &lt;- matrix(NA, length(x@metiers), 2, dimnames = list(names(x@metiers), c(&#39;min&#39;, &#39;max&#39;)))
+   res[,1] &lt;- 0#sapply(x@metiers, function(y) mean(y@effshare[, ac(2015:2017)]))*0.25
+   res[,2] &lt;- 1#sapply(x@metiers, function(y) mean(y@effshare[, ac(2015:2017)]))*1.75
+   res[res&gt;1] &lt;- 1
+   res
+    })</code></pre>
+<p>Now we create the control object with the ranges created before and the restriction in hake and horse mackerel catches:</p>
+<pre class="r"><code>effort.models &lt;- rep(&#39;SMFB&#39;, length(fleets))
+names(effort.models) &lt;- names(fleets)
+effort.models[names(effort.models) %in% c(&#39;DTS_SP&#39;, &#39;NTR_SP&#39;)] &lt;- &#39;MaxProfit&#39;
+
+fleets.ctrl.mxpr &lt;- create.fleets.ctrl(
+                          fls = names(fleets), 
+                   n.fls.stks = n.flts.stks, 
+                fls.stksnames = flts.stksnames,
+                effort.models = effort.models, 
+                 price.models = price.models, 
+                          flq = flq, 
+                 catch.models = catch.models, 
+               capital.models = capital.models,
+           restriction.NTR_SP = &#39;catch&#39;, restriction.PSX_SP = &#39;catch&#39;, 
+           restriction.PGP_PT = &#39;catch&#39;, restriction.DTS_PT = &#39;catch&#39;, 
+           restriction.DTS_SP = &#39;catch&#39;, restriction.PSX_PT = &#39;catch&#39;, 
+           restriction.CAD_SP = &#39;catch&#39;, 
+           effort.restr.NTR_SP = &#39;HKE&#39;, effort.restr.PSX_SP = &#39;HOM&#39;, 
+           effort.restr.PGP_PT = &#39;HKE&#39;, effort.restr.DTS_PT = &#39;HKE&#39;, 
+           effort.restr.DTS_SP = &#39;HKE&#39;, effort.restr.PSX_PT = &#39;HOM&#39;, 
+           effort.restr.CAD_SP = &#39;HKE&#39;,
+           effort.range.NTR_SP = effort.range[[&#39;NTR_SP&#39;]], 
+           effort.range.DTS_SP = effort.range[[&#39;DTS_SP&#39;]])</code></pre>
+<p>We have to tell FLBEIa if the restriction in effort is in relative or absolute terms.</p>
+<pre class="r"><code>for(fl in  c(&#39;DTS_SP&#39;, &#39;NTR_SP&#39;)) fleets.ctrl.mxpr[[fl]][[&#39;efs.abs&#39;]] &lt;- FALSE
+
+fleets[[&#39;DTS_SP&#39;]]@capacity[] &lt;- fleets[[&#39;NTR_SP&#39;]]@capacity[] &lt;- 1e6</code></pre>
+<p>Now we run the FLBEIA using the three different fleet dynamic scenarios:</p>
+<pre class="r"><code>CnEf &lt;- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets, 
+                  covars = covars, indices = NULL, advice = advice, 
+                  main.ctrl = main.ctrl, biols.ctrl = biols.ctrl, 
+                  fleets.ctrl = fleets.ctrl.CnEf, 
+                  covars.ctrl = covars.ctrl, obs.ctrl = obs.ctrl, 
+                  assess.ctrl = assess.ctrl, advice.ctrl = advice.ctrl.fixed)</code></pre>
+<pre class="r"><code>trad &lt;- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets, 
+                  covars = covars, indices = NULL, advice = advice, 
+                  main.ctrl = main.ctrl, biols.ctrl = biols.ctrl, 
+                  fleets.ctrl = fleets.ctrl.trad, 
+                  covars.ctrl = covars.ctrl, obs.ctrl = obs.ctrl, 
+                  assess.ctrl = assess.ctrl, advice.ctrl = advice.ctrl.fixed)</code></pre>
+<pre class="r"><code>mxpr &lt;- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets, 
+                  covars = covars, indices = NULL, advice = advice, 
+                  main.ctrl = main.ctrl, biols.ctrl = biols.ctrl, 
+                  fleets.ctrl = fleets.ctrl.mxpr, 
+                  covars.ctrl = covars.ctrl, obs.ctrl = obs.ctrl, 
+                  assess.ctrl = assess.ctrl, advice.ctrl = advice.ctrl.fixed)</code></pre>
+</div>
+<div id="price" class="section level2">
+<h2>Price</h2>
+<p>Price in FLBEIA can be modelled in two different ways, using the values given as input data (fixedPrice option) or using an elastic function (‘elasticPrice’). In the fixedPrice option as the FLQuants used to condition the model are ‘age’, ‘year’, ‘unit’, ‘season’ and ‘iter’ variability can be introduced in all these dimensions. However, these values are not dynamically updated in the simulation. The values in the price slot can be updated dynamically using the ‘elasticPrice’ function using the following formula:</p>
+<p><span class="math display">\[\begin{equation}\label{eq:elasticPrice}
+    P_{st,a,y,s,f} = P_{0_{st,a,s,f}} \cdot \left( \frac{L_{0_{st,a,s,f}}}{\Gamma_{st,a,y,s,f}}\right)^{e_{st, a,s,f}} 
+\end{equation}\]</span></p>
+<p>where <span class="math inline">\(\Gamma\)</span> is the landing of fleet <span class="math inline">\(f\)</span>, <span class="math inline">\(L_{st,a,y,s,f}\)</span>, or total stock landings, <span class="math inline">\(\sum_{f = 1}^{n_{FL}} L_{st,a,y,s,f}\)</span>, depending on the user choice. <span class="math inline">\(P_0\)</span> is the base price corresponding to base landings, <span class="math inline">\(L_0\)</span>, and <span class="math inline">\(e\)</span> is the price elasticity parameter.</p>
+<p>Hence, if we want to use this function in FLBEIA we need to tell it to FLBEIA and we need to specify the extra arguments, <span class="math inline">\(P_0\)</span> and <span class="math inline">\(e\)</span>.</p>
+<pre class="r"><code>price.models &lt;- rep(&#39;fixedPrice&#39;, length(catch.models))
+names(price.models) &lt;- names(flts.stksnames)
+price.models[substr(names(price.models),1,3) %in% c(&#39;NTR&#39;, &#39;DTS&#39;)] &lt;- &#39;elasticPrice&#39;
+
+flq.HKE &lt;- biols$HKE@n * NA
+  
+flq.LDB &lt;- biols$LDB@n * NA
+
+flq.HO8 &lt;- biols$HO8@n * NA
+
+flq.HOM &lt;- biols$HOM@n * NA
+
+flq.MEG &lt;- biols$MEG@n * NA
+
+flq.MON &lt;- biols$MON@n * NA
+
+flq.MAC &lt;- biols$MAC@n * NA
+
+flq.WHB &lt;- biols$WHB@n * NA
+
+flq.OTH &lt;- biols$OTH@n * NA</code></pre>
+<pre><code>## &lt;environment: R_GlobalEnv&gt;</code></pre>
+<pre class="r"><code>fleets.ctrl.mxpr.price &lt;- create.fleets.ctrl(
+                          fls = names(fleets), 
+                   n.fls.stks = n.flts.stks, 
+                fls.stksnames = flts.stksnames,
+                effort.models = effort.models, 
+                 price.models = price.models, 
+                          flq = flq, 
+                      flq.HKE = flq.HKE,
+                      flq.HOM = flq.HOM,
+                      flq.HO8 = flq.HO8,
+                      flq.LDB = flq.LDB,
+                      flq.MEG = flq.MEG,
+                      flq.MON = flq.MON,
+                      flq.MAC = flq.MAC,
+                      flq.WHB = flq.WHB,
+                      flq.OTH = flq.OTH,
+                 catch.models = catch.models, 
+               capital.models = capital.models,
+           restriction.NTR_SP = &#39;catch&#39;, restriction.PSX_SP = &#39;catch&#39;, 
+           restriction.PGP_PT = &#39;catch&#39;, restriction.DTS_PT = &#39;catch&#39;, 
+           restriction.DTS_SP = &#39;catch&#39;, restriction.PSX_PT = &#39;catch&#39;, 
+           restriction.CAD_SP = &#39;catch&#39;, 
+           effort.restr.NTR_SP = &#39;HKE&#39;, effort.restr.PSX_SP = &#39;HOM&#39;, 
+           effort.restr.PGP_PT = &#39;HKE&#39;, effort.restr.DTS_PT = &#39;HKE&#39;, 
+           effort.restr.DTS_SP = &#39;HKE&#39;, effort.restr.PSX_PT = &#39;HOM&#39;, 
+           effort.restr.CAD_SP = &#39;HKE&#39;,
+           effort.range.NTR_SP = effort.range[[&#39;NTR_SP&#39;]], 
+           effort.range.DTS_SP = effort.range[[&#39;DTS_SP&#39;]])
+
+
+for(fl in  c(&#39;DTS_SP&#39;, &#39;NTR_SP&#39;)) fleets.ctrl.mxpr.price[[fl]][[&#39;efs.abs&#39;]] &lt;- FALSE</code></pre>
+<p>Now we need to fill the <span class="math inline">\(els\)</span> and <span class="math inline">\(p0\)</span> elements per stock and fleet (NTR_SP and ‘DTS_SP’) by hand because the ‘create.fleets.ctrl’ function only creates the data contained and we need to fill it with the content. We use the same values for the two fleets.</p>
+<p>In the graph below we shoe the effect of the elasticity parameters in the dynamic of the prices, the higher the value the higher the reaction of the prices.</p>
+<pre class="r"><code>plot(seq(0,5, 0.01), 4*(8/9)^(seq(0,5, 0.01)), type = &#39;l&#39;, ylim = c(2,7), lwd = 2,
+      ylab = &#39;Euro/Kg&#39;, main = &#39;Price vs Elasticity&#39;, xlab = &#39;elasticity&#39;)
+lines(seq(0,5, 0.01), 4*(10/9)^(seq(0,5, 0.01)), col  = 2, lwd = 2)
+abline(h=4, lty = 2, col = &#39;grey&#39;)
+legend(0,7,c(&#39;Ly &gt; L0&#39;, &#39;Ly &lt; L0&#39;, &#39;P0&#39;), col = c(&#39;black&#39;, &#39;red&#39;, &#39;grey&#39;), lwd = 2, 
+       lty = c(1,1,2), bty = &#39;n&#39; )</code></pre>
+<p><img src="FLBEIA_Bio_Economic_Tutorial_files/figure-html/plots-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The base price</p>
+<pre class="r"><code>fleets.ctrl.mxpr.price[[&#39;NTR_SP&#39;]][[&#39;HKE&#39;]][[&#39;pd.els&#39;]][] &lt;- 
+  fleets.ctrl.mxpr.price[[&#39;DTS_SP&#39;]][[&#39;HKE&#39;]][[&#39;pd.els&#39;]][] &lt;- runif(prod(dim(flq.HKE)),0.1,0.4)
+
+fleets.ctrl.mxpr.price[[&#39;NTR_SP&#39;]][[&#39;HOM&#39;]][[&#39;pd.els&#39;]][] &lt;- 
+  fleets.ctrl.mxpr.price[[&#39;DTS_SP&#39;]][[&#39;HOM&#39;]][[&#39;pd.els&#39;]][] &lt;- 0.5
+
+fleets.ctrl.mxpr.price[[&#39;DTS_SP&#39;]][[&#39;HO8&#39;]][[&#39;pd.els&#39;]][] &lt;- 0.5
+
+fleets.ctrl.mxpr.price[[&#39;DTS_SP&#39;]][[&#39;LDB&#39;]][[&#39;pd.els&#39;]][] &lt;- 
+  fleets.ctrl.mxpr.price[[&#39;DTS_SP&#39;]][[&#39;MEG&#39;]][[&#39;pd.els&#39;]][] &lt;- 0.7
+
+fleets.ctrl.mxpr.price[[&#39;NTR_SP&#39;]][[&#39;MON&#39;]][[&#39;pd.els&#39;]][] &lt;- 
+  fleets.ctrl.mxpr.price[[&#39;DTS_SP&#39;]][[&#39;MON&#39;]][[&#39;pd.els&#39;]][] &lt;- 0.1
+
+fleets.ctrl.mxpr.price[[&#39;DTS_SP&#39;]][[&#39;MAC&#39;]][[&#39;pd.els&#39;]][] &lt;- 
+  fleets.ctrl.mxpr.price[[&#39;DTS_SP&#39;]][[&#39;WHB&#39;]][[&#39;pd.els&#39;]][] &lt;- 0.2
+
+fleets.ctrl.mxpr.price[[&#39;NTR_SP&#39;]][[&#39;OTH&#39;]][[&#39;pd.els&#39;]][] &lt;- runif(prod(dim(flq.OTH)),0,0.4)
+
+fleets.ctrl.mxpr.price[[&#39;DTS_SP&#39;]][[&#39;OTH&#39;]][[&#39;pd.els&#39;]][] &lt;- runif(prod(dim(flq.OTH)),0.2,0.4)</code></pre>
+<p>The base price equal to the mean in the historical years</p>
+<pre class="r"><code>fleets.ctrl.mxpr.price[[&#39;NTR_SP&#39;]][[&#39;HKE&#39;]][[&#39;pd.Pa0&#39;]][] &lt;- 
+  fleets.ctrl.mxpr.price[[&#39;DTS_SP&#39;]][[&#39;HKE&#39;]][[&#39;pd.Pa0&#39;]][] &lt;- 
+                    yearMeans(fleets[[&#39;DTS_SP&#39;]][[1]][[&#39;HKE&#39;]]@price)
+
+fleets.ctrl.mxpr.price[[&#39;NTR_SP&#39;]][[&#39;HOM&#39;]][[&#39;pd.Pa0&#39;]][] &lt;- 
+  fleets.ctrl.mxpr.price[[&#39;DTS_SP&#39;]][[&#39;HOM&#39;]][[&#39;pd.Pa0&#39;]][] &lt;-
+                    yearMeans(fleets[[&#39;DTS_SP&#39;]][[1]][[&#39;HOM&#39;]]@price)
+
+fleets.ctrl.mxpr.price[[&#39;DTS_SP&#39;]][[&#39;HO8&#39;]][[&#39;pd.Pa0&#39;]][]   &lt;- 
+                    yearMeans(fleets[[&#39;DTS_SP&#39;]][[2]][[&#39;HO8&#39;]]@price)
+
+fleets.ctrl.mxpr.price[[&#39;DTS_SP&#39;]][[&#39;LDB&#39;]][[&#39;pd.Pa0&#39;]][]   &lt;- 
+                    yearMeans(fleets[[&#39;DTS_SP&#39;]][[1]][[&#39;LDB&#39;]]@price)
+
+fleets.ctrl.mxpr.price[[&#39;DTS_SP&#39;]][[&#39;MEG&#39;]][[&#39;pd.Pa0&#39;]][]   &lt;- 
+                    yearMeans(fleets[[&#39;DTS_SP&#39;]][[1]][[&#39;MEG&#39;]]@price)
+
+fleets.ctrl.mxpr.price[[&#39;NTR_SP&#39;]][[&#39;MON&#39;]][[&#39;pd.Pa0&#39;]][] &lt;- 
+  fleets.ctrl.mxpr.price[[&#39;DTS_SP&#39;]][[&#39;MON&#39;]][[&#39;pd.Pa0&#39;]][] &lt;- 
+                    yearMeans(fleets[[&#39;DTS_SP&#39;]][[1]][[&#39;MON&#39;]]@price)
+
+fleets.ctrl.mxpr.price[[&#39;DTS_SP&#39;]][[&#39;MAC&#39;]][[&#39;pd.Pa0&#39;]][] &lt;- 
+                    yearMeans(fleets[[&#39;DTS_SP&#39;]][[2]][[&#39;MAC&#39;]]@price)
+
+fleets.ctrl.mxpr.price[[&#39;DTS_SP&#39;]][[&#39;WHB&#39;]][[&#39;pd.Pa0&#39;]][] &lt;- 
+                    yearMeans(fleets[[&#39;DTS_SP&#39;]][[1]][[&#39;WHB&#39;]]@price)
+
+fleets.ctrl.mxpr.price[[&#39;NTR_SP&#39;]][[&#39;OTH&#39;]][[&#39;pd.Pa0&#39;]][] &lt;- 
+                    yearMeans(fleets[[&#39;NTR_SP&#39;]][[2]][[&#39;OTH&#39;]]@price)
+
+
+fleets.ctrl.mxpr.price[[&#39;DTS_SP&#39;]][[&#39;OTH&#39;]][[&#39;pd.Pa0&#39;]][] &lt;- 
+                    yearMeans(fleets[[&#39;DTS_SP&#39;]][[1]][[&#39;OTH&#39;]]@price)</code></pre>
+<p>We set the base landings equal to the mean landings of the historical years in the whole fishery, because the price in the landings is a function of the total landings in the fishery and not only the landings of a given fleet.</p>
+<pre class="r"><code>fleets.ctrl.mxpr.price[[&#39;NTR_SP&#39;]][[&#39;HKE&#39;]][[&#39;pd.La0&#39;]][] &lt;- 
+  fleets.ctrl.mxpr.price[[&#39;DTS_SP&#39;]][[&#39;HKE&#39;]][[&#39;pd.La0&#39;]][] &lt;- yearMeans(landStock(fleets, &#39;HKE&#39;))
+
+fleets.ctrl.mxpr.price[[&#39;NTR_SP&#39;]][[&#39;HOM&#39;]][[&#39;pd.La0&#39;]][] &lt;- 
+  fleets.ctrl.mxpr.price[[&#39;DTS_SP&#39;]][[&#39;HOM&#39;]][[&#39;pd.La0&#39;]][] &lt;- yearMeans(landStock(fleets, &#39;HOM&#39;))
+
+fleets.ctrl.mxpr.price[[&#39;DTS_SP&#39;]][[&#39;HO8&#39;]][[&#39;pd.La0&#39;]][] &lt;- yearMeans(landStock(fleets, &#39;HO8&#39;))
+
+fleets.ctrl.mxpr.price[[&#39;DTS_SP&#39;]][[&#39;LDB&#39;]][[&#39;pd.La0&#39;]][] &lt;- yearMeans(landStock(fleets, &#39;LDB&#39;))
+
+fleets.ctrl.mxpr.price[[&#39;DTS_SP&#39;]][[&#39;MEG&#39;]][[&#39;pd.La0&#39;]][] &lt;- yearMeans(landStock(fleets, &#39;MEG&#39;))
+
+fleets.ctrl.mxpr.price[[&#39;NTR_SP&#39;]][[&#39;MON&#39;]][[&#39;pd.La0&#39;]][] &lt;- 
+  fleets.ctrl.mxpr.price[[&#39;DTS_SP&#39;]][[&#39;MON&#39;]][[&#39;pd.La0&#39;]][] &lt;- yearMeans(landStock(fleets, &#39;MON&#39;))
+
+fleets.ctrl.mxpr.price[[&#39;DTS_SP&#39;]][[&#39;MAC&#39;]][[&#39;pd.La0&#39;]][] &lt;- yearMeans(landStock(fleets, &#39;MAC&#39;))
+
+fleets.ctrl.mxpr.price[[&#39;DTS_SP&#39;]][[&#39;WHB&#39;]][[&#39;pd.La0&#39;]][] &lt;- yearMeans(landStock(fleets, &#39;WHB&#39;))
+
+fleets.ctrl.mxpr.price[[&#39;NTR_SP&#39;]][[&#39;OTH&#39;]][[&#39;pd.La0&#39;]][] &lt;- yearMeans(landStock(fleets, &#39;OTH&#39;))
+
+fleets.ctrl.mxpr.price[[&#39;DTS_SP&#39;]][[&#39;OTH&#39;]][[&#39;pd.La0&#39;]][] &lt;- yearMeans(landStock(fleets, &#39;OTH&#39;))</code></pre>
+<pre class="r"><code>mxpr.price &lt;- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets, 
+                  covars = covars, indices = NULL, advice = advice, 
+                  main.ctrl = main.ctrl, biols.ctrl = biols.ctrl, 
+                  fleets.ctrl = fleets.ctrl.mxpr.price, 
+                  covars.ctrl = covars.ctrl, obs.ctrl = obs.ctrl, 
+                  assess.ctrl = assess.ctrl, advice.ctrl = advice.ctrl.fixed)</code></pre>
+</div>
+<div id="capital-dynamics" class="section level2">
+<h2>Capital Dynamics</h2>
+<p>Capital Dynamics describe the long term dynamics of the fleet or strategic behaviour; the investment or disinvestment of fishermen in new vessels or technological improvements. In FLBEIA the capital dynamics could be modelled through changes in fleet’s capacity or changes in fleet’s catchability (technological improvements). However, at present, models that dynamically change catchability are not available in FLBEIA. Catchability can vary over time but only if time dependent catchability is provided through input data. The capital can be maintained fixed or it can vary according to the model described in Salz et al. (2011). This model relates the investment and disinvestment in new vessels with the ratio between revenue (<span class="math inline">\(Rev\)</span>):</p>
+<p><span class="math display">\[\begin{equation}\label{eq:revenue}
+    Rev_y = \sum_{st}\sum_a\sum_s L_{st,a,y,s}\cdot P_{st,a,y,s}
+\end{equation}\]</span></p>
+<p>and break even revenue (<span class="math inline">\(BER\)</span>) which equals fixed costs divided by contribution margin ratio, which equals contribution margin divided by total revenue:</p>
+<p><span class="math display">\[\begin{equation}
+    BER_y = \frac{CrC_y + FxC_y\cdot n_{V_y} + CaC_y}{1-\frac{FuC_y+\sum_m \gamma_{y,m}\cdot VaC_{y,m}}{Rev_y}}
+\end{equation}\]</span></p>
+<p>where <span class="math inline">\(CrC\)</span> is crew cost, <span class="math inline">\(CaC\)</span> capital cost and <span class="math inline">\(FuC\)</span> fuel cost. Crew cost is formed by a fixed part and a variable part proportional to the revenue, mathematically:</p>
+<p><span class="math display">\[\begin{equation}
+    CrC_y = FxS_y + \mu\cdot Rev_y 
+\end{equation}\]</span></p>
+<p>where <span class="math inline">\(FxS\)</span> represents the fixed part of the whole crew wages and <span class="math inline">\(\mu\)</span> is the proportion of income dedicated to wages.</p>
+<p>The maximum annual investment, <span class="math inline">\(Inv_{\max}\)</span>, for each fleet is determined by:</p>
+<p><span class="math display">\[\begin{equation}
+Inv_{\max_y}= 1 - \frac{BER_y}{Rev_y}
+\end{equation}\]</span></p>
+<p>But only a certain proportion of the profit, <span class="math inline">\(\eta\)</span>, is dedicated to increasing the fleet, thus:</p>
+<p><span class="math display">\[\begin{equation}
+Inv_y = \eta \cdot Inv_{\max_y}
+\end{equation}\]</span></p>
+<p>Furthermore, investment in new vessels will only occur if the operational days of existing vessels is equal to maximum days. The investment/disinvestment decision, i.e. the variation in capacity, <span class="math inline">\(\Omega\)</span>, follows the rule below:</p>
+<p><span class="math display">\[\begin{equation}\label{eq:CapDynFinal}
+    \Omega_{y+1} = 
+        \begin{cases}
+                Inv_y\cdot \kappa_y         &amp; \text{if } Inv_y &lt; 0 \text{ and } -Inv_y &lt; \omega_1,\\
+                -\omega_1\cdot\kappa_y      &amp; \text{if } Inv_y &lt; 0 \text{ and } -Inv_y &gt; \omega_1,\\
+                0                                             &amp; \text{if } Inv_y &gt; 0 \text{ and }  E_y &lt; \kappa_y,\\
+                Inv_y\cdot\kappa_y            &amp; \text{if } Inv_y &gt; 0 \text{ and }  Inv_y &lt; \omega_2 \text{ and }  E_y = \kappa_y,\\
+                \omega_2\cdot\kappa_{y}   &amp; \text{if } Inv_y &gt; 0 \text{ and }  Inv_y &gt; \omega_2 \text{ and }  E_y = \kappa_y.
+        \end{cases}
+\end{equation}\]</span></p>
+<p>where <span class="math inline">\(\omega_1\)</span> and <span class="math inline">\(\omega_2\)</span> stands for the limit on the decrease and increase of the fleet relative to the previous year respectively. The increase in number of vessels is then obtained dividing the final investment in new vessels, <span class="math inline">\(\Omega\)</span>, by the maximum number of days that a vessel operates in a year, <span class="math inline">\(MaxDays\)</span>. Thus the new number of vessels is given by:</p>
+<p><span class="math display">\[\begin{equation}
+        n_{V_{y+1}} = n_{V_{y}} + \frac{\Omega_{y+1}}{MaxDays}
+\end{equation}\]</span></p>
+<p>Formulas  to  are applied every year at fleet level but fleet subscript has been omitted for simpicity.</p>
+<p>Now generate the control object:</p>
+<pre class="r"><code>capital.models      &lt;- rep(&#39;fixedCapital&#39;, length(fleets))
+names(capital.models) &lt;- names(fleets)
+capital.models[names(capital.models) %in% c(&#39;NTR_SP&#39;, &#39;DTS_SP&#39;)] &lt;- &#39;SCD&#39;
+
+price.models        &lt;- rep(&#39;fixedPrice&#39;, length(catch.models))
+names(price.models) &lt;- names(flts.stksnames)
+
+
+fleets.ctrl.mxpr.capDyn &lt;- create.fleets.ctrl(
+                          fls = names(fleets), 
+                   n.fls.stks = n.flts.stks, 
+                fls.stksnames = flts.stksnames,
+                effort.models = effort.models, 
+                 price.models = price.models, 
+                          flq = flq, 
+                 catch.models = catch.models, 
+               capital.models = capital.models,
+           restriction.NTR_SP = &#39;catch&#39;, restriction.PSX_SP = &#39;catch&#39;, 
+           restriction.PGP_PT = &#39;catch&#39;, restriction.DTS_PT = &#39;catch&#39;, 
+           restriction.DTS_SP = &#39;catch&#39;, restriction.PSX_PT = &#39;catch&#39;, 
+           restriction.CAD_SP = &#39;catch&#39;, 
+           effort.restr.NTR_SP = &#39;HKE&#39;, effort.restr.PSX_SP = &#39;HOM&#39;, 
+           effort.restr.PGP_PT = &#39;HKE&#39;, effort.restr.DTS_PT = &#39;HKE&#39;, 
+           effort.restr.DTS_SP = &#39;HKE&#39;, effort.restr.PSX_PT = &#39;HOM&#39;, 
+           effort.restr.CAD_SP = &#39;HKE&#39;,
+           effort.range.NTR_SP = effort.range[[&#39;NTR_SP&#39;]], 
+           effort.range.DTS_SP = effort.range[[&#39;DTS_SP&#39;]])
+
+for(fl in  c(&#39;DTS_SP&#39;, &#39;NTR_SP&#39;)) fleets.ctrl.mxpr.capDyn[[fl]][[&#39;efs.abs&#39;]] &lt;- FALSE</code></pre>
+<p>Run the model:</p>
+<pre class="r"><code>mxpr.capDyn &lt;- FLBEIA(biols = biols, SRs = SRs, BDs = NULL, fleets = fleets, 
+                  covars = covars, indices = NULL, advice = advice, 
+                  main.ctrl = main.ctrl, biols.ctrl = biols.ctrl, 
+                  fleets.ctrl = fleets.ctrl.mxpr.capDyn, 
+                  covars.ctrl = covars.ctrl, obs.ctrl = obs.ctrl, 
+                  assess.ctrl = assess.ctrl, advice.ctrl = advice.ctrl.fixed)</code></pre>
+</div>
+<div id="analysis-of-the-results" class="section level2">
+<h2>Analysis of the results</h2>
+<p>Now analyse the results using the shiny app.</p>
+<pre class="r"><code>bio &lt;- rbind(bioSumQ(bioSum(CnEf, scenario = &#39;CnEf&#39;, years = ac(2000:main.ctrl$sim.years[2]))),
+             bioSumQ(bioSum(trad, scenario = &#39;trad&#39;, years = ac(2000:main.ctrl$sim.years[2]))),
+             bioSumQ(bioSum(mxpr, scenario = &#39;MxPr&#39;, years = ac(2000:main.ctrl$sim.years[2]))),
+             bioSumQ(bioSum(mxpr.price, scenario = &#39;MxPr.Price&#39;, 
+                            years = ac(2000:main.ctrl$sim.years[2]))),
+             bioSumQ(bioSum(mxpr.capDyn, scenario = &#39;MxPr.Capital&#39;, 
+                            years = ac(2000:main.ctrl$sim.years[2]))))
+
+flt &lt;- rbind(fltSumQ(fltSum(CnEf, scenario = &#39;CnEf&#39;, flnms = c(&#39;DTS_SP&#39;, &#39;NTR_SP&#39;), 
+                            years = ac(2000:main.ctrl$sim.years[2]))),
+             fltSumQ(fltSum(trad, scenario = &#39;trad&#39;, flnms = c(&#39;DTS_SP&#39;, &#39;NTR_SP&#39;), 
+                            years = ac(2000:main.ctrl$sim.years[2]))),
+             fltSumQ(fltSum(mxpr, scenario = &#39;MxPr&#39;, flnms = c(&#39;DTS_SP&#39;, &#39;NTR_SP&#39;), 
+                            years = ac(2000:main.ctrl$sim.years[2]))),
+             fltSumQ(fltSum(mxpr.price, scenario = &#39;MxPr.Price&#39;,  flnms = c(&#39;DTS_SP&#39;, &#39;NTR_SP&#39;), 
+                            years = ac(2000:main.ctrl$sim.years[2]))),
+             fltSumQ(fltSum(mxpr.capDyn, scenario = &#39;MxPr.Capital&#39;, flnms = c(&#39;DTS_SP&#39;, &#39;NTR_SP&#39;),
+                            years = ac(2000:main.ctrl$sim.years[2]))))
+
+fltStk &lt;- rbind(fltStkSumQ(fltStkSum(CnEf, scenario = &#39;CnEf&#39;, flnms = c(&#39;DTS_SP&#39;, &#39;NTR_SP&#39;), 
+                                     years = ac(2000:main.ctrl$sim.years[2]))),
+                fltStkSumQ(fltStkSum(trad, scenario = &#39;trad&#39;, flnms = c(&#39;DTS_SP&#39;, &#39;NTR_SP&#39;), 
+                                     years = ac(2000:main.ctrl$sim.years[2]))),
+                fltStkSumQ(fltStkSum(mxpr, scenario = &#39;MxPr&#39;, flnms = c(&#39;DTS_SP&#39;, &#39;NTR_SP&#39;), 
+                                     years = ac(2000:main.ctrl$sim.years[2]))),
+                fltStkSumQ(fltStkSum(mxpr.price, scenario = &#39;MxPr.Price&#39;, 
+                                     flnms = c(&#39;DTS_SP&#39;, &#39;NTR_SP&#39;), 
+                                     years = ac(2000:main.ctrl$sim.years[2]))),
+                fltStkSumQ(fltStkSum(mxpr.capDyn, scenario = &#39;MxPr.Capital&#39;, 
+                                     flnms = c(&#39;DTS_SP&#39;, &#39;NTR_SP&#39;), 
+                                     years = ac(2000:main.ctrl$sim.years[2]))))
+
+mt &lt;- rbind(mtSumQ(mtSum(CnEf, scenario = &#39;CnEf&#39;, flnms = c(&#39;DTS_SP&#39;, &#39;NTR_SP&#39;), 
+                         years = ac(2000:main.ctrl$sim.years[2]))),
+             mtSumQ(mtSum(trad, scenario = &#39;trad&#39;, flnms = c(&#39;DTS_SP&#39;, &#39;NTR_SP&#39;), 
+                          years = ac(2000:main.ctrl$sim.years[2]))),
+             mtSumQ(mtSum(mxpr, scenario = &#39;MxPr&#39;, flnms = c(&#39;DTS_SP&#39;, &#39;NTR_SP&#39;), 
+                          years = ac(2000:main.ctrl$sim.years[2]))),
+             mtSumQ(mtSum(mxpr.price, scenario = &#39;MxPr.Price&#39;, flnms = c(&#39;DTS_SP&#39;, &#39;NTR_SP&#39;), 
+                          years = ac(2000:main.ctrl$sim.years[2]))),
+             mtSumQ(mtSum(mxpr.capDyn, scenario = &#39;MxPr.Capital&#39;, flnms = c(&#39;DTS_SP&#39;, &#39;NTR_SP&#39;), 
+                          years = ac(2000:main.ctrl$sim.years[2]))))
+
+mtStk &lt;- rbind(mtStkSumQ(mtStkSum(CnEf, scenario = &#39;CnEf&#39;, flnms = c(&#39;DTS_SP&#39;, &#39;NTR_SP&#39;), 
+                                  years = ac(2000:main.ctrl$sim.years[2]))),
+                mtStkSumQ(mtStkSum(trad, scenario = &#39;trad&#39;, flnms = c(&#39;DTS_SP&#39;, &#39;NTR_SP&#39;), 
+                                   years = ac(2000:main.ctrl$sim.years[2]))),
+                mtStkSumQ(mtStkSum(mxpr, scenario = &#39;MxPr&#39;, flnms = c(&#39;DTS_SP&#39;, &#39;NTR_SP&#39;), 
+                                   years = ac(2000:main.ctrl$sim.years[2]))),
+                mtStkSumQ(mtStkSum(mxpr.price, scenario = &#39;MxPr.Price&#39;, 
+                                   flnms = c(&#39;DTS_SP&#39;, &#39;NTR_SP&#39;), 
+                                   years = ac(2000:main.ctrl$sim.years[2]))),
+                mtStkSumQ(mtStkSum(mxpr.capDyn, scenario = &#39;MxPr.Capital&#39;, 
+                                   flnms = c(&#39;DTS_SP&#39;, &#39;NTR_SP&#39;), 
+                                   years = ac(2000:main.ctrl$sim.years[2]))))
+
+adv &lt;- rbind(advSumQ(advSum(CnEf, scenario = &#39;CnEf&#39;, years = ac(2000:main.ctrl$sim.years[2]))),
+                advSumQ(advSum(trad, scenario = &#39;trad&#39;, years = ac(2000:main.ctrl$sim.years[2]))),
+                advSumQ(advSum(mxpr, scenario = &#39;MxPr&#39;, years = ac(2000:main.ctrl$sim.years[2]))),
+                advSumQ(advSum(mxpr.price, scenario = &#39;MxPr.Price&#39;, 
+                               years = ac(2000:main.ctrl$sim.years[2]))),
+                advSumQ(advSum(mxpr.capDyn, scenario = &#39;MxPr.Capital&#39;, 
+                               years = ac(2000:main.ctrl$sim.years[2]))))
+
+flbeiaApp(bio = bio, 
+            flt = flt, 
+         fltStk = fltStk, 
+             mt = mt, 
+          mtStk = mtStk, 
+            adv = adv,
+          years = ac(2000:main.ctrl$sim.years[2]), 
+  calculate_npv = TRUE, 
+         npv.y0 = &#39;2016&#39;, 
+        npv.yrs = ac(2017:main.ctrl$sim.years[2]))</code></pre>
+</div>
+</div>
+<div id="more-information" class="section level1">
+<h1>More information</h1>
+<ul>
+<li>You can submit bug reports, questions or suggestions on this tutorial at <a href="https://github.com/flr/doc/issues" class="uri">https://github.com/flr/doc/issues</a>.</li>
+<li>Alternatively, send a pull request to <a href="https://github.com/flr/doc/" class="uri">https://github.com/flr/doc/</a>.</li>
+<li>For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage: <a href="http://flr-project.org" class="uri">http://flr-project.org</a>.</li>
+<li>You can submit bug reports, questions or suggestions specific to <strong>FLBEIA</strong> to <a href="mailto:flbeia@azti.es" class="email">flbeia@azti.es</a>.</li>
+</ul>
+<div id="software-versions" class="section level2">
+<h2>Software Versions</h2>
+<ul>
+<li>R version 4.0.0 (2020-04-24)</li>
+<li>FLCore: 2.6.15</li>
+<li>FLBEIA: 1.15.4</li>
+<li>spict: 1.2.8</li>
+<li>fishmethods: 1.11.1</li>
+<li><strong>Compiled</strong>: Fri May 15 07:16:53 2020</li>
+</ul>
+</div>
+<div id="license" class="section level2">
+<h2>License</h2>
+<p>This document is licensed under the <a href="https://creativecommons.org/licenses/by-sa/4.0">Creative Commons Attribution-ShareAlike 4.0 International</a> license.</p>
+</div>
+<div id="author-information" class="section level2">
+<h2>Author information</h2>
+<p><strong>Dorleta GARCIA</strong>. AZTI, Marine Research Unit. Txatxarramendi Ugartea z/g, 48395, Sukarrieta, Bizkaia, Spain. <a href="https://www.azti.es/" class="uri">https://www.azti.es/</a>.</p>
+<p><strong>FLBEIA team</strong>. AZTI. Marine Reserach Unit. Txatxarramendi Ugartea z/g, 48395, Sukarrieta, Basque Country, Spain. <strong>Mail</strong> <a href="mailto:flbeia@azti.es" class="email">flbeia@azti.es</a></p>
+</div>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1 class="unnumbered">References</h1>
+<div id="refs" class="references hanging-indent">
+<div id="ref-garcia2017">
+<p>Garcia, Dorleta, Sonia Sánchez, Raúl Prellezo, Agurtzane Urtizberea, and Marga Andrés. 2017. “FLBEIA: A Simulation Model to Conduct Bio-Economic Evaluation of Fisheries Management Strategies.” <em>SoftwareX</em> 6: 141–47.</p>
+</div>
+<div id="ref-Ulrich2011">
+<p>Ulrich, Clara, Stuart A. Reeves, Youen Vermard, Steven J. Holmes, and Willy Vanhee. 2011. “Reconciling Single-Species Tacs in the North Sea Demersal Fisheries Using the Fcube Mixed-Fisheries Advice Framework.” <em>ICES Journal of Marine Science</em> 68 (7): 1535–47.</p>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

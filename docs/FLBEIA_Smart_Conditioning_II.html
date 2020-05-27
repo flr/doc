@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Smart Conditioning II</title>
+
+<script src="site_libs/header-attrs-2.1/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="http://flr-project.org">
+    <span class="fa fa-home"></span>
+     
+    FLR
+  </a>
+</li>
+<li>
+  <a href="index.html">
+    <span class="fa fa-info"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-play-circle-o"></span>
+     
+    Intro
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="A_quick_introduction_to_FLR.html">A quick introduction to FLR</a>
+    </li>
+    <li>
+      <a href="An_overview_of_the_FLCore_classes.html">An overview of the FLCore classes</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-database"></span>
+     
+    Input
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Loading_your_data_into_FLR.html">Loading your data into FLR</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-magic"></span>
+     
+    Modelling
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Modelling_stock_recruitment_with_FLSR.html">Modelling stock recruitment with FLSR</a>
+    </li>
+    <li>
+      <a href="Statistical_catch_at_age_models_in_FLa4a.html">Statistical catch at age models in FLa4a</a>
+    </li>
+    <li>
+      <a href="Modelling_growth_and_its_uncertainty_in_FLa4a.html">Modelling growth and its uncertainty in FLa4a</a>
+    </li>
+    <li>
+      <a href="Natural_mortality_modelling_in_FLa4a.html">Natural mortality modelling in FLa4a</a>
+    </li>
+    <li>
+      <a href="Stock_assessment_using_eXtended_Survivors_Analysis_with_FLXSA.html">Stock assessment using eXtended Survivors Analysis with FLXSA</a>
+    </li>
+    <li>
+      <a href="Using_information_on_life_history_relationships.html">Using information on Life History relationships</a>
+    </li>
+    <li>
+      <a href="Life_history_relationships.html">Life history relationships</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-tachometer"></span>
+     
+    Advice
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Running_Medium_Term_Forecasts_with_FLash.html">Running Medium Term Forecasts with FLash</a>
+    </li>
+    <li>
+      <a href="Short_Term_Forecasting_for_advice_using_FLash.html">Short Term Forecasting for advice using FLash</a>
+    </li>
+    <li>
+      <a href="Forecasting_on_the_Medium_Term_for_advice_using_FLasher.html">Forecasting on the Medium Term for advice using FLasher</a>
+    </li>
+    <li>
+      <a href="Reference_points_for_fisheries_management_with_FLBRP.html">Reference points for fisheries management with FLBRP</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-cogs"></span>
+     
+    MSE
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+    <li>
+      <a href="Management_procedure_biomass_dynamic.html">Biomass Dynamic Management Procedures</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-cogs"></span>
+     
+    FLBEIA
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Conditioning.html">Conditioning FLBEIA using Smart Conditioning Functions</a>
+    </li>
+    <li>
+      <a href="FLBEIA_A_Simple_Example.html">A simple example on how to use FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_An_Example_with_multiple_dimensions.html">A simple example with multiple dimensions in FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Checking_inputs.html">Checking FLBEIA inputs</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Using_Assessment_models_in_the_MP.html">Using Stock Assessment models in the Management procedure of FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Incorporating_SS3assessment_MP.html">Including SS3 assessment within the Management Procedure of FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Testing_Management_Strategies.html">Testing different Management Strategies in FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Data_Poor_MSE.html">Data Limited MSE in FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Smart_Conditioning_II.html">Smart Conditioning II</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Mixed_Fisheries_Tutorial.html">ICES Mixed Fisheries Advice using FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Bio_Economic_Tutorial.html">Bio-Economic simulation using FLBEIA</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-area-chart"></span>
+     
+    Plotting
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="ggplotFL_plotting_FLR_objects_with_ggplot2.html">ggplotFL, plotting FLR objects with ggplot2</a>
+    </li>
+    <li>
+      <a href="Plotting_FLR_objects_using_lattice.html">Plotting FLR objects using lattice</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-puzzle-piece"></span>
+     
+    Internals
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Units_of_measurement_in_FLR_objects.html">Units of measurement in FLR objects</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="http://github.com/flr/doc/issues">
+    <span class="fa fa-question fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Smart Conditioning II</h1>
+<h4 class="date">15 mayo, 2020</h4>
+
+</div>
+
+
+<p><img src="images/FLBEIA_logo.png" width="20%" style="display: block; margin: auto;" /></p>
+<div id="aim" class="section level1">
+<h1>Aim</h1>
+<p><strong>FLBEIA</strong> <span class="citation">(Garcia et al. 2017)</span> provides a battery of tutorials for learning how to use this software. This is the fifth tutorial of <strong>FLBEIA</strong> and it is a practical guide about the conditioning <strong>FLBEIA</strong> using the functions available in the ‘Smart Update II’ module. It is divided in the following sections:</p>
+<ul>
+<li>Conditioning of the model
+<ul>
+<li>The FLBiols object.</li>
+<li>The FLFleets object.</li>
+<li>The rest of data objects.</li>
+<li>The control objects.</li>
+</ul></li>
+<li>The validation of the conditioning.</li>
+<li>The scenarios.</li>
+<li>The advice.</li>
+</ul>
+<p>At the end of the tutorial some exercises are proposed.</p>
+</div>
+<div id="required-packages-to-run-this-tutorial" class="section level1">
+<h1>Required packages to run this tutorial</h1>
+<p>To follow this tutorial you should have installed the following packages:</p>
+<ul>
+<li><p>CRAN: <a href="https://cran.r-project.org/web/packages/ggplot2/index.html">ggplot2</a> <a href="https://cran.r-project.org/web/packages/XLConnect/index.html">XLConnect</a> <a href="https://cran.r-project.org/web/packages/XLConnectJars/index.html">XLConnectJars</a></p></li>
+<li><p>FLR: <a href="http://www.flr-project.org/FLCore/">FLCore</a>, <a href="http://www.flr-project.org/FLAssess/">FLAssess</a>, <a href="http://www.flr-project.org/FLash/">FLash</a>, <a href="http://www.flr-project.org/FLBEIA/">FLBEIA</a>, <a href="http://www.flr-project.org/FLFleet/">FLFleet</a></p></li>
+</ul>
+<p>If you are using Windows, please use 64-bit R version because some of the packages (mainly FLash) do not work in 32-bit.</p>
+<pre class="r"><code>install.packages( c(&quot;ggplot2&quot;, &quot;XLConnect&quot;))
+install.packages( c(&quot;FLCore&quot;, &quot;FLFleet&quot;, &quot;FLBEIA&quot;, 
+                    &quot;FLash&quot;, &quot;FLAssess&quot;, &quot;FLXSA&quot;), 
+                  repos=&quot;http://flr-project.org/R&quot;)</code></pre>
+<p>It has to be noted that packages <code>FLCore</code>, <code>FLFleets</code> and <code>FLBEIA</code> have to be installed in this exact order, as alternative orders can cause some problems.</p>
+<p>Load all the necessary packages.</p>
+<pre class="r"><code>library(FLBEIA)
+library(XLConnect)
+library(plyr)</code></pre>
+</div>
+<div id="conditioning-of-the-model" class="section level1">
+<h1>Conditioning of the model</h1>
+<p>The most difficult part in the generation of the mixed-fisheries advice is the compilation of the data. There are two main sources of data:</p>
+<ul>
+<li>The biological data that comes from the stocks assessment working groups.</li>
+<li>the catch and effort data at fleet and metier level.</li>
+</ul>
+<p>The biological data is easy to get and it is not problematic because the data has been already used by the stock assessment working groups and it is free of errors. However, although the catch data at fleet and metier level forms the basis for the catch data in the assessment working groups there are usually many issues that make the process of data compilation long and tedious. The effort data is reported by the member states to the working groups and the catch data is either reported by the member states to the working groups or extracted from Intercatch www.intercatch.dk. The data reported by the member states contains the length of the vessel that is missing in intercatch. Once you have the data, the first two steps in the generation of the advice are ensuring that:</p>
+<ul>
+<li>Total catch provided at metier level for each stock match exactly the catch data used in the stock assesment working groups.</li>
+<li>The metier and fleet code names used in the different data files match exactly.</li>
+</ul>
+<p>In this tutorial we will obviate these two steps, because they do not contribute to the objective, and will use data files that have already been checked and corrected.</p>
+<p>The functions presented in this tutorial are part of the ‘Smart Conditioning II’ module of FLBEIA. They provide functions to create the FLBiols, the FLFleets and covars object, for the rest of the objects the functions available in FLCore or the ‘Smart Conditioning I’ modules should be used.</p>
+<p>The data used in the tutorial corresponds with the Demersal fishery operating in Iberian Coast. The fishery is formed by two countries, Spain and Portugal, and several fleets operating with different gears. An squeme of the case sutdy is shown below</p>
+<ul>
+<li>Stocks:
+<ul>
+<li>Hake: 16 age classes and caught by most of the fleets, catches around 13000 tons. the status of the stocks was bad in the last years and it is the most restrictive stocks.</li>
+<li>Monkfish: 30 age classes and caught by most of the fleets, catches around 2500 tons.</li>
+<li>Four Spot Megrim: 8 age classes and caught by the trawlers, catches around 2500 tons.</li>
+<li>Megrim: 7 age classes and caught by trawlers along with the other megrim, catches around 500 tons.</li>
+</ul></li>
+<li>Fleets:
+<ul>
+<li>SP_GNS: Spanish Gillnetters.
+<ul>
+<li>DEF_100_0_0"<br />
+</li>
+<li>“DEF_60_79_0_0”</li>
+<li>“DEF_80_99_0_0”</li>
+</ul></li>
+<li>PT_GNS: Portuguese Gillnetters.
+<ul>
+<li>DEF_0_0_0</li>
+</ul></li>
+<li>PT_GTR: Portuguese Trammel Nets.
+<ul>
+<li>DEF_0_0_0</li>
+</ul></li>
+<li>SP_GTR: Spanish Trammel Nets.
+<ul>
+<li>DEF_0_0_0</li>
+</ul></li>
+<li>SP_LLS: Spanish Longliners
+<ul>
+<li>DEF_0_0_0</li>
+</ul></li>
+<li>PT_MIS: Portuguese miscelaneous.
+<ul>
+<li>MIS_0_0_0_HC</li>
+</ul></li>
+<li>SP_MIS: Spanish miscelaneous.
+<ul>
+<li>MIS_0_0_0_HC</li>
+</ul></li>
+<li>PT_OTB: Portuguese Bottom Otter Trawl.
+<ul>
+<li>CRU_55_0_0</li>
+<li>DEF_65_0_0</li>
+</ul></li>
+<li>SP_OTB: Spanish Bottom Otter Trawl.
+<ul>
+<li>DEF_65_0_0</li>
+<li>MPD_55_0_0</li>
+</ul></li>
+<li>SP_OTB_24m: Spanish Bottom Otter Trawlers smaller than 24 m.
+<ul>
+<li>MCD_55_0_0</li>
+</ul></li>
+<li>OTH_OTH: A fleet that accounts for the catch not included in the rest of the fleets.
+<ul>
+<li>OTH</li>
+</ul></li>
+<li>SP_PTB: Spanish pair trawlers.
+<ul>
+<li>MPD_55_0_0</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>The FLBiols object in this tutorial is created using the ‘Smart Update II’ functions available in FLBEIA. These functions are an alternative to the ‘Smart Update I’ function presented in the tutorial XXX. The functions have been coded to be able to build the FLBiols and FLFleets objects based on the data used by the ICES assessment working groups and Mixed-Fisheries advice working groups as directly as possible.</p>
+<div id="the-flbiols-object." class="section level2">
+<h2>The FLBiols object.</h2>
+<p>The biological data needed to build the FLBiols objects is taken from and excel file. The data corresponding to each of input factor (number at age, natural mortality,…) is given in a separate sheet in a matrix form. Each sheet contains a matrix with age in rows and year in columns. Data for all the quantities needs to be reported for the whole data series. If some data is not available NA should be used instead. Units (if available) must be stored in the first line and column (A1).</p>
+<p>The data stored in each fleet is explained in the table below. Each row corresponds with one sheet in the excel file:</p>
+<p>Firts we download the data from the FLR we page using R commands</p>
+<pre class="r"><code>tdir &lt;- tempdir()
+# download.file(&quot;http://www.flr-project.org/doc/src/flbeia_smart_cond_II.zip&quot;, 
+#               file.path(dir, &quot;flbeia_smart_cond_II.zip&quot;))
+# unzip(file.path(dir, &quot;flbeia_smart_cond_II.zip&quot;), exdir=dir)
+unzip(&quot;src/flbeia_smart_cond_II.zip&quot;, exdir=tdir)
+tdir &lt;- file.path(tdir,&quot;flbeia_data_smart_cond_II&quot;)</code></pre>
+<p>Once the data is prepared in excel format it is imported into an FLBiol object using the create.biol.arrays function. The function is applied in an stock-by-stock basis and then the objects are joing in a single FLBiols object using the function with the same name. In the process of conditioning the model it is extremely important to be consistent in the name used along the whole process. This is why we recommend using names as standard as possible. For stock for example the use of the FAO codes with three letters is highly recommended.</p>
+<pre class="r"><code>stknms &lt;- c(&#39;HKE&#39;, &#39;LDB&#39;, &#39;MEG&#39;, &#39;MON&#39;)
+
+hke &lt;- create.biol.arrays(file.path(tdir,&#39;stocks/HKE2017.xlsx&#39;), name = &#39;HKE&#39;,
+                   ages = 0:15, hist.yrs = 1982:2017 , sim.yrs = 2018:2025, 
+                   fbar = c(1,3), mean.yrs = 2015:2017, source = &#39;excel&#39;)
+
+mon &lt;- create.biol.arrays(file.path(tdir,&#39;stocks/MON2017.xlsx&#39;), name = &#39;MON&#39;,
+                          ages = 0:30, hist.yrs = 1980:2017 , sim.yrs = 2018:2025,
+                           fbar = c(1,8), mean.yrs = 2015:2017,  source = &#39;excel&#39;)
+ldb &lt;- create.biol.arrays(file.path(tdir,&#39;stocks/LDB2017.xlsx&#39;), name = &#39;LDB&#39;,
+                          ages = 0:7, hist.yrs = 1986:2017 , sim.yrs = 2018:2025, 
+                          fbar = c(2,4), mean.yrs = 2015:2017, source = &#39;excel&#39;)
+
+meg &lt;- create.biol.arrays(file.path(tdir,&#39;stocks/MEG2017.xlsx&#39;), name = &#39;MEG&#39;,
+                          ages = 1:7, hist.yrs = 1986:2017 , sim.yrs = 2018:2025, 
+                          fbar = c(2,4),mean.yrs = 2015:2017, source = &#39;excel&#39;)</code></pre>
+<p>We join all the objects in a sigle FLBiols and we extend it until 2025 applying the window function at FLBiol object level.</p>
+<pre class="r"><code>biols &lt;- list(HKE = hke, MON = mon, LDB = ldb, MEG = meg)
+
+biols &lt;- FLBiols(lapply(biols, function(x) window(x, 2000,2025)))</code></pre>
+<p>For some stocks we change the weight in the projection to use the one used by the assessment working group to generate the single stock TAC advice.</p>
+<pre class="r"><code>biols$HKE@wt[, ac(2018:2020)] &lt;- c(0.00, 0.05, 0.30, 0.87, 1.71, 2.72, 3.81, 4.93, 6.04, 
+                                   7.11, 8.15, 9.13, 10.02, 10.82, 11.51, 12.39)
+biols$LDB@wt[,ac(2018:2020)]  &lt;- c(0.004,   0.024,  0.044,  0.071,  0.1,    0.131,  0.162,  
+                                   0.218)
+biols$MEG@wt[,ac(2018:2020)]  &lt;- c(0.038, 0.089, 0.134, 0.180, 0.222, 0.2840, 0.396)</code></pre>
+<div id="stock-assessments-with-iterations" class="section level3">
+<h3>Stock assessments with iterations</h3>
+<p>Stocks assessed for example with Bayesian models do not only provide point estimates of the parameters but also their join probability distribution in the form of multiple iterations. If an stock is assessed with a bayesian model FLBEIA should be conditioned using a big enough number of iterations to represent the inherent uncertainty properly. In this case, instead of using an excel file with different sheets we can use a R list with 13 arrays. Each array corresponds with the sheets in the excel file (“n”, “wt”, “mat”, “fec”, “m”, “spwn”, “f”, “caa”, “laa”, “daa”, “wl” and “wd”). Each of these arrays must have dimension [na,ny,ni] where ‘na’ corresponds with the number of ages, ‘ny’ with the number of years and ‘ni’ with the number of iterations. In the call to the ‘create.biol.arrays’ the name of the workspace where the data is stored is used and the name of the list must be called ‘data’.</p>
+</div>
+</div>
+<div id="the-flfleets-object" class="section level2">
+<h2>The FLFleets object</h2>
+<p>To create the fleets, we will use the ‘create.fleets.arrays’ function. The R help page for this function provides some useful information.</p>
+<pre class="r"><code>?create.fleets.arrays</code></pre>
+<p>The function uses catch and effort data in the same format used in the WKMIXFISH as shown in Figures  and . The fleets and metiers names used in both files must match. The country column is not mandatory but the rest are. Aa the metier column is mandatory, the case where a fleet does not have metiers corresponds with a fleet with a single metier case, in this case the same name can be used for the metier and the fleet. The landings and discards are given in total weight. Any unit can be used for the landings and discards but the units used must be coherent along all the objects used. For example, the units of the product of numbers at age and weight at age in the ‘FLBiols’ object must be the same as the units of the catch and landings in the catch data file. In the case of effort, for example, the units used are free, but the units used in all the indicator related with effort, variable cost for instance, must be coherent.</p>
+<p>The arguments ‘flnms’, ‘flt_mt_nms’ and ‘flt_mt_stk_nms’ are used to let R know which is the structure of the fleet. As they are bit long we build them outside the function.</p>
+<pre class="r"><code># fleet names
+flnms &lt;-  c(&#39;SP_GNS&#39;, &#39;PT_GNS&#39;, &#39;PT_GTR&#39;, &#39;SP_GTR&#39;, &#39;SP_LLS&#39;, &#39;PT_MIS&#39;, &#39;SP_MIS&#39;,
+            &#39;PT_OTB&#39;, &#39;SP_OTB&#39;, &#39;SP_OTB_24m&#39;, &#39;OTH_OTH&#39;, &#39;SP_PTB&#39;)
+
+# List with the metiers for each fleet
+flt_mt_nms &lt;- list(SP_GNS = c(&quot;DEF_100_0_0&quot;, &quot;DEF_60_79_0_0&quot;, &quot;DEF_80_99_0_0&quot;),
+                   PT_GNS = &quot;DEF_0_0_0&quot;, 
+                   PT_GTR = &quot;DEF_0_0_0&quot;, 
+                   SP_GTR = &quot;DEF_60_79_0_0&quot;,
+                   SP_LLS = &quot;DEF_0_0_0&quot;, 
+                   PT_MIS = &quot;MIS_0_0_0_HC&quot;, 
+                   SP_MIS = &quot;MIS_0_0_0_HC&quot;,
+                   PT_OTB = c(&quot;CRU_55_0_0&quot;, &quot;DEF_65_0_0&quot;),
+                   SP_OTB = c(&quot;DEF_65_0_0&quot;, &quot;MPD_55_0_0&quot;),
+                   SP_OTB_24m = &quot;MCD_55_0_0&quot;, 
+                   OTH_OTH = &quot;OTH&quot;,
+                   SP_PTB = &quot;MPD_55_0_0&quot;)
+
+# List of list with the stocks caugth by each metier for each fleet
+flt_mt_stk_nms &lt;- list(SP_GNS = list(DEF_100_0_0 = c(&quot;HKE&quot;, &quot;LDB&quot;, &quot;MEG&quot;, &quot;MON&quot;),
+                                     DEF_60_79_0_0 = c(&quot;HKE&quot;, &quot;LDB&quot;, &quot;MEG&quot;, &quot;MON&quot;),
+                                     DEF_80_99_0_0 = c(&quot;HKE&quot;, &quot;LDB&quot;, &quot;MEG&quot;, &quot;MON&quot;)),
+                       PT_GNS = list(DEF_0_0_0 = c(&quot;HKE&quot;, &quot;LDB&quot;, &quot;MEG&quot;, &quot;MON&quot;)),
+                       PT_GTR = list(DEF_0_0_0 = c(&quot;HKE&quot;, &quot;LDB&quot;, &quot;MEG&quot;, &quot;MON&quot;)),
+                       SP_GTR = list(DEF_60_79_0_0 = c(&quot;HKE&quot;, &quot;LDB&quot;, &quot;MEG&quot;, &quot;MON&quot;)),
+                       SP_LLS = list(DEF_0_0_0 = c(&quot;HKE&quot;, &quot;LDB&quot;,  &quot;MON&quot;)),
+                       PT_MIS = list(MIS_0_0_0_HC = c(&quot;HKE&quot;, &quot;LDB&quot;, &quot;MEG&quot;, &quot;MON&quot;)),
+                       SP_MIS = list(MIS_0_0_0_HC = c(&quot;HKE&quot;, &quot;LDB&quot;, &quot;MEG&quot;, &quot;MON&quot;)),
+                       PT_OTB = list(CRU_55_0_0 = c(&quot;HKE&quot;, &quot;LDB&quot;, &quot;MEG&quot;, &quot;MON&quot;),
+                                     DEF_65_0_0 = c(&quot;HKE&quot;, &quot;LDB&quot;, &quot;MEG&quot;, &quot;MON&quot;)),
+                       SP_OTB = list(DEF_65_0_0 = c(&quot;HKE&quot;, &quot;LDB&quot;, &quot;MEG&quot;, &quot;MON&quot;),
+                                     MPD_55_0_0 = c(&quot;HKE&quot;, &quot;LDB&quot;, &quot;MEG&quot;, &quot;MON&quot;)),
+                       SP_OTB_24m = list(MCD_55_0_0 = c(&quot;HKE&quot;, &quot;LDB&quot;, &quot;MEG&quot;, &quot;MON&quot;)),
+                       OTH_OTH = list(OTH = c(&quot;HKE&quot;, &quot;LDB&quot;, &quot;MEG&quot;, &quot;MON&quot;)),
+                       SP_PTB = list(MPD_55_0_0 = c(&quot;HKE&quot;, &quot;LDB&quot;, &quot;MEG&quot;, &quot;MON&quot;)))</code></pre>
+<p>Stock data files are used to fill the ‘landings.wt’ and ‘discards.wt’ slots in the FLCatch slots of the FLFleet object.</p>
+<pre class="r"><code># stock data file  names
+stk_objs &lt;- c(file.path(tdir,&quot;stocks/HKE2017.xlsx&quot;), file.path(tdir,&quot;stocks/LDB2017.xlsx&quot;), 
+              file.path(tdir,&quot;stocks/MEG2017.xlsx&quot;), file.path(tdir,&quot;stocks/MON2017.xlsx&quot;) )
+names(stk_objs) &lt;- c(&#39;HKE&#39;, &#39;LDB&#39;, &#39;MEG&#39;, &#39;MON&#39;)
+stk_objs</code></pre>
+<pre><code>##                                                                           HKE 
+## &quot;C:\\cygwin64\\tmp\\RtmpkrU8CZ/flbeia_data_smart_cond_II/stocks/HKE2017.xlsx&quot; 
+##                                                                           LDB 
+## &quot;C:\\cygwin64\\tmp\\RtmpkrU8CZ/flbeia_data_smart_cond_II/stocks/LDB2017.xlsx&quot; 
+##                                                                           MEG 
+## &quot;C:\\cygwin64\\tmp\\RtmpkrU8CZ/flbeia_data_smart_cond_II/stocks/MEG2017.xlsx&quot; 
+##                                                                           MON 
+## &quot;C:\\cygwin64\\tmp\\RtmpkrU8CZ/flbeia_data_smart_cond_II/stocks/MON2017.xlsx&quot;</code></pre>
+<p>To call the function ‘create.fleets.arrays’ to create the FLFleets object we have to decide how to condition the catch at age at metier level. There are 4 different ways of conditioning the landings and discards at age, depenending on data availability. The options are stock dependent so we can use different options for each stock. In the options one to three is extremely important that the sum of the catch at ages provided are equal to the overall catch at age.</p>
+<ul>
+<li>Catch at age data is available at m?tier level for all the m?tiers included in the CS.</li>
+<li>Catch at age data is only available at fleet level.</li>
+<li>Catch at age data is disaggregated but the segments dot not correspond exactly with the m?tiers/fleets considered in the case study.</li>
+<li>Catch at age data is only available at stock level.</li>
+</ul>
+<p>In each case the excel files must be named differently. In the first option, the most complete one, we need to provide an excel file for each fleet, and within the file there must be a sheet for each of the metiers as shown in Figure . The file name must be equal to ‘CAA_’ followed by the name of the fleet and with the ‘.xlsx’ suffix. In turn, the sheets of the excel file must match exactly the name fo the metiers.</p>
+<p>In the second option the catch at age data is provided at fleet level. As in option one the file name must be equal to ‘CAA_’ followed by the name of the fleet and with the ‘.xlsx’ suffix. In this case the file must have only one sheet with the name of the fleet (Figure ). The partial catches at metier level, (metier catch divided by the fleet catch), are used to divided the overal catch at age by metier</p>
+<p>The third option is quite useful because usually the catch at age data is available at different level. In this case only one file per stock is provided. The file name must be equal to ‘CAA_’ followed by the name of the <em>stock</em> and with the ‘.xlsx’ suffix. Within the file each fleet must be named with the name of the fleet segment it represents (Figure ). Then, it is neccesary to inform R about the correspondence of the segments with the metiers in the FLFleet object as shown in Figure . Then, the partial catches at metier level are used to divided the overal catch at age by metier. Sometimes, in this case it is not easy to ensure that the catch at age obtained summing up the catch at age at fleet level corresponds exactly with the overall catch at age. Hence, there will be differences in the selection pattern of the fleet and the fishing mortality,</p>
+<p>Option 4 is the most basic option. The catch at age is provided at overall level and then it is divided among metiers assuming the same distribution by age. The partial catches at metier level are used to divided the overal catch at age by metier. The file name must be equal to ‘CAA_’ followed by the name of the <em>stock</em> and with the ‘.xlsx’ suffix</p>
+<p>In all the cases each excel sheet has two matrices with the number of columns equal to the number of historical years and the number of rows equal to the number of age groups. The first matrix corresponds with the landings at age and the second matrix,both <em>separated by a single row</em>, with the discards at age.</p>
+<p>In this call to the ‘create.fleets.arrays’ function we will not condition the price, only the effort and the catches.</p>
+<div style="page-break-after: always;"></div>
+<pre class="r"><code># Create the fleets object
+fleets &lt;- create.fleets.arrays(stk_objs,                               
+                             caa_objs = c(&quot;caa_HKE.xlsx&quot;, &quot;caa_LDB.xlsx&quot;, 
+                                          &quot;caa_MEG.xlsx&quot;, &quot;caa_MON.xlsx&quot;),
+                             caa_objs_path = file.path(tdir,&#39;fleets/&#39;),
+                             catch_obj     = file.path(tdir,&#39;fleets/catch.csv&#39;),
+                             effort_obj    = file.path(tdir,&#39;fleets/effort.csv&#39;),
+                             flt_obj = NULL,
+                             stk_nms =  c(&#39;HKE&#39;, &#39;LDB&#39;, &#39;MEG&#39;, &#39;MON&#39;),
+                             flt_nms = flnms,
+                             flt_mt_nms = flt_mt_nms,
+                             flt_mt_stk_nms = flt_mt_stk_nms,
+                             ages = list(HKE = ac(0:15), MON = ac(0:30), 
+                                         MEG = ac(1:7), LDB = ac(0:7)),
+                             hist.yrs = 2000:2017,
+                             sim.yrs = 2018:2025,
+                             mean.yrs = 2015:2017,
+                             caa_flt_mt_correspondences = NULL, 
+                             paa_flt_mt_correspondences = NULL,
+                             caaOpt = c(HKE = 4, LDB = 4, MEG = 4, MON = 4),
+                             update_price = FALSE,
+                             priceOpt = NULL,
+                             excel = TRUE)</code></pre>
+<p>Now we have to calculate the catchabilitis by age for all the fleets and metiers. ‘create.fleets.arrays’ functions assumes that the ‘alpha’ and ‘beta’ parameters of the Cobb-Douglass function are equal to one and calculates the catchability euqal to the ratio between the catch at age at metier level and the product of the biomass in the middle of the total effort and the effort share in the metier. The retention ogives are calculated from the historical data as the rati between the landings at ate and the catch at age. For the projection the mean of the last three years is used.</p>
+<p>For this, we also need to have defined the ‘catch.model’ in the ‘fleets.ctrl’ object, as depending on wether it is ‘CobbDouglas’ or ‘Baranov’ the catchability will be estimated in a different way. At the moment, we will select ‘CobbDouglas’ for all of them.</p>
+<pre class="r"><code>fleets.ctrl &lt;- list()
+for (fl in flnms) {
+  fleets.ctrl[[fl]] &lt;- list()
+  for (st in catchNames(fleets[[fl]]))
+    fleets.ctrl[[fl]][[st]][[&#39;catch.model&#39;]] &lt;- &quot;CobbDouglas&quot;
+}
+
+fleets &lt;- calculate.q.sel.flrObjs(biols, fleets, NULL, fleets.ctrl, 
+                                  mean.yrs = ac(2015:2017), sim.yrs = ac(2018:2025))</code></pre>
+<pre><code>## &lt;environment: R_GlobalEnv&gt;</code></pre>
+<p>Check that the object has been built correctly.</p>
+<pre class="r"><code>validObject(fleets)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+</div>
+<div id="the-economic-data." class="section level2">
+<h2>The Economic data.</h2>
+<div id="price" class="section level3">
+<h3>Price</h3>
+<p>Once the FLFleets object has been created we can fillin the economic slots with the economic data. Price data is filled with the same function ‘create.fleets.arrays’. We could have fill in the price dat together with the catch data. But we can do it separately as shown here. We have to turn of the ‘update_catch_effort’ and ‘update_weight’ arguments and turn on the ‘update_price’. The conditionin of the price is done in the same way it is done for catch at age. Furthermore, the 4 options available for catch at age are also available for price. In this case we will use different options for each stock, for hake and monkfish the option 3 and for the megrims de option 4. In the case of price, in the data files there is only one matrix for the price and the shape is the same used for landings at age.</p>
+<pre class="r"><code># Update the object with the price data
+fleets &lt;- create.fleets.arrays(flt_obj = fleets,
+                               price_objs = c(&#39;paa_HKE.xlsx&#39;, &#39;paa_MEG.xlsx&#39;, 
+                                              &#39;paa_LDB.xlsx&#39;, &#39;paa_MON.xlsx&#39;), 
+                               price_objs_path = file.path(tdir,&#39;fleets/&#39;), 
+                               priceOpt = c(HKE = 3, LDB = 4, MEG = 4, MON = 3),
+                               paa_flt_mt_correspondences = file.path(tdir,&#39;fleets/price_correspondences.xlsx&#39;),
+                               update_catch_effort = FALSE, 
+                               update_price = TRUE, 
+                               update_weight = FALSE,
+                               hist.yrs = 2000:2017, sim.yrs = 2018:2025, 
+                               mean.yrs = 2015:2017,
+                               excel = TRUE)</code></pre>
+</div>
+<div id="economic-indicators" class="section level3">
+<h3>Economic Indicators</h3>
+<p>Figure  shows the economic indicators used in FLBEIA at fleet and metier level. The ‘create.ecoData’ can be used to fill in the objects. The economic data is stored in two different objects, the FLFleets object and the covars object.</p>
+<p>The FLFleet object has the following economic slots:</p>
+<ul>
+<li>fcost: An slot at fleet level with the fixed costs. It is given at vessel level, that is in an annual implementation it constains the annual fixed costs of a vessel in the corresponding fleet.</li>
+<li>crewshare: An slot at fleet level with the proportion of the gross value that is used to pay the crew.</li>
+<li>vcost: An slot at metier level that measures the associated cost per unit of effort.</li>
+<li>capacity: The maixmum effort that a fleet can exert in a given time period.</li>
+</ul>
+<p>The help page provides some information in the use of the function.</p>
+<pre class="r"><code>?create.ecoData</code></pre>
+<p>The economic indicators are provided in an excel file with one sheet per fleet, see Figure. In turn, in each sheet the yearly data at fleet and metier level is provided. The fleet level indicators are provided in the fleet column and then there must be one column per metier with the economic indicators at fleet level.</p>
+<p>In the function call we need to provide the name and path of the excel file with the data, the FLFleets object and historicall years, the years used to calculat the mean and the projection years. The function provides a list with two objects, the fleets object with the updated FLFleets object and a covars object with a list of FLQuants with the economic indicators.</p>
+<pre class="r"><code>ecoD &lt;- create.ecoData(file.path(tdir,&#39;fleets/economic_data.xlsx&#39;), fleets,
+                       hist.yrs = 2005:2017, mean.yrs = 2017, 
+                       sim.yrs = 2018:2025)</code></pre>
+<pre><code>## Warning: Capacity slot in fleet  SP_PTB  has been set to 1e12 to avoid problems in the projection.
+## Warning: Capacity slot in fleet  SP_OTB_24m  has been set to 1e12 to avoid problems in the projection.</code></pre>
+<pre class="r"><code>covars &lt;- ecoD$covars
+fleets &lt;- ecoD$fleets</code></pre>
+<p>Finally, modify the weights in some of the stocks to match the values used by the assessment working group.</p>
+<pre class="r"><code>for(fl in names(fleets)){
+  for(mt in names(fleets[[fl]]@metiers)){
+    if(&#39;LDB&#39; %in% catchNames(fleets[[fl]])){
+      fleets[[fl]]@metiers[[mt]]@catches[[&#39;LDB&#39;]]@landings.wt[,ac(2018:2020)]  &lt;- c(0.002,  
+                                    0.034,  0.069,  0.086,  0.106,  0.133,  0.162,  0.218)
+      fleets[[fl]]@metiers[[mt]]@catches[[&#39;LDB&#39;]]@discards.wt[,ac(2018:2020)]  &lt;-  c(0.004, 
+                                       0.024,   0.041,  0.054,  0.069,  0.094, 0.116,   0.094)
+    }
+    
+  if(&#39;MEG&#39; %in% catchNames(fleets[[fl]])){
+      fleets[[fl]]@metiers[[mt]]@catches[[&#39;MEG&#39;]]@landings.wt[,ac(2018:2020)]  &lt;- c(0.064,  
+                                              0.098,    0.135,  0.18,   0.222,  0.284,  0.396)
+      fleets[[fl]]@metiers[[mt]]@catches[[&#39;MEG&#39;]]@discards.wt[,ac(2018:2020)]  &lt;-  c(0.035, 
+                                                0.062,  0.091,  0.125,  0.062,  0.038,  0)
+  }  
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="more-information" class="section level1">
+<h1>More information</h1>
+<ul>
+<li>You can submit bug reports, questions or suggestions on this tutorial at <a href="https://github.com/flr/doc/issues" class="uri">https://github.com/flr/doc/issues</a>.</li>
+<li>Alternatively, send a pull request to <a href="https://github.com/flr/doc/" class="uri">https://github.com/flr/doc/</a>.</li>
+<li>For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage: <a href="http://flr-project.org" class="uri">http://flr-project.org</a>.</li>
+<li>You can submit bug reports, questions or suggestions specific to <strong>FLBEIA</strong> to <a href="mailto:flbeia@azti.es" class="email">flbeia@azti.es</a>.</li>
+</ul>
+<div id="software-versions" class="section level2">
+<h2>Software Versions</h2>
+<ul>
+<li>R version 4.0.0 (2020-04-24)</li>
+<li>FLCore: 2.6.15</li>
+<li>FLBEIA: 1.15.4</li>
+<li>spict: 1.2.8</li>
+<li>fishmethods: 1.11.1</li>
+<li><strong>Compiled</strong>: Fri May 15 07:52:40 2020</li>
+</ul>
+</div>
+<div id="license" class="section level2">
+<h2>License</h2>
+<p>This document is licensed under the <a href="https://creativecommons.org/licenses/by-sa/4.0">Creative Commons Attribution-ShareAlike 4.0 International</a> license.</p>
+</div>
+<div id="author-information" class="section level2">
+<h2>Author information</h2>
+<p><strong>Dorleta GARCIA</strong>. AZTI, Marine Research Unit. Txatxarramendi Ugartea z/g, 48395, Sukarrieta, Bizkaia, Spain. <a href="https://www.azti.es/" class="uri">https://www.azti.es/</a>.</p>
+<p><strong>FLBEIA team</strong>. AZTI. Marine Reserach Unit. Txatxarramendi Ugartea z/g, 48395, Sukarrieta, Basque Country, Spain. <strong>Mail</strong> <a href="mailto:flbeia@azti.es" class="email">flbeia@azti.es</a></p>
+</div>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1 class="unnumbered">References</h1>
+<div id="refs" class="references hanging-indent">
+<div id="ref-garcia2017">
+<p>Garcia, Dorleta, Sonia Sánchez, Raúl Prellezo, Agurtzane Urtizberea, and Marga Andrés. 2017. “FLBEIA: A Simulation Model to Conduct Bio-Economic Evaluation of Fisheries Management Strategies.” <em>SoftwareX</em> 6: 141–47.</p>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

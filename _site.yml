@@ -65,17 +65,27 @@ navbar:
         - text: "An introduction to MSE using FLR"
           href: An_introduction_to_MSE_using_FLR.html
         - text: "Conditioning FLBEIA using Smart Conditioning Functions"
-          href: Conditioning_FLBEIA.html
+          href: FLBEIA_Conditioning.html
         - text: "A simple example on how to use FLBEIA"
           href: FLBEIA_A_Simple_Example.html
         - text: "A simple example with multiple dimensions in FLBEIA"
           href: FLBEIA_An_Example_with_multiple_dimensions.html
+        - text: "Checking FLBEIA inputs"
+          href: FLBEIA_Checking_inputs.html
         - text: "Using Stock Assessment models in the Management procedure of FLBEIA"
-          href: Using_Assessment_models_in_the_MP_FLBEIA.html
+          href: FLBEIA_Using_Assessment_models_in_the_MP.html
+        - text: "Including SS3 assessment within the Management Procedure of FLBEIA"
+          href: FLBEIA_Incorporating_SS3assessment_MP.html
         - text: "Testing different Management Strategies in FLBEIA"
-          href: Testing_Management_Strategies_in_FLBEIA.html
+          href: FLBEIA_Testing_Management_Strategies.html
         - text: "Data Limited MSE in FLBEIA"
-          href: Data_Poor_MSE_in_FLBEIA.html
+          href: FLBEIA_Data_Poor_MSE.html
+        - text: "Smart Conditioning II"
+          href: FLBEIA_Smart_Conditioning_II.html
+        - text: "ICES Mixed Fisheries Advice using FLBEIA"
+          href: FLBEIA_Mixed_Fisheries_Tutorial.html
+        - text: "Bio-Economic simulation using FLBEIA"
+          href: FLBEIA_Bio_Economic_Tutorial.html
     - text: "Plotting"
       icon: fa-area-chart
       menu:
