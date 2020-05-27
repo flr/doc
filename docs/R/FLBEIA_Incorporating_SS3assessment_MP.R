@@ -1,269 +1,86 @@
----
-title: "Including SS3 assessment within the Management Procedure of FLBEIA"
-# author: "Sonia Sanchez and FLBEIA team"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
-output:
-  github_document:
-  mathjax: TRUE
-pdf_document:
-  fig_width: 6 
-  fig_height: 4 
-  toc: yes
-tags: [FLBEIA SS3]
-license: Creative Commons Attribution-ShareAlike 4.0 International Public License
-bibliography: bibliography.bib
----
-
-```{r, ini, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
+## ---- ini, echo=FALSE, results='hide', message=FALSE, warning=FALSE-----------
 # This chunk set the document environment, so it is hidden
 library(knitr)
 knitr::opts_chunk$set(fig.align="center",
                       message = FALSE, warning = FALSE, echo = TRUE, cache = FALSE)
 options(width=50)
 set.seed(1423)
-```
 
-```{r echo=FALSE, out.width='20%'}
+
+## ----echo=FALSE, out.width='20%'----------------------------------------------
 include_graphics('images/FLBEIA_logo.png')
-```
 
 
-# Aim 
-
-**FLBEIA** [@garcia2017] provides a battery of tutorials for learning how to use this software. 
-This <!-- is the thirth   --> tutorial <!-- of **FLBEIA** and it --> is a practical guide about how to
-use Stock Synthesis (SS3) [@methot2013] assessment model to assess the stock status 
-within **FLBEIA** in the Management Procedure (MP).
-
-In this tutorial it is presented an example on how to include SS3 within the MP to assess a stock. 
-It has to be stated that this is an example for a particular stock and in case of aiming to use it 
-for other stock this should only serve as a guide, because some of the functions are case specific. 
-This will be detailed along the tutorial.
+## ---- eval=FALSE--------------------------------------------------------------
+## install.packages( c("FLCore", "FLFleet", "FLBEIA"),
+##                   repos="http://flr-project.org/R")
+## install.packages(c("r4ss","reshape2","arrayhelpers","dplyr","tidyr"))
 
 
-
-# Required packages to run this tutorial
-
-To follow this tutorial you should have installed the following packages:
-
-- FLR: 
-  [FLCore](http://www.flr-project.org/FLCore/) and 
-  [FLFleet](http://www.flr-project.org/FLFleet/).
-- Stock Synthesis: 
-  [r4ss](https://cran.r-project.org/web/packages/r4ss/index.html).
-- Data manipulation: 
-  [arrayhelpers](https://cran.r-project.org/web/packages/arrayhelpers/index.html), 
-  [reshape2](https://cran.r-project.org/web/packages/reshape2/index.html), 
-  [dplyr](https://cran.r-project.org/web/packages/dplyr/index.html) and 
-  [tidyr](https://cran.r-project.org/web/packages/tidyr/index.html).
-                   
-
-```{r, eval=FALSE}
-install.packages( c("FLCore", "FLFleet", "FLBEIA"), 
-                  repos="http://flr-project.org/R")
-install.packages(c("r4ss","reshape2","arrayhelpers","dplyr","tidyr"))
-```
-
-It has to be noted that packages `FLCore`, `FLFleet` and `FLBEIA` have to be installed in this exact order, 
-as alternative orders can cause some problems.
-
-Load all thenecessary packages.
-```{r, pkgs, results = "hide"}
+## ---- pkgs, results = "hide"--------------------------------------------------
 library(FLBEIA)
 library(r4ss)
 library(reshape2)
 library(arrayhelpers)
 library(tidyr)
 library(dplyr)
-```
 
 
-
-# Loading your data
-
-The first step is to condition the Operating Model and the Management Procedure with all the relevant information.
-
-In this example, we will take most of the objects required to run the MSE from an `.RData` file
-and we will exclusively focus on the observation and assessment part.
-
-For this case, the Operating Model (OM) runs annually and it is formed by a single age-structured 
-stock, the [Iberian sardine](http://www.ices.dk/sites/pub/Publication%20Reports/Advice/2018/2018/pil.27.8c9a.pdf) 
-(*Sardina pilchardus*, ICES pil.27.8c9a)
-and an unique fleet which activity is performed in an unique metier
-(i.e. not differing among the different fleets and metiers targeting the stock).
-
-The file is downloaded into a temporary folder, and uncompressed. Simply change the value of `dir` to save the file in another folder.
-
-<!-- ```{r, getfilesLocal, message=FALSE} -->
-<!-- dir <- "src" -->
-<!-- ``` -->
-
-```{r, getfiles, message=FALSE}
+## ---- getfiles, message=FALSE-------------------------------------------------
 dir <- tempdir()
 # download.file("http://www.flr-project.org/doc/src/ibPIL.zip", file.path(dir, "ibPIL.zip"))
 # unzip(file.path(dir, "ibPIL.zip"), exdir=dir)
 unzip("src/ibPIL.zip", exdir=dir)
-```
 
 
-The FLBEIA input data can now be loaded using `load`:
-
-```{r, loadibPIL}
+## ---- loadibPIL---------------------------------------------------------------
 load(file.path(dir, "ibPIL.RData"))
 ls()
-```
-
-This data file contains information to condition FLBEIA.
-Specifically, it contains all the elements to run FLBEIA, except from `obs.ctrl` and `assess.ctrl`
-arguments that will be defined in this tutorial.
-
-The Operating Model (OM) is conditioned with the information from the last stock assessment available
-[@wghansa2018]. The population is age-structured (ages 0 to 6+) and exploited by an unique fleet
-(composed by one metier) and is moved forward in anual steps.
-It is assumed that the fleet fully complies with the catch advice and
-this behaviour is obtained using the `SMFB` function
-(for details, see information on `SMFB` function in the 
-[**FLBEIA** manual](https://github.com/flr/FLBEIA/blob/master/vignettes/FLBEIA_manual.pdf)).
-
-In the Management Procedure (MP), the stock is observed without error, and the stock is assessed 
-with SS3, version 3.24f [@methot2012].
-The yearly catch advice (the TAC) is obtained using the HCR used by ICES in the MSY framework
-for data rich stocks [@ices2009].
-
-The objects used have 1 iteration and uncertainty in the projection comes exclusively from the 
-generation of the new incoming recruitments.
-
-* Operating model
-    + Biological:
-        + Population dynamics: `PIL` - age structured population growth
-        + SR model: `PIL` - Beverthon and Holt (segmented regression)
-    + Fleet: `INT` - Simple Mixed Fisheries Behaviour
-    + Covariates: no covariates
-
-* Management Procedure
-    + Observation: `PIL` - observation of biological and catch information
-    + Assessment: `PIL` - SS3 assessment
-    + Management advice: `PIL` - ICES harvest control rule
-
-```{r, checkData, eval=FALSE}
-# Projection years
-main.ctrl
-
-# Stock: one stock named as PIL with an age-structured population growth
-#        - recruitment: generated by a Beverton-Holt model fitted to historical data
-summary(biols)
-biols.ctrl
-summary(SRs)
-SRs$PIL@model
-SRs$PIL@params
-SRs$PIL@uncertainty
-
-# Fleet: one unique fleet (INT), with one unique metier (ALL), targeting only sardine (PIL)
-#        - effort dynamics: simple mixed fisheries bechaviour
-#        - catch model    : Cobb Douglas at age
-#        - capital model  : fixed capital
-#        - price model    : fixed price
-summary(fleets)
-summary(fleets$INT@metiers)
-summary(fleets$INT@metiers$ALL@catches)
-fleets.ctrl
-
-# Covariates: no covariates
-covars
-covars.ctrl
-
-# Advice: TAC given by ICES HCR
-summary(advice)
-advice.ctrl
 
 
-# Indices: two indices available
-#          - AcousticNumberAtAge: numbers at age
-#          - DEPM               : total biomass every 3 years 
-summary(indices)
-indices$AcousticNumberAtAge@index
-indices$AcousticNumberAtAge@index.q
-indices$DEPM@index
-indices$DEPM@index.q
-```
+## ---- checkData, eval=FALSE---------------------------------------------------
+## # Projection years
+## main.ctrl
+## 
+## # Stock: one stock named as PIL with an age-structured population growth
+## #        - recruitment: generated by a Beverton-Holt model fitted to historical data
+## summary(biols)
+## biols.ctrl
+## summary(SRs)
+## SRs$PIL@model
+## SRs$PIL@params
+## SRs$PIL@uncertainty
+## 
+## # Fleet: one unique fleet (INT), with one unique metier (ALL), targeting only sardine (PIL)
+## #        - effort dynamics: simple mixed fisheries bechaviour
+## #        - catch model    : Cobb Douglas at age
+## #        - capital model  : fixed capital
+## #        - price model    : fixed price
+## summary(fleets)
+## summary(fleets$INT@metiers)
+## summary(fleets$INT@metiers$ALL@catches)
+## fleets.ctrl
+## 
+## # Covariates: no covariates
+## covars
+## covars.ctrl
+## 
+## # Advice: TAC given by ICES HCR
+## summary(advice)
+## advice.ctrl
+## 
+## 
+## # Indices: two indices available
+## #          - AcousticNumberAtAge: numbers at age
+## #          - DEPM               : total biomass every 3 years
+## summary(indices)
+## indices$AcousticNumberAtAge@index
+## indices$AcousticNumberAtAge@index.q
+## indices$DEPM@index
+## indices$DEPM@index.q
 
 
-
-# SS3 assessment
-
-<!-- For details on the Iberian sardine assessment see Stock annex and WGHANSA 2018 report. -->
-
-The sardine assessment is an age-based assessment assuming a single area, a single fishery, a
-yearly season and genders combined. Input data include catch (in biomass), age composition of
-the catch, total abundance (in numbers) and age composition from an annual acoustic survey
-and spawning stock biomass (SSB) from a triennial DEPM survey.
-Considering the current assessment calendar (annual assessment WG in November) in year (y),
-the assessment includes fishery data up to year y-1 and acoustic data up to year y.
-The reference assessment used was the one from the last assessment year [@wghansa2018].
-For more details, see [@wksarmp2019].
-
-* The model estimates population biomass in the beginning of the last assessment year (interim
-year). There are data from the acoustic survey but not from the fishery (catch and age composition)
-for the interim year. Data used for the interim year are the following: stock weights-at-age,
-catch biomass and catch weights-at-age are equal to those assumed for short-term predictions.
-
-* The fishery age composition in the interim year is assumed to be equal to that in the previous year.
-The fishery age composition is included in the calculation of expected values but excluded from
-the objective function. Recruitment in the interim year is derived from the stock-recruitment 
-relationship.
-
-* The model estimates spawning stock biomass (SSB) and adult biomass (B1+, biomass of age
-1 and older) at the beginning of the year. The reference age range for output fishing mortality is
-2\-5.
-
-For more details on the Iberian sardine stock assessment see the 
-[ICES Stock Annex](http://www.ices.dk/sites/pub/Publication%20Reports/Stock%20Annexes/2017/pil.27.8c9a_SA.pdf).
-
-To include the SS3 stock assessment model within the MSE simulations running in FLBEIA,
-we need to create an specifice function that mimics the stock asssessment.
-This function will update values for every assessment cycle.
-Such function is not available in the FLBEIA library, as it should be case-specific.
-Therefore, the function presented here is an example and it should be readapted if it wants to
-be used for another stock.
-
-We will name the function as `ss32flbeia`.
-As inputs, the function needs the ‘observed’ stock and indices objects (surveys)
-as well as a folder with the reference assessment in SS3
-(in this case is exactly the one used to condition the operating model for MSE).
-This folder is available in the ibPIL.zip file, so it has been already uncompressed in the
-`temp` folder (see "./ss3R"). Firstly, you need to choose the appropiate ss3 executable and 
-call it SS3.exe (in the assess_ref folder there are three different options:
-ss3_win.exe, ss3_linux.exe, ss3_ios.exe).
-
-Within the FLBEIA MSE process, for each projection year, the `ss32flbeia` function works as follows:
-
-*	Copies the reference assessment folder (containing all files needed to run ss3)
-
-*	Reads the `ss3.dat`, `wtatage` and `.ctl` files
-
-*	Sets $10^{-5}$ value for very low observed catches (i.e. when `stock@catch` $<10^{-5}$)
-
-*	Reads the catch and the indices values from the FLR objects
-
-* Eliminates catch at age for years where catch is very low ($<10^{-4}$)
-
-* Creates new `.dat`, `wtatage` and `.ctl` files based on the reference `.dat`, `wtatage` and `.ctl` files 
-with new catch and indices values from FLR objects
-
-* Runs `ss3.exe` executable
-
-* Reads ss3 output files using the `r4ss` package
-
-*	Updates `stock@harvest` and `stock@stock.n` slots with SS3 output
-
-*	Saves convergence indicator, recruitment, fbar, SSB, catchabilities and selectivities from SS3 
-runs in the covars component of the OM.
-
-*	Deletes the copied folder after running each realization.
-
-Therefore we translate this into R code:
-
-```{r echo=TRUE, eval=TRUE}
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 #########################################################
 #### Function to read from FLstock object,
 #### create SS3 files (from existing reference ones),
@@ -529,29 +346,13 @@ ss32flbeia <- function(stock,indices,control,covars=covars){
   return(list(stock = stock,covars=covars))
 }
 
-```
 
-```{r echo=FALSE, eval=TRUE}
+
+## ----echo=FALSE, eval=TRUE----------------------------------------------------
 list2env(list(ss32flbeia = ss32flbeia), globalenv())
-```
-
-Now we need to define the `assess.ctrl` object to call to this new defined function, and 
-we will additionally set some extra control arguments required by this function:
-
-* `ref_name`  : the directory where the assessment files for each new year will be stored; 
-
-* `assess_dir`: the directory where the assessment files are stored 
-                (in this case the full path must be provided); and
-
-* `run_it`    : an identifier for the scenario and iteration to avoid overwriting the files when 
-running different iterations and scenarios at the same time 
-(it is optional, but highly recommended when working with several runs at the same time in a computer).
-
-For this stock, as it occurs for many small pelagics, the stock is observed and assessed up to 
-the assessment year. This should be indicated in the control object also.
 
 
-```{r, setAssCtrl}
+## ---- setAssCtrl--------------------------------------------------------------
 assess.ctrl <- list( PIL = list())
 
 # Assessment model
@@ -571,12 +372,9 @@ assess.ctrl$PIL$control <- list( ref_name = "assess_ref",
 
 # Assess output also for assessment year
 assess.ctrl$PIL$ass.curryr <- TRUE
-```
 
-We will also initialize the covars object to store there some information on the assessment outputs,
-in order to be able to track the assessment performance all along the projection period.
 
-```{r, setCovars}
+## ---- setCovars---------------------------------------------------------------
 ages      <- dimnames(biols[[1]]@n)$age
 yrs       <- dimnames(biols[[1]]@n)$year
 proj.yrs  <- ac(main.ctrl$sim.years[1]:main.ctrl$sim.years[2])
@@ -600,37 +398,21 @@ covars$sel <- FLQuant(NA, dimnames = list(age=ages, year=yrs,unit=1:3))
 
 # Assessment convergence
 covars$conv <- FLQuant(NA, dimnames = list(conv="conv",year=yrs))
-```
 
 
-# Observation model
+## ---- helpObsCtrl, eval=FALSE-------------------------------------------------
+## ?create.obs.ctrl
 
-For this assessment we need to observe the biological and catch information. 
-Therefore, we need to use `age2ageDat` function (for details in observation functions see tutorial on 
-[Using different Assessment models in the Management Procedure of FLBEIA](http://www.flr-project.org/doc/Using_Assessment_models_in_the_MP_FLBEIA.html)).
 
-Additionally, we also need to observe the two indices available for the stock: 
-a yearly index in numbers at age (named AcousticNumberAtAge) and 
-a 3-yearly biomass index (named DEPM).
-
-For creating the `obs.ctrl` object we will use the specific creator function (`create.obs.ctrl`).
-As default, if not provided as an input, it considers no observation errors (i.e. values equal to 1).
-For details on how to set observation errors to alternative values see tutorial on 
-[Using different Assessment models in the Management Procedure of FLBEIA](http://www.flr-project.org/doc/Using_Assessment_models_in_the_MP_FLBEIA.html)).
-
-```{r, helpObsCtrl, eval=FALSE}
-?create.obs.ctrl
-```
-
-```{r, flqPIL}
+## ---- flqPIL------------------------------------------------------------------
 flq.PIL <- FLQuant(dimnames = dimnames(biols$PIL@n)) 
-```
 
-```{r echo=FALSE, eval=TRUE}
+
+## ----echo=FALSE, eval=TRUE----------------------------------------------------
 list2env(list(flq.PIL = flq.PIL), globalenv())
-```
 
-```{r, setObsCtrl}
+
+## ---- setObsCtrl--------------------------------------------------------------
 obs.ctrl <- create.obs.ctrl( stksnames = "PIL", n.stks.inds = 2, 
                              stks.indsnames = names(indices$PIL),
                              stkObs.models = "age2ageDat", 
@@ -639,22 +421,17 @@ obs.ctrl <- create.obs.ctrl( stksnames = "PIL", n.stks.inds = 2,
 
 # Required observation also for assessment year
 obs.ctrl$PIL$obs.curryr <- TRUE
-```
 
-# Run FLBEIA
 
-```{r, runFLBEIA}
+## ---- runFLBEIA---------------------------------------------------------------
 s0 <- FLBEIA( biols = biols, SRs = SRs, BDs = NULL, fleets = fleets,
               covars = covars, indices = indices, advice = advice,
               main.ctrl = main.ctrl, biols.ctrl = biols.ctrl, fleets.ctrl = fleets.ctrl,
               covars.ctrl = covars.ctrl, obs.ctrl = obs.ctrl,
               assess.ctrl = assess.ctrl, advice.ctrl = advice.ctrl)
-```
 
 
-# FLBEIA output
-
-```{r, sumPlot}
+## ---- sumPlot-----------------------------------------------------------------
 # - stock summary
 s0_bio <- bioSum(s0, scenario="hcrICES_assSS3")
 plotbioSum( s0_bio, Blim=PIL_ref.pts[["Blim"]], Bpa=PIL_ref.pts[["Bpa"]], 
@@ -680,34 +457,17 @@ ggplot( data=s0_risk, aes(x=year, y=value, color=scenario)) +
         title=element_text(size=15,face="bold"),
         strip.text=element_text(size=15))+
   ylab("Risk")
-```
 
 
-We can also compare the last assessed stock (MP) with the real one (OM).
-In principle, in FLBEIA, the assessment results are only saved for the last assessed year. 
-However, in this case we have kept track of the assessment results (ssb, rec and fbar) 
-in every projection year (see next section for more details).
-
-
-## Assessment fit - convergence issues
-
-To check if the assessment fitting has converged, we have stored convergence values in the 
-covars object.
-```{r, checkConv}
+## ---- checkConv---------------------------------------------------------------
 # Number of years in which assessment did not converged
 sum(s0$covars$conv>0.001,na.rm=TRUE) 
 
 # In case there are, let's see which one(s):
 dimnames(s0$covars$conv)$year[!is.na(s0$covars$conv) & s0$covars$conv>0.01]
-```
 
-In case that we have lack of convergence in any of the projection years, then the projections should be repeated 
-until we get an output where all the assessments converged.
 
-We can also check the assessment consistency between years (e.g. checking if there are 
-retrospective pattens).
-
-```{r, assOupts}
+## ---- assOupts----------------------------------------------------------------
 # Management Procedure - perceived
 stk.MP <- s0$covars[c("rec", "fbar", "ssb", "qs")]
 nyr <- dim(stk.MP$ssb)[1]
@@ -723,9 +483,9 @@ stk.OM$rec <- s0$biols$PIL@n[1,]
 stk.OM$indices <- stk.MP$qs*NA
 stk.OM$indices[1,] <- quantSums(s0$indices$PIL$AcousticNumberAtAge@index)
 stk.OM$indices[2,] <- s0$indices$PIL$DEPM@index
-```
 
-```{r, assRetros}
+
+## ---- assRetros---------------------------------------------------------------
 dat <- stk.MP[c("ssb", "fbar", "rec")]
 
 dat <- do.call("rbind", lapply(seq_along(dat), function(i,x) {
@@ -741,10 +501,9 @@ ggplot( dat, aes( year, data, col = factor(assess.year), fill = factor(assess.ye
   stat_summary(fun.y = median,
                geom = "line",size=1) + 
   ggtitle("retros")
-```
 
 
-```{r, assPerf}
+## ---- assPerf-----------------------------------------------------------------
 dat <- as.data.frame(sweep( stk.MP$ssb, 2, stk.OM$ssb, "/"))
 ggplot(dat,aes(year,data))+facet_wrap(~assess.year)+
   stat_summary(fun.y = median,
@@ -799,48 +558,4 @@ ggplot(dat,aes(age,data,col=factor(year),fill=factor(year)))+facet_wrap(~unit)+
   stat_summary(fun.y = median,
                geom = "line",size=1)+ 
   ggtitle("")+ylab("selectivities by block")
-```
-
-
-
-# More information
-
-* You can submit bug reports, questions or suggestions on this tutorial at <https://github.com/flr/doc/issues>.
-* Or send a pull request to <https://github.com/flr/doc/>
-* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flr-project.org>.
-* You can submit bug reports, questions or suggestions specific to **FLBEIA** to <flbeia@azti.es>.
-
-
-## Software Versions
-
-* `r version$version.string`
-* FLCore: `r packageVersion('FLCore')`
-* FLBEIA: `r packageVersion('FLBEIA')`
-* FLFleet: `r packageVersion('FLFleet')`
-* FLash: `r packageVersion('FLash')`
-* FLAssess: `r packageVersion('FLAssess')`
-* ggplotFL: `r packageVersion('ggplotFL')`
-* ggplot2: `r packageVersion('ggplot2')`
-* r4ss: `r packageVersion('r4ss')`
-* reshape2: `r packageVersion('reshape2')`
-* **Compiled**: `r date()`
-
-
-## License
-
-This document is licensed under the [Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0) license.
-
-
-## Author information
-
-**Leire Citores**. AZTI, Marine Research Unit. Txatxarramendi Ugartea z/g, 48395, Sukarrieta, Basque Country, Spain. https://www.azti.es/.
-
-**Sonia Sanchez**. AZTI, Marine Research Unit. Herrera Kaia, Portualdea z/g, 20110, Pasaia, Gipuzkoa, Spain. https://www.azti.es/.
-
-**FLBEIA team**. AZTI. Marine Reserach Unit. Txatxarramendi Ugartea z/g, 48395, Sukarrieta, Basque Country, Spain.
-http://flbeia.azti.es/. **Mail** flbeia@azti.es
-
-
-# References
-
 
