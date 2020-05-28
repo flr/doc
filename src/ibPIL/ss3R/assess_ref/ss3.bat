@@ -1,1 +1,0 @@
-C:\Users\asilva\SS\SS_32bit.exe
