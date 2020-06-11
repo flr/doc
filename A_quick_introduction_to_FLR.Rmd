@@ -42,9 +42,9 @@ The *FLCore* package defines a series of data structures that represent differen
 
 The [FLQuant](http://www.flr-project.org/FLCore/reference/FLQuant.html) class is the basic data structure for **FLR**, and it is in essence a 6D array on which data and outputs can be stored, structured along dimensions related to time, space, age or length, etc. It is also able to keep track of the units of measurement employed, as a simple character vector, although various operations on these objects are aware of the units of measurements contained in them.
 
-We will be creating an altering *FLQuant* objects as we go along, but we can long briefly at some basic operations, as the syntax will then be used in other classes in *FLR*.
+We will be creating and altering *FLQuant* objects as we go along, but we can look briefly at some basic operations, as the syntax will then be used in other classes in *FLR*.
 
-Let's first load the necessary packages in our session. The **FLCore** paxckage
+Let's first load the necessary packages in our session. The **FLCore** package
 
 ```{r, flcore}
 library(FLCore)
