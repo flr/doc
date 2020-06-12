@@ -57,7 +57,7 @@ As it is the case for R classes, for example *data.frame*, classes in *FLR* can 
 FLQuant(1:10)
 ```
 
-The *FLQuant* constructor can take a variety of inputs, like a vector, a matrix or an array, and also allows you to specify a nuber of arguments. We will only look now at three of them, `units` for the units of measurement, `quant` for the name of the first dimension, and `dimnames` for the dimension names of the object. For example, to construct an object holding (random) data in tonnes on catches for ages 1 to 4, over a period of 6 years, one could call
+The *FLQuant* constructor can take a variety of inputs, like a vector, a matrix or an array, and also allows you to specify a number of arguments. We will only look now at three of them, `units` for the units of measurement, `quant` for the name of the first dimension, and `dimnames` for the dimension names of the object. For example, to construct an object holding (random) data in tonnes on catches for ages 1 to 4, over a period of 6 years, one could call
 
 ```{r, flquantage}
 flq <- FLQuant(rlnorm(60), dimnames=list(age=1:4, year=2012:2017), units="t")
@@ -65,7 +65,7 @@ flq <- FLQuant(rlnorm(60), dimnames=list(age=1:4, year=2012:2017), units="t")
 flq
 ```
 
-The object has six dimensions, although some of them (`unit`, `season`, `area` and `iter`) ar not used in this case. We can inspect the object in various ways
+The object has six dimensions, although some of them (`unit`, `season`, `area` and `iter`) are not used in this case. We can inspect the object in various ways
 
 ```{r, flquantinspect}
 # A summary of structure and data
@@ -118,7 +118,7 @@ The first step in an analysis is to get the relevant data into the system. We wi
 
 In this example we will create an object of class *FLStock*, a representation of both inputs and outputs involved in fitting a stock assessment model, from a CSV file containing a table with five columns:
 
-- *slot*, the name of the input quantity, in this case either landings at age, *landings.n*, weight-at-age in the landings, *landings.wt*, and the same quantitieds for discards, *discards.n* and *discards.wt*.
+- *slot*, the name of the input quantity, in this case either landings at age, *landings.n*, weight-at-age in the landings, *landings.wt*, and the same quantities for discards, *discards.n* and *discards.wt*.
 - *age* and *year*
 - *data*, the numeric values themselves.
 - *units*, a character string for the units of measurement employed: *kg* and *1000* in this case for kilograms and thousands.
@@ -160,7 +160,7 @@ summary(landsn)
 plot(landsn)
 ```
 
-In a similar way, we can now convert the input *data.frame*, containing data for four data elements, as specified in the `slots` column, into an *FLStock* object, `ple4`
+In a similar way, we can now convert the input *data.frame*, containing data for four data elements, as specified in the `slots` column, into an *FLStock* object, `nple4`
 
 ```{r, convertple4}
 nple4 <- as.FLStock(dat)
@@ -199,7 +199,7 @@ and then the catch slots from both landings and discards
 catch(nple4) <- computeCatch(nple4, slot="all")
 ```
 
-The mean weigth-at-age in the stock needs to be provided. In this case we will assume it is the same as the one computed from the catch sampling programme
+The mean weight-at-age in the stock needs to be provided. In this case we will assume it is the same as the one computed from the catch sampling programme
 
 ```{r, nple4stockwt}
 stock.wt(nple4) <- catch.wt(nple4)
@@ -226,7 +226,7 @@ Please see the [Loading your data into FLR](Loading_your_data_into_FLR.html) tut
 
 # Visualizing and plotting
 
-As already shown, **FLR** classes have always a `plot` methods defined that provide a basic visual exploration of the object contents. But you are not limited to those plots, and other methods are available to allow you to build the plots you need.
+As already shown, **FLR** classes always have a `plot` method defined that provides a basic visual exploration of the object contents. But you are not limited to those plots, and other methods are available to allow you to build the plots you need.
 
 The *FLCore* package provides a set of those plot methods based on R's [lattice package](https://cran.r-project.org/web/packages/lattice/index.html), as well as versions of lattice's methods that work directly on **FLR** objects, for example `xyplot`
 
@@ -254,7 +254,7 @@ plot(stock.n(ple4)) +
     alpha = .2, fill='red')
 ```
 
-The basic method in *ggplot2* taking a data input, `ggplot`, has also been defined for some *FLCore* class, which simpliefies constructing plots based on objects of those classes from scratch. For example, we can plot our catch-at-age matrix from *ple4* to show the signal of strong cohorts in the data using
+The basic method in *ggplot2* taking a data input, `ggplot`, has also been defined for some *FLCore* class, which simplifies constructing plots based on objects of those classes from scratch. For example, we can plot our catch-at-age matrix from *ple4* to show the signal of strong cohorts in the data using
 
 ```{r, plotcatchn}
 ggplot(data=catch.n(ple4), aes(x=year, y=data, group=age)) +
@@ -270,7 +270,7 @@ plot(rlnorm(250, log(catch(ple4)), 0.5))
 
 where the 50% and 95% intervals are shown as a red region and a dotted line respectively, while the median value is shown as a black line.
 
-Note that plot methods on both *FLCore* and *ggplotFL* work by converting various **FLR** objects to a class that *lattice* and **gplot2** can understand, *data.frame*s. Coercing a 6D array like an *FLQuant* to a 2D *data.frame* requires generating one column per dimension, named as those, plus an extra column for the values stored in the object. This column is named `data`, thus the use of `data` in various plot formulas above. For classes with multiple slots, like *FLStock*, an extra column is necessary, which will be called `slots`. Please check [this help page](http://www.flr-project.org/FLCore/reference/coerce-methods.html) to know more about the coertion methods for **FLR** objects.
+Note that plot methods on both *FLCore* and *ggplotFL* work by converting various **FLR** objects to a class that *lattice* and **ggplot2** can understand, *data.frame*s. Coercing a 6D array like an *FLQuant* to a 2D *data.frame* requires generating one column per dimension, named as those, plus an extra column for the values stored in the object. This column is named `data`, thus the use of `data` in various plot formulas above. For classes with multiple slots, like *FLStock*, an extra column is necessary, which will be called `slots`. Please check [this help page](http://www.flr-project.org/FLCore/reference/coerce-methods.html) to know more about the coercion methods for **FLR** objects.
 
 ### More information
 
@@ -278,7 +278,7 @@ For further explanations on the use of the two plotting platforms available for 
 
 # Running a stock assessment
 
-An important step in providing management advice for a fish stock is the estimation of current status, past history and stock productivity through an stock assessment (SA) model. The *FLStock* object we have created contains some of the inputs required for most SA models: catches, natural mortality, and maturity. What is now needed is some indication of changes in abundance over the period of exploitation, an index of abundance, derived from either research surveys or catch-per-unit-effort of commercial fleets.
+An important step in providing management advice for a fish stock is the estimation of current status, past history and stock productivity through a stock assessment (SA) model. The *FLStock* object we have created contains some of the inputs required for most SA models: catches, natural mortality, and maturity. What is now needed is some indication of changes in abundance over the period of exploitation, an index of abundance, derived from either research surveys or catch-per-unit-effort of commercial fleets.
 
 ## Index of abundance
 
@@ -306,7 +306,7 @@ range(ple4.index)[c("startf", "endf")]
 
 ## a4a statistical catch-at-age
 
-The [FLa4a](http://flr-project.org/FLa4a) package provides an **FLR** implementation of the *a4a* model, an statistical catch-at-age model of medium complexity that has been designed to make use of the power and flexibility of R's formula-based model notation (as used for example in [lm](https://stat.ethz.ch/R-manual/R-patched/library/stats/html/lm.html)), while giving access to a solid and fast minimization algorithm implemented using [AD Model Builder](http://www.admb-project.org/).
+The [FLa4a](http://flr-project.org/FLa4a) package provides an **FLR** implementation of the *a4a* model, a statistical catch-at-age model of medium complexity that has been designed to make use of the power and flexibility of R's formula-based model notation (as used for example in [lm](https://stat.ethz.ch/R-manual/R-patched/library/stats/html/lm.html)), while giving access to a solid and fast minimization algorithm implemented using [AD Model Builder](http://www.admb-project.org/).
 
 ```{r, fla4apkg}
 library(FLa4a)
@@ -318,7 +318,7 @@ A first go at fitting this model to the *ple4* and *ple4.index* datasets require
 fit <- sca(ple4, FLIndices(BTS=ple4.index))
 ```
 
-This returns an object of class `r c(class(fit))` that contains the results fo the model fit, including the estimated catch-at-age, and the derived abundances and fishing mortality at age
+This returns an object of class `r c(class(fit))` that contains the results of the model fit, including the estimated catch-at-age, and the derived abundances and fishing mortality at age
 
 ```{r, summarya4afit}
 summary(fit)
@@ -331,24 +331,27 @@ stk <- ple4 + fit
 plot(stk)
 ```
 
-Among other methods, *FLa4a* provides a range of tools for inspecting the quality of the model fit. For example, a set of residuals, for the fits to both the index olf abundance and 
+Among other methods, *FLa4a* provides a range of tools for inspecting the quality of the model fit. 
+<!-- This should be uncommented once a tutorial exists to link to
+For example, a set of residuals, for the fits to both the index olf abundance and 
 
 
 ### More information
 
 Please see the [](.html) tutorial for more examples on how to .
+ -->
 
 # Exploring the stock-recruitment relationship
 
-Fitting a model for the relationship between stock abundance and expected recruitment is necessary for forecasting the future dynamics of the stock under various levels of fishing mortality, the central element of fisheries management advice. Certain stock assessment models, for example most statistical catch-at-age models, include the stock-recruitment model in the estimated parameters, but for others, like Virtual Population Analysis, this is a setup carried out once the stock of population abundace have been obtained.
+Fitting a model for the relationship between stock abundance and expected recruitment is necessary for forecasting the future dynamics of the stock under various levels of fishing mortality, the central element of fisheries management advice. Certain stock assessment models, for example most statistical catch-at-age models, include the stock-recruitment model in the estimated parameters, but for others, like Virtual Population Analysis, this is a setup carried out once the stock and population abundance have been obtained.
 
-Both inputs and outputs for stock-recruitment models are stored in an object of the [FLSR](http://www.flr-project.org/FLCore/reference/FLSR.html) class which we can create directly from the SA results by coertion using
+Both inputs and outputs for stock-recruitment models are stored in an object of the [FLSR](http://www.flr-project.org/FLCore/reference/FLSR.html) class which we can create directly from the SA results by coercion using
 
 ```{r, flsrcreate}
 plsr <- as.FLSR(stk)
 ```
 
-The resulting *FLSR* object contains the series of recruitment `rec`, the abundance of the first age, and the stock reproductive potential, in this case the spawning stock biomass `ssb`. Both series are already displaced as corresponds by the age of recruitment, 1 in this case.
+The resulting *FLSR* object contains the series of recruitment `rec`, the abundance of the first age, and the stock reproductive potential, in this case the spawning stock biomass `ssb`. Both series are already displaced by the age of recruitment, 1 in this case.
 
 ```{r, flsrsummary}
 summary(plsr)
@@ -362,7 +365,7 @@ We now need to choose a model to fit, and *FLCore* provides a number of them alr
 
 See the [SR Models](http://www.flr-project.org/FLCore/reference/FLSR.html) help page for further details of the available models.
 
-We can now assign the output of the chosen model function, in this case `ricker()` to the existing object using
+We can now assign the output of the chosen model function, in this case `ricker()`, to the existing object using
 
 ```{r, flsrmodel}
 model(plsr) <- ricker()
@@ -374,20 +377,20 @@ The model object is ready to fit, through Maximum Likelihood Estimation (MLE), u
 plsr <- fmle(plsr)
 ```
 
-Another look at the object ill show us that a number of slots now contain the results of the model fit, among them:
+Another look at the object will show us that a number of slots now contain the results of the model fit, among them:
 
 - `fitted` for the estimated recruitment, as an *FLQuant*
 - `residuals` for the residuals in log space, *FLQuant*
 - `params` for the estimated parameters, as an object of class *FLPar*
 - `vcov` for the variance-covariance matrix, as an *array*
 
-The standard plot for the class shows the model fit and a series of useful diagnostics that will help us evaluating the its quality and usefulness for future projections. This can be further explored by likelihood profiling over a range of values of the estimated parameters, simply calling the `profile` method of the object
+The standard plot for the class shows the model fit and a series of useful diagnostics that will help us evaluating its quality and usefulness for future projections. This can be further explored by likelihood profiling over a range of values of the estimated parameters by simply calling the `profile` method of the object
 
 ```{r, flsrprofile}
 profile(plsr)
 ```
 
-Finally, the model can be used to predict future recruitments if provided with a set of new of values of SSB, as in
+Finally, the model can be used to predict future recruitments if provided with a set of new values of SSB, as in
 
 ```{r, flsrpredict}
 predict(plsr, ssb=FLQuant(rnorm(10, 25e4, sd(ssb(plsr))), dimnames=list(age=1, year=2008:2017)))
@@ -399,7 +402,7 @@ Please see the [Modelling stock recruitment with FLSR](Modelling_stock_recruitme
 
 # Estimating reference points
 
-To assess current and future status of a stock we need reference points which he hold to represent desirable states for the stock, usually either in terms of stock abundance, like $B_{MSY}$, the biomass expected to produce, on average and under the current exploitation pattern, the Maximum Sustainable Yield ($MSY$), or of fishing mortality, such as the fishing mortality expected to produce $MSY$, $F_{MSY}$.
+To assess current and future status of a stock we need reference points which we hold to represent desirable states for the stock, usually either in terms of stock abundance, like $B_{MSY}$, the biomass expected to produce, on average and under the current exploitation pattern, the Maximum Sustainable Yield ($MSY$), or of fishing mortality, such as the fishing mortality expected to produce $MSY$, $F_{MSY}$.
 
 We can use the [FLBRP package](http://flr-project.org/FLBRP) to calculate a large set of reference points, once we have an estimate of stock status, our *FLStock* object, and of the stock-recruitment relationship, *FLSR*. We can use them both to create the necessary object, of class *FLBRP*, after loading the package
 
@@ -409,7 +412,7 @@ plrp <- FLBRP(stk, sr=plsr)
 summary(plrp)
 ```
 
-An object of the *FLBRP* class contains a series of times series of observations on dynamics of both stock and fishery, as well as average quantities computed along an specified time period. A series of slot are designed to contain economic variables, such as `price`, variable costs (`vcost`) and fixed costs (`fcost`), which will need to be provided. When those data are available, economic reference points can also be calculated. Finally, a vector of fishing mortality values, `fbar`, has been created, by default to be of length 101 and with values going from $F=0$ to $F=4$, to be used in the calculation procedure.
+An object of the *FLBRP* class contains a series of times series of observations on dynamics of both stock and fishery, as well as average quantities computed along a specified time period. A series of slots are designed to contain economic variables, such as `price`, variable costs (`vcost`) and fixed costs (`fcost`), which will need to be provided. When those data are available, economic reference points can also be calculated. Finally, a vector of fishing mortality values, `fbar`, has been created, by default to be of length 101 and with values going from $F=0$ to $F=4$, to be used in the calculation procedure.
 
 We can now proceed with the calculation of reference points, through the `brp` method
 
@@ -442,15 +445,15 @@ For more information on *FLBRP*, please see the [Reference points for fisheries 
 
 # Forecasting under different scenarios
 
-Our final step in this quick tour takes us to the tools in *FLR* for forecasting the future responses of the stock to alternative management decisions. This example concerns a Short Term Forecast, in which the effect of the current management, for example a maximum catch limit or TAC, on the present year is forecasted, and then a series of alternative increases or decreases in catch are applied to the object representing our current understanding of the stock status and dynamics.
+Our final step in this quick tour takes us to the tools in *FLR* for forecasting the future responses of the stock to alternative management decisions. This example concerns a Short Term Forecast, in which the effect of the current management, for example a maximum catch limit or TAC, on the present year is forecast, and then a series of alternative increases or decreases in catch are applied to the object representing our current understanding of the stock status and dynamics.
 
-The [FLash package](http://flr-project.org/FLash) contains the current implementation of the forecasting mechanism in *FLR*. Please note that FLash is currently only working on 32 bit R if using Windows. A new forecasting package, called *FLasher* is about to be released and will only work on 64 bit R.
+The [FLash package](http://flr-project.org/FLash) contains the current implementation of the forecasting mechanism in *FLR*. Please note that FLash is currently only working on 32 bit R if using Windows. A new forecasting package, called *[FLasher](http://flr-project.org/FLasher)* has been released and will only work on 64 bit R.
 
 ```{r, flash}
 library(FLash)
 ```
 
-The key element in the *FLash* interface is the *fwdControl* class, which allows us to specify the targets and limits that we want the stock to achieve or remain within. But first we need to make some assumptions about the future values of certain quantities, both on the biology (natural mortality, maturity) and the fishery (selectivity, proportion of discards). A common approach for this kind of forecast is to use averages over the last few years (tipycally three) for certain quantities. This can be done in *FLR* using the `stf` method in the *FLash* package.
+The key element in the *FLash* interface is the *fwdControl* class, which allows us to specify the targets and limits that we want the stock to achieve or remain within. But first we need to make some assumptions about the future values of certain quantities, both on the biology (natural mortality, maturity) and the fishery (selectivity, proportion of discards). A common approach for this kind of forecast is to use averages over the last few years (typically three) for certain quantities. This can be done in *FLR* using the `stf` method in the *FLash* package.
 
 ```{r, stf}
 library(FLash)
@@ -475,7 +478,7 @@ Flevel <- fbar(stk)[,"2017"]
 ctrl <- fwdControl(data.frame(year=2018:2020, quantity=c("catch", "f", "f"), val=c(TAC, Flevel, Flevel)))
 ```
 
-Now the `fwd` method will carry ou the projection using those three object: stock, stock-recruitment and control
+Now the `fwd` method will carry out the projection using those three object: stock, stock-recruitment and control
 
 ```{r, fwd}
 proj <- fwd(proj, control=ctrl, sr=plsr) 
@@ -489,11 +492,11 @@ plot(proj) + geom_vline(aes(xintercept=2017.5), linetype=2)
 
 ### More information
 
-Please see the [Short Term Forecasting for advice using FLash](Short_Term_Forecasting_for_advice_using_FLash.html)  and [Short Term Forecasting for advice using FLash](Short_Term_Forecasting_for_advice_using_FLash.html) tutorials for more examples on how to use the capabilitis of *FLash* to forecast population dynamics under various scenarios.
+Please see the [Short Term Forecasting for advice using FLash](Short_Term_Forecasting_for_advice_using_FLash.html)  and [Short Term Forecasting for advice using FLash](Short_Term_Forecasting_for_advice_using_FLash.html) tutorials for more examples on how to use the capabilities of *FLash* to forecast population dynamics under various scenarios.
 
 # More on FLR
 
-Please visit [our website](http://flr-project.org) for more information on the FLR packages, tutorials and examples of use, and instructions for getting in touch if you want to report a bug, ask a question or get involved in the development of the **FLR** toolset. The project is run by a team of fisheries scientists that decided to share the R code they were writing and using so a common platform for Quantitative Fisheries Science in R could break the Babel tower spell that J. Schnute first identified
+Please visit [our website](http://flr-project.org) for more information on the FLR packages, tutorials and examples of use, and instructions for getting in touch if you want to report a bug, ask a question or get involved in the development of the **FLR** toolset. The project is run by a team of fisheries scientists that decided to share the R code they were writing and realised that using a common platform for Quantitative Fisheries Science in R could break the Babel tower spell that J. Schnute first identified
 
 "The cosmic plan for confounding software languages seems to be working remarkably
 well among the community of quantitative fishery scientists!"
