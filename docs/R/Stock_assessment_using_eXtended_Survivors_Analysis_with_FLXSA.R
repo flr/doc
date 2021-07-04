@@ -2,16 +2,19 @@
 library(knitr)
 source("R/ini.R")
 
-## ----echo=TRUE, eval=FALSE-----------------------------------------------
+
+## ----echo=TRUE, eval=FALSE----------------------------------------------------
 ## install.packages(c("FLCore", "FLAssess", "FLXSA"), repos="http://flr-project.org/R")
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 # This chunk loads all necessary packages, trims pkg messages
 library(FLCore)
 library(FLAssess)
 library(FLXSA)
 
-## ----echo=FALSE, eval=TRUE, message = FALSE------------------------------
+
+## ----echo=FALSE, eval=TRUE, message = FALSE-----------------------------------
 library(plyr)
 library(ggplot2)
 
@@ -26,15 +29,18 @@ setMethod('plot', signature(x='FLXSA', y='missing'),function(x){
     facet_grid(source~age)+
     theme_bw()+theme(legend.position="none")})
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 data(ple4)
 data(ple4.indices)
 
-## ----echo=TRUE, eval=FALSE-----------------------------------------------
+
+## ----echo=TRUE, eval=FALSE----------------------------------------------------
 ## harvest(ple4)[] <- NA
 ## stock.n(ple4)[] <- NA
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 harvest(ple4)[ac(range(ple4)["max"]), ]     <- 1
 harvest(ple4)[, ac(range(ple4)["maxyear"])] <- 1
 
@@ -51,7 +57,8 @@ harvest(ple4.vpa)[, ac(2004:range(ple4)["maxyear"])]
 plot(FLStocks(ple4=ple4, vpa=ple4.new))
 plot(FLStocks(vpa=ple4.new))
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 # Define Laurec-Sheperd function #
 
 lsm <- function(stock, index, fratio = 1, fit.plusgroup = T) {
@@ -67,7 +74,7 @@ lsm <- function(stock, index, fratio = 1, fit.plusgroup = T) {
     gmq   <- apply(q, 1, function(x) exp(mean(log(x), na.rm = T)))
     mFp   <- gmq * c(apply(effort(index), 1, mean))
     Fr    <- mFp * (apply(Cp, 1, mean, na.rm = T))^-1
-    Fnew  <- c(Fr, rep(Fr[ac(max(ages)), ], 2))
+    Fnew  <- c(Fr, rep(Fr[ac(max(ages)), ], 1))
     diff  <- sum(abs(harvest(stock)[, ac(range(stock)["maxyear"])] -
                         Fnew))
     harvest(stock)[, ac(range(stock)["maxyear"])] <- c(Fnew)
@@ -77,7 +84,8 @@ lsm <- function(stock, index, fratio = 1, fit.plusgroup = T) {
   return(res)
   }
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 
 harvest(ple4)[] <- NA
 stock.n(ple4)[] <- NA
@@ -92,44 +100,54 @@ harvest(ple4.LSvpa)[, ac(2004:range(ple4)["maxyear"])]
 # Compare the results with previous fits.
 plot(FLStocks(vpa=ple4.new2))
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
   FLXSA.control()
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
   ctrl <- FLXSA.control(maxit = 50, qage = 8)
   ctrl <- FLXSA.control()
   slot(ctrl, 'qage')  <- as.integer(8)
   slot(ctrl, 'maxit') <- as.integer(50)
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
  xsa.control <- FLXSA.control(maxit = 50, fse = 2.5)
  ple4.xsa    <- FLXSA(ple4, ple4.indices, xsa.control)
  ple4.xsa.t1 <- FLXSA(ple4, ple4.indices[[1]], xsa.control)
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
 ple4.new  <- ple4 + ple4.xsa
 ple4.ssb  <- ssb(ple4.new)
 ple4.rec  <- rec(ple4.new)
 ple4.fbar <- fbar(ple4.new)
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
  slot(slot(ple4.xsa, "control"), "maxit")
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
- ple4.xsa2 <- FLXSA(trim(ple4, age = 1:4), ple4.indices[[3]],
+
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
+ ple4.xsa2 <- FLXSA(trim(ple4, age = 1:7), ple4.indices[[3]],
      xsa.control)
  diagnostics(ple4.xsa2, sections = c(T, T, rep(F, 6)))
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
  diagnostics(ple4.xsa2, sections = c(F, F, T, T, T, T, F, F))
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
  diagnostics(ple4.xsa2, sections = c(F, F, F, F, F, F, T, T))
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
  plot(ple4.xsa2)
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
  names(ple4.xsa@index.res) <- names(ple4.indices)
  plot(xyplot(data ~ year | ac(age) + qname, data = index.res(ple4.xsa),
      panel = function(x, y, ...) {
@@ -138,7 +156,8 @@ ple4.fbar <- fbar(ple4.new)
      panel.abline(h = 0, col = "grey", lty = 2)
  }))
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
  diag <- slot(ple4.xsa, "diagnostics")[is.element(slot(ple4.xsa,
      "diagnostics")$year, 2008), ]
  diag <- cbind(diag, w.scaled = diag$w/rep(tapply(diag$w, diag$yrcls, sum),
@@ -156,7 +175,8 @@ grey(rev(c(0.1,
  print(nplot, position = c(0, 0, 0.5, 1), more = TRUE)
  print(wplot, position = c(0.5, 0, 1, 1))
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
+
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
  fsevals <- seq(0.5, 2.5, by = 0.5)
  res <- propagate(harvest(ple4), length(fsevals))
  for (i in 1:length(fsevals)) {
@@ -166,8 +186,9 @@ grey(rev(c(0.1,
  plot(xyplot(data ~ year | age, groups = iter, data = res, type = "l",
      col = "black", xlim = c(1990:2010)))
 
-## ----echo=TRUE, eval=TRUE------------------------------------------------
-retro.years <- 2004:2008
+
+## ----echo=TRUE, eval=TRUE-----------------------------------------------------
+retro.years <- 2013:2017
 ple4.retro <- tapply(retro.years, 1:length(retro.years), function(x){
 	window(ple4,end=x)+FLXSA(window(ple4,end=x),ple4.indices)
 })

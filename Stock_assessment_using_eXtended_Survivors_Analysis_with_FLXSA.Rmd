@@ -182,7 +182,7 @@ lsm <- function(stock, index, fratio = 1, fit.plusgroup = T) {
     gmq   <- apply(q, 1, function(x) exp(mean(log(x), na.rm = T)))
     mFp   <- gmq * c(apply(effort(index), 1, mean))
     Fr    <- mFp * (apply(Cp, 1, mean, na.rm = T))^-1
-    Fnew  <- c(Fr, rep(Fr[ac(max(ages)), ], 2))
+    Fnew  <- c(Fr, rep(Fr[ac(max(ages)), ], 1))
     diff  <- sum(abs(harvest(stock)[, ac(range(stock)["maxyear"])] -
                         Fnew))
     harvest(stock)[, ac(range(stock)["maxyear"])] <- c(Fnew)
@@ -320,7 +320,7 @@ we will  run a new XSA for a reduced number of ages and with only one tuning ind
 outputting only the dimension information and the parameter settings from our diagnostics.
 
 ```{r echo=TRUE, eval=TRUE}
- ple4.xsa2 <- FLXSA(trim(ple4, age = 1:4), ple4.indices[[3]],
+ ple4.xsa2 <- FLXSA(trim(ple4, age = 1:7), ple4.indices[[3]],
      xsa.control)
  diagnostics(ple4.xsa2, sections = c(T, T, rep(F, 6)))
 ```
@@ -446,7 +446,7 @@ object, called `ple4.ret`, is of class `FLStocks` ie. a list of `FLStock` object
 year range.
 
 ```{r echo=TRUE, eval=TRUE}
-retro.years <- 2004:2008
+retro.years <- 2013:2017
 ple4.retro <- tapply(retro.years, 1:length(retro.years), function(x){
 	window(ple4,end=x)+FLXSA(window(ple4,end=x),ple4.indices)
 })
