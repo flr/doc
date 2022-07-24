@@ -309,14 +309,8 @@ ak  =mydas:::invAlk(par,cv=0.1)
 lfd=mydas:::lenSample(catch.n(om)[,ac(60:120)],ak,nsample=500)
 ```
 
-```{r}
-save(lfd,file="/home/laurie/Desktop/tmp/lfd.RData")
-```
-
 ```{r, fig-lfd, fig.width=10,fig.height=10} 
 library(ggpubr)  
-
-load("/home/laurie/Desktop/tmp/lfd.RData")
 
 
 unbin=function(x){
@@ -403,9 +397,6 @@ lbi =ddply(lbi, .(year,iter), with, mydas:::lenInd(len,data,wt,lopt))
 lbi=cbind(lbi,linf=c(par["linf"]),k=c(par["k"]),l50=c(par["l50"]))
 ```
 
-```{r}
-save(lbi,om,eql,file="/home/laurie/Desktop/tmp/tmp.RData")
-```
 
 ```{r}
 library(dplyr)
@@ -468,8 +459,6 @@ plot(z)
 # Classification Skill {#Skill}
 
 ```{r, tss, fig.height=8, fig.width=8}
-load("/home/laurie/Desktop/tmp/tmp.RData") 
-
 lht=merge(subset(lbi,year%in%100:120),
           model.frame(FLQuants(FFMSY=fbar(om)%/%refpts(eql)["msy","harvest"]),drop=T))
 lht=merge(lht,transmute(subset(lbi,year%in%80),iter=iter,l80=lmean))
