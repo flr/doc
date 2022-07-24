@@ -1,0 +1,376 @@
+---
+title: "Classification Skill of Length Based Indicators"
+output:
+github_document:
+  mathjax: TRUE
+html_document:
+  fig_width: 6 
+  fig_height: 4 
+  toc: yes
+bibliography: bibliography.bib
+---
+
+```{r knitr_init, echo=FALSE, results="hide"}
+library(knitr)
+## Global options
+opts_chunk$set(echo      =FALSE,
+               eval      =TRUE,
+               prompt    =FALSE,
+               comment   =NA,
+               message   =FALSE,
+               warning   =FALSE,
+               tidy      =TRUE,
+               fig.height=6,
+               fig.width =8,
+               cache     =TRUE,
+               cache.path="../cache/class/")
+
+options(digits=3)
+
+iFig=0
+```
+
+
+[](#top)
+
+[Packages](#Packages)
+
+[Operating Model Conditioning](#OM])
+
+[Indicators](#Indicators)
+
+[Classification Skill](#Skill)
+
+[More Information](#More)
+
+[References](#References)
+
+ 
+# Packages {#Packages}
+
+As well as 'FLR' a variety of other packages are required 
+
+```{r, pkgs3, echo=TRUE}
+library(FLCore)
+library(ggplotFL)
+
+library(FLBRP)
+library(FLasher)
+
+library(mydas)
+
+library(FLRef)
+```
+
+for plotting
+
+```{r, pkgs1, echo=TRUE}
+library(ggplot2)
+library(GGally)
+library(ggpubr)
+```
+
+and data manipulation
+
+```{r, pkgs2, echo=TRUE}
+library(reshape)
+library(plyr)
+library(dplyr)
+library(reshape)
+```
+
+## Quick Start {#QuickStart}
+
+The packges **FLife** and **mydas** are required for modelling life-histories and estimation
+
+The simplest way to obtain these  to install them from the `FLR` repository 
+
+```{r install,echo=TRUE,eval=FALSE}
+install.packages("FLife", repos = "http://flr-project.org/R")
+```
+
+See  `help(install.packages)` for more details.
+
+After installation
+```{r lib,echo=TRUE}
+library(FLife)
+library(mydas)
+```
+
+The `popbio` package is also required for analysing age and stage based population models.
+
+```{r, pkgs4, echo=TRUE}
+library(popbio)
+
+library(spatstat)
+```
+
+[Back to Top](#top)
+
+# Operating Model Conditioning
+
+
+
+```{r, param}
+par=lhPar(FLPar(c(linf= 59.1,  k=0.28, t0=-0.4,
+           a=0.01111,b=3.15,a50=4.0, l50=43.25,
+           s=0.7),units="NA"))
+```
+
+```{r, om}
+eq=lhEql(par)
+fbar(eq)=refpts(eq)["msy","harvest"]%*%FLQuant(c(rep(0.1,60),
+                                               seq(0.1,2,length.out=40)[-40],
+                                               seq(2,0.7,length.out=11),rep(0.7,20)))
+set.seed(234)
+srDev =rlnoise(100,fbar(eq)%=%0,0.3,0)
+
+om=as(eq,"FLStock")
+om=propagate(om,dim(srDev)[6])
+f =propagate(fbar(eq),100)[,-1]
+
+om=ffwd(om,fbar=f,sr=eq,deviances=srDev)
+om=window(om,start=41)
+```
+
+```{r, fig-eq}
+plot( eq,refpt="msy")
+```
+
+
+```{r, fig-om, fig.width=10,fig.height=6}
+mets <- list(RMSY =function(x, y) rec(  x)/refpts(y)["msy","rec"],
+             YMSY =function(x, y) catch(x)/refpts(y)["msy","yield"],
+             SBMSY=function(x, y) ssb(  x)/ sbmsy(y),
+             FMSY =function(x, y) fbar( x)/  fmsy(y))
+
+fqs <- FLQuants(lapply(mets, function(m) m(om, eq)))
+
+plot( fqs,iter=1)+
+  ylim(c(0, NA))+
+  geom_hline(yintercept=1, linetype=2)+
+  scale_x_continuous(limits=c(50,120))+
+  theme_bw(16)+
+  theme(legend.position="none")
+```
+
+**Figure `r iFig=iFig+1; iFig`** Operating Models.
+
+```{r, lfd}
+set.seed(6789)
+ak  =invAlk(iter(par,.id),cv=0.1)  
+lfd=lenSample(catch.n(om),ak,nsample=500)
+```
+
+
+```{r, fig-lfd, fig.width=10,fig.height=10} 
+dat=subset(transform(as.data.frame(lfd,drop=T),lustrum=5*(year%/%5)),year>=60) 
+dat=subset(dat,lustrum%in%seq(60,120,10))
+
+lmodeFn<-function(len,n,bin=25) {
+  
+  dat=data.frame(bin=cut(len,breaks=bin),n=n)
+  res=ddply(dat,.(bin), with, data.frame(freq=sum(n)))
+  res=as.character(subset(res,freq==max(freq))[1,"bin"])
+  mydas:::unbin(res)$mid}
+
+dt2=ddply(dat,.(lustrum), with, {
+  lc=lmodeFn(len,data)*0.5
+  data.frame(lc   =lc,
+             lmean=weighted.mean(len,data*(len>=lc)))})
+
+gghistogram(dat,x="len",weight="data", bins=25)+
+  coord_flip()+
+  scale_x_reverse()+
+  facet_grid(.~lustrum,scale="free")+xlab("Length (cm)")+
+  geom_vline(aes(xintercept=lc),    data=dt2,col="red")+
+  geom_vline(aes(xintercept=lmean), data=dt2,col="blue")+
+  theme_bw(16)+
+  theme(legend.position = "none", 
+                    axis.title.x = element_blank(), 
+                    axis.text.x  = element_blank(), 
+                    axis.ticks.x = element_blank())
+```
+
+**Figure `r iFig=iFig+1; iFig`** Length data
+
+[Back to Top](#top)
+
+# Indicators
+
+
+
+To provide advice on the status of data poor stocks ICES uses $MSY$ proxy reference points as part of a Precautionary Approach.
+
+Data poor stocks include those for which only trends such as lpue,  cpue,  and  mean  length  in  the  catch  are available (**Category 3**), and stocks for which only reliable catch data are available (**Category 4**).
+
+Methods currently approved by ICES for calculation of $MSY$ reference points for these stocks are 
+
++ Length based indicators 
++ Z derived from mean length 
++ Length based spawner per recruit; and
++ Surplus Production models
+
+Many approaches have emerged over the last few decades, for example Where length data are available methods include Length Based Spawning Potential Ratio (LBSPR), Length-Based Integrated Mixed Effects (LIME), and Length-Based Bayesian (LBB). While where only catch data are available methods include Catch-Maximum Sustainable Yield (Catch-MSY), State-Space Catch-Only Model (SSCOM), Depletion Based Stock Reduction Analysis (DBSRA), and Simple Stock Synthesis (SSS) an extension of Catch-MSY (CMSY).
+
+Empirical indicators and reference points can also be used to monitor stocks and these include
+
++ $L_{max5\%}$ mean length of largest 5\%
++ $L_{95\%}$ $95^{th}$ percentile
++ $P_{mega}$ Proportion of individuals above $L_{opt} + 10\%$
++ $L_{25\%}$ $25^{th}$ percentile of length distribution
++ $L_{c}$ Length at $50\%$ of modal abundance
++ $L_{mean}$ Mean length of individuals $> L_c$
++ $L_{max_{y}}$ Length class with maximum biomass in catch
++ $L_{mean}$ Meanlength of individuals $> L$
+
+where potential  **reference points** include
+
++ $L_{opt} = L_{\infty}\frac{3}{3+\frac{M}{K}}$, assuming $M/K = 1.5$ gives $\frac{2}{3}L_{\infty}$
++ $L_{F=M} =  0,75l_c+0.25l_{\infty}$
+
+```{r, lbi, eval=FALSE}
+lbi =transform(subset(as.data.frame(lfd,drop=TRUE),data>0),
+               wt  =c(par["a"])*len^c(par["b"]),
+               lopt=c(2/3*par["linf"]))
+  
+lbi =ddply(lbi, .(year,iter), with, mydas:::lenInd(len,data,wt,lopt))
+lbi=cbind(lbi,linf=c(par["linf"]),k=c(par["k"]),l50=c(par["l50"]))
+```
+
+
+```{r, indicator}
+source("~/pCloudDrive/flr/FLCandy/R/length.R")
+
+state    =fbar(om)%/%refpts(eq)["msy","harvest"]  
+indicator=lmean(lfd) 
+```
+
+```{r, acc}
+x   =catch.n(om)[ac(par["sel1"]+0:7)]
+smpl=as.FLQuant(adply(x, c(2,6), function(x) data.frame(age=names(x),data=apply(rmultinom(100,1,x),1,sum))))
+z   =ddply(subset(as.data.frame(smpl),data>0&!is.na(data)&is.finite(data)), .(year,iter), with, 
+                     data.frame(data=-coefficients(lm(log(data)~age,na.rm=T))[2]))
+
+zhat=as.FLQuant(z)
+```
+
+```{r}
+plot( mcf(FLQuants(state=state,indicator=indicator,Z=zhat)))+
+  geom_hline(aes(yintercept=x),data=data.frame(x=c(1,50,1),qname=c("state","indicator","Z")),col="red")
+```
+
+
+[Back to Top](#top)
+
+# Classification Skill {#Skill}
+
+
+```{r, tss, fig.height=8, fig.width=8}
+dat=subset(model.frame(mcf(FLQuants(state=state,indicator=1/(indicator/45)))),year%in%100:120)
+
+with(dat, {
+
+  
+PN=c(
+  TP=sum(indicator>=1&state>=1),  
+  TN=sum(indicator< 1&state< 1),
+  
+  FN=sum(indicator< 1&state>=1),
+  FP=sum(indicator>=1&state< 1))
+  
+ggplot( data.frame(state=state,indicator=indicator))+
+  geom_point(aes(state,indicator))+
+  geom_vline(aes(xintercept=1),col="red")+
+  geom_hline(aes(yintercept=1),col="red")+
+  xlab("F/FMSY")+ylab("LMean / ref year")+
+  geom_label(aes(x=1.8,y=1.2,label=paste("TP=",PN["TP"])))+
+  geom_label(aes(x=1.8,y=0.9,label=paste("FP=",PN["FN"])))+
+  geom_label(aes(x=0.8,y=1.2,label=paste("FN=",PN["FP"])))+
+  geom_label(aes(x=0.8,y=0.9,label=paste("TN=",PN["TN"])))
+
+
+tss=PN["TP"]/(PN["TP"]+PN["FN"])-PN["FP"]/(PN["FP"]+PN["TN"])
+names(tss)="TSS"
+tss})
+```
+
+**Figure `r iFig=iFig+1; iFig`** 
+
+
+```{r, roc}
+source("~/pCloudDrive/flr/FLCandy/R/roc.R")
+
+dat=with(subset(model.frame(mcf(FLQuants(state=state,indicator=1/(indicator/45)))),year%in%100:120),roc(state,indicator))
+dt2=with(subset(model.frame(mcf(FLQuants(state=state,indicator=(zhat-0.25)/0.25))),year%in%100:120),roc(state,indicator))
+
+ggplot( dat)+
+  geom_line(aes(FPR,TPR))+
+  geom_point(aes(FPR,TPR),data=subset(dat,abs(indicator-1)==min(abs(indicator-1)))[1,],size=3)+
+  geom_abline(aes(intercept=0,slope=1),linetype=2)+
+  theme_bw(20)+
+  theme(legend.position="bottom")+
+  scale_x_continuous(breaks=c(0,0.5,1))+
+  scale_y_continuous(breaks=c(0,0.5,1))+
+  geom_line(aes(FPR,TPR),data=dt2,col="blue")+
+  geom_point(aes(FPR,TPR),data=subset(dt2,abs(indicator-1)==min(abs(indicator-1)))[1,],col="blue",size=3)
+```
+
+**Figure `r iFig=iFig+1; iFig`.** ROC for Catch Curve analysis  with reference level indicated.
+
+
+```{r}
+ggplot( dat)+
+  geom_line(aes(indicator,TSS))+
+  geom_vline(aes(xintercept=1),col="red")
+```
+
+**Figure `r iFig=iFig+1; iFig`.** TSS by reference level for lmean.
+
+
+```{r}
+ggplot( dt2)+
+  geom_line(aes(indicator,TSS))+
+  geom_vline(aes(xintercept=1),col="red")
+```
+
+**Figure `r iFig=iFig+1; iFig`.** TSS by reference level for catch curve analysis.
+
+[Back to Top](#top)
+
+# More Information {#More}
+
+* You can submit bug reports, questions or suggestions on `FLife` at the `FLife` issue page ^[<https://github.com/lauriekell/FLife/issues>], or on the *FLR* mailing list.
+* Or send a pull request to <https://github.com/lauriekell/FLife/>
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage ^[<http://flr-project.org>].
+* The latest version of `FLife` can always be installed using the `devtools` package, by calling
+```{r, devtools, echo=TRUE, eval=FALSE}
+	library(devtools)
+	install_github("flr/FLife")
+```
+`
+
+## Software Versions
+
+* `r version$version.string`
+* FLCore: `r packageVersion('FLCore')`
+* FLPKG: `r # packageVersion('FLPKG')`
+* **Compiled**: `r date()`
+* **Git Hash**: `r system("git log --pretty=format:'%h' -n 1", intern=TRUE)`
+
+## Author information
+
+**Laurence KELL**. laurie@seaplusplus.co.uk
+
+## Acknowledgements
+
+This vignette and the methods documented in it were developed under the MyDas project funded by the Irish exchequer and EMFF 2014-2020. The overall aim of MyDas is to develop and test a range of assessment models and methods to establish Maximum Sustainable Yield (MSY) reference points (or proxy MSY reference points) across the spectrum of data-limited stocks.
+
+# References {#References}
+
+
+[Back to Top](#top)
+
+
+
+
