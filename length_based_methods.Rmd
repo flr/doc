@@ -1,0 +1,598 @@
+---
+title: "Length Based Methods"
+output:
+github_document:
+  mathjax: TRUE
+html_document:
+  fig_width: 6 
+  fig_height: 4 
+  toc: yes
+bibliography: bibliography.bib
+---
+
+```{r knitr_init, echo=FALSE, results="hide"}
+library(knitr)
+## Global options
+opts_chunk$set(echo      =FALSE,
+               eval      =TRUE,
+               prompt    =FALSE,
+               comment   =NA,
+               message   =FALSE,
+               warning   =FALSE,
+               tidy      =TRUE,
+               fig.height=6,
+               fig.width =8)
+
+options(digits=3)
+
+iFig=0
+```
+
+
+```{r, source}
+source("R/candidates/mode.R")
+source("R/candidates/cc.R")
+source("R/candidates/powh.R")
+source("R/candidates/cc.R")
+source("R/candidates/haupt.R")
+source("R/candidates/bhz.R")
+source("R/candidates/roc.R")
+```
+
+[](#top)
+
+[Packages](#Packages)
+
+[Catch Curve Analysis](#CC])
+
+[Simulation Model](#Simulation)
+
+[Indicators](#Estimation)
+
+[Classification Skill](#Skill)
+
+[More Information](#More)
+
+[References](#References)
+
+This vignette demonstrate how to calculate and simulation test indicators and simple length based methods. To do this simulation models conditioned on life history theory are used to provide a theoretical basis for developing hypotheses about population dynamics. 
+
+In data poor situations the length composition of the catch can be used to assess stock status, e.g. if the catch is mainly of immature individuals then it is likely that the stock is either over exploited or growth over fishing is occurring. Life history parameters, such as maximum size and size at first maturity, have been used as proxies for productivity  (e.g. @roff1984evolution ). For examle,ICES has implemented a framework for data poor stocks that uses  length-based indicators (LBIs) and life history parameters to classify stocks according to conservation and sustainability status, and yield optimisation @wklifev. 
+
+The length frequency distribution, is  affected by growth and mortality, as these processes determine how quickly indivuals appear in and disappear from the larger size classes. Therefore a variety of methods have been developed to estimate total mortality ($Z$) based on he accumulation of length classes in the right-hand limb of the length frequency data (e.g. @beverton1956review, @powell1979estimation @wetherall1987estimating).
+
+Life history traits include individual growth rate; age and size at sexual maturity; the temporal pattern or schedule of reproduction; the number, size, and sex ratio of offspring; the distribution of intrinsic or extrinsic mortality rates (e.g., patterns of senescence); and patterns of dormancy and dispersal. These traits contribute directly to age-specific survival and reproductive functions.^[http://www.oxfordbibliographies.com/view/document/obo-9780199830060/obo-9780199830060-0016.xml] 
+
+The **FLife** package has a variety of methods for modelling life history traits for use in fish stock assessment and conducting Management Strategy Evaluation (MSE), and for for simulating equilibrium `FLBRP` and dynamic  `FLStock` objects in **FLR**.
+
+ 
+# Packages {#Packages}
+
+As well as 'FLR' a variety of other packages are required 
+
+```{r, pkgs3, echo=TRUE}
+library(FLCore)
+library(ggplotFL)
+
+library(FLBRP)
+library(FLasher)
+```
+
+for plotting
+
+```{r, pkgs1, echo=TRUE}
+library(ggplot2)
+library(GGally)
+```
+
+and data manipulation
+
+```{r, pkgs2, echo=TRUE}
+library(reshape)
+library(plyr)
+```
+
+## Quick Start {#QuickStart}
+
+The packges **FLife** and **mydas** are required for modelling life-histories and estimation
+
+The simplest way to obtain these  to install them from the `FLR` repository 
+
+```{r install,echo=TRUE,eval=FALSE}
+install.packages("FLife", repos = "http://flr-project.org/R")
+```
+
+See  `help(install.packages)` for more details.
+
+After installation
+```{r lib,echo=TRUE}
+library(FLife)
+library(mydas)
+```
+
+The `popbio` package is also required for analysing age and stage based population models.
+
+```{r, pkgs4, echo=TRUE}
+library(popbio)
+```
+
+[Back to Top](#top)
+
+
+# Catch Curve Analysis 
+
+@beverton1956review developed a method to estimate life history and population parameters length data. e.g. 
+
+\begin{equation}Z=K\frac{L_{\infty}-\overline{L}}{\overline{L}-L^\prime} \end{equation}
+Based on which @powell1979estimation developed a method, extended by @wetherall1987estimating, to estimate growth and mortality parameters. This assumes that the right hand tail of a length frequency distribution was determined by the asymptotic length $L_{\infty}$ and the ratio between Z and the growth rate k. 
+
+The Beverton and Holt methods assumes good estimates for K and $L_{\infty}$, while the Powell-Wetherall method only requires an estimate of K, since $L_{\infty}$ is estimated by the method as well as Z/K.These method therefore provide estimates for each distribution of Z/K, if K is unknown and Z if K is known.  
+
+As well as assuming that growth follows the von Bertalanffy growth function, it is also assumed that the population is in a steady state with constant exponential mortality, no changes in selection pattern of the fishery and constant recruitment. In the Powell-Wetherall method $L^\prime$ can take any value between the smallest and largest sizes. Equation 1 then provides a series of estimates of Z and since 
+
+
+\begin{equation}\overline{L}-L^\prime=a+bL^{\prime} \end{equation}
+ a and b can be estimated by a regression analysis where 
+\begin{equation}b=\frac{-K}{Z+K} \end{equation}
+ \begin{equation}a=-bL_{\infty} \end{equation}
+
+Therefore plotting $\overline{L}-L^\prime$ against $L^\prime$ therefore provides an estimate of $L_{\infty}$ and Z/K
+
+Plotting $\overline{L}-L^\prime$ against $L^\prime$ provides an estimate of $L_{\infty}$ and Z/k, since $L_{\infty}=-a/b$ and $Z/k=\frac{-1-b}{b}$. If k is known then it also provides an estimate of Z (\textbf{Figure} \ref{fig:15}).
+
+```{r}
+
+```
+
+**Figure `r iFig=iFig+1; iFig`** Length data
+
+```{r}
+data(cas)
+pw=ddply(subset(cas), .(year), 
+   function(cas) powh(cas$len,cas$n)$data)
+   
+   pw=transform(pw, lustrum=(year%/%5)*5,
+         yr    =year-(year%/%5)*5,
+         weight=ifelse(len>=100&len<=200,1,0))
+         
+ggplot(pw)+
+   geom_line(aes(len,diff,colour=factor(yr),group=year))+
+   scale_x_continuous(limits=c(0,300)) +
+   xlab("Length (cm)")+
+   ylab("Difference between Length and Mean Size")+
+   geom_smooth(aes(len,diff,weight=weight),
+   method="lm",col="red",size=1.25,alpha=.1)+
+   theme_bw()+theme(legend.position="none")
+```
+
+**Figure `r iFig=iFig+1; iFig`** Length-based catch curve analysis.
+
+
+```{r}
+data(ple4)
+ctc=as.data.frame(catch.n(ple4)[-10])
+ctc=ddply(ctc,.(year), with, cc(age=age,n=data))
+ctc=ddply(transform(ctc,decade=factor(10*(year%/%10))),.(decade,age),with,data.frame(sel=mean(sel)))
+ggplot(ctc)+
+  geom_line(aes(age,sel,colour=decade))
+```
+
+**Figure `r iFig=iFig+1; iFig`** Age based catch curve analysis to estimate sekecrivity
+
+[Back to Top](#top)
+
+# Simulation {#Simulation}
+
+## Pollack stock based on life-history parameters
+
+```{r pollack,echo=TRUE}
+par=FLPar(c("linf"=85.1,"k"=0.19,"t0"=-0.94,"l50"=44.6,"a"=0.01,"b"=2.98))
+
+par
+```
+
+
+`par` includes the parameters for the von Bertalanffy growth equation
+
+$$ L_t = L_\infty (1 - e^{(-kt-t_0)})$$
+
+where $L_t$ is length at time t, $L_\infty$ the asymptotic maximum length, $k$ the growth coefficient,  and $t_0$ the time at which an individual would, if it possible, be of zero length. 
+
+the length-weight relationship
+
+
+$$ W = aL^b $$
+
+and $L_{50}$ the length at $50\%$ maturity
+
+Other life history parameters, if missing, can be derived from these using `lhPar`, e.g. natural mortality has been shown to vary by length @gislason2010does
+
+$$M_L=1.73L^{-1.61}L_{\infty}^{1.44}k$$
+
+```{r m-gislason, eval=FALSE}
+m=gislason(FLQuant(1:15,dimnames=list(age=1:15)),par)
+
+ggplot(as.data.frame(m))+
+    geom_line(aes(age,data,col=factor(iter)))+
+    theme(legend.position="none")+
+    scale_x_continuous(limits=c(0,15))+
+    xlab("Age")+ylab("M-at-age")
+```
+
+
+```{r, lhPar}
+par=lhPar(par)
+
+par
+```
+
+The age-specific vectors for the different processes can be modelled using `par` by creating an `FLBRP` object
+
+```{r, age-vector, echo=TRUE, fig.width=10,fig.height=8}
+eql=lhEql(par)
+
+ggplot(FLQuants(eql,"m","catch.sel","mat","catch.wt"))+
+  geom_line(aes(age,data))+
+  facet_wrap(~qname,scale="free")+
+  scale_x_continuous(limits=c(0,15))
+```
+
+### Stock recruitment relationships
+
+If a stock-recruitment relationship is assumed, e.g. Beverton and Holt e.g.
+
+$r = \frac{aS}{b + ssb}$
+
+
+## Equilibrium dynamics
+
+The equilibrium dynamics can be modelled and reference points such as those based on maximum sustainable yield $MSY$ can be derived
+
+```{r, eql, fig.width=10,fig.height=8}
+plot(eql,refpts="msy")+theme(legend.position="none")
+```
+
+
+### Stochastic simulations
+
+
+```{r, fbar}
+f=FLQuant(c(rep(0.1,60),seq(0.1,2.0,length.out=40)[-40],
+                        seq(2.0,0.7,length.out=11),rep(0.7,20)))
+  
+fbar(eql)=f%*%refpts(eql)["msy","harvest"] 
+```
+
+```{r, eq2stk}
+om=as(eql,"FLStock") 
+```
+
+
+```{r, devs}
+srDev=rlnoise(20,FLQuant(0,dimnames=list(year=1:130)),0.3,0.0)  
+
+om   =ffwd(propagate(om,dims(srDev)$iter),
+               fbar=propagate(fbar(eql)[,-1],dims(srDev)$iter),
+               sr=eql,deviances=srDev)
+```
+
+```{r, om, fig.width=10,fig.height=8}
+ymsy<-function(x) refpts(x)["msy","yield"]  
+rmsy<-function(x) refpts(x)["msy","rec"]
+
+mets <- list(RMSY =function(x, y) rec(  x)/ rmsy(y),
+             YMSY =function(x, y) catch(x)/ ymsy(y),
+             SBMSY=function(x, y) ssb(  x)/sbmsy(y),
+             FMSY =function(x, y) fbar( x)/ fmsy(y))
+
+fqs <- FLQuants(lapply(mets, function(m)
+  dbind(FLQuants(Map(function(x, y) m(x, y), x=FLStocks("Pollack"=om), y=FLBRPs("Pollack"=eql))), dim=3)))
+
+plot(fqs,iter=1)+
+  ylim(c(0, NA))+
+  geom_hline(yintercept=1, linetype=2)+
+  facet_grid(factor(factor(qname,levels=c("FMSY","RMSY","SBMSY","YMSY")))~
+             factor(unit,levels=c("Sprat","Turbot","Pollack","Bigeye","Ray")),scale="free")+
+  theme_bw(16)+
+  scale_x_continuous(limits=c(50,120))+
+  theme(legend.position="none")+
+  scale_colour_manual(values=rep("grey25",6))+
+  scale_fill_manual(values=rep("grey50",5))
+```
+
+**Figure `r iFig=iFig+1; iFig`** Operating Models for base case.
+
+## Length Frequency Distributions
+
+```{r}
+ak  =mydas:::invAlk(par,cv=0.1)  
+lfd=mydas:::lenSample(catch.n(om)[,ac(60:120)],ak,nsample=500)
+```
+
+```{r}
+save(lfd,file="/home/laurie/Desktop/tmp/lfd.RData")
+```
+
+```{r, fig-lfd, fig.width=10,fig.height=10} 
+library(ggpubr)  
+
+load("/home/laurie/Desktop/tmp/lfd.RData")
+
+
+unbin=function(x){
+  left =as.numeric(substr(x,2,unlist(gregexpr(",",x))-1))
+  right=as.numeric(substr(x,  unlist(gregexpr(",",x))+1,nchar(x)-1))
+  mid  =(left+right)/2
+  
+  data.frame(left=left,right=right,mid=mid,n=x)}
+
+lmode<-function(len,n,bin=25) {
+  
+  dat=data.frame(bin=cut(len,breaks=bin),n=n)
+  res=ddply(dat,.(bin), with, data.frame(freq=sum(n)))
+  res=as.character(subset(res,freq==max(freq))[1,"bin"])
+  unbin(res)$mid}
+
+dat=subset(transform(as.data.frame(lfd),lustrum=5*(year%/%5)),year>=60) 
+dat=subset(dat,lustrum%in%seq(60,110,10))
+
+dt2=ddply(dat,.(lustrum), with, {
+  lc=lmode(len,data)*0.5
+  data.frame(lc   =lc,
+             lmean=weighted.mean(len,data*(len>=lc)))})
+
+gghistogram(dat,x="len",weight="data", bins=25)+
+  coord_flip()+
+  scale_x_reverse()+
+  facet_grid(.~lustrum,scale="free")+xlab("Length (cm)")+
+  geom_vline(aes(xintercept=lc),    data=dt2,col="red")+
+  geom_vline(aes(xintercept=lmean), data=dt2,col="blue")+
+  theme_bw(16)+
+  theme(legend.position = "none", 
+                    axis.title.x = element_blank(), 
+                    axis.text.x  = element_blank(), 
+                    axis.ticks.x = element_blank())
+```
+
+**Figure `r iFig=iFig+1; iFig`** Length data
+
+
+[Back to Top](#top)
+
+# Indicators {#Estimation}
+
+Approach.
+
+Data poor stocks include those for which only trends such as lpue,  cpue,  and  mean  length  in  the  catch  are available (**Category 3**), and stocks for which only reliable catch data are available (**Category 4**).
+
+Methods currently approved by ICES for calculation of $MSY$ reference points for these stocks are 
+
++ Length based indicators 
++ Z derived from mean length 
++ Length based spawner per recruit; and
++ Surplus Production models
+
+Many approaches have emerged over the last few decades, for example Where length data are available methods include Length Based Spawning Potential Ratio (LBSPR), Length-Based Integrated Mixed Effects (LIME), and Length-Based Bayesian (LBB). While where only catch data are available methods include Catch-Maximum Sustainable Yield (Catch-MSY), State-Space Catch-Only Model (SSCOM), Depletion Based Stock Reduction Analysis (DBSRA), and Simple Stock Synthesis (SSS) an extension of Catch-MSY (CMSY).
+
+
+Empirical indicators and reference points can also be used to monitor stocks and these include
+
++ $L_{max5\%}$ mean length of largest 5\%
++ $L_{95\%}$ $95^{th}$ percentile
++ $P_{mega}$ Proportion of individuals above $L_{opt} + 10\%$
++ $L_{25\%}$ $25^{th}$ percentile of length distribution
++ $L_{c}$ Length at $50\%$ of modal abundance
++ $L_{mean}$ Mean length of individuals $> L_c$
++ $L_{max_{y}}$ Length class with maximum biomass in catch
++ $L_{mean}$ Meanlength of individuals $> L$
+
+where potential  **reference points** include
+
++ $L_{opt} = L_{\infty}\frac{3}{3+\frac{M}{K}}$, assuming $M/K = 1.5$ gives $\frac{2}{3}L_{\infty}$
++ $L_{F=M} =  0,75l_c+0.25l_{\infty}$
+
+
+## Length-Based Indicators
+
+```{r}
+library(spatstat)
+lbi =transform(subset(as.data.frame(lfd,drop=TRUE),data>0),
+wt  =c(par["a"])*len^c(par["b"]),
+lopt=c(2/3*par["linf"]))
+lbi =ddply(lbi, .(year,iter), with, mydas:::lenInd(len,data,wt,lopt))
+lbi=cbind(lbi,linf=c(par["linf"]),k=c(par["k"]),l50=c(par["l50"]))
+```
+
+```{r}
+save(lbi,om,eql,file="/home/laurie/Desktop/tmp/tmp.RData")
+```
+
+```{r}
+library(dplyr)
+plot(as.FLQuant(transmute(lbi,year=year,iter=iter,data=lmean)))
+```
+
+## Simple Length-Based Methods
+```{r}
+haupt<-function(lfd,pars,lc=FLife::vonB(pars["sel1"],pars)*.9,lmax="missing"){
+  
+  dat=lfd[as.numeric(dimnames(lfd)$len)>c(lc)]
+  if (!missing(lmax))
+    dat=dat[as.numeric(dimnames(dat)$len)<c(lmax)]
+  
+  l  =dat
+  l[]=as.numeric(dimnames(l)[[1]])
+
+  l1  =dat[-dim(dat)[1]]
+  l1[]=as.numeric(dimnames(l1)[[1]])
+
+  l2  =dat[-1]
+  l2[]=as.numeric(dimnames(l2)[[1]])
+
+  dt=-log(1-l2%/%pars["linf"])/pars["k"]+log(1-l1/pars["linf"])/pars["k"]
+  t =pars["t0"]*log(1-(l/pars["linf"]))/pars["k"]  
+  
+  dat=model.frame(FLQuants("y"=log(dat[-dim(t)[1]]%/%dt),
+                           "x"=      t[-dim(t)[1]]))
+  dat=subset(dat,is.finite(y))
+  #z  =ddply(dat,.(year,iter), with, data.frame(data=-lmRob(y~x)$coefficients["x"]))
+  z  =ddply(dat,.(year,iter), with, data.frame(data=-lm(y~x)$coefficients["x"]))
+  z  =transform(z,year=factor(year),iter=factor(iter))
+  as.FLQuant(z)
+}
+
+z=haupt(lfd,par,par["sel1"]*0.9)
+```
+
+
+```{r}
+plot(z)
+```
+
+```{r}
+bhz<-function(lfd,par){
+  lfd=lfd[dimnames(lfd)[[1]]>=c(par["lc"]),]
+  len=FLQuant(dimnames(lfd)[[1]],dimnames=dimnames(lfd))
+  lmean=quantSums(lfd*len)%/%quantSums(lfd)
+  
+  par["k"]%*%(par["linf"]%-%lmean)%/%(lmean%-%par["lc"])}
+
+z=haupt(lfd,par)
+```
+
+```{r}
+plot(z)
+```
+
+
+# Classification Skill {#Skill}
+
+```{r, tss, fig.height=8, fig.width=8}
+load("/home/laurie/Desktop/tmp/tmp.RData") 
+
+lht=merge(subset(lbi,year%in%100:120),
+          model.frame(FLQuants(FFMSY=fbar(om)%/%refpts(eql)["msy","harvest"]),drop=T))
+lht=merge(lht,transmute(subset(lbi,year%in%80),iter=iter,l80=lmean))
+
+state=lht$FFMSY
+score=1/(lht$lmean/lht$l80)
+
+PN=c(
+  TP=sum(score>=1&state>=1),
+  TN=sum(score< 1&state< 1),
+  
+  FN=sum(score< 1&state>=1),
+  FP=sum(score>=1&state< 1))
+  
+ggplot(data.frame(state=state,score=score))+
+  geom_point(aes(state,score))+
+  geom_vline(aes(xintercept=1),col="red")+
+  geom_hline(aes(yintercept=1),col="red")+
+  geom_label(aes(x=1.8,y=1.2,label=paste("TP=",PN["TP"])))+
+  geom_label(aes(x=1.8,y=0.9,label=paste("FP=",PN["FN"])))+
+  geom_label(aes(x=0.8,y=1.2,label=paste("FN=",PN["FP"])))+
+  geom_label(aes(x=0.8,y=0.9,label=paste("TN=",PN["TN"])))+
+  xlab("F/FMSY")+ylab("LMean / ref year")
+
+tss=PN["TP"]/(PN["TP"]+PN["FN"])-PN["FP"]/(PN["FP"]+PN["TN"])
+names(tss)="TSS"
+tss
+```
+
+**Figure `r iFig=iFig+1; iFig`** Classification
+
+
+```{r, fig.width=8, fig.height=8}
+roc<-function(state, score,ref=1){
+  state    =state[order(score, decreasing=TRUE)]
+  reference=rev(sort(score))
+  labels   =state>ref
+  cumn     =cumsum(rep(1,length(labels)))
+  
+  TPR =cumsum( labels)/sum( labels) 
+  FPR =cumsum(!labels)/sum(!labels)
+  
+  TP  =cumsum( labels)  
+  FP  =cumsum(!labels)
+  
+  FN  =sum( labels)-TP  
+  TN  =sum(!labels)-FP  
+  
+  TSS =(TP/(TP+FN)-FP/(FP+TN))
+  
+  data.frame(state,score=reference,labels=labels,
+             TPR=TPR,FPR=FPR,
+             TP=TP,TN=TN,FP=FP,FN=FN,
+             TSS=TSS)}
+rtn=roc(lht$FFMSY,lht$l80/lht$lmean)
+transform(rtn[abs(rtn$score-1)==min(abs(rtn$score-1)),],roc.TSS=TPR-FPR) 
+```
+
+```{r}
+ggplot(rtn)+
+  geom_line(aes(FPR,TPR))+
+  geom_point(aes(FPR,TPR),data=rtn[abs(rtn$score-1)==min(abs(rtn$score-1)),],col="red",size=3)
+```
+
+**Figure `r iFig=iFig+1; iFig`** ROC curve
+
+
+```{r}
+ggplot(rtn)+
+  geom_line(aes(score,TSS))+
+  geom_vline(aes(xintercept=1),col="red")
+```
+
+**Figure `r iFig=iFig+1; iFig`** TSSs
+
+```{r, eval=FALSE}
+obs =lht$FFMSY>1
+pred=lht$l80/lht$lmean<1
+
+tp = sum( obs &  pred)
+fp = sum( obs & !pred)
+tn = sum(!obs & !pred)
+fn = sum(!obs &  pred)
+
+tpr = tp/(tp+fn)
+fpr = fp/(tn+fp)
+tss = tpr -fpr
+
+tss
+```
+
+
+[Back to Top](#top)
+
+# More Information {#More}
+
+* You can submit bug reports, questions or suggestions on `FLife` at the `FLife` issue page ^[<https://github.com/lauriekell/FLife/issues>], or on the *FLR* mailing list.
+* Or send a pull request to <https://github.com/lauriekell/FLife/>
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage ^[<http://flr-project.org>].
+* The latest version of `FLife` can always be installed using the `devtools` package, by calling
+```{r, devtools, echo=TRUE, eval=FALSE}
+	library(devtools)
+	install_github("flr/FLife")
+```
+`
+
+## Software Versions
+
+* `r version$version.string`
+* FLCore: `r packageVersion('FLCore')`
+* FLPKG: `r # packageVersion('FLPKG')`
+* **Compiled**: `r date()`
+* **Git Hash**: `r system("git log --pretty=format:'%h' -n 1", intern=TRUE)`
+
+## Author information
+
+**Laurence KELL**. laurie@seaplusplus.co.uk
+
+## Acknowledgements
+
+This vignette and the methods documented in it were developed under the MyDas project funded by the Irish exchequer and EMFF 2014-2020. The overall aim of MyDas is to develop and test a range of assessment models and methods to establish Maximum Sustainable Yield (MSY) reference points (or proxy MSY reference points) across the spectrum of data-limited stocks.
+
+# References {#References}
+
+
+[Back to Top](#top)

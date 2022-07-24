@@ -21,9 +21,9 @@ opts_chunk$set(echo      =FALSE,
                warning   =FALSE,
                tidy      =TRUE,
                fig.height=6,
-               fig.width =8,
-               cache     =TRUE,
-               cache.path="../cache/class/")
+               fig.width =8)
+#,             cache     =TRUE,
+#               cache.path="../cache/class/")
 
 options(digits=3)
 
