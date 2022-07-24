@@ -21,7 +21,8 @@ opts_chunk$set(echo      =FALSE,
                warning   =FALSE,
                tidy      =TRUE,
                fig.height=6,
-               fig.width =8)
+               fig.width =8)#, cache     =TRUE, cache.path="../cache/lbm/")
+
 
 options(digits=3)
 

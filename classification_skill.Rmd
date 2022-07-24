@@ -21,9 +21,7 @@ opts_chunk$set(echo      =FALSE,
                warning   =FALSE,
                tidy      =TRUE,
                fig.height=6,
-               fig.width =8)
-#,             cache     =TRUE,
-#               cache.path="../cache/class/")
+               fig.width =8) #,cache     =TRUE,  cache.path="../cache/class/")
 
 options(digits=3)
 
@@ -267,32 +265,30 @@ plot( mcf(FLQuants(state=state,indicator=indicator,Z=zhat)))+
 
 
 ```{r, tss, fig.height=8, fig.width=8}
-dat=subset(model.frame(mcf(FLQuants(state=state,indicator=1/(indicator/45)))),year%in%100:120)
+dat=subset(model.frame(mcf(FLQuants(state=state,indicator=1/(indicator/47)))),year%in%100:120)
 
-with(dat, {
-
-  
 PN=c(
-  TP=sum(indicator>=1&state>=1),  
-  TN=sum(indicator< 1&state< 1),
+  TP=sum(dat$indicator>=1&dat$state>=1),  
+  TN=sum(dat$indicator< 1&dat$state< 1),
   
-  FN=sum(indicator< 1&state>=1),
-  FP=sum(indicator>=1&state< 1))
+  FN=sum(dat$indicator< 1&dat$state>=1),
+  FP=sum(dat$indicator>=1&dat$state< 1))
   
-ggplot( data.frame(state=state,indicator=indicator))+
-  geom_point(aes(state,indicator))+
+p=ggplot( data.frame(state=dat$state,indicator=dat$indicator))+
+  geom_point(aes(dat$state,dat$indicator))+
   geom_vline(aes(xintercept=1),col="red")+
   geom_hline(aes(yintercept=1),col="red")+
   xlab("F/FMSY")+ylab("LMean / ref year")+
-  geom_label(aes(x=1.8,y=1.2,label=paste("TP=",PN["TP"])))+
-  geom_label(aes(x=1.8,y=0.9,label=paste("FP=",PN["FN"])))+
-  geom_label(aes(x=0.8,y=1.2,label=paste("FN=",PN["FP"])))+
-  geom_label(aes(x=0.8,y=0.9,label=paste("TN=",PN["TN"])))
-
+  geom_label(aes(x=1.8,y=1.15,label=paste("TP=",PN["TP"])))+
+  geom_label(aes(x=1.8,y=0.90,label=paste("FP=",PN["FN"])))+
+  geom_label(aes(x=0.8,y=1.15,label=paste("FN=",PN["FP"])))+
+  geom_label(aes(x=0.8,y=0.90,label=paste("TN=",PN["TN"])))
 
 tss=PN["TP"]/(PN["TP"]+PN["FN"])-PN["FP"]/(PN["FP"]+PN["TN"])
 names(tss)="TSS"
-tss})
+tss
+
+p
 ```
 
 **Figure `r iFig=iFig+1; iFig`** 
