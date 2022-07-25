@@ -21,8 +21,8 @@ opts_chunk$set(echo      =FALSE,
                warning   =FALSE,
                tidy      =TRUE,
                fig.height=6,
-               fig.width =8)#, cache     =TRUE, cache.path="../cache/lbm/")
-
+               fig.width =8#, cache     =TRUE, cache.path="../cache/lbm/"
+)
 
 options(digits=3)
 
@@ -32,13 +32,13 @@ iFig=0
 
 ```{r, source}
 source("R/candidates/mode.R")
-source("R/candidates/cc.R")
 source("R/candidates/powh.R")
 source("R/candidates/cc.R")
 source("R/candidates/haupt.R")
 source("R/candidates/bhz.R")
 source("R/candidates/roc.R")
 source("R/candidates/length.R")
+source("R/candidates/oemLn.R")
 ```
 
 [](#top)

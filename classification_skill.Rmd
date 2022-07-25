@@ -21,7 +21,8 @@ opts_chunk$set(echo      =FALSE,
                warning   =FALSE,
                tidy      =TRUE,
                fig.height=6,
-               fig.width =8) #,cache     =TRUE,  cache.path="../cache/class/")
+               fig.width =8) #,cache     =TRUE,  cache.path="../cache/class/"
+               )
 
 options(digits=3)
 
@@ -112,14 +113,11 @@ library(spatstat)
 source("R/candidates/mode.R")
 source("R/candidates/cc.R")
 source("R/candidates/powh.R")
-source("R/candidates/cc.R")
 source("R/candidates/haupt.R")
 source("R/candidates/bhz.R")
-source("R/candidates/roc.R")
 source("R/candidates/roc.R")  
 source("R/candidates/length.R")
-
-source("~/pCloudDrive/flr/mydas/R/oemLn.R")
+source("R/candidates/oemLn.R")
 ```
 
 
