@@ -38,6 +38,7 @@ source("R/candidates/cc.R")
 source("R/candidates/haupt.R")
 source("R/candidates/bhz.R")
 source("R/candidates/roc.R")
+source("R/candidates/length.R")
 ```
 
 [](#top)
@@ -108,7 +109,8 @@ See  `help(install.packages)` for more details.
 After installation
 ```{r lib,echo=TRUE}
 library(FLife)
-library(mydas)
+
+#library(mydas)
 ```
 
 The `popbio` package is also required for analysing age and stage based population models.
@@ -306,8 +308,8 @@ plot(fqs,iter=1)+
 ## Length Frequency Distributions
 
 ```{r}
-ak  =mydas:::invAlk(par,cv=0.1)  
-lfd=mydas:::lenSample(catch.n(om)[,ac(60:120)],ak,nsample=500)
+ak =invAlk(par,cv=0.1)  
+lfd=lenSample(catch.n(om)[,ac(60:120)],ak,nsample=500)
 ```
 
 ```{r, fig-lfd, fig.width=10,fig.height=10} 
@@ -390,11 +392,15 @@ where potential  **reference points** include
 ## Length-Based Indicators
 
 ```{r}
+save(lfd,par,file="C:\\Users\\User\\Desktop\\tmp\\lfd.RData")
+```
+
+```{r}
 library(spatstat)
-lbi =transform(subset(as.data.frame(lfd,drop=TRUE),data>0),
-wt  =c(par["a"])*len^c(par["b"]),
-lopt=c(2/3*par["linf"]))
-lbi =ddply(lbi, .(year,iter), with, mydas:::lenInd(len,data,wt,lopt))
+lbi =transform(subset(melt(lfd),value>0),
+               wt  =c(par["a"])*len^c(par["b"]),
+               lopt=c(2/3*par["linf"]))
+lbi =ddply(lbi, .(year,iter), with, lenInd(len,value,wt,lopt))
 lbi=cbind(lbi,linf=c(par["linf"]),k=c(par["k"]),l50=c(par["l50"]))
 ```
 
@@ -458,6 +464,9 @@ plot(z)
 
 
 # Classification Skill {#Skill}
+```{r}
+save(lbi,file="C:\\Users\\User\\Desktop\\tmp\\lbi.RData")
+```
 
 ```{r, tss, fig.height=8, fig.width=8}
 lht=merge(subset(lbi,year%in%100:120),
@@ -491,45 +500,31 @@ tss
 
 **Figure `r iFig=iFig+1; iFig`** Classification
 
-
-```{r, fig.width=8, fig.height=8}
-roc<-function(state, score,ref=1){
-  state    =state[order(score, decreasing=TRUE)]
-  reference=rev(sort(score))
-  labels   =state>ref
-  cumn     =cumsum(rep(1,length(labels)))
-  
-  TPR =cumsum( labels)/sum( labels) 
-  FPR =cumsum(!labels)/sum(!labels)
-  
-  TP  =cumsum( labels)  
-  FP  =cumsum(!labels)
-  
-  FN  =sum( labels)-TP  
-  TN  =sum(!labels)-FP  
-  
-  TSS =(TP/(TP+FN)-FP/(FP+TN))
-  
-  data.frame(state,score=reference,labels=labels,
-             TPR=TPR,FPR=FPR,
-             TP=TP,TN=TN,FP=FP,FN=FN,
-             TSS=TSS)}
-rtn=roc(lht$FFMSY,lht$l80/lht$lmean)
-transform(rtn[abs(rtn$score-1)==min(abs(rtn$score-1)),],roc.TSS=TPR-FPR) 
+```{r}
+save(lht,file="C:\\Users\\User\\Desktop\\tmp\\lht.RData")
 ```
 
-```{r}
+
+```{r, tss3,  fig.width=8, fig.height=8}
+rtn=roc(lht$FFMSY,lht$l80/lht$lmean)
+transform(rtn[abs(rtn$indicator-1)==min(abs(rtn$indicator-1)),],roc.TSS=TPR-FPR) 
+
 ggplot(rtn)+
   geom_line(aes(FPR,TPR))+
-  geom_point(aes(FPR,TPR),data=rtn[abs(rtn$score-1)==min(abs(rtn$score-1)),],col="red",size=3)
+  geom_point(aes(FPR,TPR),data=rtn[abs(rtn$indicator-1)==min(abs(rtn$indicator-1)),],col="red",size=3)
 ```
 
 **Figure `r iFig=iFig+1; iFig`** ROC curve
 
 
 ```{r}
+save(rtn,file="C:\\Users\\User\\Desktop\\tmp\\t.RData")
+```
+
+
+```{r, tss2}
 ggplot(rtn)+
-  geom_line(aes(score,TSS))+
+  geom_line(aes(indicator,TSS))+
   geom_vline(aes(xintercept=1),col="red")
 ```
 

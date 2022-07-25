@@ -55,9 +55,9 @@ library(ggplotFL)
 library(FLBRP)
 library(FLasher)
 
-library(mydas)
+#library(mydas)
 
-library(FLRef)
+#library(FLRef)
 ```
 
 for plotting
@@ -92,7 +92,8 @@ See  `help(install.packages)` for more details.
 After installation
 ```{r lib,echo=TRUE}
 library(FLife)
-library(mydas)
+
+#library(mydas)
 ```
 
 The `popbio` package is also required for analysing age and stage based population models.
@@ -107,6 +108,19 @@ library(spatstat)
 
 # Operating Model Conditioning
 
+```{r, source}
+source("R/candidates/mode.R")
+source("R/candidates/cc.R")
+source("R/candidates/powh.R")
+source("R/candidates/cc.R")
+source("R/candidates/haupt.R")
+source("R/candidates/bhz.R")
+source("R/candidates/roc.R")
+source("R/candidates/roc.R")  
+source("R/candidates/length.R")
+
+source("~/pCloudDrive/flr/mydas/R/oemLn.R")
+```
 
 
 ```{r, param}
@@ -170,7 +184,7 @@ lmodeFn<-function(len,n,bin=25) {
   dat=data.frame(bin=cut(len,breaks=bin),n=n)
   res=ddply(dat,.(bin), with, data.frame(freq=sum(n)))
   res=as.character(subset(res,freq==max(freq))[1,"bin"])
-  mydas:::unbin(res)$mid}
+  unbin(res)$mid}
 
 dt2=ddply(dat,.(lustrum), with, {
   lc=lmodeFn(len,data)*0.5
@@ -232,13 +246,12 @@ lbi =transform(subset(as.data.frame(lfd,drop=TRUE),data>0),
                wt  =c(par["a"])*len^c(par["b"]),
                lopt=c(2/3*par["linf"]))
   
-lbi =ddply(lbi, .(year,iter), with, mydas:::lenInd(len,data,wt,lopt))
+lbi =ddply(lbi, .(year,iter), with, lenInd(len,data,wt,lopt))
 lbi=cbind(lbi,linf=c(par["linf"]),k=c(par["k"]),l50=c(par["l50"]))
 ```
 
 
 ```{r, indicator}
-source("~/pCloudDrive/flr/FLCandy/R/length.R")
 
 state    =fbar(om)%/%refpts(eq)["msy","harvest"]  
 indicator=lmean(lfd) 
@@ -295,8 +308,6 @@ p
 
 
 ```{r, roc}
-source("~/pCloudDrive/flr/FLCandy/R/roc.R")
-
 dat=with(subset(model.frame(mcf(FLQuants(state=state,indicator=1/(indicator/45)))),year%in%100:120),roc(state,indicator))
 dt2=with(subset(model.frame(mcf(FLQuants(state=state,indicator=(zhat-0.25)/0.25))),year%in%100:120),roc(state,indicator))
 
@@ -315,8 +326,8 @@ ggplot( dat)+
 **Figure `r iFig=iFig+1; iFig`.** ROC for Catch Curve analysis  with reference level indicated.
 
 
-```{r}
-ggplot( dat)+
+```{r, tss2}
+ggplot(dat)+
   geom_line(aes(indicator,TSS))+
   geom_vline(aes(xintercept=1),col="red")
 ```
