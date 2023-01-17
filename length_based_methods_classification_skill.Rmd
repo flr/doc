@@ -11,7 +11,7 @@ bibliography: bibliography.bib
 ---
 
 ```{r knitr_init, echo=FALSE, results="hide"}
-library(knitr)
+library(knitr)   
 ## Global options
 opts_chunk$set(echo      =FALSE,
                eval      =TRUE,
