@@ -3,7 +3,7 @@ title: "Classification Skill of Length Based Indicators"
 output:
 github_document:
   mathjax: TRUE
-html_document:
+  html_document:
   fig_width: 6 
   fig_height: 4 
   toc: yes

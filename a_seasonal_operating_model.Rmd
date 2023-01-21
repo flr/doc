@@ -1,0 +1,313 @@
+---
+title: "Seasonal Operating Model"
+output:
+github_document:
+  mathjax: TRUE
+  html_document:
+  fig_width: 6 
+  fig_height: 4 
+  toc: yes
+bibliography: bibliography.bib
+---
+
+```{r knitr_init, echo=FALSE, results="hide"}
+library(knitr)   
+## Global options
+opts_chunk$set(echo      =FALSE, 
+               eval      =TRUE,
+               prompt    =FALSE,
+               comment   =NA,
+               message   =FALSE,
+               warning   =FALSE,
+               tidy      =TRUE,
+               fig.height=6,
+               fig.width =8,
+               cache     =TRUE,
+               cache.path="../cache/class/seasonal/")
+
+options(digits=3)
+
+iFig=0
+```
+
+
+[](#top)
+
+[Packages](#Packages)
+
+[Operating Model Conditioning](#OM])
+
+[More Information](#More)
+
+[References](#References)
+
+ 
+# Packages {#Packages}
+
+As well as 'FLR' a variety of other packages are required 
+
+```{r, pkgs3, echo=TRUE}
+library(FLCore)
+library(ggplotFL)
+
+library(FLBRP)
+library(FLasher)
+
+library(mydas)
+
+library(FLRef)
+```
+
+for plotting
+
+```{r, pkgs1, echo=TRUE}
+library(ggplot2)
+library(GGally)
+library(ggpubr)
+```
+
+and data manipulation
+
+```{r, pkgs2, echo=TRUE}
+library(reshape)
+library(plyr)
+library(dplyr)
+library(reshape)
+```
+
+## Quick Start {#QuickStart}
+
+The packges **FLife** and **mydas** are required for modelling life-histories and estimation
+
+The simplest way to obtain these  to install them from the `FLR` repository 
+
+```{r install,echo=TRUE,eval=FALSE}
+install.packages("FLife", repos = "http://flr-project.org/R")
+```
+
+See  `help(install.packages)` for more details.
+
+After installation
+```{r lib,echo=TRUE}
+library(FLife)
+library(mydas)
+```
+
+
+[Back to Top](#top)
+
+# Operating Model Conditioning
+
+## Annual model
+
+Choose life history parameters
+
+```{r, param, echo=TRUE}
+par=lhPar(FLPar(c(linf= 59.1,  k=0.28, t0=-0.4,
+           a=0.01111,b=3.15,a50=4.0, l50=43.25,
+           s=0.7),units="NA"))
+```
+
+Set up equilibrium dynamics
+
+```{r, eq, echo=TRUE}
+eq=lhEql(par)
+fbar(eq)=refpts(eq)["msy","harvest"]%*%FLQuant(c(rep(0.1,60),
+                                               seq(0.1,2,length.out=40)[-40],
+                                               seq(2,0.7,length.out=11),rep(0.7,20)))
+```
+
+
+Create time series
+
+```{r, om, echo=TRUE}
+set.seed(234)
+srDev =rlnoise(100,fbar(eq)%=%0,0.3,0)
+
+om=as(eq,"FLStock")
+om=propagate(om,dim(srDev)[6])
+f =propagate(fbar(eq),100)[,-1]
+
+om=ffwd(om,fbar=f,sr=eq,deviances=srDev)
+om=window(om,start=41)
+```
+
+
+```{r, fig-om, fig.width=10,fig.height=6, , echo=TRUE}
+mets <- list(RMSY =function(x, y) rec(  x)/refpts(y)["msy","rec"],
+             YMSY =function(x, y) catch(x)/refpts(y)["msy","yield"],
+             SBMSY=function(x, y) ssb(  x)/ sbmsy(y),
+             FMSY =function(x, y) fbar( x)/  fmsy(y))
+
+fqs <- FLQuants(lapply(mets, function(m) m(om, eq)))
+
+plot(fqs,iter=1)+ 
+  ylim(c(0, NA))+
+  geom_hline(yintercept=1, linetype=2)+
+  scale_x_continuous(limits=c(50,120))+
+  theme_bw(16)+
+  theme(legend.position="none")
+```
+
+**Figure `r iFig=iFig+1; iFig`** Operating Models.
+
+## Seasonal Operating Model
+
+Assign stock-recruit relationship parameters to spawning season, i.e. season 2.
+
+```{r, sr, echo=TRUE}
+sr.par=FLPar(NA, dimnames=list(params=dimnames(params(eq))$params, season=1:4, iter=1))
+sr.par[,2]=params(eq)[,1]
+sr.par[1,2]=sr.par[1,2]
+sr.par[2,2]=sr.par[2,2]
+sr4=predictModel(model=model(eq), params=sr.par)
+
+sr4
+```
+
+
+```{r, seasonalise}
+source("~/Desktop/flr/FLCandy/R/seasonalise.R")
+seasonalise<-function(object, season=1:4){
+  
+  ## Stock and recruit                                   ###
+  ## set expected to 1 and model variability as deviates ###
+  sr=as.FLSR(object,model="geomean")
+  params(sr)=FLPar(1,dimnames=list(params="a",iter=1))
+  
+  recs=FLCore:::expand(rec(object),season=season)
+  
+  ## Add seasons                                         ###
+  object=FLCore:::expand(object,season=season)
+  
+  ## Divide up mortality by season                       ###
+  m(      object)=m(object)/dim(object)[4]
+  harvest(object)=harvest(object)/dim(object)[4]
+  
+  ## Seasonal growth                                     ###
+  stock.wt(   object)[,-dim(stock.wt(   object))[2]]=wtInterp(stock.wt(   object))
+  catch.wt(   object)[,-dim(catch.wt(   object))[2]]=wtInterp(catch.wt(   object))
+  landings.wt(object)[,-dim(landings.wt(object))[2]]=wtInterp(landings.wt(object))
+  discards.wt(object)[,-dim(discards.wt(object))[2]]=wtInterp(discards.wt(object))
+
+  object=adjust(object)
+
+  ## Project for historic F                              ###
+  #fbar=as(FLQuants("fbar"=fbar(object)[,-1]),"fwdControl")
+  #object=fwd(object,control=fbar,sr=sr,residuals=recs)
+  
+  object}
+
+wtInterp<-function(wt){
+  
+  mlt=wt[,-dim(wt)[2]]
+  mlt=FLQuant(rep(seq(0,(dim(mlt)[4]-1)/dim(mlt)[4],1/dim(mlt)[4]),each=max(cumprod(dim(mlt)[1:3]))),
+              dimnames=dimnames(mlt))[-dim(mlt)[1]]
+  
+  incmt=wt[,,,1]
+  incmt=-incmt[-dim(incmt)[1],-dim(incmt)[2]]+incmt[-1,-1]
+  
+  wt[dimnames(incmt)$age,dimnames(incmt)$year]=
+    wt[dimnames(incmt)$age,dimnames(incmt)$year]+
+    incmt%+%(mlt%*%incmt)
+  
+  wt[,-dim(wt)[2]]}
+```
+
+
+```{r, om4, echo=TRUE}
+om4=seasonalise(window(iter(om,3), end=81))
+```
+
+
+Since selection pattern is asymptotic, set fbar range to be oldest true age, also make years correspond to current time period. No spawning outside of $2^{nd}$ season so set these to 0
+
+```{r, om4-tidy, echo=TRUE}
+range(om4)[c("minfbar","maxfbar")]=39
+
+dimnames(om4) <- list(year=an(dimnames(om4)$year)+1950)
+
+mat(om4)[,,,c(1,3:4)]=0
+```
+
+
+```{r}
+plot(om4)
+```
+
+
+```{r}
+stk=qapply(om4, function(x) {  
+  
+  if (dim(x)[4]==1) return(x)
+  if (dim(x)[1]==1) {
+    x=x[,,,1]
+    return(x)}
+  
+  dnms=dimnames(x)
+  
+  dnms[[4]]=1
+  dnms[[1]]=(as.numeric(rep(dnms[[1]],each=dim(x)[4]))+seq(0,1,length.out=dim(x)[4]+1)[-(dim(x)[4]+1)])*dim(x)[4]
+  
+  FLQuant(c(aperm(x,c(4,1,2,3,5:6))),dimnames=dnms,units=units(x))})
+```
+
+
+```{r}
+range(stk)["min"]=min(as.numeric(dimnames(m(stk))[[1]]))
+range(stk)["max"]=max(as.numeric(dimnames(m(stk))[[1]]))
+if (!is.na(range(stk)["plusgroup"]))
+   range(stk)["plusgroup"]=range(stk)["max"]
+range(stk)[c("minfbar","maxfbar")]=range(stk)[c("minfbar","maxfbar")]*dim(m(om4))[4]
+range(stk)["minfbar"]=range(stk)["maxfbar"]-3
+   
+eq4=FLBRP(stk[-1],sr=list(model=model(eq),params=params(eq)))
+```
+
+
+```{r}
+#### Set range of Fs so can check MSY for FLStock
+f=FLQuant(c(refpts(eq4)["msy","harvest"]),dimnames=list(year=dimnames(om4)$year,season=1:4)) 
+f[,,,1:2]=1e-6 
+f[,,,3]  =f[,,,3]*0.25
+f[,,,4]  =f[,,,4]*0.75
+control=as(FLQuants("f"=f[,-1]),"fwdControl")  
+
+om4=fwd(om4,control=control,sr=sr4)
+om4=window(om4,end=2031)
+```
+
+[Back to Top](#top)
+
+# More Information {#More}
+
+* You can submit bug reports, questions or suggestions on `FLife` at the `FLife` issue page ^[<https://github.com/lauriekell/FLife/issues>], or on the *FLR* mailing list.
+* Or send a pull request to <https://github.com/lauriekell/FLife/>
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage ^[<http://flr-project.org>].
+* The latest version of `FLife` can always be installed using the `devtools` package, by calling
+```{r, devtools, echo=TRUE, eval=FALSE}
+	library(devtools)
+	install_github("flr/FLife")
+```
+`
+
+## Software Versions
+
+* `r version$version.string`
+* FLCore: `r packageVersion('FLCore')`
+* FLPKG: `r # packageVersion('FLPKG')`
+* **Compiled**: `r date()`
+* **Git Hash**: `r system("git log --pretty=format:'%h' -n 1", intern=TRUE)`
+
+## Author information
+
+**Laurence KELL**. laurie@seaplusplus.co.uk
+
+## Acknowledgements
+
+This vignette and the methods documented in it were developed under the MyDas project funded by the Irish exchequer and EMFF 2014-2020. The overall aim of MyDas is to develop and test a range of assessment models and methods to establish Maximum Sustainable Yield (MSY) reference points (or proxy MSY reference points) across the spectrum of data-limited stocks.
+
+# References {#References}
+
+
+[Back to Top](#top)
