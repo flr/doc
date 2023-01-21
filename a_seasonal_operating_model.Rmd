@@ -238,15 +238,15 @@ plot(om4)
 Project for a seasonal fishery
 
 ```{r, echo=TRUE}
-f=fbar(om4)[,ac(2021:2030),, 1]%=%0.1
-f[,ac(2021:2030),,-1]=0
+f=fbar(om4)[,ac(2021:2030)]%=%0.1
+f[,ac(2021:2030),,1:3]=0
 
 control=as(FLQuants("f"=f),"fwdControl")  
 om4=window(fwd(om4,control=control,sr=sr4),end=2030)
 ```
 
 ```{r}
-plot(om4) 
+plot(om4)
 ```
 
 [Back to Top](#top)
