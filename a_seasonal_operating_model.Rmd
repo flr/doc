@@ -235,46 +235,18 @@ mat(om4)[,,,c(1,3:4)]=0
 plot(om4)
 ```
 
+Project for a seasonal fishery
 
-```{r}
-stk=qapply(om4, function(x) {  
-  
-  if (dim(x)[4]==1) return(x)
-  if (dim(x)[1]==1) {
-    x=x[,,,1]
-    return(x)}
-  
-  dnms=dimnames(x)
-  
-  dnms[[4]]=1
-  dnms[[1]]=(as.numeric(rep(dnms[[1]],each=dim(x)[4]))+seq(0,1,length.out=dim(x)[4]+1)[-(dim(x)[4]+1)])*dim(x)[4]
-  
-  FLQuant(c(aperm(x,c(4,1,2,3,5:6))),dimnames=dnms,units=units(x))})
+```{r, echo=TRUE}
+f=fbar(om4)[,ac(2021:2030),, 1]%=%0.1
+f[,ac(2021:2030),,-1]=0
+
+control=as(FLQuants("f"=f),"fwdControl")  
+om4=window(fwd(om4,control=control,sr=sr4),end=2030)
 ```
 
-
 ```{r}
-range(stk)["min"]=min(as.numeric(dimnames(m(stk))[[1]]))
-range(stk)["max"]=max(as.numeric(dimnames(m(stk))[[1]]))
-if (!is.na(range(stk)["plusgroup"]))
-   range(stk)["plusgroup"]=range(stk)["max"]
-range(stk)[c("minfbar","maxfbar")]=range(stk)[c("minfbar","maxfbar")]*dim(m(om4))[4]
-range(stk)["minfbar"]=range(stk)["maxfbar"]-3
-   
-eq4=FLBRP(stk[-1],sr=list(model=model(eq),params=params(eq)))
-```
-
-
-```{r}
-#### Set range of Fs so can check MSY for FLStock
-f=FLQuant(c(refpts(eq4)["msy","harvest"]),dimnames=list(year=dimnames(om4)$year,season=1:4)) 
-f[,,,1:2]=1e-6 
-f[,,,3]  =f[,,,3]*0.25
-f[,,,4]  =f[,,,4]*0.75
-control=as(FLQuants("f"=f[,-1]),"fwdControl")  
-
-om4=fwd(om4,control=control,sr=sr4)
-om4=window(om4,end=2031)
+plot(om4) 
 ```
 
 [Back to Top](#top)
