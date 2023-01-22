@@ -30,23 +30,19 @@ options(digits=3)
 iFig=0
 ```
 
-
-This vignette shows how to condition a seasonal Operating Model, i.e. one with time steps that are less than annual, based on life history theory.
-
-[](#top)
+This vignette shows how to condition a seasonal Operating Model, i.e. one with less than annual time steps that are less than annual, based on life-history theory.
 
 [Packages](#Packages)
 
-[Operating Model Conditioning](#OM])
+[Operating Model Conditioning](#OM%5D)
 
 [More Information](#More)
 
 [References](#References)
 
- 
 # Packages {#Packages}
 
-Some 'FLR' packages are required 
+Some 'FLR' packages are required
 
 ```{r, pkgs3, echo=TRUE}
 library(FLCore)
@@ -79,22 +75,22 @@ library(reshape)
 
 ## Quick Start {#QuickStart}
 
-The packge `FLife` is required for modelling life-histories and 'mydas' for estimation and developing harvest control rules
+The `FLife` packge is required for modelling life-histories, and 'mydas' for estimation and developing harvest control rules
 
-The simplest way to obtain the `FLR` pacakges aree  to install them from the `FLR` repository 
+The simplest way to obtain the `FLR` pacakges are to install them from the `FLR` repository
 
 ```{r install,echo=TRUE,eval=FALSE}
 install.packages("FLife", repos = "http://flr-project.org/R")
 ```
 
-See  `help(install.packages)` for more details.
+See `help(install.packages)` for more details.
 
 After installation, they can be loaded
+
 ```{r lib,echo=TRUE}
 library(FLife)
 library(mydas)
 ```
-
 
 [Back to Top](#top)
 
@@ -102,11 +98,11 @@ library(mydas)
 
 ## Annual model
 
-Conditioned an operating model on life history parameters allows more flexibility that using a data-rich stock assessment, that may never have been formally validated.
+Conditioned an Operating Models on life-history parameters allows more flexibility than using a data-rich stock assessment, that may never have been formally validated.
 
-There are relationships between the life-history parameters, e.g. the von Bertalanfy growth parameters $L_{\infty}$, $k$ and $t_0$, length at maturity ($l_{50}$), and of the length weight relationship $W=aL^b$. 
+There are relationships between the life-history parameters, e.g. the von Bertalanfy growth parameters $L_{\infty}$, $k$ and $t_0$, length at which $50\%$ of individuals reach maturity ($l_{50}$), and of the length weight relationship $W=aL^b$.
 
-There is an example data set `teleost`  in `FLife` 
+There is an example data set with `teleost` life-history parameters in `FLife`
 
 ```{r}
 data(teleost)
@@ -114,14 +110,15 @@ data(teleost)
 teleost
 ```
 
-
 ```{r}
 ggpairs(model.frame(teleost)[,c("linf","k","l50","a","b")])+
   scale_x_log10()+
   scale_y_log10()
 ```
 
-This means that even if you just know the maximum size of a species you can derive all the other parameters
+**Figure** `r iFig=iFig+1; iFig` relationships between life-history parameters
+
+If only the maximum size of a species is known then you can derive the other parameters from the life-history relationships.
 
 ```{r, param, echo=TRUE}
 par=lhPar(FLPar(c(linf= 59.1),units="NA"))
@@ -131,20 +128,21 @@ par
 
 ### Equilibrium dynamics
 
-Once you have the parameters, then you can create the equilibrium dynamics using the `FLBRP` class.
-```{r, eq, echo=TRUE, caption="a"}
+The life-history parameters can be used to create the equilibrium dynamics using the `FLBRP` class.
+
+```{r, eq, echo=TRUE}
 eq=lhEql(par)
 
 plot(eq,refpts="msy")
 ```
 
-
+**Figure `` `r iFig+1; iFig` ``** Equilibrium dynamics with $MSY$ reference points.
 
 ### Time series dynamics
 
 For the Operating Model, the equilibrium `FLBRP` object needs to be converted into an `FLStock` object.
 
-As example, simulate a time series of fishing mortality, e.g. where an unexploited stock is fished until it is over exploited, after which a recovery plan is implemented.
+As an example, time series are simulated for fishing mortality, where an unexploited stock is fished until it becomes over exploited, after which a recovery plan is implemented.
 
 ```{r, om-3, echo=TRUE}
 fbar(eq)=refpts(eq)["msy","harvest"]%*%FLQuant(c(rep(0.1,60),
@@ -153,6 +151,7 @@ fbar(eq)=refpts(eq)["msy","harvest"]%*%FLQuant(c(rep(0.1,60),
 ```
 
 Create the `FLStock`
+
 ```{r, om-1, echo=TRUE}
 om=as(eq,"FLStock")
 ```
@@ -163,7 +162,7 @@ Turn it into a stochastic object so that Monte Carlo simulations can be performe
 om=propagate(om,100)
 ```
 
-Perform a stochastic projection
+Then perform a stochastic projection
 
 ```{r, om, echo=TRUE}
 set.seed(234)
@@ -177,7 +176,6 @@ om=ffwd(om,fbar=f,sr=eq,deviances=srDev)
 ## get rid of burn in period
 om=window(om,start=41)
 ```
-
 
 ```{r, fig-om, fig.width=10,fig.height=6, caption="Annual Projection", echo=TRUE}
 mets=list(RMSY =function(x, y) rec(  x)/refpts(y)["msy","rec"],
@@ -195,10 +193,9 @@ plot(fqs,iter=1)+
   theme(legend.position="none")
 ```
 
-**Figure `r iFig=iFig+1; iFig`** Operating Models.
+**Figure `r iFig=iFig+1; iFig`** Operating Model with $MSY$ reference points.
 
 ## Seasonal Operating Model
-
 
 ```{r, seasonalise}
 source("~/Desktop/flr/FLCandy/R/seasonalise.R")
@@ -298,13 +295,13 @@ annualise<-function(x) {
 
 ```
 
+Take an annual `FLStock` object and *"seasonalise"* it, i.e. interpolate growth, and split natural mortality by season.
 
-The procedure is as for the annual model, then take the annual `FLStock` object and *"seasonalise"* it, i.e. interpolate growth, and split natural mortality into seasons. 
 ```{r, om4, echo=TRUE}
 om4=seasonalise(window(iter(om,3), end=81))
 ```
 
-If spawning is not year round, as is the case in temperate species, it is necessary to assign the stock-recruit relationship parameters to the spawning season, 
+If spawning is not year round, as is the case in temperate species, it is necessary to assign the stock-recruit relationship parameters to the spawning season
 
 ```{r, sr, echo=TRUE}
 sr.par=FLPar(NA, dimnames=list(params=dimnames(params(eq))$params, season=1:4, iter=1))
@@ -316,7 +313,9 @@ sr4=predictModel(model=model(eq), params=sr.par)
 sr4
 ```
 
-Since selection pattern is asymptotic, set fbar range to be oldest true age, also make years correspond to current time period. No spawning outside of $2^{nd}$ season so set these to 0
+Since the selection pattern is asymptotic, set fbar range to be oldest true age, also make years correspond to current time period.
+
+As there is no spawning outside of $2^{nd}$ season so set these to 0
 
 ```{r, om4-tidy, echo=TRUE}
 range(om4)[c("minfbar","maxfbar")]=39
@@ -326,7 +325,6 @@ dimnames(om4) <- list(year=an(dimnames(om4)$year)+1950)
 mat(om4)[,,,c(1,3:4)]=0
 ```
 
-
 Run a deterministic projection
 
 ```{r, om4-1, echo=TRUE}
@@ -335,6 +333,8 @@ om4=fwd(om4,control=control,sr=sr4)
 
 plot(window(om4,start=2010,end=2030)) 
 ```
+
+**Figure `r iFig=iFig+1; iFig`** Seasonal Operating Model
 
 Simulate a seasonal fishery
 
@@ -348,48 +348,53 @@ om4.2=window(fwd(om4,control=control,sr=sr4),end=2030)
 plot(window(FLStocks("All year round"=om4,"Seasonal\nFishery"=om4.2),start=2010,end=2030))
 ```
 
-```{r}
-save(om4,eq,file="/home/laurie/Desktop/tmp/t.RData")
-```
+**Figure `r iFig=iFig+1; iFig`** Seasonal Operating Model and fishery
 
-```{r, om4-3, echo=TRUE, eval=F}
+```{r, om4-3, echo=TRUE}
 om=annualise(om4)
 om=ffwd(om, sr=eq, fbar=fbar(om)[,-1])
 
 plot(window(FLStocks("Annual"=om,"Seasonal"=om4),start=2010,end=2030))
 ```
 
+**Figure `r iFig=iFig+1; iFig`** Convert seasonal to an annual Operating Model
+
 [Back to Top](#top)
 
 # More Information {#More}
 
-* You can submit bug reports, questions or suggestions on `FLife` at the `FLife` issue page ^[<https://github.com/lauriekell/FLife/issues>], or on the *FLR* mailing list.
-* Or send a pull request to <https://github.com/lauriekell/FLife/>
-* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage ^[<http://flr-project.org>].
-* The latest version of `FLife` can always be installed using the `devtools` package, by calling
+-   You can submit bug reports, questions or suggestions on `FLife` at the `FLife` issue page [^1], or on the *FLR* mailing list.
+-   Or send a pull request to <https://github.com/lauriekell/FLife/>
+-   For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage [^2].
+-   The latest version of `FLife` can always be installed using the `devtools` package, by calling
+
+[^1]: <https://github.com/lauriekell/FLife/issues>
+
+[^2]: <http://flr-project.org>
+
 ```{r, devtools, echo=TRUE, eval=FALSE}
 	library(devtools)
 	install_github("flr/FLife")
 ```
-`
+
+\`
 
 ## Software Versions
 
-* `r version$version.string`
-* FLCore: `r packageVersion('FLCore')`
-* FLPKG: `r # packageVersion('FLPKG')`
-* **Compiled**: `r date()`
-* **Git Hash**: `r system("git log --pretty=format:'%h' -n 1", intern=TRUE)`
+-   `r version$version.string`
+-   FLCore: `r packageVersion('FLCore')`
+-   FLPKG: `r # packageVersion('FLPKG')`
+-   **Compiled**: `r date()`
+-   **Git Hash**: `r system("git log --pretty=format:'%h' -n 1", intern=TRUE)`
 
 ## Author information
 
-**Laurence KELL**. laurie@seaplusplus.co.uk
+**Laurence KELL**. [laurie\@seaplusplus.co.uk](mailto:laurie@seaplusplus.co.uk){.email}
 
 ## Acknowledgements
 
 This vignette and the methods documented in it were developed under the MyDas project funded by the Irish exchequer and EMFF 2014-2020. The overall aim of MyDas is to develop and test a range of assessment models and methods to establish Maximum Sustainable Yield (MSY) reference points (or proxy MSY reference points) across the spectrum of data-limited stocks.
 
 # References {#References}
-
 
 [Back to Top](#top)
