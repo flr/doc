@@ -41,6 +41,7 @@ source("R/candidates/length.R")
 source("R/candidates/oemLn.R")
 ```
 
+
 [](#top)
 
 [Packages](#Packages)
@@ -72,7 +73,7 @@ The **FLife** package has a variety of methods for modelling life history traits
 
 As well as 'FLR' a variety of other packages are required 
 
-```{r, pkgs3, echo=TRUE}
+```{r, pkgs-flr, echo=TRUE}
 library(FLCore)
 library(ggplotFL)
 
@@ -82,14 +83,14 @@ library(FLasher)
 
 for plotting
 
-```{r, pkgs1, echo=TRUE}
+```{r, pkgs-plot, echo=TRUE}
 library(ggplot2)
 library(GGally)
 ```
 
 and data manipulation
 
-```{r, pkgs2, echo=TRUE}
+```{r, pkgs-data, echo=TRUE}
 library(reshape)
 library(plyr)
 ```
@@ -115,7 +116,7 @@ library(FLife)
 
 The `popbio` package is also required for analysing age and stage based population models.
 
-```{r, pkgs4, echo=TRUE}
+```{r, pkgs-4, echo=TRUE}
 library(popbio)
 ```
 
@@ -143,13 +144,13 @@ Therefore plotting $\overline{L}-L^\prime$ against $L^\prime$ therefore provides
 
 Plotting $\overline{L}-L^\prime$ against $L^\prime$ provides an estimate of $L_{\infty}$ and Z/k, since $L_{\infty}=-a/b$ and $Z/k=\frac{-1-b}{b}$. If k is known then it also provides an estimate of Z (\textbf{Figure} \ref{fig:15}).
 
-```{r}
+```{r, len}
 
 ```
 
 **Figure `r iFig=iFig+1; iFig`** Length data
 
-```{r}
+```{r, powh}
 data(cas)
 pw=ddply(subset(cas), .(year), 
    function(cas) powh(cas$len,cas$n)$data)
@@ -544,6 +545,109 @@ fpr = fp/(tn+fp)
 tss = tpr -fpr
 
 tss
+```
+
+```{r}
+data(ple4)
+```
+
+
+```{r}
+indicators.len(ple4, indicators=c('lbar', 'lmaxy'),
+  params=FLPar(linf=132, k=0.080, t0=-0.35), metric='catch.n',
+  lenwt=FLPar(a=0.01030, b=2.975))
+```
+
+
+```{r}
+indicators.len(ple4, indicators=c('pmega'),
+  params=FLPar(linf=60, k=2.29e-01, t0=-1.37), metric='catch.n')
+```
+
+
+```{r}
+data(ple4.index)
+```
+
+
+```{r, indicators}
+indicators.len(ple4.index, indicators=c('lbar', 'lmean'),
+  params=FLPar(linf=132, k=0.080, t0=-0.35), metric='index')
+```
+
+
+```{r, ialk}
+ialk=invALK(params=FLPar(linf = 60, k = 2.29e-01, t0 = -1.37e+00),
+  model=vonbert, age=1:10, lmax=1.2)
+```
+
+
+```{r, lenSamp}
+samps <- lenSamples(catch.n(ple4), invALK=ialk, n=250)
+```
+
+
+```{r, lenq}
+lenquantile(samps, 0.50) 
+```
+
+
+```{r, lmax5, eval=!FALSE}
+FLCore:::lmax5(samps)
+```
+
+
+```{r, l95}
+l95(samps)
+```
+
+
+```{r, l25}
+l25(samps)
+```
+
+
+```{r, lc50}
+lc50(samps)
+```
+
+
+```{r, lmode, eval=!FALSE}
+FLCore:::lmode(samps)
+```
+
+
+```{r, lbar}
+lbar(samps)
+```
+
+
+```{r, lmean, eval=!FALSE}
+FLCore:::lmean(samps)
+```
+
+
+```{r, lenwt, eval=!FALSE}
+FLCore:::lmean(samps) / (0.75 * FLCore:::lc50(samps) + 0.25 * 60) #
+lenwt <- FLPar(a=0.01030, b=2.975)
+```
+
+
+```{r, lmaxy, eval=!FALSE}
+FLCore:::lmaxy(samps, lenwt)
+```
+
+
+```{r, pmega, eval=!FALSE}
+FLCore:::pmega(samps, linf=60)
+```
+
+
+```{r, b}
+linf <- 60
+k <- 2.29e-01
+t0 <- -1.37e+00
+bheqz(samps, linf = 60, k = 2.29e-01, t0 = -1.37e+00)
 ```
 
 

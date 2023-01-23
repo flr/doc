@@ -30,12 +30,9 @@ options(digits=3)
 iFig=0
 ```
 
-
-[](#top)
-
 [Packages](#Packages)
 
-[Operating Model Conditioning](#OM])
+[Operating Model Conditioning](#OM%5D)
 
 [Indicators](#Indicators)
 
@@ -45,10 +42,9 @@ iFig=0
 
 [References](#References)
 
- 
 # Packages {#Packages}
 
-As well as 'FLR' a variety of other packages are required 
+As well as 'FLR' a variety of other packages are required
 
 ```{r, pkgs3, echo=TRUE}
 library(FLCore)
@@ -83,15 +79,16 @@ library(reshape)
 
 The packges **FLife** and **mydas** are required for modelling life-histories and estimation
 
-The simplest way to obtain these  to install them from the `FLR` repository 
+The simplest way to obtain these to install them from the `FLR` repository
 
 ```{r install,echo=TRUE,eval=FALSE}
 install.packages("FLife", repos = "http://flr-project.org/R")
 ```
 
-See  `help(install.packages)` for more details.
+See `help(install.packages)` for more details.
 
 After installation
+
 ```{r lib,echo=TRUE}
 library(FLife)
 library(mydas)
@@ -109,8 +106,6 @@ library(spatstat)
 
 # Operating Model Conditioning
 
-
-
 ```{r, param}
 par=lhPar(FLPar(c(linf= 59.1,  k=0.28, t0=-0.4,
            a=0.01111,b=3.15,a50=4.0, l50=43.25,
@@ -119,7 +114,13 @@ par=lhPar(FLPar(c(linf= 59.1,  k=0.28, t0=-0.4,
 
 ```{r, om}
 eq=lhEql(par)
-fbar(eq)=refpts(eq)["msy","harvest"]%*%FLQuant(c(rep(0.1,60),
+```
+
+```{r, fig-eq}
+plot(eq,refpt="msy")
+```
+
+```{fbar(eq)=refpts(eq)["msy","harvest"]%*%FLQuant(c(rep(0.1,60),}
                                                seq(0.1,2,length.out=40)[-40],
                                                seq(2,0.7,length.out=11),rep(0.7,20)))
 set.seed(234)
@@ -131,10 +132,6 @@ f =propagate(fbar(eq),100)[,-1]
 
 om=ffwd(om,fbar=f,sr=eq,deviances=srDev)
 om=window(om,start=41)
-```
-
-```{r, fig-eq}
-plot(eq,refpt="msy")
 ```
 
 
@@ -162,8 +159,7 @@ ak  =invAlk(iter(par,.id),cv=0.1)
 lfd=lenSample(catch.n(om),ak,nsample=500)
 ```
 
-
-```{r, fig-lfd, fig.width=10,fig.height=10} 
+```{r, fig-lfd, fig.width=10,fig.height=10}
 dat=subset(transform(as.data.frame(lfd,drop=T),lustrum=5*(year%/%5)),year>=60) 
 dat=subset(dat,lustrum%in%seq(60,120,10))
 
@@ -196,38 +192,36 @@ gghistogram(dat,x="len",weight="data", bins=25)+
 
 [Back to Top](#top)
 
-# Indicators
-
-
+# Indicators {#indicators}
 
 To provide advice on the status of data poor stocks ICES uses $MSY$ proxy reference points as part of a Precautionary Approach.
 
-Data poor stocks include those for which only trends such as lpue,  cpue,  and  mean  length  in  the  catch  are available (**Category 3**), and stocks for which only reliable catch data are available (**Category 4**).
+Data poor stocks include those for which only trends such as lpue, cpue, and mean length in the catch are available (**Category 3**), and stocks for which only reliable catch data are available (**Category 4**).
 
-Methods currently approved by ICES for calculation of $MSY$ reference points for these stocks are 
+Methods currently approved by ICES for calculation of $MSY$ reference points for these stocks are
 
-+ Length based indicators 
-+ Z derived from mean length 
-+ Length based spawner per recruit; and
-+ Surplus Production models
+-   Length based indicators
+-   Z derived from mean length
+-   Length based spawner per recruit; and
+-   Surplus Production models
 
 Many approaches have emerged over the last few decades, for example Where length data are available methods include Length Based Spawning Potential Ratio (LBSPR), Length-Based Integrated Mixed Effects (LIME), and Length-Based Bayesian (LBB). While where only catch data are available methods include Catch-Maximum Sustainable Yield (Catch-MSY), State-Space Catch-Only Model (SSCOM), Depletion Based Stock Reduction Analysis (DBSRA), and Simple Stock Synthesis (SSS) an extension of Catch-MSY (CMSY).
 
 Empirical indicators and reference points can also be used to monitor stocks and these include
 
-+ $L_{max5\%}$ mean length of largest 5\%
-+ $L_{95\%}$ $95^{th}$ percentile
-+ $P_{mega}$ Proportion of individuals above $L_{opt} + 10\%$
-+ $L_{25\%}$ $25^{th}$ percentile of length distribution
-+ $L_{c}$ Length at $50\%$ of modal abundance
-+ $L_{mean}$ Mean length of individuals $> L_c$
-+ $L_{max_{y}}$ Length class with maximum biomass in catch
-+ $L_{mean}$ Meanlength of individuals $> L$
+-   $L_{max5\%}$ mean length of largest 5%
+-   $L_{95\%}$ $95^{th}$ percentile
+-   $P_{mega}$ Proportion of individuals above $L_{opt} + 10\%$
+-   $L_{25\%}$ $25^{th}$ percentile of length distribution
+-   $L_{c}$ Length at $50\%$ of modal abundance
+-   $L_{mean}$ Mean length of individuals $> L_c$
+-   $L_{max_{y}}$ Length class with maximum biomass in catch
+-   $L_{mean}$ Meanlength of individuals $> L$
 
-where potential  **reference points** include
+where potential **reference points** include
 
-+ $L_{opt} = L_{\infty}\frac{3}{3+\frac{M}{K}}$, assuming $M/K = 1.5$ gives $\frac{2}{3}L_{\infty}$
-+ $L_{F=M} =  0,75l_c+0.25l_{\infty}$
+-   $L_{opt} = L_{\infty}\frac{3}{3+\frac{M}{K}}$, assuming $M/K = 1.5$ gives $\frac{2}{3}L_{\infty}$
+-   $L_{F=M} = 0,75l_c+0.25l_{\infty}$
 
 ```{r, lbi, eval=FALSE}
 lbi =transform(subset(as.data.frame(lfd,drop=TRUE),data>0),
@@ -237,7 +231,6 @@ lbi =transform(subset(as.data.frame(lfd,drop=TRUE),data>0),
 lbi =ddply(lbi, .(year,iter), with, mydas:::lenInd(len,data,wt,lopt))
 lbi=cbind(lbi,linf=c(par["linf"]),k=c(par["k"]),l50=c(par["l50"]))
 ```
-
 
 ```{r, indicator}
 source("~/pCloudDrive/flr/FLCandy/R/length.R")
@@ -259,11 +252,9 @@ zhat=as.FLQuant(z)
 plot(mcf(FLQuants(state=state,indicator=indicator,Z=zhat))) 
 ```
 
-
 [Back to Top](#top)
 
 # Classification Skill {#Skill}
-
 
 ```{r, tss, fig.height=8, fig.width=8}
 dat=subset(model.frame(mcf(FLQuants(state=state,indicator=1/(indicator/45)))),year%in%100:120)
@@ -294,8 +285,7 @@ names(tss)="TSS"
 tss})
 ```
 
-**Figure `r iFig=iFig+1; iFig`** 
-
+**Figure `r iFig=iFig+1; iFig`**
 
 ```{r, roc}
 source("~/pCloudDrive/flr/FLCandy/R/roc.R")
@@ -315,8 +305,7 @@ ggplot(dat)+
   geom_point(aes(FPR,TPR),data=subset(dt2,abs(indicator-1)==min(abs(indicator-1)))[1,],col="blue",size=3)
 ```
 
-**Figure `r iFig=iFig+1; iFig`.** ROC for Catch Curve analysis  with reference level indicated.
-
+**Figure `r iFig=iFig+1; iFig`.** ROC for Catch Curve analysis with reference level indicated.
 
 ```{r}
 ggplot(dat)+
@@ -325,7 +314,6 @@ ggplot(dat)+
 ```
 
 **Figure `r iFig=iFig+1; iFig`.** TSS by reference level for lmean.
-
 
 ```{r}
 ggplot(dt2)+
@@ -339,27 +327,33 @@ ggplot(dt2)+
 
 # More Information {#More}
 
-* You can submit bug reports, questions or suggestions on `FLife` at the `FLife` issue page ^[<https://github.com/lauriekell/FLife/issues>], or on the *FLR* mailing list.
-* Or send a pull request to <https://github.com/lauriekell/FLife/>
-* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage ^[<http://flr-project.org>].
-* The latest version of `FLife` can always be installed using the `devtools` package, by calling
+-   You can submit bug reports, questions or suggestions on `FLife` at the `FLife` issue page [^1], or on the *FLR* mailing list.
+-   Or send a pull request to <https://github.com/lauriekell/FLife/>
+-   For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage [^2].
+-   The latest version of `FLife` can always be installed using the `devtools` package, by calling
+
+[^1]: <https://github.com/lauriekell/FLife/issues>
+
+[^2]: <http://flr-project.org>
+
 ```{r, devtools, echo=TRUE, eval=FALSE}
 	library(devtools)
 	install_github("flr/FLife")
 ```
-`
+
+\`
 
 ## Software Versions
 
-* `r version$version.string`
-* FLCore: `r packageVersion('FLCore')`
-* FLPKG: `r # packageVersion('FLPKG')`
-* **Compiled**: `r date()`
-* **Git Hash**: `r system("git log --pretty=format:'%h' -n 1", intern=TRUE)`
+-   `r version$version.string`
+-   FLCore: `r packageVersion('FLCore')`
+-   FLPKG: `r # packageVersion('FLPKG')`
+-   **Compiled**: `r date()`
+-   **Git Hash**: `r system("git log --pretty=format:'%h' -n 1", intern=TRUE)`
 
 ## Author information
 
-**Laurence KELL**. laurie@seaplusplus.co.uk
+**Laurence KELL**. [laurie\@seaplusplus.co.uk](mailto:laurie@seaplusplus.co.uk){.email}
 
 ## Acknowledgements
 
@@ -367,9 +361,4 @@ This vignette and the methods documented in it were developed under the MyDas pr
 
 # References {#References}
 
-
 [Back to Top](#top)
-
-
-
-
