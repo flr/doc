@@ -25,14 +25,14 @@ To follow this tutorial you should have installed the following packages:
 
 - CRAN: [copula](https://cran.r-project.org/web/packages/copula/index.html), [triangle](https://cran.r-project.org/web/packages/triangle/index.html), [coda](https://cran.r-project.org/web/packages/coda/index.html), [XML](https://cran.r-project.org/web/packages/XML/index.html),[reshape2](https://cran.r-project.org/web/packages/reshape2/index.html), [latticeExtra](https://cran.r-project.org/web/packages/latticeExtra/index.html)
 
-- FLR: [FLCore](http://www.flr-project.org/FLCore/), [FLa4a](http://www.flr-project.org/FLa4a/)
+- FLR: [FLCore](http://www.flrproject.org/FLCore/), [FLa4a](http://www.flrproject.org/FLa4a/)
 
 You can do so as follows,
 
 ```{r, eval=FALSE}
 install.packages(c("copula","triangle", "coda", "XML", "reshape2", "latticeExtra"))
 # from FLR
-install.packages(c("FLCore", "FLa4a"), repos="http://flr-project.org/R")
+install.packages(c("FLCore", "FLa4a"), repos=c(FLR="https://flr.r-universe.dev", CRAN="https://cloud.r-project.org"))
 ```
 
 ```{r, pkgs}
@@ -152,7 +152,7 @@ dim(ages)
 ages[,1:10]
 ```
 
-The marginal distributions can be seen in `r fign('plot_norm_params')`.
+The marginal distributions can be seen in \@ref(fig:plot_norm_params).
 
 ```{r, plot_norm_params, fig.cap="The marginal distributions of each of the parameters when using a multivariate normal distribution.", echo=FALSE}
 par(mfrow=c(3,1))
@@ -161,13 +161,13 @@ hist(c(params(vbNorm)['k',]), main='k', prob=TRUE, xlab='')
 hist(c(params(vbNorm)['t0',]), main='t0', prob=TRUE, xlab='')
 ```
 
-The shape of the correlation can be seen in `r fign('plot_norm_scatter')`.
+The shape of the correlation can be seen in \@ref(fig:plot_norm_scatter).
 
 ```{r, plot_norm_scatter, fig.cap="Scatter plot of the 10000 samples parameter from the multivariate normal distribution.", echo=FALSE}
 splom(data.frame(t(params(vbNorm)@.Data)), par.settings=list(plot.symbol=list(pch=19, cex=0.1, col=1)))
 ```
 
-Growth curves for the 10000 iterations can be seen in `r fign('plot_mv_growth')`.
+Growth curves for the 10000 iterations can be seen in \@ref(fig:plot_mv_growth).
 
 
 ```{r, plot_mv_growth, fig.cap="Growth curves using parameters simulated from a multivariate normal distribution.", echo=FALSE}
@@ -201,7 +201,7 @@ vbTri <- mvrtriangle(10000, vbObj, paramMargins=triPars)
 ```
 The marginals will reflect the uncertainty in the parameter values that were scraped from [Fishbase](http://fishbase.org) but, because we don't really believe the parameters are multivariate normal, here we adopted a distribution based on a *t* copula with triangle marginals.
 
-The marginal distributions can be seen in `r fign('plot_tri_params')` and the shape of the correlation can be seen in `r fign('plot_tri_scatter')`.
+The marginal distributions can be seen in \@ref(fig:plot_tri_params) and the shape of the correlation can be seen in \@ref(fig:plot_tri_scatter).
 
 ```{r, plot_tri_params, echo=FALSE, fig.cap="The marginal distributions of each of the parameters based on a multivariate triangle distribution."}
 par(mfrow=c(3,1))
@@ -212,7 +212,7 @@ hist(c(params(vbTri)['t0',]), main='t0', prob=TRUE, xlab='')
 ```{r, plot_tri_scatter, echo=FALSE, fig.cap="Scatter plot of the 10000 parameter sets from the multivariate triangle distribution."}
 splom(data.frame(t(params(vbTri)@.Data)), par.settings=list(plot.symbol=list(pch=19, cex=0.1, col=1)))
 ```
-We can still use `predict()` to see the growth model uncertainty (`r fign('plot_tri_growth')`).
+We can still use `predict()` to see the growth model uncertainty (\@ref(fig:plot_tri_growth)).
 
 ```{r, plot_tri_growth, echo=FALSE, fig.cap="Growth curves using parameters simulated from a multivariate triangle distribution."}
 bwplot(value~factor(Var1), data=melt(predict(vbTri, t=0:50+0.5)), par.settings=list(plot.symbol=list(cex=0.2, col='gray50'), box.umbrella=list(col='gray40'), box.rectangle=list(col='gray30')), ylab='length (cm)', xlab='age (years)', scales=list(x=list(rot=90)))
@@ -227,7 +227,7 @@ A more general approach to adding parameter uncertainty is to make use of [stati
 vbCop <- mvrcop(10000, vbObj, copula='archmCopula', family='clayton', param=2, 
                 margins='triangle', paramMargins=triPars)
 ```
-The shape of the correlation changes is shown in (`r fign('plot_cop_tri_scatter')`) and the resulting growth curves in (`r fign('plot_cop_tri_growth')`). 
+The shape of the correlation changes is shown in \@ref(fig:plot_cop_tri_scatter) and the resulting growth curves in \@ref(fig:plot_cop_tri_growth).
 
 ```{r, plot_cop_tri_scatter, echo=FALSE, fig.cap="Scatter plot of the 10000 parameter sets based on the archmCopula copula with triangle margins."}
 splom(data.frame(t(params(vbCop)@.Data)), par.settings=list(plot.symbol=list(pch=19, cex=0.1, col=1)))
@@ -276,7 +276,7 @@ Scott F, Jardim E, Millar CP, Cervino S (2016) An Applied Framework for Incorpor
 
 # More information
 
-Documentation can be found at (http://flr-project.org/FLa4a). You are welcome to:
+Documentation can be found at (http://flrproject.org/FLa4a). You are welcome to:
 
 - Submit suggestions and bug-reports at: (https://github.com/flr/FLa4a/issues)
 - Send a pull request on: (https://github.com/flr/FLa4a/)

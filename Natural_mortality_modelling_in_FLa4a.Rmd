@@ -25,14 +25,14 @@ To follow this tutorial you should have installed the following packages:
 
 - CRAN: [copula](https://cran.r-project.org/web/packages/copula/index.html), [triangle](https://cran.r-project.org/web/packages/triangle/index.html), [coda](https://cran.r-project.org/web/packages/coda/index.html), [XML](https://cran.r-project.org/web/packages/XML/index.html),[reshape2](https://cran.r-project.org/web/packages/reshape2/index.html), [latticeExtra](https://cran.r-project.org/web/packages/latticeExtra/index.html)
 
-- FLR: [FLCore](http://www.flr-project.org/FLCore/), [FLa4a](http://www.flr-project.org/FLa4a/)
+- FLR: [FLCore](http://www.flrproject.org/FLCore/), [FLa4a](http://www.flrproject.org/FLa4a/)
 
 You can do so as follows,
 
 ```{r, eval=FALSE}
 install.packages(c("copula","triangle", "coda", "XML", "reshape2", "latticeExtra"))
 # from FLR
-install.packages(c("FLCore", "FLa4a"), repos="http://flr-project.org/R")
+install.packages(c("FLCore", "FLa4a"), repos=c(FLR="https://flr.r-universe.dev", CRAN="https://cloud.r-project.org"))
 ```
 
 ```{r, pkgs}
@@ -183,7 +183,7 @@ pars <- list(list(a=55,b=65), list(a=0.3, b=0.6, c=0.35))
 mgis2 <- mvrtriangle(1000, mgis2, paramMargins=pars)
 mgis2
 ```
-The resulting parameter estimates and marginal distributions can be seen in `r fign('plot_tri_gis_m')` and `r fign('plot_tri_gis_m_hist')`.
+The resulting parameter estimates and marginal distributions can be seen in \@ref(fig:plot_tri_gis_m) and \@ref(fig:plot_tri_gis_m_hist).
 
 ```{r, plot_tri_gis_m, echo=FALSE, fig.cap="Parameter estimates for Gislason's second natural mortality model based on a triangle distribution."}
 splom(t(params(mgis2)@.Data), par.settings=list(plot.symbol=list(pch=19, cex=0.1, col=1)))
@@ -270,7 +270,7 @@ m(m3, nao=0)
 range(m3, c('minyear', 'maxyear')) <- c(2000, 2003) # set the year range
 m(m3, nao=as.numeric(nao[,as.character(2000:2003)]))
 ```
-The final example show how `m()` can be used to make an `FLQuant` with uncertainty (see `r fign('uncertain_m')`). We use the m4 object from earlier with uncertainty on the *level* and *trend* parameters.
+The final example show how `m()` can be used to make an `FLQuant` with uncertainty (see \@ref(fig:uncertain_m)). We use the m4 object from earlier with uncertainty on the *level* and *trend* parameters.
 
 ```{r, m4_uncertainty_m}
 range(m4, c('min', 'max')) <- c(0,7)			 # set the quant range
@@ -294,7 +294,7 @@ Scott F, Jardim E, Millar CP, Cervino S (2016) An Applied Framework for Incorpor
 
 # More information
 
-Documentation can be found at (http://flr-project.org/FLa4a). You are welcome to:
+<!-- Documentation can be found at (http://flrproject.org/FLa4a). You are welcome to: -->
 
 - Submit suggestions and bug-reports at: (https://github.com/flr/FLa4a/issues)
 - Send a pull request on: (https://github.com/flr/FLa4a/)
