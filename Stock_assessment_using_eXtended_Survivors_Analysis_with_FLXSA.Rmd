@@ -21,13 +21,13 @@ source("R/ini.R")
 
 To follow this tutorial you should have installed the following packages:
 
-* FLR: [FLCore](http://www.flr-project.org/FLCore/), [FLAssess](http://www.flr-project.org/FLAssess/),
-       [FLXSA](http://www.flr-project.org/FLXSA/), [ggplotFL](http://www.flr-project.org/ggplotFL/)
+* FLR: [FLCore](http://www.flrproject.org/FLCore/), [FLAssess](http://www.flrproject.org/FLAssess/),
+       [FLXSA](http://www.flrproject.org/FLXSA/), [ggplotFL](http://www.flrproject.org/ggplotFL/)
 * CRAN: [reshape]
 You can do so as follows,
 
 ```{r echo=TRUE, eval=FALSE}
-install.packages(c("FLCore", "FLAssess", "FLXSA"), repos="http://flr-project.org/R")
+install.packages(c("FLCore", "FLAssess", "FLXSA"), repos="http://flrproject.org/R")
 ```
 
 ```{r echo=TRUE, eval=TRUE}
@@ -91,7 +91,7 @@ setMethod('plot', signature(x='FLXSA', y='missing'),function(x){
   up a short-term forecast (`stf`), running VPAs (`VPA` or `SepVPA`) and calculating F
   from  catches.  There  are  several  steps  to  be  completed  when  conducting  an  assessment.  This  tutorial 
   considers only the process of running `VPA` and `FLXSA` stock assessment model.  
-  [Additional tutorials](http://flr-project.org/doc) are available that will introduce you to other parts of the **FLR** toolset.
+  [Additional tutorials](http://flrproject.org/doc) are available that will introduce you to other parts of the **FLR** toolset.
    
 
   We will start  by importing the data sets
@@ -463,7 +463,7 @@ plot(ple4.retro)
 
 * You can submit bug reports, questions or suggestions on this tutorial at <https://github.com/flr/doc/issues>.
 * Or send a pull request to <https://github.com/flr/doc/>
-* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flr-project.org>.
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flrproject.org>.
 
 ## Software Versions
 

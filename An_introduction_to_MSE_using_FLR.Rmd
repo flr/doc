@@ -23,19 +23,19 @@ Management Strategy Evaluation (MSE) is a framework for evaluating the performan
 To follow this tutorial you should have installed the following packages:
 
 - CRAN: [ggplot2](https://cran.r-project.org/web/packages/ggplot2/index.html)
-- FLR: [FLCore](http://www.flr-project.org/FLCore/), [FLash](http://www.flr-project.org/FLCore/),[FLXSA](http://www.flr-project.org/FLCore/),[FLBRP](http://www.flr-project.org/FLCore/), [ggplotFL](http://www.flr-project.org/ggplotFL/)
+- FLR: [FLCore](http://www.flrproject.org/FLCore/), [FLash](http://www.flrproject.org/FLCore/),[FLXSA](http://www.flrproject.org/FLCore/),[FLBRP](http://www.flrproject.org/FLCore/), [ggplotFL](http://www.flrproject.org/ggplotFL/)
 
 You can do so as follows,
 
 ```{r, eval=FALSE}
 install.packages(c("ggplot2"))
-install.packages(c("FLa4a","FLash","FLXSA","FLBRP","ggplotFL"), repos="http://flr-project.org/R")
+install.packages(c("mse","FLa4a","FLasher","FLXSA","FLBRP","ggplotFL"), repos="http://flrproject.org/R")
 ```
 
 ```{r, pkgs}
 # Loads all necessary packages
+library(mse)
 library(FLa4a)
-library(FLash)
 library(FLXSA)
 library(FLBRP)
 library(ggplotFL)
@@ -103,6 +103,9 @@ srbh0 <- fmle(as.FLSR(stk0, model="bevholt"), method="L-BFGS-B",
          lower=c(1e-6, 1e-6), upper=c(max(rec(stk)) * 3, Inf))
 # Generate stock-recruit residuals for the projection period
 srbh.res <- rnorm(it, FLQuant(0, dimnames=list(year=iy:fy)), mean(c(apply(residuals(srbh), 6, sd))))
+#
+srr <- window(srbh, end=fy)
+residuals(srr)[, ac(iy:fy)] <- exp(srbh.res)
 ```
 **Calculate reference points and set up the operating model for the projection window**  
 
@@ -113,11 +116,16 @@ Reference points based on the "median" stk, assuming (for illustrative purposes 
 brp <- brp(FLBRP(stk0, srbh0))
 Fmsy <- c(refpts(brp)["msy","harvest"])
 msy <- c(refpts(brp)["msy","yield"])
-Bmsy <- c(refpts(brp)["msy","ssb"])
-Bpa <- 0.5*Bmsy
-Blim <- Bpa/1.4
+SBmsy <- c(refpts(brp)["msy","ssb"])
+SBpa <- 0.5*SBmsy
+SBlim <- SBpa/1.4
+rpts <- FLPar(FMSY=Fmsy, MSY=msy, SBMSY=SBmsy, SBpa=SBpa, SBlim=SBlim)
 # Prepare the FLStock object for projections
 stk <- stf(stk, fy-dy, nsqy, nsqy)
+```
+
+```{r om}
+om <- FLom(stock=stk, sr=srr, refpts=rpts, projection=mseCtrl(method=fwd.om))
 ```
 
 # SET UP OBSERVATION ERROR MODEL ELEMENTS
@@ -146,6 +154,51 @@ for (i in 1:length(idx)){
 }
 names(idcs) <- names(idx)
 idx<-idcs[1]
+```
+
+```{r}
+
+oem <- FLoem(deviances=list(
+  stk=FLQuants(catch.n=rlnorm(it, catch.n(stk) %=% 0, 0.1))),
+  method=sampling.oem,
+  observations=list(stk=stk, idx=idx))
+
+mseargs <- list(iy=2017, fy=2029)
+
+control <- mpCtrl(list(
+  hcr = mseCtrl(method=fixedF.hcr, args=list(ftrg=0.15)),
+  est = mseCtrl(method=perfect.sa)))
+
+perfxf <- mp(om, oem=oem, ctrl=control, args=mseargs)
+
+control <- mpCtrl(list(
+  hcr = mseCtrl(method=fixedF.hcr, args=list(ftrg=0.15)),
+  est = mseCtrl(method=xsa.sa)))
+
+xsafxf <- mp(om, ctrl=control, args=mseargs)
+
+control <- mpCtrl(list(
+  hcr = mseCtrl(method=ices.hcr, args=list(ftrg=0.15, sblim=100000,
+    sbsafe=300000)),
+  est = mseCtrl(method=xsa.sa)))
+
+xsaices <- mp(om, ctrl=control, args=mseargs)
+
+plot(om, list(PFX=perfxf, XFX=xsafxf, XIC=xsaices))
+
+data(statistics)
+
+per <- performance(list(perfxf, xsafxf, xsaices),
+  statistics=statistics[c('SBMSY', 'FMSY', 'risk1', 'risk2', 'risk3', 'PBlim', 'C')],
+  metrics=list(C=catch, F=fbar, SB=ssb),
+  years=list(2018:2025), mp="test")
+
+library(mseviz)
+
+plotBPs(per)
+
+plotTOs(per, 'C', c('SBMSY', 'FMSY', 'PBlim'))
+
 ```
 
 # SET UP MSE LOOP
@@ -299,7 +352,7 @@ Punt, A.E., Butterworth, D.S., de Moor, C.L., De Oliveira, J.A.A. and M. Haddon 
 
 * You can submit bug reports, questions or suggestions on this tutorial at <https://github.com/flr/doc/issues>.
 * Or send a pull request to <https://github.com/flr/doc/>
-* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flr-project.org>.
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flrproject.org>.
 
 ## Software Versions
 

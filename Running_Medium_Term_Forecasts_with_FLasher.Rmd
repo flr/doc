@@ -29,20 +29,20 @@ MTFs use the same engine as Short-Term Forecasts (STFs). However, there are some
 Special attention must be paid to the conditioning and future assumptions of the stock.
 
 This tutorial focuses on running projections with an *FLStock*. To see how **FLasher** can be used to simulate mixed fisheries with **FLBiol**s and **FLFisheries** see 
-this [tutorial](http://www.flr-project.org/doc/Mixed_Fisheries_Projections_with_FLasher.html).
+this [tutorial](http://www.flrproject.org/doc/Mixed_Fisheries_Projections_with_FLasher.html).
 
 ## Required packages
 
 To follow this tutorial you should have installed the following packages:
 
-- FLR: [FLCore](http://www.flr-project.org/FLCore/), [FLasher](http://www.flr-project.org/FLash/), [FLFishery](http://www.flr-project.org/FLFishery/)
+- FLR: [FLCore](http://www.flrproject.org/FLCore/), [FLasher](http://www.flrproject.org/FLash/), [FLFishery](http://www.flrproject.org/FLFishery/)
 
 You can do so as follows,
 
 ```{r, eval=FALSE}
-install.packages(c("FLCore"), repos="http://flr-project.org/R")
-install.packages(c("FLasher"), repos="http://flr-project.org/R")
-install.packages(c("FLFishery"), repos="http://flr-project.org/R")
+install.packages(c("FLCore"), repos="http://flrproject.org/R")
+install.packages(c("FLasher"), repos="http://flrproject.org/R")
+install.packages(c("FLFishery"), repos="http://flrproject.org/R")
 ```
 
 ```{r, pkgs}
@@ -91,7 +91,7 @@ summary(ple4_mtf)
 
 In these examples we use a Beverton-Holt model (see the tutorial on fitting SRRs for more detail). The resulting SRR fit can be seen in `r fign("plotSRR")`.
 Most of the projections will be performed by passing in a fitted *FLSR* object.
-For more information on how to set the SR for projections with **FLasher** this [tutorial](http://www.flr-project.org/doc/Setting_Stock_Recruitment_in_FLasher_Projections.html).
+For more information on how to set the SR for projections with **FLasher** this [tutorial](http://www.flrproject.org/doc/Setting_Stock_Recruitment_in_FLasher_Projections.html).
 
 ```{r, fitSRR}
 ple4_sr <- fmle(as.FLSR(ple4, model="bevholt"), control=list(trace=0))
@@ -650,7 +650,7 @@ sr_iters <- FLPar(NA, dimnames=list(params=c("a","b"), iter=1:niters))
 ```
 
 We then need to generate some stochastic values of the _a_ and _b_ parameters.
-These could be sampled from a distribution based on the SR model fit (see an example in this [tutorial](http://www.flr-project.org/doc/Setting_Stock_Recruitment_in_FLasher_Projections.html)).
+These could be sampled from a distribution based on the SR model fit (see an example in this [tutorial](http://www.flrproject.org/doc/Setting_Stock_Recruitment_in_FLasher_Projections.html)).
 Here we just pull some numbers from a distribution without worrying about covariance.
 The danger of doing is that we can end up with pairs of values for _a_ and _b_ which are stupid.
 
@@ -715,7 +715,7 @@ SOMETHING ON FWD WINDOW
 
 * You can submit bug reports, questions or suggestions on this tutorial at <https://github.com/flr/doc/issues>.
 * Or send a pull request to <https://github.com/flr/doc/>
-* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flr-project.org>.
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flrproject.org>.
 
 ## Software Versions
 

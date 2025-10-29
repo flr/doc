@@ -23,12 +23,12 @@ units in the data. No transformation of values takes place, in contrast with the
 
 To follow this tutorial you should have installed the following packages:
 
-- FLR: [FLCore](http://www.flr-project.org/FLCore/)
+- FLR: [FLCore](http://www.flrproject.org/FLCore/)
 
 You can do so as follows:
 
 ```{r, eval=FALSE}
-install.packages(c("FLCore"), repos="http://flr-project.org/R")
+install.packages(c("FLCore"), repos="http://flrproject.org/R")
 ```
 
 ```{r, pkgs, results="hide", message=FALSE, warnings=FALSE}
@@ -194,7 +194,7 @@ Wikipedia, The Free Encyclopedia, s.v. "ISO_4217" (accessed July 13, 2017), <htt
 
 * You can submit bug reports, questions or suggestions on this tutorial at <https://github.com/flr/doc/issues>.
 * Alternatively, send a pull request to <https://github.com/flr/doc/>.
-* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage: <http://flr-project.org>.
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage: <http://flrproject.org>.
 
 ## Software Versions
 

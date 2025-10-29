@@ -23,14 +23,14 @@ source("R/ini.R")
 To follow this tutorial you should have installed the following packages:
 
 - CRAN: [ggplot2](https://cran.r-project.org/web/packages/ggplot2/index.html)
-- FLR: [FLCore](http://www.flr-project.org/FLCore/), [ggplotFL](http://www.flr-project.org/ggplotFL/)
+- FLR: [FLCore](http://www.flrproject.org/FLCore/), [ggplotFL](http://www.flrproject.org/ggplotFL/)
 
 You can do so as follows,
 
 ```{r, eval=FALSE}
 install.packages(c("ggplot2"))
-install.packages(c("FLCore"), repos="http://flr-project.org/R")
-install.packages(c("ggplotFL"), repos="http://flr-project.org/R")
+install.packages(c("FLCore"), repos="http://flrproject.org/R")
+install.packages(c("ggplotFL"), repos="http://flrproject.org/R")
 ```
 
 Initially, the libraries need to be called.
@@ -345,7 +345,7 @@ Shepherd, J.G. (1982) A versatile new stock-recruitment relationship for fisheri
 
 * You can submit bug reports, questions or suggestions on this tutorial at <https://github.com/flr/doc/issues>.
 * Or send a pull request to <https://github.com/flr/doc/>
-* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flr-project.org>.
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flrproject.org>.
 
 ## Software Versions
 

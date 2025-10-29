@@ -69,7 +69,7 @@ This section provide a quick way to get running and overview of what functions a
 The simplest way to obtain **FLife** is to install it from the `FLR` repository via the R console:
 
 ```{r install,echo=TRUE,eval=FALSE}
-install.packages("FLife", repos = "http://flr-project.org/R")
+install.packages("FLife", repos = "http://flrproject.org/R")
 ```
 
 See help(install.packages) for more details.
@@ -768,7 +768,7 @@ ggplot(ctc)+
 
 * You can submit bug reports, questions or suggestions on `FLife` at the `FLife` issue page ^[<https://github.com/flr/FLife/issues>], or on the *FLR* mailing list.
 * Or send a pull request to <https://github.com/flr/FLife/>
-* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage ^[<http://flr-project.org>].
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage ^[<http://flrproject.org>].
 * The latest version of `FLife` can always be installed using the `devtools` package, by calling
 ```{r, devtools, echo=TRUE, eval=FALSE}
 	library(devtools)

@@ -82,7 +82,7 @@ The packges **FLife** and **mydas** are required for modelling life-histories an
 The simplest way to obtain these to install them from the `FLR` repository
 
 ```{r install,echo=TRUE,eval=FALSE}
-install.packages("FLife", repos = "http://flr-project.org/R")
+install.packages("FLife", repos = "http://flrproject.org/R")
 ```
 
 See `help(install.packages)` for more details.
@@ -334,7 +334,7 @@ ggplot(dt2)+
 
 [^1]: <https://github.com/lauriekell/FLife/issues>
 
-[^2]: <http://flr-project.org>
+[^2]: <http://flrproject.org>
 
 ```{r, devtools, echo=TRUE, eval=FALSE}
 	library(devtools)

@@ -29,14 +29,14 @@ In FLR, the method for short term forecasts is called `fwd()`, which takes an `F
 To follow this tutorial you should have installed the following packages:
 
 - CRAN: [ggplot2](https://cran.r-project.org/web/packages/ggplot2/index.html)
-- FLR: [FLCore](http://www.flr-project.org/FLCore/),  [FLash](http://www.flr-project.org/FLash/), [FLAssess](http://www.flr-project.org/FLAssess/), [FLBRP](http://www.flr-project.org/FLBRP/),  [ggplotFL](http://www.flr-project.org/ggplotFL/)
+- FLR: [FLCore](http://www.flrproject.org/FLCore/),  [FLash](http://www.flrproject.org/FLash/), [FLAssess](http://www.flrproject.org/FLAssess/), [FLBRP](http://www.flrproject.org/FLBRP/),  [ggplotFL](http://www.flrproject.org/ggplotFL/)
 
 if you are using Windows, please use the 32-bit R version
 
 You can do so as follows,
 
 ```{r, eval=FALSE}
-install.packages(c("FLAssess","FLBRP","ggplotFL"), repos="http://flr-project.org/R")
+install.packages(c("FLAssess","FLBRP","ggplotFL"), repos="http://flrproject.org/R")
 ```
 
 The example used here is for the ple4 data that is available in FLR. This needs to be loaded first.
@@ -227,7 +227,7 @@ fbar_scenarios <- cbind(rep(fbar_SQ,length(fbar_multiplier)),
                         fbar_multiplier*fbar_SQ)
 ```
 
-Another scenario we are interested in is $F_{0.1}$. We can calculate this using [FLBRP](http://flr-project.org/doc/Reference_points_for_fisheries_management_with_FLBRP.html) (or maybe you already have a value).
+Another scenario we are interested in is $F_{0.1}$. We can calculate this using [FLBRP](http://flrproject.org/doc/Reference_points_for_fisheries_management_with_FLBRP.html) (or maybe you already have a value).
 
 ```{r, eval=TRUE}
 f01 <- c(refpts(brp(FLBRP(ple4)))["f0.1","harvest"])
@@ -313,7 +313,7 @@ stf_results
 
 * You can submit bug reports, questions or suggestions on this tutorial at <https://github.com/flr/doc/issues>.
 * Or send a pull request to <https://github.com/flr/doc/>
-* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flr-project.org>.
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flrproject.org>.
 
 ## Software Versions
 

@@ -25,13 +25,13 @@ The R package `ggplot2` offers a plotting style and tools that are increasingly 
 To follow this tutorial you should have installed the following packages:
 
 -   CRAN: [ggplot2](https://cran.r-project.org/web/packages/ggplot2/index.html)
--   FLR: [FLCore](http://www.flr-project.org/FLCore/), [ggplotFL](http://www.flr-project.org/ggplotFL/)
+-   FLR: [FLCore](http://www.flrproject.org/FLCore/), [ggplotFL](http://www.flrproject.org/ggplotFL/)
 
 You can do so as follows,
 
 ``` {r,  eval=FALSE }
 install.packages("ggplot2")
-install.packages(c("ggplotFL"), repos="http://flr-project.org/R")
+install.packages(c("ggplotFL"), repos="http://flrproject.org/R")
 ```
 
 ``` {r, echo=TRUE, results='hide', message=FALSE }
@@ -312,7 +312,7 @@ Wilkinson, L. 1999. *The Grammar of Graphics*, Springer. [doi 10.1007/978-3-642-
 
 * You can submit bug reports, questions or suggestions on this tutorial at <https://github.com/flr/doc/issues>.
 * Or send a pull request to <https://github.com/flr/doc/>
-* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flr-project.org>.
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flrproject.org>.
 
 ## Software Versions
 

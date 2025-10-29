@@ -47,8 +47,8 @@ This will be detailed along the tutorial.
 To follow this tutorial you should have installed the following packages:
 
 - FLR: 
-  [FLCore](http://www.flr-project.org/FLCore/) and 
-  [FLFleet](http://www.flr-project.org/FLFleet/).
+  [FLCore](http://www.flrproject.org/FLCore/) and 
+  [FLFleet](http://www.flrproject.org/FLFleet/).
 - Stock Synthesis: 
   [r4ss](https://cran.r-project.org/web/packages/r4ss/index.html).
 - Data manipulation: 
@@ -60,7 +60,7 @@ To follow this tutorial you should have installed the following packages:
 
 ```{r, eval=FALSE}
 install.packages( c("FLCore", "FLFleet", "FLBEIA"), 
-                  repos="http://flr-project.org/R")
+                  repos="http://flrproject.org/R")
 install.packages(c("r4ss","reshape2","arrayhelpers","dplyr","tidyr"))
 ```
 
@@ -100,7 +100,7 @@ The file is downloaded into a temporary folder, and uncompressed. Simply change 
 
 ```{r, getfiles, message=FALSE}
 dir <- tempdir()
-# download.file("http://www.flr-project.org/doc/src/ibPIL.zip", file.path(dir, "ibPIL.zip"))
+# download.file("http://www.flrproject.org/doc/src/ibPIL.zip", file.path(dir, "ibPIL.zip"))
 # unzip(file.path(dir, "ibPIL.zip"), exdir=dir)
 unzip("src/ibPIL.zip", exdir=dir)
 ```
@@ -607,7 +607,7 @@ covars$conv <- FLQuant(NA, dimnames = list(conv="conv",year=yrs))
 
 For this assessment we need to observe the biological and catch information. 
 Therefore, we need to use `age2ageDat` function (for details in observation functions see tutorial on 
-[Using different Assessment models in the Management Procedure of FLBEIA](http://www.flr-project.org/doc/Using_Assessment_models_in_the_MP_FLBEIA.html)).
+[Using different Assessment models in the Management Procedure of FLBEIA](http://www.flrproject.org/doc/Using_Assessment_models_in_the_MP_FLBEIA.html)).
 
 Additionally, we also need to observe the two indices available for the stock: 
 a yearly index in numbers at age (named AcousticNumberAtAge) and 
@@ -616,7 +616,7 @@ a 3-yearly biomass index (named DEPM).
 For creating the `obs.ctrl` object we will use the specific creator function (`create.obs.ctrl`).
 As default, if not provided as an input, it considers no observation errors (i.e. values equal to 1).
 For details on how to set observation errors to alternative values see tutorial on 
-[Using different Assessment models in the Management Procedure of FLBEIA](http://www.flr-project.org/doc/Using_Assessment_models_in_the_MP_FLBEIA.html)).
+[Using different Assessment models in the Management Procedure of FLBEIA](http://www.flrproject.org/doc/Using_Assessment_models_in_the_MP_FLBEIA.html)).
 
 ```{r, helpObsCtrl, eval=FALSE}
 ?create.obs.ctrl
@@ -807,7 +807,7 @@ ggplot(dat,aes(age,data,col=factor(year),fill=factor(year)))+facet_wrap(~unit)+
 
 * You can submit bug reports, questions or suggestions on this tutorial at <https://github.com/flr/doc/issues>.
 * Or send a pull request to <https://github.com/flr/doc/>
-* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flr-project.org>.
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flrproject.org>.
 * You can submit bug reports, questions or suggestions specific to **FLBEIA** to <flbeia@azti.es>.
 
 

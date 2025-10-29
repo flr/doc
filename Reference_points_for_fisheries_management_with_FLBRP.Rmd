@@ -45,7 +45,7 @@ Biological reference points are important for answering these sorts of question 
 To follow this tutorial you should have installed the following packages:
 
 - CRAN: [ggplot2](https://cran.r-project.org/web/packages/ggplot2/index.html)
-- FLR: [FLCore](http://www.flr-project.org/FLCore/), [ggplotFL](http://www.flr-project.org/ggplotFL/),[FLBRP](http://www.flr-project.org/FLBRP/)
+- FLR: [FLCore](http://www.flrproject.org/FLCore/), [ggplotFL](http://www.flrproject.org/ggplotFL/),[FLBRP](http://www.flrproject.org/FLBRP/)
 
 if you are using Windows, please use the 32-bit R version
 
@@ -53,8 +53,8 @@ You can do so as follows,
 
 ```{r, eval=FALSE}
 install.packages(c("ggplot2"))
-install.packages(c("ggplotFL"), repos="http://flr-project.org/R")
-install.packages(c("FLBRP"), repos="http://flr-project.org/R")
+install.packages(c("ggplotFL"), repos="http://flrproject.org/R")
+install.packages(c("FLBRP"), repos="http://flrproject.org/R")
 
 ```
 
@@ -76,7 +76,7 @@ data(ple4)
 brp4 <- FLBRP(ple4)
 ```
 
-The necessary input slots will be created from those slots related to catch, landings, discards, and stock numbers and weights. In the FLBRP object, all slots named `*.obs` will contain the related time series present in the original `FLStock` object, while other slots will contain averages across the year dimension over the last `n` years, where `n` is controlled by these three arguments: `biol.nyears`, `fbar.nyears` and `sel.nyears`, as detailed in the help page for [FLBRP](http://www.flr-project.org/FLBRP/).
+The necessary input slots will be created from those slots related to catch, landings, discards, and stock numbers and weights. In the FLBRP object, all slots named `*.obs` will contain the related time series present in the original `FLStock` object, while other slots will contain averages across the year dimension over the last `n` years, where `n` is controlled by these three arguments: `biol.nyears`, `fbar.nyears` and `sel.nyears`, as detailed in the help page for [FLBRP](http://www.flrproject.org/FLBRP/).
 
 ```{r, brp_ex2}
 summary(brp4)
@@ -218,7 +218,7 @@ virgin represents the virgin biomass without exploitation.
 
 * You can submit bug reports, questions or suggestions on this tutorial at <https://github.com/flr/doc/issues>.
 * Or send a pull request to <https://github.com/flr/doc/>
-* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flr-project.org>.
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flrproject.org>.
 
 ## Software Versions
 

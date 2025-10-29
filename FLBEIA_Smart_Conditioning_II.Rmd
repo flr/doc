@@ -52,9 +52,9 @@ To follow this tutorial you should have installed the following packages:
         [XLConnect](https://cran.r-project.org/web/packages/XLConnect/index.html)
         [XLConnectJars](https://cran.r-project.org/web/packages/XLConnectJars/index.html)
 
-- FLR: [FLCore](http://www.flr-project.org/FLCore/), [FLAssess](http://www.flr-project.org/FLAssess/), 
-       [FLash](http://www.flr-project.org/FLash/), [FLBEIA](http://www.flr-project.org/FLBEIA/), 
-       [FLFleet](http://www.flr-project.org/FLFleet/)
+- FLR: [FLCore](http://www.flrproject.org/FLCore/), [FLAssess](http://www.flrproject.org/FLAssess/), 
+       [FLash](http://www.flrproject.org/FLash/), [FLBEIA](http://www.flrproject.org/FLBEIA/), 
+       [FLFleet](http://www.flrproject.org/FLFleet/)
 
 If you are using Windows, please use 64-bit R version because some of the packages (mainly FLash) 
 do not work in 32-bit.
@@ -63,7 +63,7 @@ do not work in 32-bit.
 install.packages( c("ggplot2", "XLConnect"))
 install.packages( c("FLCore", "FLFleet", "FLBEIA", 
                     "FLash", "FLAssess", "FLXSA"), 
-                  repos="http://flr-project.org/R")
+                  repos="http://flrproject.org/R")
 ```
 
 It has to be noted that packages ```FLCore```, ```FLFleets``` and ```FLBEIA``` have to be installed in this exact order, as alternative orders can cause some problems.
@@ -156,7 +156,7 @@ Firts we download the data from the FLR we page using R commands
 
 ```{r data, echo=TRUE, eval=TRUE}
 tdir <- tempdir()
-# download.file("http://www.flr-project.org/doc/src/flbeia_smart_cond_II.zip", 
+# download.file("http://www.flrproject.org/doc/src/flbeia_smart_cond_II.zip", 
 #               file.path(dir, "flbeia_smart_cond_II.zip"))
 # unzip(file.path(dir, "flbeia_smart_cond_II.zip"), exdir=dir)
 unzip("src/flbeia_smart_cond_II.zip", exdir=tdir)
@@ -506,7 +506,7 @@ for(fl in names(fleets)){
 
 * You can submit bug reports, questions or suggestions on this tutorial at <https://github.com/flr/doc/issues>.
 * Alternatively, send a pull request to <https://github.com/flr/doc/>.
-* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage: <http://flr-project.org>.
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage: <http://flrproject.org>.
 * You can submit bug reports, questions or suggestions specific to **FLBEIA** to <flbeia@azti.es>.
 
 ## Software Versions

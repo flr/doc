@@ -24,13 +24,9 @@ source("R/ini.R")
 options(tinytex.verbose = TRUE)
 ```
 
-Simulating fish stocks using FLR
-================================
+# Introduction
 
-Introduction
-------------
-
-We will show you how to simulate stocks from scratch using the libraries [FLife](http://www.flr-project.org/FLife/) and [FLasher](http://www.flr-project.org/FLasher/) from the [Fisheries Library in R](http://www.flr-project.org/). The combination of those two libraries allows the user to initiate and project a fishstock based on the understanding of life-history theory *(quote the big cahuna)*. This tutorial is structured in two parts; the first part shows the quick way and the second part highlights the flexibility of the method.
+We will show you how to simulate stocks from scratch using the libraries [FLife](http://www.flrproject.org/FLife/) and [FLasher](http://www.flrproject.org/FLasher/) from the [Fisheries Library in R](http://www.flrproject.org/). The combination of those two libraries allows the user to initiate and project a fishstock based on the understanding of life-history theory *(quote the big cahuna)*. This tutorial is structured in two parts; the first part shows the quick way and the second part highlights the flexibility of the method.
 
 
 We will use `FLife` to setup the stock and `FLasher` to project the stock. The process can be summarised as follows:
@@ -380,7 +376,7 @@ plot(OpMod[,-1,,,,])
 
 * You can submit bug reports, questions or suggestions on this tutorial at <https://github.com/flr/doc/issues>.
 * Or send a pull request to <https://github.com/flr/doc/>
-* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flr-project.org>.
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flrproject.org>.
 
 ## Software Versions
 

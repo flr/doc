@@ -935,7 +935,7 @@ Youen Vermard and IFREMER for providing the abundance index used to fit the SPiC
 
 * You can submit bug reports, questions or suggestions on this tutorial at <https://github.com/flr/doc/issues>.
 * Alternatively, send a pull request to <https://github.com/flr/doc/>.
-* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage: <http://flr-project.org>.
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage: <http://flrproject.org>.
 * You can submit bug reports, questions or suggestions specific to **FLBEIA** to <flbeia@azti.es>.
 
 ## Software Versions

@@ -32,15 +32,15 @@ Special attention must be paid to the conditioning and future assumptions of the
 
 To follow this tutorial you should have installed the following packages:
 
-- FLR: [FLCore](http://www.flr-project.org/FLCore/), [FLash](http://www.flr-project.org/FLash/), [FLBRP](http://www.flr-project.org/FLBRP/), [FLAssess](http://www.flr-project.org/FLAssess/)
+- FLR: [FLCore](http://www.flrproject.org/FLCore/), [FLash](http://www.flrproject.org/FLash/), [FLBRP](http://www.flrproject.org/FLBRP/), [FLAssess](http://www.flrproject.org/FLAssess/)
 
 You can do so as follows,
 
 ```{r, eval=FALSE}
-install.packages(c("FLCore"), repos="http://flr-project.org/R")
-install.packages(c("FLash"), repos="http://flr-project.org/R")
-install.packages(c("FLBRP"), repos="http://flr-project.org/R")
-install.packages(c("FLAssess"), repos="http://flr-project.org/R")
+install.packages(c("FLCore"), repos="http://flrproject.org/R")
+install.packages(c("FLash"), repos="http://flrproject.org/R")
+install.packages(c("FLBRP"), repos="http://flrproject.org/R")
+install.packages(c("FLAssess"), repos="http://flrproject.org/R")
 ```
 
 ```{r, pkgs}
@@ -735,7 +735,7 @@ SOMETHING ON FWD WINDOW
 
 * You can submit bug reports, questions or suggestions on this tutorial at <https://github.com/flr/doc/issues>.
 * Or send a pull request to <https://github.com/flr/doc/>
-* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flr-project.org>.
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flrproject.org>.
 
 ## Software Versions
 

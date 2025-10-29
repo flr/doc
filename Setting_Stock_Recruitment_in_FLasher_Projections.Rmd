@@ -24,14 +24,14 @@ Projections are either run with an *FLStock* object or with *FLBiol* and *FLFish
 
 To follow this tutorial you should have installed the following packages:
 
-- FLR: [FLCore](http://www.flr-project.org/FLCore/), [FLasher](http://www.flr-project.org/FLash/), [FLFishery](http://www.flr-project.org/FLFishery/)
+- FLR: [FLCore](http://www.flrproject.org/FLCore/), [FLasher](http://www.flrproject.org/FLash/), [FLFishery](http://www.flrproject.org/FLFishery/)
 
 You can do so as follows,
 
 ```{r, eval=FALSE}
-install.packages(c("FLCore"), repos="http://flr-project.org/R")
-install.packages(c("FLasher"), repos="http://flr-project.org/R")
-install.packages(c("FLFishery"), repos="http://flr-project.org/R")
+install.packages(c("FLCore"), repos="http://flrproject.org/R")
+install.packages(c("FLasher"), repos="http://flrproject.org/R")
+install.packages(c("FLFishery"), repos="http://flrproject.org/R")
 ```
 
 ```{r, pkgs}
@@ -549,7 +549,7 @@ n(test[["biols"]])[1,ac(years)]
 
 * You can submit bug reports, questions or suggestions on this tutorial at <https://github.com/flr/doc/issues>.
 * Or send a pull request to <https://github.com/flr/doc/>
-* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flr-project.org>.
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flrproject.org>.
 
 ## Software Versions
 

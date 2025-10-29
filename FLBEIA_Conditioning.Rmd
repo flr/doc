@@ -37,14 +37,14 @@ Afterwards, a more complicated example will be shown with 2 stocks, 2 fleets, 4 
 To follow this tutorial you should have installed the following packages
 
 - CRAN: [ggplot2](https://cran.r-project.org/web/packages/ggplot2/index.html)
-- FLR: [FLCore](http://www.flr-project.org/FLCore/), [FLBEIA](http://www.flr-project.org/FLBEIA/),
-       [FLFleet](http://www.flr-project.org/FLFleet/), [ggplotFL](http://www.flr-project.org/ggplotFL/)
+- FLR: [FLCore](http://www.flrproject.org/FLCore/), [FLBEIA](http://www.flrproject.org/FLBEIA/),
+       [FLFleet](http://www.flrproject.org/FLFleet/), [ggplotFL](http://www.flrproject.org/ggplotFL/)
 
 If you are using Windows, please use 32-bit R version because some of the packages do not work in 64-bit.
 
 ```{r, eval=FALSE}
 install.packages(c("ggplot2"))
-install.packages(c("FLCore", "FLFleets", "FLash", "FLAssess", "FLXSA", "ggplotFL"), repos="http://flr-project.org/R")
+install.packages(c("FLCore", "FLFleets", "FLash", "FLAssess", "FLXSA", "ggplotFL"), repos="http://flrproject.org/R")
 
 ```
 ```{r, eval=FALSE,echo=FALSE}
@@ -90,7 +90,7 @@ The data files used in this tutorial need to be available in R's working directo
 
 ```{r getfiles, message = FALSE}
 tdir <- tempdir()
-# download.file("http://flr-project.org/doc/src/ConditioningOne.zip",
+# download.file("http://flrproject.org/doc/src/ConditioningOne.zip",
 #   file.path(tdir, "ConditioningOne.zip"))
 # unzip(file.path(tdir, "ConditioningOne.zip"), exdir=dir)
 unzip("src/ConditioningOne.zip", exdir=tdir)
@@ -558,7 +558,7 @@ Download the input data from ConditioningMulti.zip.
 
 * You can submit bug reports, questions or suggestions on this tutorial at <https://github.com/flr/doc/issues>.
 * Or send a pull request to <https://github.com/flr/doc/>
-* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flr-project.org>.
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flrproject.org>.
 * You can submit bug reports, questions or suggestions specific to **FLBEIA** to <flbeia@azti.es>.
 
 ## Software Versions

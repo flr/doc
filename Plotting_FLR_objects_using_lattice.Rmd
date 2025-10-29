@@ -23,12 +23,12 @@ The lattice package (Sarkar, 2008) improves on base R graphics by providing bett
 To follow this tutorial you should have installed the following packages:
 
 - CRAN: [lattice](https://cran.r-project.org/web/packages/lattice/index.html)
-- FLR: [FLCore](http://www.flr-project.org/FLCore/)
+- FLR: [FLCore](http://www.flrproject.org/FLCore/)
 
 You can do so as follows:
 ```{r, eval=FALSE}
 install.packages(c("lattice"))
-install.packages(c("FLCore"), repos="http://flr-project.org/R")
+install.packages(c("FLCore"), repos="http://flrproject.org/R")
 ```
 
 Load necessary packages:
@@ -194,13 +194,13 @@ bubbles(age~year, data=catch.n(ple4)[5:10,], xlab='', bub.scale=10)
 
 [Quick Lattice Graphs](http://statmethods.net/advgraphs/trellis.html)  
 
-[A quick introduction to FLR](http://flr-project.org/doc/A_quick_introduction_to_FLR.html)
+[A quick introduction to FLR](http://flrproject.org/doc/A_quick_introduction_to_FLR.html)
 
 # More information
 
 * You can submit bug reports, questions or suggestions on this tutorial at <https://github.com/flr/doc/issues>.
 * Or send a pull request to <https://github.com/flr/doc/>
-* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flr-project.org>.
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage, <http://flrproject.org>.
 
 ## Software Versions
 

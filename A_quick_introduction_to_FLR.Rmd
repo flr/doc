@@ -25,7 +25,7 @@ FLR builds on the powerful R environment and syntax to create a [domain-specific
 To follow this tutorial you should have installed the following packages:
 
 - CRAN: latticeExtra, gridExtra, ggplot2
-- FLR: [FLCore](http://www.flr-project.org/FLCore/), [FLa4a](http://www.flr-project.org/FLa4a/), [ggplotFL](http://www.flr-project.org/ggplotFL/), [FLBRP](http://www.flr-project.org/FLBRP/), [FLasher](http://www.flr-project.org/FLasher/)
+- FLR: [FLCore](http://www.flrproject.org/FLCore/), [FLa4a](http://www.flrproject.org/FLa4a/), [ggplotFL](http://www.flrproject.org/ggplotFL/), [FLBRP](http://www.flrproject.org/FLBRP/), [FLasher](http://www.flrproject.org/FLasher/)
 
 You can do so as follows:
 
@@ -41,7 +41,7 @@ The *FLCore* package defines a series of data structures that represent differen
 
 ## FLQuant
 
-The [FLQuant](http://www.flr-project.org/FLCore/reference/FLQuant.html) class is the basic data structure for **FLR**, and it is in essence a 6D array on which data and outputs can be stored, structured along dimensions related to age or length, year, unit (e.g. sex), season, area and iteractions. It is also able to keep track of the units of measurement employed, as a simple character vector, although various operations on these objects are aware of the units of measurements contained in them.
+The [FLQuant](http://www.flrproject.org/FLCore/reference/FLQuant.html) class is the basic data structure for **FLR**, and it is in essence a 6D array on which data and outputs can be stored, structured along dimensions related to age or length, year, unit (e.g. sex), season, area and iteractions. It is also able to keep track of the units of measurement employed, as a simple character vector, although various operations on these objects are aware of the units of measurements contained in them.
 
 We will be creating and altering *FLQuant* objects as we go along, but we can look briefly at some basic operations, as the syntax will then be used in other classes in **FLR**.
 
@@ -114,7 +114,7 @@ yearSums(flq)
 
 ### More information
 
-To learn more about the class, check the [FLQuant help page](http://www.flr-project.org/FLCore/reference/FLQuant.html).
+To learn more about the class, check the [FLQuant help page](http://www.flrproject.org/FLCore/reference/FLQuant.html).
 
 # Loading your data
 
@@ -280,11 +280,11 @@ where the 50% and 95% intervals are shown as a red region and a dotted line resp
 
 Note that plot methods on both **FLCore** and **ggplotFL** work by converting various **FLR** objects to a class that **lattice** and **ggplot2** can understand, *data.frame*s.
 
-Coercing a 6D array like an *FLQuant* to a 2D *data.frame* requires generating one column per dimension, named as those, plus an extra column for the values stored in the object. This column is named `data`, thus the use of `data` in various plot formulas above. For classes with multiple slots, like *FLStock*, an extra column is necessary, which will be called `slot`. Please check [this help page](http://www.flr-project.org/FLCore/reference/coerce-methods.html) to know more about the coercion methods for **FLR** objects.
+Coercing a 6D array like an *FLQuant* to a 2D *data.frame* requires generating one column per dimension, named as those, plus an extra column for the values stored in the object. This column is named `data`, thus the use of `data` in various plot formulas above. For classes with multiple slots, like *FLStock*, an extra column is necessary, which will be called `slot`. Please check [this help page](http://www.flrproject.org/FLCore/reference/coerce-methods.html) to know more about the coercion methods for **FLR** objects.
 
 ### More information
 
-For further explanations on the use of the two plotting platforms available for **FLR** classes, please refer to the [ggplotFL plotting FLR objects with ggplot2](http://www.flr-project.org/doc/ggplotFL_plotting_FLR_objects_with_ggplot2.html) and [Plotting FLR objects using lattice](http://www.flr-project.org/doc/Plotting_FLR_objects_using_lattice.html) tutorials.
+For further explanations on the use of the two plotting platforms available for **FLR** classes, please refer to the [ggplotFL plotting FLR objects with ggplot2](http://www.flrproject.org/doc/ggplotFL_plotting_FLR_objects_with_ggplot2.html) and [Plotting FLR objects using lattice](http://www.flrproject.org/doc/Plotting_FLR_objects_using_lattice.html) tutorials.
 
 # Running a stock assessment
 
@@ -292,7 +292,7 @@ An important step in providing management advice for a fish stock is the estimat
 
 ## Index of abundance
 
-**FLR** has specific classes for this information, [FLIndex](http://www.flr-project.org/FLCore/reference/FLIndex.html) or when multiple indices are available [FLIndices](http://www.flr-project.org/FLCore/reference/FLIndices.html). An index of abundance for the North Sea plaice stock is available as an example dataset in *FLCore*, and can be loaded using the *data* command
+**FLR** has specific classes for this information, [FLIndex](http://www.flrproject.org/FLCore/reference/FLIndex.html) or when multiple indices are available [FLIndices](http://www.flrproject.org/FLCore/reference/FLIndices.html). An index of abundance for the North Sea plaice stock is available as an example dataset in *FLCore*, and can be loaded using the *data* command
 
 ```{r, loadple4index}
 data(ple4.index)
@@ -316,7 +316,7 @@ range(ple4.index)[c("startf", "endf")]
 
 ## a4a statistical catch-at-age
 
-The [FLa4a](http://flr-project.org/FLa4a) package provides an **FLR** implementation of the *a4a* model, a statistical catch-at-age model of medium complexity that has been designed to make use of the power and flexibility of R's formula-based model notation (as used for example in [lm](https://stat.ethz.ch/R-manual/R-patched/library/stats/html/lm.html)), while giving access to a solid and fast minimization algorithm implemented using [AD Model Builder](http://www.admb-project.org/).
+The [FLa4a](http://flrproject.org/FLa4a) package provides an **FLR** implementation of the *a4a* model, a statistical catch-at-age model of medium complexity that has been designed to make use of the power and flexibility of R's formula-based model notation (as used for example in [lm](https://stat.ethz.ch/R-manual/R-patched/library/stats/html/lm.html)), while giving access to a solid and fast minimization algorithm implemented using [AD Model Builder](http://www.admb-project.org/).
 
 ```{r, fla4apkg}
 library(FLa4a)
@@ -355,7 +355,7 @@ Please see the [](.html) tutorial for more examples on how to .
 
 Fitting a model for the relationship between stock abundance and expected recruitment is necessary for forecasting the future dynamics of the stock under various levels of fishing mortality, the central element of fisheries management advice. Certain stock assessment models, for example most statistical catch-at-age models, include the stock-recruitment model in the estimated parameters, but for others, like Virtual Population Analysis, this is a setup carried out once the stock and population abundance have been obtained.
 
-Both inputs and outputs for stock-recruitment models are stored in an object of the [FLSR](http://www.flr-project.org/FLCore/reference/FLSR.html) class which we can create directly from the stock assessment results by coercion using
+Both inputs and outputs for stock-recruitment models are stored in an object of the [FLSR](http://www.flrproject.org/FLCore/reference/FLSR.html) class which we can create directly from the stock assessment results by coercion using
 
 ```{r, flsrcreate}
 plsr <- as.FLSR(stk)
@@ -373,7 +373,7 @@ We now need to choose a model to fit, and *FLCore* provides a number of them alr
 - a function returning the log-likelihood, to be used for minimization, in the `logl` slot
 - a function to obtain initial values for the minimization procedure, in the `initial` slot
 
-See the [SR Models](http://www.flr-project.org/FLCore/reference/FLSR.html) help page for further details of the available models.
+See the [SR Models](http://www.flrproject.org/FLCore/reference/FLSR.html) help page for further details of the available models.
 
 We can now assign the output of the chosen model function, in this case `ricker()`, to the existing object using
 
@@ -414,7 +414,7 @@ Please see the [Modelling stock recruitment with FLSR](Modelling_stock_recruitme
 
 To assess current and future status of a stock we need reference points which we hold to represent desirable states for the stock, usually either in terms of stock abundance, like $B_{MSY}$, the biomass expected to produce, on average and under the current exploitation pattern, the Maximum Sustainable Yield ($MSY$), or of fishing mortality, such as the fishing mortality expected to produce $MSY$, $F_{MSY}$.
 
-We can use the [FLBRP package](http://flr-project.org/FLBRP) to calculate a large set of reference points, once we have an estimate of stock status, our *FLStock* object, and of the stock-recruitment relationship, *FLSR*. We can use them both to create the necessary object, of class *FLBRP*, after loading the package
+We can use the [FLBRP package](http://flrproject.org/FLBRP) to calculate a large set of reference points, once we have an estimate of stock status, our *FLStock* object, and of the stock-recruitment relationship, *FLSR*. We can use them both to create the necessary object, of class *FLBRP*, after loading the package
 
 ```{r, flrbp, warnings=FALSE}
 library(FLBRP)
@@ -457,7 +457,7 @@ For more information on *FLBRP*, please see the [Reference points for fisheries 
 
 Our final step in this quick tour takes us to the tools in *FLR* for forecasting the future responses of the stock to alternative management decisions. This example concerns a Short Term Forecast, in which the effect of the current management, for example a maximum catch limit or TAC, on the present year is forecast, and then a series of alternative increases or decreases in catch are applied to the object representing our current understanding of the stock status and dynamics.
 
-The [FLasher package](http://flr-project.org/FLasher) contains the current implementation of the forecasting mechanism in *FLR*.
+The [FLasher package](http://flrproject.org/FLasher) contains the current implementation of the forecasting mechanism in *FLR*.
 
 ```{r, flash}
 library(FLasher)
@@ -501,11 +501,11 @@ plot(proj) + geom_vline(aes(xintercept=2017.5), linetype=2)
 
 ### More information
 
-Please see the tutorial [Forecasting on the Medium Term for advice using FLasher](https://flr-project.org/doc/Forecasting_on_the_Medium_Term_for_advice_using_FLasher.html) for more examples on how to use the capabilities of *FLasher* to forecast population dynamics under various scenarios.
+Please see the tutorial [Forecasting on the Medium Term for advice using FLasher](https://flrproject.org/doc/Forecasting_on_the_Medium_Term_for_advice_using_FLasher.html) for more examples on how to use the capabilities of *FLasher* to forecast population dynamics under various scenarios.
 
 # More on FLR
 
-Please visit [our website](http://flr-project.org) for more information on the **FLR** packages, tutorials and examples of use, and instructions for getting in touch if you want to report a bug, ask a question or get involved in the development of the **FLR** toolset. The project is run by a team of fisheries scientists that decided to share the R code they were writing and realised that using a common platform for Quantitative Fisheries Science in R could break the Babel tower spell that J. Schnute first identified
+Please visit [our website](http://flrproject.org) for more information on the **FLR** packages, tutorials and examples of use, and instructions for getting in touch if you want to report a bug, ask a question or get involved in the development of the **FLR** toolset. The project is run by a team of fisheries scientists that decided to share the R code they were writing and realised that using a common platform for Quantitative Fisheries Science in R could break the Babel tower spell that J. Schnute first identified
 
 "The cosmic plan for confounding software languages seems to be working remarkably
 well among the community of quantitative fishery scientists!"
@@ -521,7 +521,7 @@ L. T. Kell, I. Mosqueira, P. Grosjean, J-M. Fromentin, D. Garcia, R. Hillary, E.
 
 * You can submit bug reports, questions or suggestions on this tutorial at <https://github.com/flr/doc/issues>.
 * Alternatively, send a pull request to <https://github.com/flr/doc/>.
-* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage: <http://flr-project.org>.
+* For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage: <http://flrproject.org>.
 
 ## Software Versions
 
