@@ -131,7 +131,7 @@ The file is downloaded into a temporary folder, and uncompressed. Simply change 
 
 ```{r, getfiles, message=FALSE}
 dir <- tempdir()
-download.file("http://www.flr-project.org/doc/src/ple4.csv.zip", file.path(dir, "ple4.csv.zip"))
+download.file("http://www.flrproject.org/doc/src/ple4.csv.zip", file.path(dir, "ple4.csv.zip"))
 unzip(file.path(dir, "ple4.csv.zip"), exdir=dir)
 ```
 

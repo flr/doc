@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -14,24 +13,38 @@
 
 <title>A quick introduction to FLR</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -44,32 +57,8 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
+
 
 
 
@@ -80,13 +69,8 @@ h6 {
   margin-left: auto;
   margin-right: auto;
 }
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
-}
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -100,40 +84,16 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 45px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h2 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h3 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h4 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h5 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
-.section h6 {
-  padding-top: 50px;
-  margin-top: -50px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -161,7 +121,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -173,7 +133,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -183,11 +143,28 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.parent().addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -199,13 +176,12 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -213,16 +189,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -235,6 +204,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -265,7 +235,7 @@ $(document).ready(function () {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -289,7 +259,7 @@ $(document).ready(function () {
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-play-circle-o"></span>
      
     Intro
@@ -306,7 +276,7 @@ $(document).ready(function () {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-database"></span>
      
     Input
@@ -320,7 +290,7 @@ $(document).ready(function () {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-magic"></span>
      
     Modelling
@@ -352,7 +322,7 @@ $(document).ready(function () {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-tachometer"></span>
      
     Advice
@@ -375,7 +345,7 @@ $(document).ready(function () {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-cogs"></span>
      
     MSE
@@ -392,7 +362,7 @@ $(document).ready(function () {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-cogs"></span>
      
     FLBEIA
@@ -404,7 +374,7 @@ $(document).ready(function () {
       <a href="An_introduction_to_MSE_using_FLR.html">An introduction to MSE using FLR</a>
     </li>
     <li>
-      <a href="Conditioning_FLBEIA.html">Conditioning FLBEIA using Smart Conditioning Functions</a>
+      <a href="FLBEIA_Conditioning.html">Conditioning FLBEIA using Smart Conditioning Functions</a>
     </li>
     <li>
       <a href="FLBEIA_A_Simple_Example.html">A simple example on how to use FLBEIA</a>
@@ -413,18 +383,33 @@ $(document).ready(function () {
       <a href="FLBEIA_An_Example_with_multiple_dimensions.html">A simple example with multiple dimensions in FLBEIA</a>
     </li>
     <li>
-      <a href="Using_Assessment_models_in_the_MP_FLBEIA.html">Using Stock Assessment models in the Management procedure of FLBEIA</a>
+      <a href="FLBEIA_Checking_inputs.html">Checking FLBEIA inputs</a>
     </li>
     <li>
-      <a href="Testing_Management_Strategies_in_FLBEIA.html">Testing different Management Strategies in FLBEIA</a>
+      <a href="FLBEIA_Using_Assessment_models_in_the_MP.html">Using Stock Assessment models in the Management procedure of FLBEIA</a>
     </li>
     <li>
-      <a href="Data_Poor_MSE_in_FLBEIA.html">Data Limited MSE in FLBEIA</a>
+      <a href="FLBEIA_Incorporating_SS3assessment_MP.html">Including SS3 assessment within the Management Procedure of FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Testing_Management_Strategies.html">Testing different Management Strategies in FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Data_Poor_MSE.html">Data Limited MSE in FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Smart_Conditioning_II.html">Smart Conditioning II</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Mixed_Fisheries_Tutorial.html">ICES Mixed Fisheries Advice using FLBEIA</a>
+    </li>
+    <li>
+      <a href="FLBEIA_Bio_Economic_Tutorial.html">Bio-Economic simulation using FLBEIA</a>
     </li>
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-area-chart"></span>
      
     Plotting
@@ -441,7 +426,7 @@ $(document).ready(function () {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-puzzle-piece"></span>
      
     Internals
@@ -467,40 +452,77 @@ $(document).ready(function () {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
 <h1 class="title toc-ignore">A quick introduction to FLR</h1>
-<h4 class="date">08 August, 2019</h4>
+<h4 class="date">29 October, 2025</h4>
 
 </div>
 
 
-<p>The Fisheries Library in R (FLR) is a collection of tools for quantitative fisheries science, developed in the R language, that facilitates the construction of bio-economic simulation models of fisheries systems as well as the application of a wide range of quantitative analysis.</p>
-<p>FLR builds on the powerful R environment and syntax to create a <a href="https://en.wikipedia.org/wiki/Domain-specific_language">domain-specific language</a> for the quantitative analysis of the expected risks and impacts of fisheries management decisions. The classes and methods in FLR consider uncertainty an integral part of our knowledge of fisheries systems.</p>
+<p>The Fisheries Library in R (<strong>FLR</strong>) is a collection of
+tools for quantitative fisheries science, developed in the R language,
+that facilitates the construction of bio-economic simulation models of
+fisheries systems as well as the application of a wide range of
+quantitative analysis.</p>
+<p>FLR builds on the powerful R environment and syntax to create a <a
+href="https://en.wikipedia.org/wiki/Domain-specific_language">domain-specific
+language</a> for the quantitative analysis of the expected risks and
+impacts of fisheries management decisions. The classes and methods in
+FLR consider uncertainty an integral part of our knowledge of fisheries
+systems.</p>
 <div id="required-packages" class="section level2">
 <h2>Required packages</h2>
-<p>To follow this tutorial you should have installed the following packages:</p>
+<p>To follow this tutorial you should have installed the following
+packages:</p>
 <ul>
 <li>CRAN: latticeExtra, gridExtra, ggplot2</li>
-<li>FLR: <a href="http://www.flr-project.org/FLCore/">FLCore</a>, <a href="http://www.flr-project.org/FLa4a/">FLa4a</a>, <a href="http://www.flr-project.org/ggplotFL/">ggplotFL</a>, <a href="http://www.flr-project.org/FLBRP/">FLBRP</a>, <a href="http://www.flr-project.org/FLash/">FLash</a></li>
+<li>FLR: <a href="http://www.flr-project.org/FLCore/">FLCore</a>, <a
+href="http://www.flr-project.org/FLa4a/">FLa4a</a>, <a
+href="http://www.flr-project.org/ggplotFL/">ggplotFL</a>, <a
+href="http://www.flr-project.org/FLBRP/">FLBRP</a>, <a
+href="http://www.flr-project.org/FLasher/">FLasher</a></li>
 </ul>
 <p>You can do so as follows:</p>
-<pre class="r"><code>install.packages(c(&quot;latticeExtra&quot;, &quot;gridExtra&quot;, &quot;ggplot2&quot;, &quot;triangle&quot;, &quot;copula&quot;, &quot;coda&quot;, &quot;mgcv&quot;))
-install.packages(c(&quot;FLCore&quot;, &quot;ggplotFL&quot;, &quot;FLa4a&quot;, &quot;FLBRP&quot;, &quot;FLash&quot;), repos=&quot;http://flr-project.org/R&quot;)</code></pre>
+<pre class="r"><code>install.packages(c(&quot;latticeExtra&quot;, &quot;gridExtra&quot;, &quot;ggplot2&quot;))
+install.packages(c(&quot;FLCore&quot;, &quot;ggplotFL&quot;, &quot;FLa4a&quot;, &quot;FLBRP&quot;, &quot;FLasher&quot;),
+  repos=c(FLR=&quot;https://flr.r-universe.dev&quot;, CRAN=&quot;https://cloud.r-project.org&quot;))</code></pre>
 </div>
 <div id="classes-and-methods" class="section level1">
 <h1>Classes and methods</h1>
-<p>The <em>FLCore</em> package defines a series of data structures that represent different elements of the fishery system. These structures are defined using R’s S4 class system, while functions to operate on those classes are defined as methods. In this way function call (e.g. <code>plot()</code>) can be used on different classes and their behaviour is consistent with the class structure and content. For further information on the S4 class system, please look at the <a href="https://stat.ethz.ch/R-manual/R-patched/library/methods/html/Introduction.html">introductory text on the <strong>methods</strong> package</a>.</p>
+<p>The <em>FLCore</em> package defines a series of data structures that
+represent different elements of the fishery system. These structures are
+defined using R’s S4 class system, while functions to operate on those
+classes are defined as methods. In this way function call
+(e.g. <code>plot()</code>) can be used on different classes and their
+behaviour is consistent with the class structure and content. For
+further information on the S4 class system, please look at the <a
+href="https://stat.ethz.ch/R-manual/R-patched/library/methods/html/Introduction.html">introductory
+text on the <strong>methods</strong> package</a>.</p>
 <div id="flquant" class="section level2">
 <h2>FLQuant</h2>
-<p>The <a href="http://www.flr-project.org/FLCore/reference/FLQuant.html">FLQuant</a> class is the basic data structure for <strong>FLR</strong>, and it is in essence a 6D array on which data and outputs can be stored, structured along dimensions related to time, space, age or length, etc. It is also able to keep track of the units of measurement employed, as a simple character vector, although various operations on these objects are aware of the units of measurements contained in them.</p>
-<p>We will be creating an altering <em>FLQuant</em> objects as we go along, but we can long briefly at some basic operations, as the syntax will then be used in other classes in <em>FLR</em>.</p>
-<p>Let’s first load the necessary packages in our session. The <strong>FLCore</strong> paxckage</p>
+<p>The <a
+href="http://www.flr-project.org/FLCore/reference/FLQuant.html">FLQuant</a>
+class is the basic data structure for <strong>FLR</strong>, and it is in
+essence a 6D array on which data and outputs can be stored, structured
+along dimensions related to age or length, year, unit (e.g. sex),
+season, area and iteractions. It is also able to keep track of the units
+of measurement employed, as a simple character vector, although various
+operations on these objects are aware of the units of measurements
+contained in them.</p>
+<p>We will be creating and altering <em>FLQuant</em> objects as we go
+along, but we can look briefly at some basic operations, as the syntax
+will then be used in other classes in <strong>FLR</strong>.</p>
+<p>Let’s first load the necessary packages in our session. The
+<strong>FLCore</strong> package</p>
 <pre class="r"><code>library(FLCore)
 library(ggplotFL)</code></pre>
-<p>As it is the case for R classes, for example <em>data.frame</em>, classes in <em>FLR</em> can be constructed using a constructor method with the same name as the class, in this case <code>FLQuant()</code>.</p>
+<p>As it is the case for R classes, for example <em>data.frame</em>,
+classes in <strong>FLR</strong> can be constructed using a constructor
+method with the same name as the class, in this case
+<code>FLQuant()</code>.</p>
 <pre class="r"><code>FLQuant(1:10)</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 , , unit = unique, season = all, area = unique
@@ -510,7 +532,14 @@ quant 1  2  3  4  5  6  7  8  9  10
   all  1  2  3  4  5  6  7  8  9 10
 
 units:  NA </code></pre>
-<p>The <em>FLQuant</em> constructor can take a variety of inputs, like a vector, a matrix or an array, and also allows you to specify a nuber of arguments. We will only look now at three of them, <code>units</code> for the units of measurement, <code>quant</code> for the name of the first dimension, and <code>dimnames</code> for the dimension names of the object. For example, to construct an object holding (random) data in tonnes on catches for ages 1 to 4, over a period of 6 years, one could call</p>
+<p>The <em>FLQuant</em> constructor can take a variety of inputs, like a
+vector, a matrix or an array, and also allows you to specify a number of
+arguments. We will only look now at three of them, <code>units</code>
+for the units of measurement, <code>quant</code> for the name of the
+first dimension, and <code>dimnames</code> for the dimension names of
+the object. For example, to construct an object holding (random) data in
+tonnes on catches for ages 1 to 4, over a period of 6 years, one could
+call</p>
 <pre class="r"><code>flq &lt;- FLQuant(rlnorm(60), dimnames=list(age=1:4, year=2012:2017), units=&quot;t&quot;)
 
 flq</code></pre>
@@ -518,28 +547,27 @@ flq</code></pre>
 , , unit = unique, season = all, area = unique
 
    year
-age 2012    2013    2014    2015    2016    2017   
-  1 0.60352 0.97440 0.99065 1.68515 1.36443 5.05653
-  2 1.93833 2.09946 3.13919 0.84972 0.53418 0.69980
-  3 0.24826 1.51710 5.28007 0.61229 0.59522 1.19544
-  4 3.14748 6.16351 1.06234 0.93561 1.43151 0.81529
+age 2012  2013  2014  2015  2016  2017 
+  1 0.604 0.974 0.991 1.685 1.364 5.057
+  2 1.938 2.099 3.139 0.850 0.534 0.700
+  3 0.248 1.517 5.280 0.612 0.595 1.195
+  4 3.147 6.164 1.062 0.936 1.432 0.815
 
 units:  t </code></pre>
-<p>The object has six dimensions, although some of them (<code>unit</code>, <code>season</code>, <code>area</code> and <code>iter</code>) ar not used in this case. We can inspect the object in various ways</p>
+<p>The object has six dimensions, although some of them
+(<code>unit</code>, <code>season</code>, <code>area</code> and
+<code>iter</code>) are not used in this case. We can inspect the object
+in various ways</p>
 <pre class="r"><code># A summary of structure and data
 summary(flq)</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot; with:
-dim  :  4 6 1 1 1 1 
-quant:  age 
+
+dim:    age year unit season area iter 
+        4   6    1    1      1    1 
 units:  t 
 
-Min    :  0.2482592 
-1st Qu.:  0.7864159 
-Mean   :  1.789145 
-Median :  1.12889 
-3rd Qu.:  1.978613 
-Max    :  6.163509 
-NAs    :  0 %</code></pre>
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    %NAs 
+   0.25    0.79    1.13    1.79    1.98    6.16    0.00 </code></pre>
 <pre class="r"><code># dimnames
 dimnames(flq)</code></pre>
 <pre><code>$age
@@ -565,45 +593,61 @@ dim(flq)</code></pre>
 <pre class="r"><code># units
 units(flq)</code></pre>
 <pre><code>[1] &quot;t&quot;</code></pre>
-<p>It can be also subset and modified</p>
-<pre class="r"><code># Extract first year
+<p>It can be also subset and modified. Note that contrary to arrays in R
+one doesn’t need to specify all dimension within square brackets, the
+<strong>FLR</strong> method understands there are more dimensions after
+the last one the user wants to use</p>
+<pre class="r"><code># Extract (by location) the first year
 flq[, 1]</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 , , unit = unique, season = all, area = unique
 
    year
-age 2012   
-  1 0.60352
-  2 1.93833
-  3 0.24826
-  4 3.14748
+age 2012 
+  1 0.604
+  2 1.938
+  3 0.248
+  4 3.147
 
 units:  t </code></pre>
-<pre class="r"><code># Extract year 2013
+<pre class="r"><code># in a R array, to get the same results, we&#39;d need to do
+flq[, 1,,,,]</code></pre>
+<pre><code>An object of class &quot;FLQuant&quot;
+, , unit = unique, season = all, area = unique
+
+   year
+age 2012 
+  1 0.604
+  2 1.938
+  3 0.248
+  4 3.147
+
+units:  t </code></pre>
+<pre class="r"><code># Extract (by name) year 2013
 flq[, &quot;2013&quot;]</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 , , unit = unique, season = all, area = unique
 
    year
-age 2013  
-  1 0.9744
-  2 2.0995
-  3 1.5171
-  4 6.1635
+age 2013 
+  1 0.974
+  2 2.099
+  3 1.517
+  4 6.164
 
 units:  t </code></pre>
 <pre class="r"><code># Set catches on age 1 to zero
-flq[1,] &lt;- 0
+flq[1] &lt;- 0
 flq</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 , , unit = unique, season = all, area = unique
 
    year
-age 2012    2013    2014    2015    2016    2017   
-  1 0.00000 0.00000 0.00000 0.00000 0.00000 0.00000
-  2 1.93833 2.09946 3.13919 0.84972 0.53418 0.69980
-  3 0.24826 1.51710 5.28007 0.61229 0.59522 1.19544
-  4 3.14748 6.16351 1.06234 0.93561 1.43151 0.81529
+age 2012  2013  2014  2015  2016  2017 
+  1 0.000 0.000 0.000 0.000 0.000 0.000
+  2 1.938 2.099 3.139 0.850 0.534 0.700
+  3 0.248 1.517 5.280 0.612 0.595 1.195
+  4 3.147 6.164 1.062 0.936 1.432 0.815
 
 units:  t </code></pre>
 <p>as it can be used in many operations</p>
@@ -613,24 +657,24 @@ flq * 10</code></pre>
 , , unit = unique, season = all, area = unique
 
    year
-age 2012    2013    2014    2015    2016    2017   
-  1  0.0000  0.0000  0.0000  0.0000  0.0000  0.0000
-  2 19.3833 20.9946 31.3919  8.4972  5.3418  6.9980
-  3  2.4826 15.1710 52.8007  6.1229  5.9522 11.9544
-  4 31.4748 61.6351 10.6234  9.3561 14.3151  8.1529
+age 2012  2013  2014  2015  2016  2017 
+  1  0.00  0.00  0.00  0.00  0.00  0.00
+  2 19.38 20.99 31.39  8.50  5.34  7.00
+  3  2.48 15.17 52.80  6.12  5.95 11.95
+  4 31.47 61.64 10.62  9.36 14.32  8.15
 
-units:  NA </code></pre>
-<pre class="r"><code># Addition with another FLQuant
+units:  t </code></pre>
+<pre class="r"><code># Addition with another FLQuant of the same dimensions
 flq + (flq * 0.20)</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 , , unit = unique, season = all, area = unique
 
    year
-age 2012    2013    2014    2015    2016    2017   
-  1 0.00000 0.00000 0.00000 0.00000 0.00000 0.00000
-  2 2.32600 2.51935 3.76703 1.01966 0.64102 0.83976
-  3 0.29791 1.82052 6.33608 0.73475 0.71427 1.43453
-  4 3.77698 7.39621 1.27480 1.12273 1.71781 0.97834
+age 2012  2013  2014  2015  2016  2017 
+  1 0.000 0.000 0.000 0.000 0.000 0.000
+  2 2.326 2.519 3.767 1.020 0.641 0.840
+  3 0.298 1.821 6.336 0.735 0.714 1.435
+  4 3.777 7.396 1.275 1.123 1.718 0.978
 
 units:  t </code></pre>
 <pre class="r"><code># Sum along years
@@ -639,34 +683,52 @@ yearSums(flq)</code></pre>
 , , unit = unique, season = all, area = unique
 
    year
-age 1      
-  1  0.0000
-  2  9.2607
-  3  9.4484
-  4 13.5557
+age 1    
+  1  0.00
+  2  9.26
+  3  9.45
+  4 13.56
 
 units:  t </code></pre>
 <div id="more-information" class="section level3">
 <h3>More information</h3>
-<p>To learn more about the class, check the <a href="http://www.flr-project.org/FLCore/reference/FLQuant.html">FLQuant help page</a>.</p>
+<p>To learn more about the class, check the <a
+href="http://www.flr-project.org/FLCore/reference/FLQuant.html">FLQuant
+help page</a>.</p>
 </div>
 </div>
 </div>
 <div id="loading-your-data" class="section level1">
 <h1>Loading your data</h1>
-<p>The first step in an analysis is to get the relevant data into the system. We will need to construct objects of certain <strong>FLR</strong> classes, but first data is loaded into the R session using any of the tools available in the language: <code>read.csv</code> for CSV files, <code>readVPA</code> and others for fisheries legacy file formats, …</p>
-<p>In this example we will create an object of class <em>FLStock</em>, a representation of both inputs and outputs involved in fitting a stock assessment model, from a CSV file containing a table with five columns:</p>
+<p>The first step in an analysis is to get the relevant data into the
+system. We will need to construct objects of certain
+<strong>FLR</strong> classes, but first data is loaded into the R
+session using any of the tools available in the language:
+<code>read.csv</code> for CSV files, <code>readVPA</code> and others for
+fisheries legacy file formats, …</p>
+<p>In this example we will create an object of class <em>FLStock</em>, a
+representation of both inputs and outputs involved in fitting a stock
+assessment model, from a CSV file containing a table with five
+columns:</p>
 <ul>
-<li><em>slot</em>, the name of the input quantity, in this case either landings at age, <em>landings.n</em>, weight-at-age in the landings, <em>landings.wt</em>, and the same quantitieds for discards, <em>discards.n</em> and <em>discards.wt</em>.</li>
+<li><em>slot</em>, the name of the input quantity, in this case either
+landings at age, <em>landings.n</em>, weight-at-age in the landings,
+<em>landings.wt</em>, and the same quantities for discards,
+<em>discards.n</em> and <em>discards.wt</em>.</li>
 <li><em>age</em> and <em>year</em></li>
 <li><em>data</em>, the numeric values themselves.</li>
-<li><em>units</em>, a character string for the units of measurement employed: <em>kg</em> and <em>1000</em> in this case for kilograms and thousands.</li>
+<li><em>units</em>, a character string for the units of measurement
+employed: <em>kg</em> and <em>1000</em> in this case for kilograms and
+thousands.</li>
 </ul>
-<p>The file is downloaded into a temporary folder, and uncompressed. Simply change the value of <code>dir</code> to save the file in another folder.</p>
+<p>The file is downloaded into a temporary folder, and uncompressed.
+Simply change the value of <code>dir</code> to save the file in another
+folder.</p>
 <pre class="r"><code>dir &lt;- tempdir()
-download.file(&quot;http://www.flr-project.org/doc/src/ple4.csv.zip&quot;, file.path(dir, &quot;ple4.csv.zip&quot;))
+download.file(&quot;http://www.flrproject.org/doc/src/ple4.csv.zip&quot;, file.path(dir, &quot;ple4.csv.zip&quot;))
 unzip(file.path(dir, &quot;ple4.csv.zip&quot;), exdir=dir)</code></pre>
-<p>The CSV file can now be loaded as a <code>data.frame</code> using <code>read.csv</code> and inspected</p>
+<p>The CSV file can now be loaded as a <code>data.frame</code> using
+<code>read.csv</code> and inspected</p>
 <pre class="r"><code>dat &lt;- read.csv(file.path(dir, &quot;ple4.csv&quot;))
 head(dat)</code></pre>
 <table>
@@ -724,28 +786,40 @@ head(dat)</code></pre>
 </tr>
 </tbody>
 </table>
-<p>This data.frame contains the time series of landings and discards at age, in thousands, and the corresponding mean weights-at-age, in kg, for <a href="http://standardgraphs.ices.dk/ViewCharts.aspx?key=8980">North Sea plaice</a> (<em>Pleuronectes platessa</em>, ICES ple.27.420).</p>
-<p>We can create an object to store the landings-at-age data by subsetting it from the <em>data.frame</em></p>
+<p>This data.frame contains the time series of landings and discards at
+age, in thousands, and the corresponding mean weights-at-age, in kg, for
+<a href="http://standardgraphs.ices.dk/ViewCharts.aspx?key=8980">North
+Sea plaice</a> (<em>Pleuronectes platessa</em>, ICES ple.27.420).</p>
+<p>We can create an object to store the landings-at-age data by
+subsetting it from the <em>data.frame</em></p>
 <pre class="r"><code>landn &lt;- subset(dat, slot==&quot;landings.n&quot;, select=-slot)</code></pre>
 <p>and then convert into an <em>FLQuant</em> using</p>
 <pre class="r"><code>landsn &lt;- as.FLQuant(landn)</code></pre>
-<p>The object can now be inspected and plotted using the FLR-defined methods</p>
+<p>The object can now be inspected and plotted using the FLR-defined
+methods</p>
 <pre class="r"><code>summary(landsn)</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot; with:
-dim  :  10 52 1 1 1 1 
-quant:  age 
+
+dim:    age year unit season area iter 
+        10  52   1    1      1    1 
 units:  1000 
 
-Min    :  0 
-1st Qu.:  4548.25 
-Mean   :  28140.75 
-Median :  14029.5 
-3rd Qu.:  40536 
-Max    :  274209 
-NAs    :  0 %</code></pre>
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    %NAs 
+      0    4548   14030   28141   40536  274209       0 </code></pre>
 <pre class="r"><code>plot(landsn)</code></pre>
 <p><img src="A_quick_introduction_to_FLR_files/figure-html/plotlandings.n-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>In a similar way, we can now convert the input <em>data.frame</em>, containing data for four data elements, as specified in the <code>slots</code> column, into an <em>FLStock</em> object, <code>ple4</code></p>
+<p>In a similar way, we can now convert the input <em>data.frame</em>,
+containing data for four data elements, as specified in the
+<code>slots</code> column, into an <em>FLStock</em> object,
+<code>nple4</code>. The <em>FLStock</em> class has the following slots:
+<em>catch</em>, <em>catch.n</em>, <em>catch.wt</em>, <em>discards</em>,
+<em>discards.n</em>, <em>discards.wt</em>, <em>landings</em>,
+<em>landings.n</em>, <em>landings.wt</em>, <em>stock</em>,
+<em>stock.n</em>, <em>stock.wt</em>, <em>m</em>, <em>mat</em>,
+<em>harvest</em>, <em>harvest.spwn</em> and <em>m.spwn</em>. The names
+used in the <em>slot</em> column need to match the <em>FLStock</em>
+class for this method to work. See <code>?FLStock</code> for more
+information.</p>
 <pre class="r"><code>nple4 &lt;- as.FLStock(dat)
 
 summary(nple4)</code></pre>
@@ -760,39 +834,43 @@ Dims:  age  year    unit    season  area    iter
 Range:  min max pgroup  minyear maxyear minfbar maxfbar 
     1   10  10  1957    2008    1   10  
 
-catch         : [ 1 52 1 1 1 1 ], units =  NA 
-catch.n       : [ 10 52 1 1 1 1 ], units =  NA 
-catch.wt      : [ 10 52 1 1 1 1 ], units =  NA 
-discards      : [ 1 52 1 1 1 1 ], units =  NA 
-discards.n    : [ 10 52 1 1 1 1 ], units =  1000 
-discards.wt   : [ 10 52 1 1 1 1 ], units =  kg 
-landings      : [ 1 52 1 1 1 1 ], units =  NA 
-landings.n    : [ 10 52 1 1 1 1 ], units =  1000 
-landings.wt   : [ 10 52 1 1 1 1 ], units =  kg 
-stock         : [ 1 52 1 1 1 1 ], units =  NA 
-stock.n       : [ 10 52 1 1 1 1 ], units =  NA 
-stock.wt      : [ 10 52 1 1 1 1 ], units =  NA 
-m             : [ 10 52 1 1 1 1 ], units =  m 
-mat           : [ 10 52 1 1 1 1 ], units =   
-harvest       : [ 10 52 1 1 1 1 ], units =  NA 
-harvest.spwn  : [ 10 52 1 1 1 1 ], units =   
-m.spwn        : [ 10 52 1 1 1 1 ], units =   </code></pre>
-<p>To complete this <em>FLStock</em> object we will need to specify the natural mortality, <em>m</em>, in this case as a constant value of 0.1 for all ages and years,</p>
+Metrics: 
+  rec: NA - NA  (NA) 
+  ssb: NA - NA  (NA) 
+  catch: NA - NA  (NA) 
+  fbar: NA - NA  (NA) </code></pre>
+<p>To complete this <em>FLStock</em> object we will need to specify the
+natural mortality, <em>m</em>, in this case as a constant value of 0.1
+for all ages and years,</p>
 <pre class="r"><code>m(nple4) &lt;- 0.1</code></pre>
-<p>the proportion of natural and fishing mortality that takes place before spawning, assumed to be zero in both cases,</p>
+<p>the proportion of natural and fishing mortality that takes place
+before spawning, assumed to be zero in both cases,</p>
 <pre class="r"><code>m.spwn(nple4) &lt;- harvest.spwn(nple4) &lt;- 0</code></pre>
-<p>and the maturity at age, as the proportion mature, as a vector repeated for all years.</p>
+<p>and the maturity at age, as the proportion mature, as a vector
+repeated for all years.</p>
 <pre class="r"><code>mat(nple4) &lt;- c(0, 0.5, 0.5, rep(1, 7))</code></pre>
-<p>We now must compute the overall landings and discards, in biomass, from the age-disaggregated values,</p>
+<p>We now must compute the overall landings and discards, in biomass,
+from the age-disaggregated values,</p>
 <pre class="r"><code>landings(nple4) &lt;- computeLandings(nple4)
 discards(nple4) &lt;- computeDiscards(nple4)</code></pre>
 <p>and then the catch slots from both landings and discards</p>
 <pre class="r"><code>catch(nple4) &lt;- computeCatch(nple4, slot=&quot;all&quot;)</code></pre>
-<p>The mean weigth-at-age in the stock needs to be provided. In this case we will assume it is the same as the one computed from the catch sampling programme</p>
+<p>The mean weight-at-age in the stock needs to be provided. In this
+case we will assume it is the same as the one computed from the catch
+sampling programme</p>
 <pre class="r"><code>stock.wt(nple4) &lt;- catch.wt(nple4)</code></pre>
-<p>We finalize by specifying the fully selected age range, used in the calculation of an overall index of fishing mortality, for example as the mean, using <code>fbar()</code>, or as the maximum value, using <code>fapex()</code> across those ages. This information is part of the object’s <em>range</em>.</p>
+<p>We finalize by specifying the fully selected age range, used in the
+calculation of an overall index of fishing mortality, for example as the
+mean, using <code>fbar()</code>, or as the maximum value, using
+<code>fapex()</code> across those ages. This information is part of the
+object’s <em>range</em>.</p>
 <pre class="r"><code>range(nple4, c(&quot;minfbar&quot;, &quot;maxfbar&quot;)) &lt;- c(2, 6)</code></pre>
-<p>If we now inspect the resulting object we can see that all calculated slots have been assigned the corresponding <em>units</em> of measurement, except for those that will hold the estimates coming from a stock assessment model: <em>stock</em>, <em>stock.n</em> and <em>stock.wt</em> for the estimates of abundance, and <em>harvest</em> for the estimates of fishing mortality at age.</p>
+<p>If we now inspect the resulting object we can see that all calculated
+slots have been assigned the corresponding <em>units</em> of
+measurement, except for those that will hold the estimates coming from a
+stock assessment model: <em>stock</em>, <em>stock.n</em> and
+<em>stock.wt</em> for the estimates of abundance, and <em>harvest</em>
+for the estimates of fishing mortality at age.</p>
 <pre class="r"><code>summary(nple4)</code></pre>
 <pre><code>An object of class &quot;FLStock&quot;
 
@@ -805,42 +883,53 @@ Dims:  age  year    unit    season  area    iter
 Range:  min max pgroup  minyear maxyear minfbar maxfbar 
     1   10  10  1957    2008    2   6   
 
-catch         : [ 1 52 1 1 1 1 ], units =  t 
-catch.n       : [ 10 52 1 1 1 1 ], units =  1000 
-catch.wt      : [ 10 52 1 1 1 1 ], units =  kg 
-discards      : [ 1 52 1 1 1 1 ], units =  t 
-discards.n    : [ 10 52 1 1 1 1 ], units =  1000 
-discards.wt   : [ 10 52 1 1 1 1 ], units =  kg 
-landings      : [ 1 52 1 1 1 1 ], units =  t 
-landings.n    : [ 10 52 1 1 1 1 ], units =  1000 
-landings.wt   : [ 10 52 1 1 1 1 ], units =  kg 
-stock         : [ 1 52 1 1 1 1 ], units =  NA 
-stock.n       : [ 10 52 1 1 1 1 ], units =  NA 
-stock.wt      : [ 10 52 1 1 1 1 ], units =  kg 
-m             : [ 10 52 1 1 1 1 ], units =  m 
-mat           : [ 10 52 1 1 1 1 ], units =   
-harvest       : [ 10 52 1 1 1 1 ], units =  NA 
-harvest.spwn  : [ 10 52 1 1 1 1 ], units =   
-m.spwn        : [ 10 52 1 1 1 1 ], units =   </code></pre>
-<pre class="r"><code>plot(metrics(nple4, Catch=catch, Landings=landings))</code></pre>
+Metrics: 
+  rec: NA - NA  (NA) 
+  ssb: NA - NA  (NA) 
+  catch: 78423 - 342985  (t) 
+  fbar: NA - NA  (NA) </code></pre>
+<pre class="r"><code>#plot(metrics(nple4, Catch=catch, Landings=landings))
+
+plot(nple4)</code></pre>
 <p><img src="A_quick_introduction_to_FLR_files/figure-html/nple4-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>data(ple4)</code></pre>
 <div id="more-information-1" class="section level3">
 <h3>More information</h3>
-<p>Please see the <a href="Loading_your_data_into_FLR.html">Loading your data into FLR</a> tutorial for more examples on how to get your data into into <strong>FLR</strong>.</p>
+<p>Please see the <a href="Loading_your_data_into_FLR.html">Loading your
+data into FLR</a> tutorial for more examples on how to get your data
+into into <strong>FLR</strong>.</p>
 </div>
 </div>
 <div id="visualizing-and-plotting" class="section level1">
 <h1>Visualizing and plotting</h1>
-<p>As already shown, <strong>FLR</strong> classes have always a <code>plot</code> methods defined that provide a basic visual exploration of the object contents. But you are not limited to those plots, and other methods are available to allow you to build the plots you need.</p>
-<p>The <em>FLCore</em> package provides a set of those plot methods based on R’s <a href="https://cran.r-project.org/web/packages/lattice/index.html">lattice package</a>, as well as versions of lattice’s methods that work directly on <strong>FLR</strong> objects, for example <code>xyplot</code></p>
+<p>As already shown, <strong>FLR</strong> classes always have a
+<code>plot</code> method defined that provides a basic visual
+exploration of the object contents. But you are not limited to those
+plots, and other methods are available to allow you to build the plots
+you need.</p>
+<p>The <strong>FLCore</strong> package provides a set of those plot
+methods based on R’s <a
+href="https://cran.r-project.org/web/packages/lattice/index.html">lattice
+package</a>, as well as versions of lattice’s methods that work directly
+on <strong>FLR</strong> objects, for example <code>xyplot</code></p>
 <pre class="r"><code>xyplot(data~year|age, harvest(ple4), xlab=&quot;&quot;, ylab=&quot;&quot;, type=&quot;b&quot;, cex=0.5, pch=19)</code></pre>
 <p><img src="A_quick_introduction_to_FLR_files/figure-html/xyplot-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>But the <em>ggplotFL</em> package, which we have already loaded, provides a new set of plot methods based on <a href="http://ggplot2.tidyverse.org/">ggplot2</a>, from which all the plots shown so far in this tutorial have been generated.</p>
-<p>One important advantage of <em>ggplot2</em> is that plots are returned as objects that can be modified and extended. For example, the basic plot for the abundances at age <em>FLQuant</em> using <em>ggplotFL</em> would be this one</p>
+<p>In alternative the <strong>ggplotFL</strong> package, which we have
+already loaded, can also be used, which provides a new set of plot
+methods based on <a href="http://ggplot2.tidyverse.org/">ggplot2</a>,
+from which all the plots shown so far in this tutorial have been
+generated.</p>
+<p>One important advantage of <strong>ggplot2</strong> is that plots are
+returned as objects that can be modified and extended. For example, the
+basic plot for the abundances at age <em>FLQuant</em> using
+<strong>ggplotFL</strong> would be this one</p>
 <pre class="r"><code>plot(stock.n(ple4))</code></pre>
 <p><img src="A_quick_introduction_to_FLR_files/figure-html/plotstockn-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>in which each age is shown in a different horizontal panel (<em>facet</em>). Now we can modify this plot in various ways by adding extra <em>ggplot2</em> commands to it, for example by adding a label to the <code>y</code> axis, shading a certain period of interest</p>
+<p>in which each age is shown in a different horizontal panel
+(<em>facet</em>). Now we can modify this plot in various ways by adding
+extra <strong>ggplot2</strong> commands to it, for example by adding a
+label to the <code>y</code> axis, shading a certain period of
+interest</p>
 <pre class="r"><code>plot(stock.n(ple4)) +
   # Add y label
   ylab(&quot;Biomass (t)&quot;) +
@@ -849,30 +938,80 @@ m.spwn        : [ 10 52 1 1 1 1 ], units =   </code></pre>
     # in semi-transparent red
     alpha = .2, fill=&#39;red&#39;)</code></pre>
 <p><img src="A_quick_introduction_to_FLR_files/figure-html/plotstocknplus-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>The basic method in <em>ggplot2</em> taking a data input, <code>ggplot</code>, has also been defined for some <em>FLCore</em> class, which simpliefies constructing plots based on objects of those classes from scratch. For example, we can plot our catch-at-age matrix from <em>ple4</em> to show the signal of strong cohorts in the data using</p>
+<p>The basic method in <strong>ggplot2</strong> taking a data input,
+<code>ggplot</code>, has also been defined for some <em>FLCore</em>
+class, which simplifies constructing plots based on objects of those
+classes from scratch. For example, we can plot our catch-at-age matrix
+from <em>ple4</em> to show the signal of strong cohorts in the data
+using</p>
 <pre class="r"><code>ggplot(data=catch.n(ple4), aes(x=year, y=data, group=age)) +
   geom_line(aes(colour=as.factor(age))) +
   ylab(&quot;Total catch (t)&quot;) + xlab(&quot;&quot;) + theme(legend.position=&quot;none&quot;)</code></pre>
 <p><img src="A_quick_introduction_to_FLR_files/figure-html/plotcatchn-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p><em>ggplotFL</em> deals with multiple iterations in <strong>FLR</strong> objects by calculating quantiles along the <em>iter</em> dimension and plotting them as areas and lines. For example, an object with random lognormal noise around the catch time series would look like this</p>
+<p><strong>ggplotFL</strong> deals with multiple iterations in
+<strong>FLR</strong> objects by calculating quantiles along the
+<em>iter</em> dimension and plotting them as areas and lines. For
+example, an object with random lognormal noise around the catch time
+series would look like this</p>
 <pre class="r"><code>plot(rlnorm(250, log(catch(ple4)), 0.5))</code></pre>
 <p><img src="A_quick_introduction_to_FLR_files/figure-html/plotcatch-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>where the 50% and 95% intervals are shown as a red region and a dotted line respectively, while the median value is shown as a black line.</p>
-<p>Note that plot methods on both <em>FLCore</em> and <em>ggplotFL</em> work by converting various <strong>FLR</strong> objects to a class that <em>lattice</em> and <strong>gplot2</strong> can understand, <em>data.frame</em>s. Coercing a 6D array like an <em>FLQuant</em> to a 2D <em>data.frame</em> requires generating one column per dimension, named as those, plus an extra column for the values stored in the object. This column is named <code>data</code>, thus the use of <code>data</code> in various plot formulas above. For classes with multiple slots, like <em>FLStock</em>, an extra column is necessary, which will be called <code>slots</code>. Please check <a href="http://www.flr-project.org/FLCore/reference/coerce-methods.html">this help page</a> to know more about the coertion methods for <strong>FLR</strong> objects.</p>
+<p>where the 50% and 95% intervals are shown as a red region and a
+dotted line respectively, while the median value is shown as a black
+line.</p>
+<p>Note that plot methods on both <strong>FLCore</strong> and
+<strong>ggplotFL</strong> work by converting various
+<strong>FLR</strong> objects to a class that <strong>lattice</strong>
+and <strong>ggplot2</strong> can understand, <em>data.frame</em>s.</p>
+<p>Coercing a 6D array like an <em>FLQuant</em> to a 2D
+<em>data.frame</em> requires generating one column per dimension, named
+as those, plus an extra column for the values stored in the object. This
+column is named <code>data</code>, thus the use of <code>data</code> in
+various plot formulas above. For classes with multiple slots, like
+<em>FLStock</em>, an extra column is necessary, which will be called
+<code>slot</code>. Please check <a
+href="http://www.flr-project.org/FLCore/reference/coerce-methods.html">this
+help page</a> to know more about the coercion methods for
+<strong>FLR</strong> objects.</p>
 <div id="more-information-2" class="section level3">
 <h3>More information</h3>
-<p>For further explanations on the use of the two plotting platforms available for <strong>FLR</strong> classes, please refer to the <a href="http://www.flr-project.org/doc/ggplotFL_plotting_FLR_objects_with_ggplot2.html">ggplotFL plotting FLR objects with ggplot2</a> and <a href="http://www.flr-project.org/doc/Plotting_FLR_objects_using_lattice.html">Plotting FLR objects using lattice</a> tutorials.</p>
+<p>For further explanations on the use of the two plotting platforms
+available for <strong>FLR</strong> classes, please refer to the <a
+href="http://www.flr-project.org/doc/ggplotFL_plotting_FLR_objects_with_ggplot2.html">ggplotFL
+plotting FLR objects with ggplot2</a> and <a
+href="http://www.flr-project.org/doc/Plotting_FLR_objects_using_lattice.html">Plotting
+FLR objects using lattice</a> tutorials.</p>
 </div>
 </div>
 <div id="running-a-stock-assessment" class="section level1">
 <h1>Running a stock assessment</h1>
-<p>An important step in providing management advice for a fish stock is the estimation of current status, past history and stock productivity through an stock assessment (SA) model. The <em>FLStock</em> object we have created contains some of the inputs required for most SA models: catches, natural mortality, and maturity. What is now needed is some indication of changes in abundance over the period of exploitation, an index of abundance, derived from either research surveys or catch-per-unit-effort of commercial fleets.</p>
+<p>An important step in providing management advice for a fish stock is
+the estimation of current status, past history and stock productivity
+through a stock assessment (SA) model fit. The <em>FLStock</em> object
+we have created contains some of the inputs required for most SA models:
+catches, natural mortality, and maturity. What is now needed is some
+indication of changes in abundance over the period of exploitation, an
+index of abundance, derived from either research surveys or
+catch-per-unit-effort of commercial fleets.</p>
 <div id="index-of-abundance" class="section level2">
 <h2>Index of abundance</h2>
-<p>An index of abundance for the North Sea plaice stock, as an object of class <a href="http://www.flr-project.org/FLCore/reference/FLIndex.html">FLIndex</a>, is available as an example dataset in <em>FLCore</em>, and can be loaded using the <em>data</em> command</p>
+<p><strong>FLR</strong> has specific classes for this information, <a
+href="http://www.flr-project.org/FLCore/reference/FLIndex.html">FLIndex</a>
+or when multiple indices are available <a
+href="http://www.flr-project.org/FLCore/reference/FLIndices.html">FLIndices</a>.
+An index of abundance for the North Sea plaice stock is available as an
+example dataset in <em>FLCore</em>, and can be loaded using the
+<em>data</em> command</p>
 <pre class="r"><code>data(ple4.index)</code></pre>
-<p>This time series of abundances at age, covering from 1996 to 2017, was obtained during the <a href="http://ocean.ices.dk/Project/IBTS/">ICES International Bottom Trawl Survey</a>, as is one of the indices used by the Working Group on the Assessment of Demersal Stocks in the North Sea and Skagerrak (WGNSSK).</p>
-<p>The <em>FLIndex</em> class is able to contain not only the index of abundance, in this case as an age-structured <em>FLQuant</em>, but also other information on variance, associated catches, effort, selectivity and catchability, which might be used by certain methods.</p>
+<p>This time series of abundances at age, covering from 1996 to 2017,
+was obtained during the <a
+href="http://ocean.ices.dk/Project/IBTS/">ICES International Bottom
+Trawl Survey</a>, as is one of the indices used by the Working Group on
+the Assessment of Demersal Stocks in the North Sea and Skagerrak
+(WGNSSK).</p>
+<p>The <em>FLIndex</em> class is able to contain not only the index of
+abundance, in this case as an age-structured <em>FLQuant</em>, but also
+other information on variance, associated catches, effort, selectivity
+and catchability, which might be used by certain methods.</p>
 <pre class="r"><code>summary(ple4.index)</code></pre>
 <pre><code>An object of class &quot;FLIndex&quot;
 
@@ -885,29 +1024,35 @@ Dims:  age  year    unit    season  area    iter
     10  22  1   1   1   1   
 
 Range:  min max pgroup  minyear maxyear startf  endf 
-    1   10  1   1996    2017    0.6453376   0.6453376   
-
-index         : [ 10 22 1 1 1 1 ], units =  NA 
-index.var     : [ 10 22 1 1 1 1 ], units =  NA 
-catch.n       : [ 10 22 1 1 1 1 ], units =  NA 
-catch.wt      : [ 10 22 1 1 1 1 ], units =  NA 
-effort        : [ 1 22 1 1 1 1 ], units =  NA 
-sel.pattern   : [ 10 22 1 1 1 1 ], units =  NA 
-index.q       : [ 10 22 1 1 1 1 ], units =  NA </code></pre>
+    1   10  1   1996    2017    0.6453376   0.6453376   </code></pre>
 <pre class="r"><code>plot(ple4.index)</code></pre>
 <p><img src="A_quick_introduction_to_FLR_files/figure-html/summaryple4index-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>The <em>range</em> slot in this class contains information about the time period over which the survey takes place, as proportions of the year, in this case from the beginning of August to the end of September.</p>
+<p>The <em>range</em> slot in this class contains information about the
+time period over which the survey takes place, as proportions of the
+year, in this case from the beginning of August to the end of
+September.</p>
 <pre class="r"><code>range(ple4.index)[c(&quot;startf&quot;, &quot;endf&quot;)]</code></pre>
 <pre><code>   startf      endf 
 0.6453376 0.6453376 </code></pre>
 </div>
 <div id="a4a-statistical-catch-at-age" class="section level2">
 <h2>a4a statistical catch-at-age</h2>
-<p>The <a href="http://flr-project.org/FLa4a">FLa4a</a> package provides an <strong>FLR</strong> implementation of the <em>a4a</em> model, an statistical catch-at-age model of medium complexity that has been designed to make use of the power and flexibility of R’s formula-based model notation (as used for example in <a href="https://stat.ethz.ch/R-manual/R-patched/library/stats/html/lm.html">lm</a>), while giving access to a solid and fast minimization algorithm implemented using <a href="http://www.admb-project.org/">AD Model Builder</a>.</p>
+<p>The <a href="http://flr-project.org/FLa4a">FLa4a</a> package provides
+an <strong>FLR</strong> implementation of the <em>a4a</em> model, a
+statistical catch-at-age model of medium complexity that has been
+designed to make use of the power and flexibility of R’s formula-based
+model notation (as used for example in <a
+href="https://stat.ethz.ch/R-manual/R-patched/library/stats/html/lm.html">lm</a>),
+while giving access to a solid and fast minimization algorithm
+implemented using <a href="http://www.admb-project.org/">AD Model
+Builder</a>.</p>
 <pre class="r"><code>library(FLa4a)</code></pre>
-<p>A first go at fitting this model to the <em>ple4</em> and <em>ple4.index</em> datasets requires a single line of code</p>
-<pre class="r"><code>fit &lt;- sca(ple4, FLIndices(BTS=ple4.index))</code></pre>
-<p>This returns an object of class a4aFitSA that contains the results fo the model fit, including the estimated catch-at-age, and the derived abundances and fishing mortality at age</p>
+<p>A first go at fitting this model to the <em>ple4</em> and
+<em>ple4.index</em> datasets requires a single line of code</p>
+<pre class="r"><code>fit &lt;- sca(ple4, ple4.index)</code></pre>
+<p>This returns an object of class a4aFitSA that contains the results of
+the model fit, including the estimated catch-at-age, and the derived
+abundances and fishing mortality at age</p>
 <pre class="r"><code>summary(fit)</code></pre>
 <pre><code>An object of class &quot;a4aFitSA&quot;
 
@@ -918,28 +1063,45 @@ Dims:  age  year    unit    season  area    iter
     10  61  1   1   1   1   
 
 Range:  min max pgroup  minyear maxyear minfbar maxfbar 
-    1   10  10  1957    2017    2   6   
-
-stock.n       : [ 10 61 1 1 1 1 ], units =  1000 
-harvest       : [ 10 61 1 1 1 1 ], units =  f 
-catch.n       : [ 10 61 1 1 1 1 ], units =  1000 </code></pre>
+    1   10  10  1957    2017    2   6   </code></pre>
 <p>which we can use to update the <em>FLStock</em> object</p>
 <pre class="r"><code>stk &lt;- ple4 + fit
 plot(stk)</code></pre>
 <p><img src="A_quick_introduction_to_FLR_files/figure-html/ple4fit-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Among other methods, <em>FLa4a</em> provides a range of tools for inspecting the quality of the model fit. For example, a set of residuals, for the fits to both the index olf abundance and</p>
-<div id="more-information-3" class="section level3">
-<h3>More information</h3>
-<p>Please see the <a href=".html"></a> tutorial for more examples on how to .</p>
+<p>Among other methods, <em>FLa4a</em> provides a range of tools for
+inspecting the quality of the model fit.
+<!-- This should be uncommented once a tutorial exists to link to
+For example, a set of residuals, for the fits to both the index olf abundance and 
+
+
+### More information
+
+Please see the [](.html) tutorial for more examples on how to .
+ --></p>
 </div>
 </div>
-</div>
-<div id="exploring-the-stock-recruitment-relationship" class="section level1">
+<div id="exploring-the-stock-recruitment-relationship"
+class="section level1">
 <h1>Exploring the stock-recruitment relationship</h1>
-<p>Fitting a model for the relationship between stock abundance and expected recruitment is necessary for forecasting the future dynamics of the stock under various levels of fishing mortality, the central element of fisheries management advice. Certain stock assessment models, for example most statistical catch-at-age models, include the stock-recruitment model in the estimated parameters, but for others, like Virtual Population Analysis, this is a setup carried out once the stock of population abundace have been obtained.</p>
-<p>Both inputs and outputs for stock-recruitment models are stored in an object of the <a href="http://www.flr-project.org/FLCore/reference/FLSR.html">FLSR</a> class which we can create directly from the SA results by coertion using</p>
+<p>Fitting a model for the relationship between stock abundance and
+expected recruitment is necessary for forecasting the future dynamics of
+the stock under various levels of fishing mortality, the central element
+of fisheries management advice. Certain stock assessment models, for
+example most statistical catch-at-age models, include the
+stock-recruitment model in the estimated parameters, but for others,
+like Virtual Population Analysis, this is a setup carried out once the
+stock and population abundance have been obtained.</p>
+<p>Both inputs and outputs for stock-recruitment models are stored in an
+object of the <a
+href="http://www.flr-project.org/FLCore/reference/FLSR.html">FLSR</a>
+class which we can create directly from the stock assessment results by
+coercion using</p>
 <pre class="r"><code>plsr &lt;- as.FLSR(stk)</code></pre>
-<p>The resulting <em>FLSR</em> object contains the series of recruitment <code>rec</code>, the abundance of the first age, and the stock reproductive potential, in this case the spawning stock biomass <code>ssb</code>. Both series are already displaced as corresponds by the age of recruitment, 1 in this case.</p>
+<p>The resulting <em>FLSR</em> object contains the series of recruitment
+<code>rec</code>, the abundance of the first age, and the stock
+reproductive potential, in this case the spawning stock biomass
+<code>ssb</code>. Both series are already displaced by the age of
+recruitment, 1 in this case.</p>
 <pre class="r"><code>summary(plsr)</code></pre>
 <pre><code>An object of class &quot;FLSR&quot;
 
@@ -952,40 +1114,54 @@ Dims:  age  year    unit    season  area    iter
 Range:  min minyear max maxyear 
     1   1958    1   2017    
 
-rec           : [ 1 60 1 1 1 1 ], units =  1000 
-ssb           : [ 1 60 1 1 1 1 ], units =  kg 
-residuals     : [ 1 60 1 1 1 1 ], units =  NA 
-fitted        : [ 1 60 1 1 1 1 ], units =  1000 
 
 Model:  list()
-Parameters: 
-    params
-iter
-   1
+An object of class &quot;FLPar&quot;
+character(0)
+units:  NA 
 Log-likelihood:  NA(NA) 
 Variance-covariance: &lt;0 x 0 matrix&gt;</code></pre>
-<p>We now need to choose a model to fit, and <em>FLCore</em> provides a number of them already defined in terms of:</p>
+<p>We now need to choose a model to fit, and <em>FLCore</em> provides a
+number of them already defined in terms of:</p>
 <ul>
 <li>the model formula, kept in the <code>model</code> slot</li>
-<li>a function returning the log-likelihood, to be used for minimization, in the <code>logl</code> slot</li>
-<li>a function to obtain initial values for the minimization procedure, in the <code>initial</code> slot</li>
+<li>a function returning the log-likelihood, to be used for
+minimization, in the <code>logl</code> slot</li>
+<li>a function to obtain initial values for the minimization procedure,
+in the <code>initial</code> slot</li>
 </ul>
-<p>See the <a href="http://www.flr-project.org/FLCore/reference/FLSR.html">SR Models</a> help page for further details of the available models.</p>
-<p>We can now assign the output of the chosen model function, in this case <code>ricker()</code> to the existing object using</p>
+<p>See the <a
+href="http://www.flr-project.org/FLCore/reference/FLSR.html">SR
+Models</a> help page for further details of the available models.</p>
+<p>We can now assign the output of the chosen model function, in this
+case <code>ricker()</code>, to the existing object using</p>
 <pre class="r"><code>model(plsr) &lt;- ricker()</code></pre>
-<p>The model object is ready to fit, through Maximum Likelihood Estimation (MLE), using the <code>fmle</code> method defined in <em>FLCore</em>. This makes use of R’s <code>optim</code>, but defaults to the Melder-Mead algorithm.</p>
+<p>The model object is ready to fit, through Maximum Likelihood
+Estimation (MLE), using the <code>fmle</code> method defined in
+<em>FLCore</em>. This makes use of R’s <code>optim</code>, but defaults
+to the Melder-Mead algorithm.</p>
 <pre class="r"><code>plsr &lt;- fmle(plsr)</code></pre>
-<p>Another look at the object ill show us that a number of slots now contain the results of the model fit, among them:</p>
+<p>Another look at the object will show us that a number of slots now
+contain the results of the model fit, among them:</p>
 <ul>
-<li><code>fitted</code> for the estimated recruitment, as an <em>FLQuant</em></li>
-<li><code>residuals</code> for the residuals in log space, <em>FLQuant</em></li>
-<li><code>params</code> for the estimated parameters, as an object of class <em>FLPar</em></li>
-<li><code>vcov</code> for the variance-covariance matrix, as an <em>array</em></li>
+<li><code>fitted</code> for the estimated recruitment, as an
+<em>FLQuant</em></li>
+<li><code>residuals</code> for the residuals in log space,
+<em>FLQuant</em></li>
+<li><code>params</code> for the estimated parameters, as an object of
+class <em>FLPar</em></li>
+<li><code>vcov</code> for the variance-covariance matrix, as an
+<em>array</em></li>
 </ul>
-<p>The standard plot for the class shows the model fit and a series of useful diagnostics that will help us evaluating the its quality and usefulness for future projections. This can be further explored by likelihood profiling over a range of values of the estimated parameters, simply calling the <code>profile</code> method of the object</p>
+<p>The standard plot for the class shows the model fit and a series of
+useful diagnostics that will help us evaluating its quality and
+usefulness for future projections. This can be further explored by
+likelihood profiling over a range of values of the estimated parameters
+by simply calling the <code>profile</code> method of the object</p>
 <pre class="r"><code>profile(plsr)</code></pre>
 <p><img src="A_quick_introduction_to_FLR_files/figure-html/flsrprofile-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Finally, the model can be used to predict future recruitments if provided with a set of new of values of SSB, as in</p>
+<p>Finally, the model can be used to predict future recruitments if
+provided with a set of new values of SSB, as in</p>
 <pre class="r"><code>predict(plsr, ssb=FLQuant(rnorm(10, 25e4, sd(ssb(plsr))), dimnames=list(age=1, year=2008:2017)))</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 , , unit = unique, season = all, area = unique
@@ -998,15 +1174,32 @@ age 2015      2016      2017
   1    805894  -1329512   1032422
 
 units:  1000 </code></pre>
-<div id="more-information-4" class="section level3">
+<div id="more-information-3" class="section level3">
 <h3>More information</h3>
-<p>Please see the <a href="Modelling_stock_recruitment_with_FLSR.html">Modelling stock recruitment with FLSR</a> tutorial for more examples and information on the stock-recruitment model fitting capabilities of <strong>FLR</strong>.</p>
+<p>Please see the <a
+href="Modelling_stock_recruitment_with_FLSR.html">Modelling stock
+recruitment with FLSR</a> tutorial for more examples and information on
+the stock-recruitment model fitting capabilities of
+<strong>FLR</strong>.</p>
 </div>
 </div>
 <div id="estimating-reference-points" class="section level1">
 <h1>Estimating reference points</h1>
-<p>To assess current and future status of a stock we need reference points which he hold to represent desirable states for the stock, usually either in terms of stock abundance, like <span class="math inline">\(B_{MSY}\)</span>, the biomass expected to produce, on average and under the current exploitation pattern, the Maximum Sustainable Yield (<span class="math inline">\(MSY\)</span>), or of fishing mortality, such as the fishing mortality expected to produce <span class="math inline">\(MSY\)</span>, <span class="math inline">\(F_{MSY}\)</span>.</p>
-<p>We can use the <a href="http://flr-project.org/FLBRP">FLBRP package</a> to calculate a large set of reference points, once we have an estimate of stock status, our <em>FLStock</em> object, and of the stock-recruitment relationship, <em>FLSR</em>. We can use them both to create the necessary object, of class <em>FLBRP</em>, after loading the package</p>
+<p>To assess current and future status of a stock we need reference
+points which we hold to represent desirable states for the stock,
+usually either in terms of stock abundance, like <span
+class="math inline">\(B_{MSY}\)</span>, the biomass expected to produce,
+on average and under the current exploitation pattern, the Maximum
+Sustainable Yield (<span class="math inline">\(MSY\)</span>), or of
+fishing mortality, such as the fishing mortality expected to produce
+<span class="math inline">\(MSY\)</span>, <span
+class="math inline">\(F_{MSY}\)</span>.</p>
+<p>We can use the <a href="http://flr-project.org/FLBRP">FLBRP
+package</a> to calculate a large set of reference points, once we have
+an estimate of stock status, our <em>FLStock</em> object, and of the
+stock-recruitment relationship, <em>FLSR</em>. We can use them both to
+create the necessary object, of class <em>FLBRP</em>, after loading the
+package</p>
 <pre class="r"><code>library(FLBRP)
 plrp &lt;- FLBRP(stk, sr=plsr)
 summary(plrp)</code></pre>
@@ -1021,41 +1214,30 @@ Dims:  age  year    unit    season  area    iter
 Range:  min max pgroup  minfbar maxfbar 
     1   10  10  2   6   
 
-fbar          : [ 1 101 1 1 1 1 ], units =  f 
-fbar.obs      : [ 1 61 1 1 1 1 ], units =  f 
-landings.obs  : [ 1 61 1 1 1 1 ], units =  t 
-discards.obs  : [ 1 61 1 1 1 1 ], units =  t 
-rec.obs       : [ 1 61 1 1 1 1 ], units =  1000 
-ssb.obs       : [ 1 61 1 1 1 1 ], units =  t 
-stock.obs     : [ 1 61 1 1 1 1 ], units =  t 
-profit.obs    : [ 1 61 1 1 1 1 ], units =  NA 
-landings.sel  : [ 10 1 1 1 1 1 ], units =  NA 
-discards.sel  : [ 10 1 1 1 1 1 ], units =  NA 
-bycatch.harv  : [ 10 1 1 1 1 1 ], units =  f 
-stock.wt      : [ 10 1 1 1 1 1 ], units =  kg 
-landings.wt   : [ 10 1 1 1 1 1 ], units =  kg 
-discards.wt   : [ 10 1 1 1 1 1 ], units =  kg 
-bycatch.wt    : [ 10 1 1 1 1 1 ], units =  NA 
-m             : [ 10 1 1 1 1 1 ], units =  m 
-mat           : [ 10 1 1 1 1 1 ], units =   
-harvest.spwn  : [ 10 1 1 1 1 1 ], units =   
-m.spwn        : [ 10 1 1 1 1 1 ], units =   
-availability  : [ 10 1 1 1 1 1 ], units =  NA 
-price         : [ 10 1 1 1 1 1 ], units =  NA 
-vcost         : [ 1 1 1 1 1 1 ], units =  NA 
-fcost         : [ 1 1 1 1 1 1 ], units =  NA 
 
 Model:  rec ~ a * ssb * exp(-b * ssb)
-Parameters: 
     params
 iter    a        b
    1 4.81 1.33e-06
 
-refpts:  calculated </code></pre>
-<p>An object of the <em>FLBRP</em> class contains a series of times series of observations on dynamics of both stock and fishery, as well as average quantities computed along an specified time period. A series of slot are designed to contain economic variables, such as <code>price</code>, variable costs (<code>vcost</code>) and fixed costs (<code>fcost</code>), which will need to be provided. When those data are available, economic reference points can also be calculated. Finally, a vector of fishing mortality values, <code>fbar</code>, has been created, by default to be of length 101 and with values going from <span class="math inline">\(F=0\)</span> to <span class="math inline">\(F=4\)</span>, to be used in the calculation procedure.</p>
-<p>We can now proceed with the calculation of reference points, through the <code>brp</code> method</p>
+refpts:  NA </code></pre>
+<p>An object of the <em>FLBRP</em> class contains a series of times
+series of observations on dynamics of both stock and fishery, as well as
+average quantities computed along a specified time period. A series of
+slots are designed to contain economic variables, such as
+<code>price</code>, variable costs (<code>vcost</code>) and fixed costs
+(<code>fcost</code>), which will need to be provided. When those data
+are available, economic reference points can also be calculated.
+Finally, a vector of fishing mortality values, <code>fbar</code>, has
+been created, by default to be of length 101 and with values going from
+<span class="math inline">\(F=0\)</span> to <span
+class="math inline">\(F=4\)</span>, to be used in the calculation
+procedure.</p>
+<p>We can now proceed with the calculation of reference points, through
+the <code>brp</code> method</p>
 <pre class="r"><code>plrp &lt;- brp(plrp)</code></pre>
-<p>and the extraction of the values obtained, stored in the <code>refpts</code> slot of the object</p>
+<p>and the extraction of the values obtained, stored in the
+<code>refpts</code> slot of the object</p>
 <pre class="r"><code>refpts(plrp)</code></pre>
 <pre><code>An object of class &quot;FLPar&quot;
         quant
@@ -1077,111 +1259,165 @@ refpt    profit
   spr.30       NA
   mey          NA
 units:  NA </code></pre>
-<p>This slot contains the estimates for a series of reference points and for a number of quantities. For example, the value stored at the intersection of <code>msy</code> and <code>harvest</code> corresponds to <span class="math inline">\(F_{MSY}\)</span>, while that of <code>virgin</code> and <code>ssb</code> is the estimate of virgin stock biomass. We can, for example, extract the two standard MSY-related reference points as a named vector using</p>
+<p>This slot contains the estimates for a series of reference points and
+for a number of quantities. For example, the value stored at the
+intersection of <code>msy</code> and <code>harvest</code> corresponds to
+<span class="math inline">\(F_{MSY}\)</span>, while that of
+<code>virgin</code> and <code>ssb</code> is the estimate of virgin stock
+biomass. We can, for example, extract the two standard MSY-related
+reference points as a named vector using</p>
 <pre class="r"><code>pmsy &lt;- refpts(plrp)[&quot;msy&quot;, c(&quot;harvest&quot;, &quot;ssb&quot;), drop=TRUE]</code></pre>
-<p>to then use them to visualize the status of the stock in relation to these points, for example</p>
+<p>to then use them to visualize the status of the stock in relation to
+these points, for example</p>
 <pre class="r"><code>plot(ssb(stk) / pmsy[&quot;ssb&quot;]) + geom_hline(aes(yintercept=1), linetype=2) +
   ylab(expression(SSB / SSB[MSY]))</code></pre>
 <p><img src="A_quick_introduction_to_FLR_files/figure-html/refptplot-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div id="more-information-5" class="section level3">
+<div id="more-information-4" class="section level3">
 <h3>More information</h3>
-<p>For more information on <em>FLBRP</em>, please see the <a href="Reference_points_for_fisheries_management_with_FLBRP.html">Reference points for fisheries management with FLBRP</a> tutorial.</p>
+<p>For more information on <em>FLBRP</em>, please see the <a
+href="Reference_points_for_fisheries_management_with_FLBRP.html">Reference
+points for fisheries management with FLBRP</a> tutorial.</p>
 </div>
 </div>
 <div id="forecasting-under-different-scenarios" class="section level1">
 <h1>Forecasting under different scenarios</h1>
-<p>Our final step in this quick tour takes us to the tools in <em>FLR</em> for forecasting the future responses of the stock to alternative management decisions. This example concerns a Short Term Forecast, in which the effect of the current management, for example a maximum catch limit or TAC, on the present year is forecasted, and then a series of alternative increases or decreases in catch are applied to the object representing our current understanding of the stock status and dynamics.</p>
-<p>The <a href="http://flr-project.org/FLash">FLash package</a> contains the current implementation of the forecasting mechanism in <em>FLR</em>. Please note that FLash is currently only working on 32 bit R if using Windows. A new forecasting package, called <em>FLasher</em> is about to be released and will only work on 64 bit R.</p>
-<pre class="r"><code>library(FLash)</code></pre>
-<p>The key element in the <em>FLash</em> interface is the <em>fwdControl</em> class, which allows us to specify the targets and limits that we want the stock to achieve or remain within. But first we need to make some assumptions about the future values of certain quantities, both on the biology (natural mortality, maturity) and the fishery (selectivity, proportion of discards). A common approach for this kind of forecast is to use averages over the last few years (tipycally three) for certain quantities. This can be done in <em>FLR</em> using the <code>stf</code> method in the <em>FLash</em> package.</p>
-<pre class="r"><code>library(FLash)
-proj &lt;- stf(stk)</code></pre>
-<p>Our new object extends up to 2020, and the values for certain stocks have been extended using the mean of the last three years, for example for the weight-at-age in the stock</p>
+<p>Our final step in this quick tour takes us to the tools in
+<em>FLR</em> for forecasting the future responses of the stock to
+alternative management decisions. This example concerns a Short Term
+Forecast, in which the effect of the current management, for example a
+maximum catch limit or TAC, on the present year is forecast, and then a
+series of alternative increases or decreases in catch are applied to the
+object representing our current understanding of the stock status and
+dynamics.</p>
+<p>The <a href="http://flr-project.org/FLasher">FLasher package</a>
+contains the current implementation of the forecasting mechanism in
+<em>FLR</em>.</p>
+<pre class="r"><code>library(FLasher)</code></pre>
+<p>The key element in the <em>FLasher</em> interface is the
+<em>fwdControl</em> class, which allows us to specify the targets and
+limits that we want the stock to achieve or remain within. But first we
+need to make some assumptions about the future values of certain
+quantities, both on the biology (natural mortality, maturity) and the
+fishery (selectivity, proportion of discards). A common approach for
+this kind of forecast is to use averages over the last few years
+(typically three) for certain quantities. This can be done in
+<em>FLR</em> using the <code>fwdWindow</code> method in the
+<em>FLash</em> package.</p>
+<pre class="r"><code>proj &lt;- fwdWindow(stk, end=2020)</code></pre>
+<p>Our new object extends up to 2020, and the values for certain stocks
+have been extended using the mean of the last three years, for example
+for the weight-at-age in the stock</p>
 <pre class="r"><code>stock.wt(proj)[, ac(2011:2020)]</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 , , unit = unique, season = all, area = unique
 
     year
-age  2011     2012     2013     2014     2015     2016     2017    
-  1  0.039000 0.052000 0.043000 0.048000 0.024000 0.030000 0.032000
-  2  0.100000 0.093000 0.107000 0.104000 0.065000 0.066000 0.069000
-  3  0.187000 0.142000 0.153000 0.158000 0.120000 0.117000 0.132000
-  4  0.209000 0.188000 0.208000 0.202000 0.207000 0.198000 0.181000
-  5  0.355000 0.331000 0.320000 0.312000 0.279000 0.260000 0.270000
-  6  0.483000 0.393000 0.354000 0.380000 0.323000 0.329000 0.333000
-  7  0.438000 0.484000 0.434000 0.439000 0.379000 0.380000 0.359000
-  8  0.422000 0.479000 0.493000 0.484000 0.435000 0.434000 0.458000
-  9  0.530000 0.480000 0.662000 0.458000 0.465000 0.479000 0.476000
-  10 0.580000 0.518000 0.468000 0.615000 0.457000 0.514000 0.557000
-    year
-age  2018     2019     2020    
-  1  0.028667 0.028667 0.028667
-  2  0.066667 0.066667 0.066667
-  3  0.123000 0.123000 0.123000
-  4  0.195333 0.195333 0.195333
-  5  0.269667 0.269667 0.269667
-  6  0.328333 0.328333 0.328333
-  7  0.372667 0.372667 0.372667
-  8  0.442333 0.442333 0.442333
-  9  0.473333 0.473333 0.473333
-  10 0.509333 0.509333 0.509333
+age  2011   2012   2013   2014   2015   2016   2017   2018   2019   2020  
+  1  0.0390 0.0520 0.0430 0.0480 0.0240 0.0300 0.0320 0.0287 0.0287 0.0287
+  2  0.1000 0.0930 0.1070 0.1040 0.0650 0.0660 0.0690 0.0667 0.0667 0.0667
+  3  0.1870 0.1420 0.1530 0.1580 0.1200 0.1170 0.1320 0.1230 0.1230 0.1230
+  4  0.2090 0.1880 0.2080 0.2020 0.2070 0.1980 0.1810 0.1953 0.1953 0.1953
+  5  0.3550 0.3310 0.3200 0.3120 0.2790 0.2600 0.2700 0.2697 0.2697 0.2697
+  6  0.4830 0.3930 0.3540 0.3800 0.3230 0.3290 0.3330 0.3283 0.3283 0.3283
+  7  0.4380 0.4840 0.4340 0.4390 0.3790 0.3800 0.3590 0.3727 0.3727 0.3727
+  8  0.4220 0.4790 0.4930 0.4840 0.4350 0.4340 0.4580 0.4423 0.4423 0.4423
+  9  0.5300 0.4800 0.6620 0.4580 0.4650 0.4790 0.4760 0.4733 0.4733 0.4733
+  10 0.5800 0.5180 0.4680 0.6150 0.4570 0.5140 0.5570 0.5093 0.5093 0.5093
 
 units:  kg </code></pre>
-<p>We can now construct a <code>fwdControl</code> object that projects the stock as if catches in the current year, 2018 in this case, were those of the agreed TAC, 85,000 t, and F was then kept in 2019 and 2020 at the same levels as in 2017. The main component of a <em>fwdControl</em> object is a <em>data.frame</em> that must at least contains columns for</p>
+<p>We can now construct a <code>fwdControl</code> object that projects
+the stock as if catches in the current year, 2018 in this case, were
+those of the agreed TAC, 85,000 t, and F was then kept in 2019 and 2020
+at the same levels as in 2017. The main information to be passed to
+<em>fwdControl</em> object is</p>
 <ul>
 <li><em>year</em></li>
-<li><em>quantity</em>, the quantity to be projected, for example <code>ssb</code>, <code>f</code> or <code>catch</code></li>
-<li><em>val</em>, the actual value to be obtained</li>
+<li><em>quant</em>, the quantity to be projected, for example
+<code>ssb</code>, <code>f</code> or <code>catch</code></li>
+<li><em>value</em>, the actual value to be obtained</li>
 </ul>
 <pre class="r"><code>TAC &lt;- 85000
 Flevel &lt;- fbar(stk)[,&quot;2017&quot;]
-ctrl &lt;- fwdControl(data.frame(year=2018:2020, quantity=c(&quot;catch&quot;, &quot;f&quot;, &quot;f&quot;), val=c(TAC, Flevel, Flevel)))</code></pre>
-<p>Now the <code>fwd</code> method will carry ou the projection using those three object: stock, stock-recruitment and control</p>
+ctrl &lt;- fwdControl(year=2018:2020, quant=c(&quot;catch&quot;, &quot;f&quot;, &quot;f&quot;), value=c(TAC, Flevel, Flevel))</code></pre>
+<p>Now the <code>fwd</code> method will carry out the projection using
+those three object: stock, stock-recruitment and control</p>
 <pre class="r"><code>proj &lt;- fwd(proj, control=ctrl, sr=plsr) </code></pre>
 <p>and the results can be visualized</p>
 <pre class="r"><code>plot(proj) + geom_vline(aes(xintercept=2017.5), linetype=2)</code></pre>
 <p><img src="A_quick_introduction_to_FLR_files/figure-html/fwdplot-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div id="more-information-6" class="section level3">
+<div id="more-information-5" class="section level3">
 <h3>More information</h3>
-<p>Please see the <a href="Short_Term_Forecasting_for_advice_using_FLash.html">Short Term Forecasting for advice using FLash</a> and <a href="Short_Term_Forecasting_for_advice_using_FLash.html">Short Term Forecasting for advice using FLash</a> tutorials for more examples on how to use the capabilitis of <em>FLash</em> to forecast population dynamics under various scenarios.</p>
+<p>Please see the tutorial <a
+href="https://flr-project.org/doc/Forecasting_on_the_Medium_Term_for_advice_using_FLasher.html">Forecasting
+on the Medium Term for advice using FLasher</a> for more examples on how
+to use the capabilities of <em>FLasher</em> to forecast population
+dynamics under various scenarios.</p>
 </div>
 </div>
 <div id="more-on-flr" class="section level1">
 <h1>More on FLR</h1>
-<p>Please visit <a href="http://flr-project.org">our website</a> for more information on the FLR packages, tutorials and examples of use, and instructions for getting in touch if you want to report a bug, ask a question or get involved in the development of the <strong>FLR</strong> toolset. The project is run by a team of fisheries scientists that decided to share the R code they were writing and using so a common platform for Quantitative Fisheries Science in R could break the Babel tower spell that J. Schnute first identified</p>
-<p>“The cosmic plan for confounding software languages seems to be working remarkably well among the community of quantitative fishery scientists!”</p>
+<p>Please visit <a href="http://flr-project.org">our website</a> for
+more information on the <strong>FLR</strong> packages, tutorials and
+examples of use, and instructions for getting in touch if you want to
+report a bug, ask a question or get involved in the development of the
+<strong>FLR</strong> toolset. The project is run by a team of fisheries
+scientists that decided to share the R code they were writing and
+realised that using a common platform for Quantitative Fisheries Science
+in R could break the Babel tower spell that J. Schnute first
+identified</p>
+<p>“The cosmic plan for confounding software languages seems to be
+working remarkably well among the community of quantitative fishery
+scientists!”</p>
 <p>Schnute et al. 2007</p>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
-<p>L. T. Kell, I. Mosqueira, P. Grosjean, J-M. Fromentin, D. Garcia, R. Hillary, E. Jardim, S. Mardle, M. A. Pastoors, J. J. Poos, F. Scott, R. D. Scott; FLR: an open-source framework for the evaluation and development of management strategies. <em>ICES J Mar Sci</em> 2007; 64 (4): 640-646. doi: <a href="https://doi.org/10.1093/icesjms/fsm012">10.1093/icesjms/fsm012</a>.</p>
+<p>L. T. Kell, I. Mosqueira, P. Grosjean, J-M. Fromentin, D. Garcia, R.
+Hillary, E. Jardim, S. Mardle, M. A. Pastoors, J. J. Poos, F. Scott, R.
+D. Scott; FLR: an open-source framework for the evaluation and
+development of management strategies. <em>ICES J Mar Sci</em> 2007; 64
+(4): 640-646. doi: <a
+href="https://doi.org/10.1093/icesjms/fsm012">10.1093/icesjms/fsm012</a>.</p>
 </div>
-<div id="more-information-7" class="section level1">
+<div id="more-information-6" class="section level1">
 <h1>More information</h1>
 <ul>
-<li>You can submit bug reports, questions or suggestions on this tutorial at <a href="https://github.com/flr/doc/issues" class="uri">https://github.com/flr/doc/issues</a>.</li>
-<li>Alternatively, send a pull request to <a href="https://github.com/flr/doc/" class="uri">https://github.com/flr/doc/</a>.</li>
-<li>For more information on the FLR Project for Quantitative Fisheries Science in R, visit the FLR webpage: <a href="http://flr-project.org" class="uri">http://flr-project.org</a>.</li>
+<li>You can submit bug reports, questions or suggestions on this
+tutorial at <a href="https://github.com/flr/doc/issues"
+class="uri">https://github.com/flr/doc/issues</a>.</li>
+<li>Alternatively, send a pull request to <a
+href="https://github.com/flr/doc/"
+class="uri">https://github.com/flr/doc/</a>.</li>
+<li>For more information on the FLR Project for Quantitative Fisheries
+Science in R, visit the FLR webpage: <a href="http://flr-project.org"
+class="uri">http://flr-project.org</a>.</li>
 </ul>
 <div id="software-versions" class="section level2">
 <h2>Software Versions</h2>
 <ul>
-<li>R version 3.6.1 (2019-07-05)</li>
-<li>FLCore: 2.6.13.9006</li>
-<li>ggplotFL: 2.6.6</li>
-<li>FLa4a: 1.6.7</li>
-<li>FLBRP: 2.5.3</li>
+<li>R version 4.5.1 (2025-06-13)</li>
+<li>FLCore: 2.6.20.9342</li>
+<li>ggplotFL: 2.7.0.9139</li>
+<li>FLa4a: 1.9.5</li>
+<li>FLBRP: 2.5.9.9051</li>
 <li>FLash: 2.5.11</li>
-<li><strong>Compiled</strong>: Thu Aug 8 11:36:26 2019</li>
+<li><strong>Compiled</strong>: Wed Oct 29 17:47:51 2025</li>
 </ul>
 </div>
 <div id="license" class="section level2">
 <h2>License</h2>
-<p>This document is licensed under the <a href="https://creativecommons.org/licenses/by-sa/4.0">Creative Commons Attribution-ShareAlike 4.0 International</a> license.</p>
+<p>This document is licensed under the <a
+href="https://creativecommons.org/licenses/by-sa/4.0">Creative Commons
+Attribution-ShareAlike 4.0 International</a> license.</p>
 </div>
 <div id="author-information" class="section level2">
 <h2>Author information</h2>
-<p><strong>Iago MOSQUEIRA</strong>. European Commission, DG Joint Research Centre, Directorate D - Sustainable Resources, Unit D.02 Water and Marine Resources, Via E. Fermi 2749, 21027 Ispra VA, Italy. <a href="https://ec.europa.eu/jrc/" class="uri">https://ec.europa.eu/jrc/</a>.</p>
+<p><strong>Iago MOSQUEIRA</strong>. Wageningen Marine Research (WMR),
+IJmuiden, The Netherlands.</p>
+<p><strong>Ernesto Jardim</strong>. Instituto Portugues do Mar e
+Atmosfera (IPMA), Lisbon, Portugal<br>National Institute of Aquatic
+Resources, Technical University of Denmark (DTU-Aqua), Copenhagen,
+Denmark.</p>
 </div>
 </div>
 
@@ -1194,7 +1430,7 @@ ctrl &lt;- fwdControl(data.frame(year=2018:2020, quantity=c(&quot;catch&quot;, &
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -1212,7 +1448,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
