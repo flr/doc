@@ -245,7 +245,7 @@ $(document).ready(function () {
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="http://flr-project.org">
+  <a href="http://flrproject.org">
     <span class="fa fa-home"></span>
      
     FLR
@@ -479,11 +479,11 @@ systems.</p>
 packages:</p>
 <ul>
 <li>CRAN: latticeExtra, gridExtra, ggplot2</li>
-<li>FLR: <a href="http://www.flr-project.org/FLCore/">FLCore</a>, <a
-href="http://www.flr-project.org/FLa4a/">FLa4a</a>, <a
-href="http://www.flr-project.org/ggplotFL/">ggplotFL</a>, <a
-href="http://www.flr-project.org/FLBRP/">FLBRP</a>, <a
-href="http://www.flr-project.org/FLasher/">FLasher</a></li>
+<li>FLR: <a href="http://www.flrproject.org/FLCore/">FLCore</a>, <a
+href="http://www.flrproject.org/FLa4a/">FLa4a</a>, <a
+href="http://www.flrproject.org/ggplotFL/">ggplotFL</a>, <a
+href="http://www.flrproject.org/FLBRP/">FLBRP</a>, <a
+href="http://www.flrproject.org/FLasher/">FLasher</a></li>
 </ul>
 <p>You can do so as follows:</p>
 <pre class="r"><code>install.packages(c(&quot;latticeExtra&quot;, &quot;gridExtra&quot;, &quot;ggplot2&quot;))
@@ -504,7 +504,7 @@ text on the <strong>methods</strong> package</a>.</p>
 <div id="flquant" class="section level2">
 <h2>FLQuant</h2>
 <p>The <a
-href="http://www.flr-project.org/FLCore/reference/FLQuant.html">FLQuant</a>
+href="http://www.flrproject.org/FLCore/reference/FLQuant.html">FLQuant</a>
 class is the basic data structure for <strong>FLR</strong>, and it is in
 essence a 6D array on which data and outputs can be stored, structured
 along dimensions related to age or length, year, unit (e.g. sex),
@@ -693,7 +693,7 @@ units:  t </code></pre>
 <div id="more-information" class="section level3">
 <h3>More information</h3>
 <p>To learn more about the class, check the <a
-href="http://www.flr-project.org/FLCore/reference/FLQuant.html">FLQuant
+href="http://www.flrproject.org/FLCore/reference/FLQuant.html">FLQuant
 help page</a>.</p>
 </div>
 </div>
@@ -969,16 +969,16 @@ column is named <code>data</code>, thus the use of <code>data</code> in
 various plot formulas above. For classes with multiple slots, like
 <em>FLStock</em>, an extra column is necessary, which will be called
 <code>slot</code>. Please check <a
-href="http://www.flr-project.org/FLCore/reference/coerce-methods.html">this
+href="http://www.flrproject.org/FLCore/reference/coerce-methods.html">this
 help page</a> to know more about the coercion methods for
 <strong>FLR</strong> objects.</p>
 <div id="more-information-2" class="section level3">
 <h3>More information</h3>
 <p>For further explanations on the use of the two plotting platforms
 available for <strong>FLR</strong> classes, please refer to the <a
-href="http://www.flr-project.org/doc/ggplotFL_plotting_FLR_objects_with_ggplot2.html">ggplotFL
+href="http://www.flrproject.org/doc/ggplotFL_plotting_FLR_objects_with_ggplot2.html">ggplotFL
 plotting FLR objects with ggplot2</a> and <a
-href="http://www.flr-project.org/doc/Plotting_FLR_objects_using_lattice.html">Plotting
+href="http://www.flrproject.org/doc/Plotting_FLR_objects_using_lattice.html">Plotting
 FLR objects using lattice</a> tutorials.</p>
 </div>
 </div>
@@ -995,9 +995,9 @@ catch-per-unit-effort of commercial fleets.</p>
 <div id="index-of-abundance" class="section level2">
 <h2>Index of abundance</h2>
 <p><strong>FLR</strong> has specific classes for this information, <a
-href="http://www.flr-project.org/FLCore/reference/FLIndex.html">FLIndex</a>
+href="http://www.flrproject.org/FLCore/reference/FLIndex.html">FLIndex</a>
 or when multiple indices are available <a
-href="http://www.flr-project.org/FLCore/reference/FLIndices.html">FLIndices</a>.
+href="http://www.flrproject.org/FLCore/reference/FLIndices.html">FLIndices</a>.
 An index of abundance for the North Sea plaice stock is available as an
 example dataset in <em>FLCore</em>, and can be loaded using the
 <em>data</em> command</p>
@@ -1037,7 +1037,7 @@ September.</p>
 </div>
 <div id="a4a-statistical-catch-at-age" class="section level2">
 <h2>a4a statistical catch-at-age</h2>
-<p>The <a href="http://flr-project.org/FLa4a">FLa4a</a> package provides
+<p>The <a href="http://flrproject.org/FLa4a">FLa4a</a> package provides
 an <strong>FLR</strong> implementation of the <em>a4a</em> model, a
 statistical catch-at-age model of medium complexity that has been
 designed to make use of the power and flexibility of R’s formula-based
@@ -1093,7 +1093,7 @@ like Virtual Population Analysis, this is a setup carried out once the
 stock and population abundance have been obtained.</p>
 <p>Both inputs and outputs for stock-recruitment models are stored in an
 object of the <a
-href="http://www.flr-project.org/FLCore/reference/FLSR.html">FLSR</a>
+href="http://www.flrproject.org/FLCore/reference/FLSR.html">FLSR</a>
 class which we can create directly from the stock assessment results by
 coercion using</p>
 <pre class="r"><code>plsr &lt;- as.FLSR(stk)</code></pre>
@@ -1131,7 +1131,7 @@ minimization, in the <code>logl</code> slot</li>
 in the <code>initial</code> slot</li>
 </ul>
 <p>See the <a
-href="http://www.flr-project.org/FLCore/reference/FLSR.html">SR
+href="http://www.flrproject.org/FLCore/reference/FLSR.html">SR
 Models</a> help page for further details of the available models.</p>
 <p>We can now assign the output of the chosen model function, in this
 case <code>ricker()</code>, to the existing object using</p>
@@ -1194,7 +1194,7 @@ Sustainable Yield (<span class="math inline">\(MSY\)</span>), or of
 fishing mortality, such as the fishing mortality expected to produce
 <span class="math inline">\(MSY\)</span>, <span
 class="math inline">\(F_{MSY}\)</span>.</p>
-<p>We can use the <a href="http://flr-project.org/FLBRP">FLBRP
+<p>We can use the <a href="http://flrproject.org/FLBRP">FLBRP
 package</a> to calculate a large set of reference points, once we have
 an estimate of stock status, our <em>FLStock</em> object, and of the
 stock-recruitment relationship, <em>FLSR</em>. We can use them both to
@@ -1289,7 +1289,7 @@ maximum catch limit or TAC, on the present year is forecast, and then a
 series of alternative increases or decreases in catch are applied to the
 object representing our current understanding of the stock status and
 dynamics.</p>
-<p>The <a href="http://flr-project.org/FLasher">FLasher package</a>
+<p>The <a href="http://flrproject.org/FLasher">FLasher package</a>
 contains the current implementation of the forecasting mechanism in
 <em>FLR</em>.</p>
 <pre class="r"><code>library(FLasher)</code></pre>
@@ -1348,7 +1348,7 @@ those three object: stock, stock-recruitment and control</p>
 <div id="more-information-5" class="section level3">
 <h3>More information</h3>
 <p>Please see the tutorial <a
-href="https://flr-project.org/doc/Forecasting_on_the_Medium_Term_for_advice_using_FLasher.html">Forecasting
+href="https://flrproject.org/doc/Forecasting_on_the_Medium_Term_for_advice_using_FLasher.html">Forecasting
 on the Medium Term for advice using FLasher</a> for more examples on how
 to use the capabilities of <em>FLasher</em> to forecast population
 dynamics under various scenarios.</p>
@@ -1356,10 +1356,10 @@ dynamics under various scenarios.</p>
 </div>
 <div id="more-on-flr" class="section level1">
 <h1>More on FLR</h1>
-<p>Please visit <a href="http://flr-project.org">our website</a> for
-more information on the <strong>FLR</strong> packages, tutorials and
-examples of use, and instructions for getting in touch if you want to
-report a bug, ask a question or get involved in the development of the
+<p>Please visit <a href="http://flrproject.org">our website</a> for more
+information on the <strong>FLR</strong> packages, tutorials and examples
+of use, and instructions for getting in touch if you want to report a
+bug, ask a question or get involved in the development of the
 <strong>FLR</strong> toolset. The project is run by a team of fisheries
 scientists that decided to share the R code they were writing and
 realised that using a common platform for Quantitative Fisheries Science
@@ -1389,8 +1389,8 @@ class="uri">https://github.com/flr/doc/issues</a>.</li>
 href="https://github.com/flr/doc/"
 class="uri">https://github.com/flr/doc/</a>.</li>
 <li>For more information on the FLR Project for Quantitative Fisheries
-Science in R, visit the FLR webpage: <a href="http://flr-project.org"
-class="uri">http://flr-project.org</a>.</li>
+Science in R, visit the FLR webpage: <a href="http://flrproject.org"
+class="uri">http://flrproject.org</a>.</li>
 </ul>
 <div id="software-versions" class="section level2">
 <h2>Software Versions</h2>
@@ -1401,7 +1401,7 @@ class="uri">http://flr-project.org</a>.</li>
 <li>FLa4a: 1.9.5</li>
 <li>FLBRP: 2.5.9.9051</li>
 <li>FLash: 2.5.11</li>
-<li><strong>Compiled</strong>: Wed Oct 29 17:47:51 2025</li>
+<li><strong>Compiled</strong>: Wed Oct 29 18:02:23 2025</li>
 </ul>
 </div>
 <div id="license" class="section level2">

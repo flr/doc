@@ -26,6 +26,8 @@ docs/R/%.R: %.Rmd
 
 setup:
 	R -e "install.packages(c('captioner', 'printr', 'rmarkdown', 'knitr'))"
+	R -e "install_github(c('adletaw/captioner', 'flr/mydas'))"
+
 
 clean:
 	rm -f *.html

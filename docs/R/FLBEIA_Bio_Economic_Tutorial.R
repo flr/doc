@@ -20,7 +20,6 @@ include_graphics('images/FLBEIA_logo.png')
 
 ## ---- pkgs, results = "hide"--------------------------------------------------
 library(FLBEIA)
-library(FLBEIAShiny)
 library(ggplot2)
 
 
@@ -33,7 +32,7 @@ unzip("src/flbeia_bioeco.zip", exdir=dir)
 
 
 ## ---- dataLoad, echo=TRUE, eval=TRUE------------------------------------------
-load('./src/flbeia_bioeco/data.Rdata')
+load(file.path(dir, 'flbeia_bioeco', 'data.RData'))
 stknms <- names(biols)
 main.ctrl$sim.years[] <- c(2017,2025)
 
