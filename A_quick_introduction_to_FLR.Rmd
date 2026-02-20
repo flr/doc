@@ -127,6 +127,14 @@ In this example we will create an object of class *FLStock*, a representation of
 - *data*, the numeric values themselves.
 - *units*, a character string for the units of measurement employed: *kg* and *1000* in this case for kilograms and thousands.
 
+This multi-column structure contains in effect a 2-D version of the set of 6-D arrays that form an *FLStock* object. We can observe this equivalence by converting our example object, `ple4`, into a single data.frame
+
+```{r}
+data(ple4)
+head(as.data.frame(ple4))
+tail(as.data.frame(ple4))
+```
+
 The file is downloaded into a temporary folder, and uncompressed. Simply change the value of `dir` to save the file in another folder.
 
 ```{r, getfiles, message=FALSE}
@@ -144,7 +152,7 @@ head(dat)
 
 This data.frame contains the time series of landings and discards at age, in thousands, and the corresponding mean weights-at-age, in kg, for [North Sea plaice](http://standardgraphs.ices.dk/ViewCharts.aspx?key=8980) (*Pleuronectes platessa*, ICES ple.27.420).
 
-We can create an object to store the landings-at-age data by subsetting it from the *data.frame*
+We can create an object to store the landings-at-age data by subsetting it from the *data.frame* and passing all cvolumns but 'slot'
 
 ```{r, subsetlandingsn}
 landn <- subset(dat, slot=="landings.n", select=-slot)
@@ -165,7 +173,6 @@ plot(landsn)
 ```
 
 In a similar way, we can now convert the input *data.frame*, containing data for four data elements, as specified in the `slots` column, into an *FLStock* object, `nple4`. The *FLStock* class has the following slots: *catch*, *catch.n*, *catch.wt*, *discards*, *discards.n*, *discards.wt*, *landings*, *landings.n*, *landings.wt*, *stock*, *stock.n*, *stock.wt*, *m*, *mat*, *harvest*, *harvest.spwn* and *m.spwn*. The names used in the *slot* column need to match the *FLStock* class for this method to work. See `?FLStock` for more information.
-
 
 ```{r, convertple4}
 nple4 <- as.FLStock(dat)
@@ -463,7 +470,7 @@ The [FLasher package](http://flrproject.org/FLasher) contains the current implem
 library(FLasher)
 ```
 
-The key element in the *FLasher* interface is the *fwdControl* class, which allows us to specify the targets and limits that we want the stock to achieve or remain within. But first we need to make some assumptions about the future values of certain quantities, both on the biology (natural mortality, maturity) and the fishery (selectivity, proportion of discards). A common approach for this kind of forecast is to use averages over the last few years (typically three) for certain quantities. This can be done in *FLR* using the `fwdWindow` method in the *FLash* package.
+The key element in the *FLasher* interface is the *fwdControl* class, which allows us to specify the targets and limits that we want the stock to achieve or remain within. But first we need to make some assumptions about the future values of certain quantities, both on the biology (natural mortality, maturity) and the fishery (selectivity, proportion of discards). A common approach for this kind of forecast is to use averages over the last few years (for example three, the default). This can be done simpliy in *FLR* using the `fwdWindow` method in the *FLCore* package.
 
 ```{r, stf}
 proj <- fwdWindow(stk, end=2020)
@@ -472,7 +479,7 @@ proj <- fwdWindow(stk, end=2020)
 Our new object extends up to 2020, and the values for certain stocks have been extended using the mean of the last three years, for example for the weight-at-age in the stock
 
 ```{r, stfstockwt}
-stock.wt(proj)[, ac(2011:2020)]
+stock.wt(proj)[, ac(2016:2020)]
 ```
 
 We can now construct a `fwdControl` object that projects the stock as if catches in the current year, 2018 in this case, were those of the agreed TAC, 85,000 t, and F was then kept in 2019 and 2020 at the same levels as in 2017. The main information to be passed to *fwdControl* object is
@@ -530,7 +537,7 @@ L. T. Kell, I. Mosqueira, P. Grosjean, J-M. Fromentin, D. Garcia, R. Hillary, E.
 * ggplotFL: `r packageVersion('ggplotFL')`
 * FLa4a: `r packageVersion('FLa4a')`
 * FLBRP: `r packageVersion('FLBRP')`
-* FLash: `r packageVersion('FLash')`
+* FLasher: `r packageVersion('FLasher')`
 * **Compiled**: `r date()`
 
 ## License
