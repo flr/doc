@@ -721,6 +721,172 @@ landings at age, <em>landings.n</em>, weight-at-age in the landings,
 employed: <em>kg</em> and <em>1000</em> in this case for kilograms and
 thousands.</li>
 </ul>
+<p>This multi-column structure contains in effect a 2-D version of the
+set of 6-D arrays that form an <em>FLStock</em> object. We can observe
+this equivalence by converting our example object, <code>ple4</code>,
+into a single data.frame</p>
+<pre class="r"><code>data(ple4)
+head(as.data.frame(ple4))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">slot</th>
+<th align="left">age</th>
+<th align="right">year</th>
+<th align="left">unit</th>
+<th align="left">season</th>
+<th align="left">area</th>
+<th align="left">iter</th>
+<th align="right">data</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">catch</td>
+<td align="left">all</td>
+<td align="right">1957</td>
+<td align="left">unique</td>
+<td align="left">all</td>
+<td align="left">unique</td>
+<td align="left">1</td>
+<td align="right">78360.36</td>
+</tr>
+<tr class="even">
+<td align="left">catch</td>
+<td align="left">all</td>
+<td align="right">1958</td>
+<td align="left">unique</td>
+<td align="left">all</td>
+<td align="left">unique</td>
+<td align="left">1</td>
+<td align="right">88785.20</td>
+</tr>
+<tr class="odd">
+<td align="left">catch</td>
+<td align="left">all</td>
+<td align="right">1959</td>
+<td align="left">unique</td>
+<td align="left">all</td>
+<td align="left">unique</td>
+<td align="left">1</td>
+<td align="right">105186.13</td>
+</tr>
+<tr class="even">
+<td align="left">catch</td>
+<td align="left">all</td>
+<td align="right">1960</td>
+<td align="left">unique</td>
+<td align="left">all</td>
+<td align="left">unique</td>
+<td align="left">1</td>
+<td align="right">117974.54</td>
+</tr>
+<tr class="odd">
+<td align="left">catch</td>
+<td align="left">all</td>
+<td align="right">1961</td>
+<td align="left">unique</td>
+<td align="left">all</td>
+<td align="left">unique</td>
+<td align="left">1</td>
+<td align="right">119540.66</td>
+</tr>
+<tr class="even">
+<td align="left">catch</td>
+<td align="left">all</td>
+<td align="right">1962</td>
+<td align="left">unique</td>
+<td align="left">all</td>
+<td align="left">unique</td>
+<td align="left">1</td>
+<td align="right">126290.43</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>tail(as.data.frame(ple4))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">slot</th>
+<th align="left">age</th>
+<th align="right">year</th>
+<th align="left">unit</th>
+<th align="left">season</th>
+<th align="left">area</th>
+<th align="left">iter</th>
+<th align="right">data</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">8169</td>
+<td align="left">m.spwn</td>
+<td align="left">5</td>
+<td align="right">2017</td>
+<td align="left">unique</td>
+<td align="left">all</td>
+<td align="left">unique</td>
+<td align="left">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">8170</td>
+<td align="left">m.spwn</td>
+<td align="left">6</td>
+<td align="right">2017</td>
+<td align="left">unique</td>
+<td align="left">all</td>
+<td align="left">unique</td>
+<td align="left">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">8171</td>
+<td align="left">m.spwn</td>
+<td align="left">7</td>
+<td align="right">2017</td>
+<td align="left">unique</td>
+<td align="left">all</td>
+<td align="left">unique</td>
+<td align="left">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">8172</td>
+<td align="left">m.spwn</td>
+<td align="left">8</td>
+<td align="right">2017</td>
+<td align="left">unique</td>
+<td align="left">all</td>
+<td align="left">unique</td>
+<td align="left">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">8173</td>
+<td align="left">m.spwn</td>
+<td align="left">9</td>
+<td align="right">2017</td>
+<td align="left">unique</td>
+<td align="left">all</td>
+<td align="left">unique</td>
+<td align="left">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">8174</td>
+<td align="left">m.spwn</td>
+<td align="left">10</td>
+<td align="right">2017</td>
+<td align="left">unique</td>
+<td align="left">all</td>
+<td align="left">unique</td>
+<td align="left">1</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
 <p>The file is downloaded into a temporary folder, and uncompressed.
 Simply change the value of <code>dir</code> to save the file in another
 folder.</p>
@@ -791,7 +957,8 @@ age, in thousands, and the corresponding mean weights-at-age, in kg, for
 <a href="http://standardgraphs.ices.dk/ViewCharts.aspx?key=8980">North
 Sea plaice</a> (<em>Pleuronectes platessa</em>, ICES ple.27.420).</p>
 <p>We can create an object to store the landings-at-age data by
-subsetting it from the <em>data.frame</em></p>
+subsetting it from the <em>data.frame</em> and passing all cvolumns but
+‘slot’</p>
 <pre class="r"><code>landn &lt;- subset(dat, slot==&quot;landings.n&quot;, select=-slot)</code></pre>
 <p>and then convert into an <em>FLQuant</em> using</p>
 <pre class="r"><code>landsn &lt;- as.FLQuant(landn)</code></pre>
@@ -1293,36 +1460,36 @@ dynamics.</p>
 contains the current implementation of the forecasting mechanism in
 <em>FLR</em>.</p>
 <pre class="r"><code>library(FLasher)</code></pre>
-<p>ahe key element in the <em>FLasher</em> interface is the
+<p>The key element in the <em>FLasher</em> interface is the
 <em>fwdControl</em> class, which allows us to specify the targets and
 limits that we want the stock to achieve or remain within. But first we
 need to make some assumptions about the future values of certain
 quantities, both on the biology (natural mortality, maturity) and the
 fishery (selectivity, proportion of discards). A common approach for
-this kind of forecast is to use averages over the last few years
-(typically three) for certain quantities. This can be done in
-<em>FLR</em> using the <code>fwdWindow</code> method in the
-<em>FLCore</em> package.</p>
+this kind of forecast is to use averages over the last few years (for
+example three, the default). This can be done simpliy in <em>FLR</em>
+using the <code>fwdWindow</code> method in the <em>FLCore</em>
+package.</p>
 <pre class="r"><code>proj &lt;- fwdWindow(stk, end=2020)</code></pre>
 <p>Our new object extends up to 2020, and the values for certain stocks
 have been extended using the mean of the last three years, for example
 for the weight-at-age in the stock</p>
-<pre class="r"><code>stock.wt(proj)[, ac(2011:2020)]</code></pre>
+<pre class="r"><code>stock.wt(proj)[, ac(2016:2020)]</code></pre>
 <pre><code>An object of class &quot;FLQuant&quot;
 , , unit = unique, season = all, area = unique
 
     year
-age  2011   2012   2013   2014   2015   2016   2017   2018   2019   2020  
-  1  0.0390 0.0520 0.0430 0.0480 0.0240 0.0300 0.0320 0.0287 0.0287 0.0287
-  2  0.1000 0.0930 0.1070 0.1040 0.0650 0.0660 0.0690 0.0667 0.0667 0.0667
-  3  0.1870 0.1420 0.1530 0.1580 0.1200 0.1170 0.1320 0.1230 0.1230 0.1230
-  4  0.2090 0.1880 0.2080 0.2020 0.2070 0.1980 0.1810 0.1953 0.1953 0.1953
-  5  0.3550 0.3310 0.3200 0.3120 0.2790 0.2600 0.2700 0.2697 0.2697 0.2697
-  6  0.4830 0.3930 0.3540 0.3800 0.3230 0.3290 0.3330 0.3283 0.3283 0.3283
-  7  0.4380 0.4840 0.4340 0.4390 0.3790 0.3800 0.3590 0.3727 0.3727 0.3727
-  8  0.4220 0.4790 0.4930 0.4840 0.4350 0.4340 0.4580 0.4423 0.4423 0.4423
-  9  0.5300 0.4800 0.6620 0.4580 0.4650 0.4790 0.4760 0.4733 0.4733 0.4733
-  10 0.5800 0.5180 0.4680 0.6150 0.4570 0.5140 0.5570 0.5093 0.5093 0.5093
+age  2016   2017   2018   2019   2020  
+  1  0.0300 0.0320 0.0287 0.0287 0.0287
+  2  0.0660 0.0690 0.0667 0.0667 0.0667
+  3  0.1170 0.1320 0.1230 0.1230 0.1230
+  4  0.1980 0.1810 0.1953 0.1953 0.1953
+  5  0.2600 0.2700 0.2697 0.2697 0.2697
+  6  0.3290 0.3330 0.3283 0.3283 0.3283
+  7  0.3800 0.3590 0.3727 0.3727 0.3727
+  8  0.4340 0.4580 0.4423 0.4423 0.4423
+  9  0.4790 0.4760 0.4733 0.4733 0.4733
+  10 0.5140 0.5570 0.5093 0.5093 0.5093
 
 units:  kg </code></pre>
 <p>We can now construct a <code>fwdControl</code> object that projects
@@ -1401,7 +1568,7 @@ class="uri">http://flrproject.org</a>.</li>
 <li>FLa4a: 1.9.5</li>
 <li>FLBRP: 2.5.9.9051</li>
 <li>FLasher: 0.7.2</li>
-<li><strong>Compiled</strong>: Fri Feb 20 10:49:27 2026</li>
+<li><strong>Compiled</strong>: Fri Feb 20 11:01:09 2026</li>
 </ul>
 </div>
 <div id="license" class="section level2">

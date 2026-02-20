@@ -64,6 +64,12 @@ flq + (flq * 0.20)
 yearSums(flq)
 
 
+## -----------------------------------------------------------------------------
+data(ple4)
+head(as.data.frame(ple4))
+tail(as.data.frame(ple4))
+
+
 ## ----getfiles, message=FALSE--------------------------------------------------
 dir <- tempdir()
 download.file("http://www.flrproject.org/doc/src/ple4.csv.zip", file.path(dir, "ple4.csv.zip"))
@@ -249,7 +255,7 @@ proj <- fwdWindow(stk, end=2020)
 
 
 ## ----stfstockwt---------------------------------------------------------------
-stock.wt(proj)[, ac(2011:2020)]
+stock.wt(proj)[, ac(2016:2020)]
 
 
 ## ----fwdcontrol---------------------------------------------------------------
