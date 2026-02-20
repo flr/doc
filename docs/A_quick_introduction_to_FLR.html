@@ -457,7 +457,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">A quick introduction to FLR</h1>
-<h4 class="date">29 October, 2025</h4>
+<h4 class="date">20 February, 2026</h4>
 
 </div>
 
@@ -807,7 +807,7 @@ units:  1000
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    %NAs 
       0    4548   14030   28141   40536  274209       0 </code></pre>
 <pre class="r"><code>plot(landsn)</code></pre>
-<p><img src="A_quick_introduction_to_FLR_files/figure-html/plotlandings.n-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="A_quick_introduction_to_FLR_files/figure-html/plotlandings.n-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
 <p>In a similar way, we can now convert the input <em>data.frame</em>,
 containing data for four data elements, as specified in the
 <code>slots</code> column, into an <em>FLStock</em> object,
@@ -836,7 +836,7 @@ Range:  min max pgroup  minyear maxyear minfbar maxfbar
 
 Metrics: 
   rec: NA - NA  (NA) 
-  ssb: NA - NA  (NA) 
+  ssb: 0 - 0  (NA) 
   catch: NA - NA  (NA) 
   fbar: NA - NA  (NA) </code></pre>
 <p>To complete this <em>FLStock</em> object we will need to specify the
@@ -885,13 +885,13 @@ Range:  min max pgroup  minyear maxyear minfbar maxfbar
 
 Metrics: 
   rec: NA - NA  (NA) 
-  ssb: NA - NA  (NA) 
+  ssb: 0 - 0  (NA) 
   catch: 78423 - 342985  (t) 
   fbar: NA - NA  (NA) </code></pre>
 <pre class="r"><code>#plot(metrics(nple4, Catch=catch, Landings=landings))
 
 plot(nple4)</code></pre>
-<p><img src="A_quick_introduction_to_FLR_files/figure-html/nple4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="A_quick_introduction_to_FLR_files/figure-html/nple4-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>data(ple4)</code></pre>
 <div id="more-information-1" class="section level3">
 <h3>More information</h3>
@@ -913,7 +913,7 @@ href="https://cran.r-project.org/web/packages/lattice/index.html">lattice
 package</a>, as well as versions of lattice’s methods that work directly
 on <strong>FLR</strong> objects, for example <code>xyplot</code></p>
 <pre class="r"><code>xyplot(data~year|age, harvest(ple4), xlab=&quot;&quot;, ylab=&quot;&quot;, type=&quot;b&quot;, cex=0.5, pch=19)</code></pre>
-<p><img src="A_quick_introduction_to_FLR_files/figure-html/xyplot-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="A_quick_introduction_to_FLR_files/figure-html/xyplot-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
 <p>In alternative the <strong>ggplotFL</strong> package, which we have
 already loaded, can also be used, which provides a new set of plot
 methods based on <a href="http://ggplot2.tidyverse.org/">ggplot2</a>,
@@ -924,7 +924,7 @@ returned as objects that can be modified and extended. For example, the
 basic plot for the abundances at age <em>FLQuant</em> using
 <strong>ggplotFL</strong> would be this one</p>
 <pre class="r"><code>plot(stock.n(ple4))</code></pre>
-<p><img src="A_quick_introduction_to_FLR_files/figure-html/plotstockn-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="A_quick_introduction_to_FLR_files/figure-html/plotstockn-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
 <p>in which each age is shown in a different horizontal panel
 (<em>facet</em>). Now we can modify this plot in various ways by adding
 extra <strong>ggplot2</strong> commands to it, for example by adding a
@@ -937,7 +937,7 @@ interest</p>
   annotate(&quot;rect&quot;, xmin = 1990, xmax = 2000, ymin = 0, ymax = Inf,
     # in semi-transparent red
     alpha = .2, fill=&#39;red&#39;)</code></pre>
-<p><img src="A_quick_introduction_to_FLR_files/figure-html/plotstocknplus-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="A_quick_introduction_to_FLR_files/figure-html/plotstocknplus-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
 <p>The basic method in <strong>ggplot2</strong> taking a data input,
 <code>ggplot</code>, has also been defined for some <em>FLCore</em>
 class, which simplifies constructing plots based on objects of those
@@ -947,14 +947,14 @@ using</p>
 <pre class="r"><code>ggplot(data=catch.n(ple4), aes(x=year, y=data, group=age)) +
   geom_line(aes(colour=as.factor(age))) +
   ylab(&quot;Total catch (t)&quot;) + xlab(&quot;&quot;) + theme(legend.position=&quot;none&quot;)</code></pre>
-<p><img src="A_quick_introduction_to_FLR_files/figure-html/plotcatchn-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="A_quick_introduction_to_FLR_files/figure-html/plotcatchn-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
 <p><strong>ggplotFL</strong> deals with multiple iterations in
 <strong>FLR</strong> objects by calculating quantiles along the
 <em>iter</em> dimension and plotting them as areas and lines. For
 example, an object with random lognormal noise around the catch time
 series would look like this</p>
 <pre class="r"><code>plot(rlnorm(250, log(catch(ple4)), 0.5))</code></pre>
-<p><img src="A_quick_introduction_to_FLR_files/figure-html/plotcatch-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="A_quick_introduction_to_FLR_files/figure-html/plotcatch-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
 <p>where the 50% and 95% intervals are shown as a red region and a
 dotted line respectively, while the median value is shown as a black
 line.</p>
@@ -1026,7 +1026,7 @@ Dims:  age  year    unit    season  area    iter
 Range:  min max pgroup  minyear maxyear startf  endf 
     1   10  1   1996    2017    0.6453376   0.6453376   </code></pre>
 <pre class="r"><code>plot(ple4.index)</code></pre>
-<p><img src="A_quick_introduction_to_FLR_files/figure-html/summaryple4index-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="A_quick_introduction_to_FLR_files/figure-html/summaryple4index-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
 <p>The <em>range</em> slot in this class contains information about the
 time period over which the survey takes place, as proportions of the
 year, in this case from the beginning of August to the end of
@@ -1067,7 +1067,7 @@ Range:  min max pgroup  minyear maxyear minfbar maxfbar
 <p>which we can use to update the <em>FLStock</em> object</p>
 <pre class="r"><code>stk &lt;- ple4 + fit
 plot(stk)</code></pre>
-<p><img src="A_quick_introduction_to_FLR_files/figure-html/ple4fit-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="A_quick_introduction_to_FLR_files/figure-html/ple4fit-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
 <p>Among other methods, <em>FLa4a</em> provides a range of tools for
 inspecting the quality of the model fit.
 <!-- This should be uncommented once a tutorial exists to link to
@@ -1159,7 +1159,7 @@ usefulness for future projections. This can be further explored by
 likelihood profiling over a range of values of the estimated parameters
 by simply calling the <code>profile</code> method of the object</p>
 <pre class="r"><code>profile(plsr)</code></pre>
-<p><img src="A_quick_introduction_to_FLR_files/figure-html/flsrprofile-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="A_quick_introduction_to_FLR_files/figure-html/flsrprofile-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
 <p>Finally, the model can be used to predict future recruitments if
 provided with a set of new values of SSB, as in</p>
 <pre class="r"><code>predict(plsr, ssb=FLQuant(rnorm(10, 25e4, sd(ssb(plsr))), dimnames=list(age=1, year=2008:2017)))</code></pre>
@@ -1271,7 +1271,7 @@ reference points as a named vector using</p>
 these points, for example</p>
 <pre class="r"><code>plot(ssb(stk) / pmsy[&quot;ssb&quot;]) + geom_hline(aes(yintercept=1), linetype=2) +
   ylab(expression(SSB / SSB[MSY]))</code></pre>
-<p><img src="A_quick_introduction_to_FLR_files/figure-html/refptplot-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="A_quick_introduction_to_FLR_files/figure-html/refptplot-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
 <div id="more-information-4" class="section level3">
 <h3>More information</h3>
 <p>For more information on <em>FLBRP</em>, please see the <a
@@ -1293,7 +1293,7 @@ dynamics.</p>
 contains the current implementation of the forecasting mechanism in
 <em>FLR</em>.</p>
 <pre class="r"><code>library(FLasher)</code></pre>
-<p>The key element in the <em>FLasher</em> interface is the
+<p>ahe key element in the <em>FLasher</em> interface is the
 <em>fwdControl</em> class, which allows us to specify the targets and
 limits that we want the stock to achieve or remain within. But first we
 need to make some assumptions about the future values of certain
@@ -1302,7 +1302,7 @@ fishery (selectivity, proportion of discards). A common approach for
 this kind of forecast is to use averages over the last few years
 (typically three) for certain quantities. This can be done in
 <em>FLR</em> using the <code>fwdWindow</code> method in the
-<em>FLash</em> package.</p>
+<em>FLCore</em> package.</p>
 <pre class="r"><code>proj &lt;- fwdWindow(stk, end=2020)</code></pre>
 <p>Our new object extends up to 2020, and the values for certain stocks
 have been extended using the mean of the last three years, for example
@@ -1344,7 +1344,7 @@ those three object: stock, stock-recruitment and control</p>
 <pre class="r"><code>proj &lt;- fwd(proj, control=ctrl, sr=plsr) </code></pre>
 <p>and the results can be visualized</p>
 <pre class="r"><code>plot(proj) + geom_vline(aes(xintercept=2017.5), linetype=2)</code></pre>
-<p><img src="A_quick_introduction_to_FLR_files/figure-html/fwdplot-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="A_quick_introduction_to_FLR_files/figure-html/fwdplot-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
 <div id="more-information-5" class="section level3">
 <h3>More information</h3>
 <p>Please see the tutorial <a
@@ -1395,13 +1395,13 @@ class="uri">http://flrproject.org</a>.</li>
 <div id="software-versions" class="section level2">
 <h2>Software Versions</h2>
 <ul>
-<li>R version 4.5.1 (2025-06-13)</li>
-<li>FLCore: 2.6.20.9342</li>
-<li>ggplotFL: 2.7.0.9139</li>
+<li>R version 4.5.2 (2025-10-31)</li>
+<li>FLCore: 2.6.23</li>
+<li>ggplotFL: 2.7.1</li>
 <li>FLa4a: 1.9.5</li>
 <li>FLBRP: 2.5.9.9051</li>
-<li>FLash: 2.5.11</li>
-<li><strong>Compiled</strong>: Wed Oct 29 18:02:23 2025</li>
+<li>FLasher: 0.7.2</li>
+<li><strong>Compiled</strong>: Fri Feb 20 10:49:27 2026</li>
 </ul>
 </div>
 <div id="license" class="section level2">

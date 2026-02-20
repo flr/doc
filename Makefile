@@ -25,9 +25,8 @@ docs/R/%.R: %.Rmd
 	@R --vanilla -e "knitr::purl('$<', output='$@')"
 
 setup:
-	R -e "install.packages(c('captioner', 'printr', 'rmarkdown', 'knitr'))"
+	R -e "install.packages(c('printr', 'rmarkdown', 'knitr'))"
 	R -e "install_github(c('adletaw/captioner', 'flr/mydas'))"
-
 
 clean:
 	rm -f *.html
